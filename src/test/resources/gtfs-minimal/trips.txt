@@ -1,0 +1,5 @@
+trip_id,route_id,trip_short_name,service_id
+T1,SX,100,SVC_WEEKDAY
+T2,SX,101,SVC_OTHERDAY
+T3,BUS,900,SVC_WEEKDAY
+TN,SX,102,SVC_WEEKDAY
