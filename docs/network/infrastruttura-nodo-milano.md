@@ -73,9 +73,13 @@ Criticità**.
   parte del traffico ferroviario di Milano. Nodo prioritario da studiare a fondo.
 - **Binari**: **22** totali (non tutti usati dai suburbani).
   - **2 sotterranei** dedicati al **Passante** → verso **Bovisa** / **Repubblica**.
-  - **~20 di superficie** (terminale + transito), tra cui **4 che confluiscono in
-    2** verso **Lecco** (→ Greco Pirelli): la confluenza **4→2** è un **collo di
-    bottiglia** esplicito.
+  - **~20 di superficie**, divisi per funzione:
+    - **1–14: terminali** (tronchi) — i treni **o partono o arrivano**, nessun
+      transito. → nel modello: risorse di binario con ingresso/uscita dallo
+      stesso lato, occupazione per sosta capolinea (inversione banco).
+    - **15–20: passanti** — consentono il transito.
+    - Tra i passanti, **4 confluiscono in 2** verso **Lecco** (→ Greco Pirelli):
+      la confluenza **4→2** è un **collo di bottiglia** esplicito.
 - **Traffico**:
   - *Sotterraneo*: le 6 S del Passante.
   - *Superficie*: suburbani verso **Lecco** (via Greco), verso **Certosa /
