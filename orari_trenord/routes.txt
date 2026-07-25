@@ -1,0 +1,64 @@
+route_id,agency_id,route_short_name,route_long_name,route_color,route_text_color,route_type
+TN_Bus,1,TN Bus,TN Bus sostitutivi,006633,FFFFFF,3
+TN_GP,1,Trenord GP,Trenord straordinari GP,E40314,FFFFFF,2
+RE_11,1,RE11,Mantova-Cremona-Codogno-Milano,E40314,FFFFFF,2
+RE_2,1,RE2,Bergamo-Pioltello-Milano,E40314,FFFFFF,2
+RE_13,1,RE13,Alessandria-Pavia-Milano,E40314,FFFFFF,2
+RE_4,1,RE4,Domodossola-Milano,E40314,FFFFFF,2
+RE_5,1,RE5,Porto Ceresio-Varese-Gallarate-Milano,E40314,FFFFFF,2
+RE_6,1,RE6,Verona-Brescia-Milano,E40314,FFFFFF,2
+R7,1,R7,Lecco-Bergamo,94C120,FFFFFF,2
+RE_8,1,RE8,Tirano-Sondrio-Lecco-Milano,E40314,FFFFFF,2
+RE_51,1,RE51,Gallarate-Malpensa-Milano Centrale,E40314,FFFFFF,2
+R40,1,R40,Cremona-Mantova,94C120,FFFFFF,2
+R31,1,R31,Mortara-Milano,94C120,FFFFFF,2
+R1,1,R1,Bergamo-Brescia,94C120,FFFFFF,2
+R11,1,R11,Colico-Chiavenna,94C120,FFFFFF,2
+R13,1,R13,Lecco-Colico-Sondrio,94C120,FFFFFF,2
+R23,1,R23,Domodossola-Arona-Gallarate-Milano,94C120,FFFFFF,2
+R12,1,R12,Sondrio-Tirano,94C120,FFFFFF,2
+R18,1,R18,Como-Molteno-Lecco,94C120,FFFFFF,2
+R34,1,R34,Stradella-Pavia-Milano,94C120,FFFFFF,2
+R41,1,R41,Voghera-Piacenza,94C120,FFFFFF,2
+R5,1,R5,Brescia-Cremona,94C120,FFFFFF,2
+R35,1,R35,Pavia-Torreberetti-Alessandria,94C120,FFFFFF,2
+R6,1,R6,Cremona-Treviglio,94C120,FFFFFF,2
+R36,1,R36,Pavia-Mortara-Vercelli,94C120,FFFFFF,2
+R37,1,R37,Pavia-Codogno,94C120,FFFFFF,2
+R39,1,R39,Codogno-Cremona,94C120,FFFFFF,2
+R8,1,R8,Brescia-Piadena-Parma,94C120,FFFFFF,2
+R38,1,R38,Piacenza-Lodi-Milano,94C120,FFFFFF,2
+R4,1,R4,Brescia-Treviglio-Milano,94C120,FFFFFF,2
+R25,1,R25,Novara-Mortara,94C120,FFFFFF,2
+S5,1,S5,Varese-Milano Passante-Treviglio,f39123,FFFFFF,2
+R2,1,R2,Bergamo-Treviglio,94C120,FFFFFF,2
+S1,1,S1,Saronno-Milano Passante-Lodi,e40520,FFFFFF,2
+S2,1,S2,Mariano Comense-Milano Passante-Milano Rogoredo,009879,FFFFFF,2
+S13,1,S13,Pavia-Milano Passante-Milano Bovisa,a76d11,FFFFFF,2
+S6,1,S6,Novara-Milano Passante-Treviglio,f6d200,FFFFFF,2
+S7,1,S7,Lecco-Molteno-Monza-Milano,e50071,FFFFFF,2
+S8,1,S8,Lecco-Carnate-Milano Porta Garibaldi,f6b6b6,FFFFFF,2
+S9,1,S9,Saronno-Seregno-Milano-Albairate,a2338a,FFFFFF,2
+S11,1,S11,Como-Milano-Rho,a593c6,FFFFFF,2
+S10,1,S10,Biasca-Bellinzona-Lugano-Chiasso-Como S.Giovanni,e42313,FFFFFF,2
+RE_80,1,RE80,Locarno-Lugano-Chiasso-Milano Centrale,004dff,FFFFFF,2
+R21,1,R21,Luino-Gallarate-Milano,94C120,FFFFFF,2
+S30,1,S30,Cadenazzo-Luino-Gallarate,00a74e,FFFFFF,2
+S40,1,S40,Como-Mendrisio-Varese,6bc180,FFFFFF,2
+S50,1,S50,Biasca-Bellinzona-Lugano-Varese-Malpensa,834c16,FFFFFF,2
+S12,1,S12,Melegnano-Milano Passante-Milano Bovisa-Cormano,2c5234,FFFFFF,2
+R14,1,R14,Bergamo-Carnate-Milano,94C120,FFFFFF,2
+S19,1,S19,Albairate-Milano Rogoredo,663333,FFFFFF,2
+R22,1,R22,Varese-Saronno-Milano,94C120,FFFFFF,2
+RE_1,1,RE1,Laveno-Varese-Saronno-Milano,E40314,FFFFFF,2
+R17,1,R17,Como-Saronno-Milano,94C120,FFFFFF,2
+RE_54,1,RE54,Malpensa-Milano Cadorna,E40314,FFFFFF,2
+R16,1,R16,Asso-Milano,94C120,FFFFFF,2
+S4,1,S4,Camnago-Milano Bovisa-Milano Cadorna,83bb26,FFFFFF,2
+S3,1,S3,Saronno-Milano Bovisa-Milano Cadorna,a90a2e,FFFFFF,2
+R3,1,R3,Brescia-Iseo-Breno,94C120,FFFFFF,2
+RE_3,1,RE3,Brescia-Iseo-Edolo,E40314,FFFFFF,2
+R27,1,R27,Novara-Saronno-Milano,94C120,FFFFFF,2
+RE_7,1,RE7,Como-Saronno-Milano,E40314,FFFFFF,2
+S31,1,S31,Brescia-Iseo,0058A2,FFFFFF,2
+R9,1,R9,Rovato-Bornato-Iseo,94C120,FFFFFF,2
