@@ -91,9 +91,28 @@ Criticità**.
   di bottiglia. Da modellare con cura: superficie vs sotterraneo, confluenza **4→2**
   verso Lecco, assegnazioni di binario. `[dettaglio binari da OSM]`
 
+### Regole di circolazione (valide su tutta la rete)
+
+- **Circolazione a SINISTRA**: i treni tengono la sinistra (contrario delle
+  auto). Determina l'assegnazione binario→direzione in ogni fascio a doppio
+  binario.
+- **Stazioni terminali** (Cadorna, Centrale, Garibaldi binari 1–14…): i treni
+  sono **bidirezionali (2 teste)**, non si girano — **ripartono dallo stesso
+  binario da cui sono arrivati** (inversione banco). Nel modello: il binario
+  terminale è una risorsa con ingresso e uscita dallo stesso lato, occupata per
+  l'intera sosta di capolinea.
+
 ### 3. Trunk FNM Cadorna–Bovisa–Saronno — 4 binari, 2 fasci fissi
 
 - **Ruolo**: dorsale FNM da Cadorna verso il nord-ovest.
+- **Milano Cadorna — testata (10 binari terminali)**:
+  - **Binario 1**: **fisso Malpensa Express** (arriva e riparte da lì).
+  - **Binari 2–5** (2 coppie): **fissi verso Saronno** (poi diramazioni
+    Como / Varese / Novara).
+  - **Binari 6–10**: **verso Asso**.
+  - **Confluenza 10→4** in uscita: binari **1–5 → primi 2** binari della trunk
+    (fascio 1), binari **6–10 → ultimi 2** (fascio 2). I 4 binari risultanti
+    sono gli stessi che servono la fermata successiva **Milano Domodossola**.
 - **Binari**: **4**, in **2 fasci fissi**:
   - **Fascio 1** (bin. 1–2): treni verso **Varese / Como / Malpensa / Novara**
     (regionali), in partenza da Cadorna.
