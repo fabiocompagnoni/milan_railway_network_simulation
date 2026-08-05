@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<vehicleDefinitions xmlns="http://www.matsim.org/files/dtd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.matsim.org/files/dtd http://www.matsim.org/files/dtd/vehicleDefinitions_v2.0.xsd">
+
+	<vehicleType id="atr125">
+		<attributes>
+			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">0.6</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+		</attributes>
+		<capacity seats="231" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="77.33"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="38.888888888888886"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
+	<vehicleType id="caravaggio_421">
+		<attributes>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">1.1</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+		</attributes>
+		<capacity seats="466" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="109.6"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="44.44444444444444"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
+	<vehicleType id="caravaggio_521">
+		<attributes>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">1.1</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+		</attributes>
+		<capacity seats="598" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="136.8"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="44.44444444444444"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
+	<vehicleType id="donizetti">
+		<attributes>
+			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">1.0</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+		</attributes>
+		<capacity seats="262" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="84.2"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="44.44444444444444"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
+	<vehicleType id="etr245">
+		<attributes>
+			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">1.0</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+		</attributes>
+		<capacity seats="230" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="82.2"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="44.44444444444444"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
+	<vehicleType id="taf">
+		<attributes>
+			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">0.8</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+		</attributes>
+		<capacity seats="469" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="103.97"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="38.888888888888886"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
+	<vehicleType id="tsr">
+		<attributes>
+			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">1.0</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+		</attributes>
+		<capacity seats="436" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="104.98"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="38.888888888888886"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
+		
+
+</vehicleDefinitions>
