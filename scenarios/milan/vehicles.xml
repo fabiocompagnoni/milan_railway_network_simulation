@@ -126,6 +126,27 @@
 		<flowEfficiencyFactor factor="1.0"/>
 	</vehicleType>
 
+	<vehicleType id="tilo_flirt_tsi">
+		<attributes>
+			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">1.0</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+		</attributes>
+		<capacity seats="244" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="105.0"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="44.44444444444444"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
 	<vehicleType id="tsr">
 		<attributes>
 			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>

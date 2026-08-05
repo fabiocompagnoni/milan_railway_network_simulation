@@ -26,7 +26,8 @@ final class RailVehicleTypes {
 			type("caravaggio_521", 136.8, 598, 160, 1.10, false),
 			type("donizetti", 84.2, 262, 160, 1.0, true),
 			type("etr245", 82.2, 230, 160, 1.0, true),
-			type("atr125", 77.33, 231, 140, 0.6, true));
+			type("atr125", 77.33, 231, 140, 0.6, true),
+			type("tilo_flirt_tsi", 105.0, 244, 160, 1.0, true));
 	}
 
 	private static VehicleType type(String id, double lengthMeters, int seats, double vmaxKmh,

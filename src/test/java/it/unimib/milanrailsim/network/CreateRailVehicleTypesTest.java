@@ -27,7 +27,7 @@ class CreateRailVehicleTypesTest {
 		assertTrue(Files.exists(output));
 		Vehicles reread = VehicleUtils.createVehiclesContainer();
 		new MatsimVehicleReader(reread).readFile(output.toString());
-		assertEquals(7, reread.getVehicleTypes().size());
+		assertEquals(8, reread.getVehicleTypes().size());
 		VehicleType taf = reread.getVehicleTypes().get(Id.create("taf", VehicleType.class));
 		assertEquals("rail", taf.getNetworkMode());
 		assertEquals(0.8, (Double) taf.getAttributes().getAttribute("railsimAcceleration"), 1e-9);
