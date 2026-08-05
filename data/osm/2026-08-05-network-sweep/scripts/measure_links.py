@@ -227,5 +227,5 @@ with open("link_measures.csv", "w", newline="") as fcsv:
 		implied = round(v["min_m"] / gtfs_s * 3.6, 1) if gtfs_s > 0 else ""
 		wr.writerow([link_id, f, t, "ok", v["n_tracks"], v["passenger_lines_mode"] or "",
 			v["min_m"], v["max_m"], v["beeline_m"], v["ratio"], v["eq_speed_kmh"] or "",
-			v["untagged_pct"], gtfs_s, trips, implied, routes, " ".join(map(str, v["way_ids"]))])
+			v["untagged_pct"], gtfs_s, trips, implied, routes.replace(",", "|"), " ".join(map(str, v["way_ids"]))])
 print("wrote measures.json + link_measures.csv", flush=True)
