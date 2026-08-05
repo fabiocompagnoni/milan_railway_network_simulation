@@ -45,6 +45,15 @@ class MesoMeasuresTableTest {
 	}
 
 	@Test
+	void inflatedPathCountNearYardsIsNotTrusted() throws IOException {
+		// no declared passenger_lines and 16 measured paths (station yard):
+		// the fallback only trusts plain single/double track counts
+		Path file = write("S1_S2,S1,S2,ok,16,,1500.0,1550.0,1400.0,1.0714,110.0,0.0,120,68,45.0,S1,12\n");
+		MesoMeasuresTable.Measure m = MesoMeasuresTable.load(file).byLinkId().get("S1_S2");
+		assertTrue(m.tracksTotal().isEmpty());
+	}
+
+	@Test
 	void implausibleRatioInvalidatesLength() throws IOException {
 		// ratio 2.8 (> 2.5): the path is a detour, its length must not be trusted
 		Path file = write("S1_S2,S1,S2,ok,2,2,3920.0,4000.0,1400.0,2.8,110.0,0.0,120,68,45.0,S1,12\n");

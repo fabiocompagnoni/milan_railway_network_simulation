@@ -51,7 +51,7 @@ final class MesoMeasuresTable {
 				Optional.empty(), "");
 		}
 		Optional<Integer> tracks = parseInt(row.get("passenger_lines_mode"))
-			.or(() -> parseInt(row.get("n_tracks")));
+			.or(() -> parseInt(row.get("n_tracks")).filter(n -> n <= 2));
 		Optional<Double> length = parseDouble(row.get("osm_min_m"))
 			.filter(l -> parseDouble(row.get("ratio"))
 				.map(r -> r >= MIN_PLAUSIBLE_RATIO && r <= MAX_PLAUSIBLE_RATIO)
