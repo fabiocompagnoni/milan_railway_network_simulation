@@ -43,4 +43,37 @@ class StationStopLinksTest {
 		assertEquals(2, stopB.getAttributes().getAttribute("railsimTrainCapacity"));
 		assertEquals(3, network.getLinks().size()); // S1_S2 + 2 stop links, no duplicates
 	}
+
+	@Test
+	void inheritsTheMaximumAcrossIncidentLinks() {
+		Network network = NetworkUtils.createNetwork();
+		Node hub = network.getFactory().createNode(Id.createNodeId("H"), new Coord(0, 0));
+		Node east = network.getFactory().createNode(Id.createNodeId("E"), new Coord(1000, 0));
+		Node west = network.getFactory().createNode(Id.createNodeId("W"), new Coord(-1000, 0));
+		network.addNode(hub);
+		network.addNode(east);
+		network.addNode(west);
+		Link singleTrack = network.getFactory().createLink(Id.createLinkId("W_H"), west, hub);
+		singleTrack.getAttributes().putAttribute("railsimTrainCapacity", 1);
+		network.addLink(singleTrack);
+		Link doubleTrack = network.getFactory().createLink(Id.createLinkId("H_E"), hub, east);
+		doubleTrack.getAttributes().putAttribute("railsimTrainCapacity", 2);
+		network.addLink(doubleTrack);
+
+		StationStopLinks.addStopLinks(network);
+
+		Link stopHub = network.getLinks().get(StationStopLinks.stopLinkId(hub.getId()));
+		assertEquals(2, stopHub.getAttributes().getAttribute("railsimTrainCapacity"));
+	}
+
+	@Test
+	void isolatedStationFallsBackToSingleTrackCapacity() {
+		Network network = NetworkUtils.createNetwork();
+		network.addNode(network.getFactory().createNode(Id.createNodeId("X"), new Coord(0, 0)));
+
+		StationStopLinks.addStopLinks(network);
+
+		Link stop = network.getLinks().get(StationStopLinks.stopLinkId(Id.createNodeId("X")));
+		assertEquals(1, stop.getAttributes().getAttribute("railsimTrainCapacity"));
+	}
 }
