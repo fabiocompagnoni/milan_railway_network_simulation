@@ -98,6 +98,10 @@ public final class TransitScheduleBuilder {
 				excludedCounts.merge(route.shortName(), 1, Integer::sum);
 				continue;
 			}
+			List<GtfsFeed.StopTime> stopTimes = feed.stopTimesByTripId().get(trip.id());
+			if (stopTimes == null || stopTimes.isEmpty()) {
+				throw new IllegalArgumentException("Trip without stop times: " + trip.id());
+			}
 			tripsByRoute.computeIfAbsent(route.shortName(), key -> new ArrayList<>()).add(trip);
 		}
 		excludedCounts.forEach((routeShortName, count) ->
@@ -129,15 +133,14 @@ public final class TransitScheduleBuilder {
 		List<GtfsFeed.StopTime> stopTimes = feed.stopTimesByTripId().get(trip.id());
 		int firstDeparture = stopTimes.get(0).departureSeconds();
 
-		List<TransitRouteStop> routeStops = new ArrayList<>();
-		List<Id<Link>> chain = new ArrayList<>();
-		String pattern = pattern(trip.routeId(), routeShortName, stopTimes, firstDeparture);
-
+		String pattern = pattern(trip.routeId(), stopTimes, firstDeparture);
 		String existingRouteId = patternToRouteId.get(pattern);
 		if (existingRouteId != null) {
 			return line.getRoutes().get(Id.create(existingRouteId, TransitRoute.class));
 		}
 
+		List<TransitRouteStop> routeStops = new ArrayList<>();
+		List<Id<Link>> chain = new ArrayList<>();
 		for (int i = 0; i < stopTimes.size(); i++) {
 			GtfsFeed.StopTime stopTime = stopTimes.get(i);
 			TransitStopFacility facility = stopFacility(schedule, stopTime.stopId());
@@ -162,8 +165,8 @@ public final class TransitScheduleBuilder {
 
 	private void addDepartureAndVehicle(GtfsFeed.Trip trip, String routeShortName, int departureIndex,
 			TransitRoute transitRoute, Vehicles vehicles) {
-		int firstDeparture = feed.stopTimesByTripId().get(trip.id()).get(0).departureSeconds();
-		Departure departure = factory.createDeparture(Id.create(trip.id(), Departure.class), firstDeparture);
+		Departure departure = factory.createDeparture(Id.create(trip.id(), Departure.class),
+			firstDeparture(trip.id()));
 		Id<Vehicle> vehicleId = Id.create(trip.id(), Vehicle.class);
 		departure.setVehicleId(vehicleId);
 		transitRoute.addDeparture(departure);
@@ -190,9 +193,8 @@ public final class TransitScheduleBuilder {
 		});
 	}
 
-	private String pattern(String routeId, String routeShortName, List<GtfsFeed.StopTime> stopTimes,
-			int firstDeparture) {
-		StringBuilder key = new StringBuilder(routeId).append('|').append(routeShortName);
+	private String pattern(String routeId, List<GtfsFeed.StopTime> stopTimes, int firstDeparture) {
+		StringBuilder key = new StringBuilder(routeId);
 		for (GtfsFeed.StopTime stopTime : stopTimes) {
 			key.append('|').append(stopTime.stopId())
 				.append(':').append(stopTime.arrivalSeconds() - firstDeparture)
