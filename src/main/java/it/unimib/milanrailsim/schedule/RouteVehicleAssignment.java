@@ -7,7 +7,7 @@ import java.util.Set;
  * Route-to-vehicle-type assignment of the v1 model. Table and rationale in
  * docs/network/infrastruttura-nodo-milano.md ("Assegnazione rotta-tipo v1").
  */
-public final class RouteVehicleAssignment {
+public class RouteVehicleAssignment implements VehicleAssignment {
 
 	private static final Set<String> EXCLUDED = Set.of("S10", "S30", "S40", "S50", "Trenord GP");
 	private static final Set<String> SUBURBAN_ALTERNATING =

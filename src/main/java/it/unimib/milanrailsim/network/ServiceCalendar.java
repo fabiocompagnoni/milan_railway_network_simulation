@@ -12,14 +12,14 @@ import java.util.Set;
  * services exclusively through calendar_dates.txt (no calendar.txt), so the
  * base set is empty and exception_type=1 rows are the only source of activity.
  */
-final class ServiceCalendar {
+public final class ServiceCalendar {
 
 	private static final DateTimeFormatter GTFS_DATE = DateTimeFormatter.BASIC_ISO_DATE;
 
 	private ServiceCalendar() {
 	}
 
-	static Set<String> activeServiceIds(List<Map<String, String>> calendarDateRows, LocalDate date) {
+	public static Set<String> activeServiceIds(List<Map<String, String>> calendarDateRows, LocalDate date) {
 		String gtfsDate = date.format(GTFS_DATE);
 		Set<String> added = new HashSet<>();
 		Set<String> removed = new HashSet<>();
