@@ -11,14 +11,14 @@ import java.util.List;
  * docs/network/infrastruttura-nodo-milano.md ("Parco rotabile"); values
  * without a published source are marked {@code estimated} in the attributes.
  */
-final class RailVehicleTypes {
+public final class RailVehicleTypes {
 
 	private static final double ESTIMATED_DECELERATION = 0.5;
 
 	private RailVehicleTypes() {
 	}
 
-	static List<VehicleType> all() {
+	public static List<VehicleType> all() {
 		return List.of(
 			type("tsr", 104.98, 436, 140, 1.0, true),
 			type("taf", 103.97, 469, 140, 0.8, true),

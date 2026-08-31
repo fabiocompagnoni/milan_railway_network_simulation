@@ -14,18 +14,18 @@ import java.util.stream.Collectors;
  * fail-fast: structural problems in the feed abort with an exception instead
  * of producing a partially wrong network.
  */
-final class GtfsFeed {
+public final class GtfsFeed {
 
-	record Stop(String id, String name, double lat, double lon) {
+	public record Stop(String id, String name, double lat, double lon) {
 	}
 
-	record Route(String id, String shortName, int type) {
+	public record Route(String id, String shortName, int type) {
 	}
 
-	record Trip(String id, String routeId, String serviceId) {
+	public record Trip(String id, String routeId, String serviceId) {
 	}
 
-	record StopTime(String tripId, int arrivalSeconds, int departureSeconds, String stopId, int stopSequence) {
+	public record StopTime(String tripId, int arrivalSeconds, int departureSeconds, String stopId, int stopSequence) {
 	}
 
 	private final Map<String, Stop> stopsById;
@@ -43,7 +43,7 @@ final class GtfsFeed {
 		this.calendarDateRows = calendarDateRows;
 	}
 
-	static GtfsFeed load(Path directory) {
+	public static GtfsFeed load(Path directory) {
 		Map<String, Stop> stops = CsvTable.read(directory.resolve("stops.txt")).stream()
 			.map(row -> new Stop(row.get("stop_id"), row.get("stop_name"),
 				Double.parseDouble(row.get("stop_lat")), Double.parseDouble(row.get("stop_lon"))))
@@ -77,23 +77,23 @@ final class GtfsFeed {
 			LinkedHashMap::new);
 	}
 
-	Map<String, Stop> stopsById() {
+	public Map<String, Stop> stopsById() {
 		return stopsById;
 	}
 
-	Map<String, Route> routesById() {
+	public Map<String, Route> routesById() {
 		return routesById;
 	}
 
-	Map<String, Trip> tripsById() {
+	public Map<String, Trip> tripsById() {
 		return tripsById;
 	}
 
-	Map<String, List<StopTime>> stopTimesByTripId() {
+	public Map<String, List<StopTime>> stopTimesByTripId() {
 		return stopTimesByTripId;
 	}
 
-	List<Map<String, String>> calendarDateRows() {
+	public List<Map<String, String>> calendarDateRows() {
 		return calendarDateRows;
 	}
 }
