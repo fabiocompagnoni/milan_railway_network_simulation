@@ -50,7 +50,7 @@ public final class TransitScheduleBuilder {
 	private final GtfsFeed feed;
 	private final Network network;
 	private final LocalDate serviceDate;
-	private final VehicleAssignment assignment;
+	private final RouteVehicleAssignment assignment;
 
 	private final TransitScheduleFactory factory = new TransitScheduleFactoryImpl();
 	private final Map<String, TransitStopFacility> stopFacilities = new HashMap<>();
@@ -58,7 +58,7 @@ public final class TransitScheduleBuilder {
 	private final Map<String, Integer> routeCounters = new HashMap<>();
 
 	public TransitScheduleBuilder(GtfsFeed feed, Network network, LocalDate serviceDate,
-			VehicleAssignment assignment) {
+			RouteVehicleAssignment assignment) {
 		this.feed = feed;
 		this.network = network;
 		this.serviceDate = serviceDate;

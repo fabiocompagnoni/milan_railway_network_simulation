@@ -3,11 +3,7 @@ package it.unimib.milanrailsim.schedule;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Route-to-vehicle-type assignment of the v1 model. Table and rationale in
- * docs/network/infrastruttura-nodo-milano.md ("Assegnazione rotta-tipo v1").
- */
-public class RouteVehicleAssignment implements VehicleAssignment {
+public final class RouteVehicleAssignment {
 
 	private static final Set<String> EXCLUDED = Set.of("S10", "S30", "S40", "S50", "Trenord GP");
 	private static final Set<String> SUBURBAN_ALTERNATING =
@@ -38,6 +34,8 @@ public class RouteVehicleAssignment implements VehicleAssignment {
 		if (dedicated != null) {
 			return dedicated;
 		}
+		// Regio Express (RE) and Regionale (R) are distinct service categories;
+		// both currently run Caravaggio stock, so they share the default for now.
 		if (routeShortName.startsWith("RE") || routeShortName.startsWith("R")) {
 			return "caravaggio_521";
 		}

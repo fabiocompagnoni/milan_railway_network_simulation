@@ -33,7 +33,7 @@ class CreateNetworkSkeletonFromGtfsTest {
 		Link link = reread.getLinks().get(Id.createLinkId("S1_S2"));
 		assertEquals("provisional", link.getAttributes().getAttribute("dataStatus"));
 		assertEquals(1, link.getAttributes().getAttribute("railsimTrainCapacity"));
-		assertEquals("SX", link.getAttributes().getAttribute("gtfsRoutes"));
+		assertEquals("S1", link.getAttributes().getAttribute("gtfsRoutes"));
 		assertEquals(2, link.getAttributes().getAttribute("gtfsDailyTrips"));
 		assertEquals(240, link.getAttributes().getAttribute("gtfsMinTravelTimeSeconds"));
 	}

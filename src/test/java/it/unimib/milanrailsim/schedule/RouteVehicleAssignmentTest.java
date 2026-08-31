@@ -23,11 +23,26 @@ class RouteVehicleAssignmentTest {
 	void dedicatedAssignments() {
 		assertEquals("atr125", assignment.vehicleTypeId("S7", 0));
 		assertEquals("atr125", assignment.vehicleTypeId("R18", 3));
+		assertEquals("atr125", assignment.vehicleTypeId("R3", 0));
+		assertEquals("atr125", assignment.vehicleTypeId("RE3", 0));
+		assertEquals("atr125", assignment.vehicleTypeId("R9", 0));
+		assertEquals("atr125", assignment.vehicleTypeId("S31", 0));
 		assertEquals("caravaggio_521", assignment.vehicleTypeId("S11", 0));
 		assertEquals("caravaggio_521", assignment.vehicleTypeId("RE1", 0));
 		assertEquals("caravaggio_421", assignment.vehicleTypeId("RE54", 5));
+		assertEquals("caravaggio_421", assignment.vehicleTypeId("RE51", 0));
+		assertEquals("donizetti", assignment.vehicleTypeId("RE13", 0));
 		assertEquals("donizetti", assignment.vehicleTypeId("R34", 0));
+		assertEquals("donizetti", assignment.vehicleTypeId("R35", 0));
+		assertEquals("donizetti", assignment.vehicleTypeId("R36", 0));
+		assertEquals("donizetti", assignment.vehicleTypeId("R37", 0));
 		assertEquals("tilo_flirt_tsi", assignment.vehicleTypeId("RE80", 0));
+	}
+
+	@Test
+	void alternationRestartsEveryTenDepartures() {
+		assertEquals("taf", assignment.vehicleTypeId("S1", 69));
+		assertEquals("tsr", assignment.vehicleTypeId("S1", 70));
 	}
 
 	@Test

@@ -46,19 +46,13 @@ class TransitScheduleBuilderTest {
 
 	private TransitScheduleBuilder.Result build() {
 		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-minimal"));
-		RouteVehicleAssignment stub = new RouteVehicleAssignment() {
-			@Override
-			public String vehicleTypeId(String routeShortName, int departureIndex) {
-				return departureIndex % 2 == 0 ? "tsr" : "taf";
-			}
-		};
-		return new TransitScheduleBuilder(feed, network, DATE, stub).build();
+		return new TransitScheduleBuilder(feed, network, DATE, new RouteVehicleAssignment()).build();
 	}
 
 	@Test
 	void buildsLineRoutesAndDepartures() {
 		TransitScheduleBuilder.Result result = build();
-		TransitLine line = result.schedule().getTransitLines().get(Id.create("SX", TransitLine.class));
+		TransitLine line = result.schedule().getTransitLines().get(Id.create("S1", TransitLine.class));
 		assertNotNull(line);
 		int departures = line.getRoutes().values().stream()
 			.mapToInt(r -> r.getDepartures().size()).sum();
@@ -67,7 +61,7 @@ class TransitScheduleBuilderTest {
 
 	@Test
 	void offsetsComeFromGtfsTimes() {
-		TransitLine line = build().schedule().getTransitLines().get(Id.create("SX", TransitLine.class));
+		TransitLine line = build().schedule().getTransitLines().get(Id.create("S1", TransitLine.class));
 		TransitRoute t1Route = line.getRoutes().values().stream()
 			.filter(r -> r.getStops().size() == 3).findFirst().orElseThrow();
 		// T1: departs S1 08:01; S2 arrival 08:06 (+300 s), departure 08:07 (+360 s)
@@ -79,7 +73,7 @@ class TransitScheduleBuilderTest {
 
 	@Test
 	void routeChainIncludesStopAndTrackLinks() {
-		TransitLine line = build().schedule().getTransitLines().get(Id.create("SX", TransitLine.class));
+		TransitLine line = build().schedule().getTransitLines().get(Id.create("S1", TransitLine.class));
 		TransitRoute t1Route = line.getRoutes().values().stream()
 			.filter(r -> r.getStops().size() == 3).findFirst().orElseThrow();
 		List<Id<Link>> chain = new java.util.ArrayList<>();

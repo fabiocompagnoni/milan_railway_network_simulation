@@ -53,7 +53,7 @@ class NetworkSkeletonBuilderTest {
 		// T1 (08:01 -> 08:06 = 300 s) and TN (24:01 -> 24:05 = 240 s).
 		assertEquals(2, link.getAttributes().getAttribute("gtfsDailyTrips"));
 		assertEquals(240, link.getAttributes().getAttribute("gtfsMinTravelTimeSeconds"));
-		assertEquals("SX", link.getAttributes().getAttribute("gtfsRoutes"));
+		assertEquals("S1", link.getAttributes().getAttribute("gtfsRoutes"));
 	}
 
 	@Test
