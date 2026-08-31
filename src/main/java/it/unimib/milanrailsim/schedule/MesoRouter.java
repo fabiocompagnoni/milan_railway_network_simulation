@@ -6,6 +6,7 @@ import org.matsim.api.core.v01.network.Network;
 import org.matsim.api.core.v01.network.Node;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,9 @@ public final class MesoRouter {
 		Node to = network.getNodes().get(toId);
 		if (from == null || to == null) {
 			throw new IllegalArgumentException("Unknown node: " + (from == null ? fromId : toId));
+		}
+		if (fromId.equals(toId)) {
+			throw new IllegalArgumentException("Station-to-itself routing requested for " + fromId);
 		}
 		Map<Id<Node>, Double> dist = new HashMap<>();
 		Map<Id<Node>, Link> arrivedBy = new HashMap<>();
@@ -66,7 +70,7 @@ public final class MesoRouter {
 			path.add(link.getId());
 			cursor = link.getFromNode().getId();
 		}
-		java.util.Collections.reverse(path);
+		Collections.reverse(path);
 		return List.copyOf(path);
 	}
 }

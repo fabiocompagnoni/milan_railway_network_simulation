@@ -49,6 +49,13 @@ class MesoRouterTest {
 	}
 
 	@Test
+	void rejectsStationToItselfRouting() {
+		MesoRouter router = new MesoRouter(network);
+		assertThrows(IllegalArgumentException.class,
+			() -> router.shortestPath(Id.createNodeId("A"), Id.createNodeId("A")));
+	}
+
+	@Test
 	void failsWhenNoPathExists() {
 		MesoRouter router = new MesoRouter(network);
 		assertThrows(IllegalArgumentException.class,
