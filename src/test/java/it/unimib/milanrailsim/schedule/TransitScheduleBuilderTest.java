@@ -3,11 +3,9 @@ package it.unimib.milanrailsim.schedule;
 import it.unimib.milanrailsim.network.GtfsFeed;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
-import org.matsim.core.network.NetworkUtils;
 import org.matsim.pt.transitSchedule.api.Departure;
 import org.matsim.pt.transitSchedule.api.TransitLine;
 import org.matsim.pt.transitSchedule.api.TransitRoute;
@@ -15,7 +13,6 @@ import org.matsim.pt.transitSchedule.api.TransitRoute;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,23 +22,9 @@ class TransitScheduleBuilderTest {
 
 	private Network network;
 
-	private void addRail(String from, String to) {
-		Link link = network.getFactory().createLink(Id.createLinkId(from + "_" + to),
-			network.getNodes().get(Id.createNodeId(from)), network.getNodes().get(Id.createNodeId(to)));
-		link.setLength(2000);
-		link.setFreespeed(30);
-		link.setAllowedModes(Set.of("rail"));
-		network.addLink(link);
-	}
-
 	@BeforeEach
 	void networkForFixture() {
-		network = NetworkUtils.createNetwork();
-		for (String s : List.of("S1", "S2", "S3")) {
-			network.addNode(network.getFactory().createNode(Id.createNodeId(s), new Coord(0, 0)));
-		}
-		addRail("S1", "S2");
-		addRail("S2", "S3");
+		network = TestNetworks.threeStationLine();
 	}
 
 	private TransitScheduleBuilder.Result build() {
