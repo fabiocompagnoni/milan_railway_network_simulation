@@ -8,6 +8,7 @@ import org.matsim.core.network.NetworkUtils;
 import org.matsim.core.network.io.NetworkWriter;
 import org.matsim.pt.transitSchedule.api.TransitScheduleWriter;
 import org.matsim.vehicles.MatsimVehicleWriter;
+import org.matsim.vehicles.Vehicles;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -31,6 +32,9 @@ public final class CreateTransitScheduleFromFeed {
 	private static final String DEFAULT_SERVICE_DATE = "2026-09-16";
 	private static final String DEFAULT_OUTPUT_DIR = "scenarios/milan";
 
+	/** Terminal turnaround: crews change ends and rotate (domain estimate, Fabio). */
+	private static final int TURNAROUND_SECONDS = 15 * 60;
+
 	private CreateTransitScheduleFromFeed() {
 	}
 
@@ -45,8 +49,11 @@ public final class CreateTransitScheduleFromFeed {
 	static void run(Path gtfsDir, Path networkFile, LocalDate serviceDate, Path outputDir) {
 		Network network = NetworkUtils.readNetwork(networkFile.toString());
 		GtfsFeed feed = GtfsFeed.load(gtfsDir);
+		RouteVehicleAssignment assignment = new RouteVehicleAssignment();
 		TransitScheduleBuilder.Result result = new TransitScheduleBuilder(
-			feed, network, serviceDate, new RouteVehicleAssignment()).build();
+			feed, network, serviceDate, assignment).build();
+		Vehicles circulations = VehicleCirculations.apply(result.schedule(), result.vehicles(),
+			TURNAROUND_SECONDS, assignment);
 
 		try {
 			Files.createDirectories(outputDir);
@@ -55,7 +62,7 @@ public final class CreateTransitScheduleFromFeed {
 		}
 		new TransitScheduleWriter(result.schedule())
 			.writeFile(outputDir.resolve("transitSchedule.xml").toString());
-		new MatsimVehicleWriter(result.vehicles())
+		new MatsimVehicleWriter(circulations)
 			.writeFile(outputDir.resolve("transitVehicles.xml").toString());
 		new NetworkWriter(network).write(outputDir.resolve("network-with-stations.xml").toString());
 
@@ -66,6 +73,6 @@ public final class CreateTransitScheduleFromFeed {
 			.mapToInt(route -> route.getDepartures().size()).sum();
 		log.info("Service date {}: {} lines, {} routes, {} departures, {} vehicles written to {}",
 			serviceDate, result.schedule().getTransitLines().size(), routes, departures,
-			result.vehicles().getVehicles().size(), outputDir);
+			circulations.getVehicles().size(), outputDir);
 	}
 }
