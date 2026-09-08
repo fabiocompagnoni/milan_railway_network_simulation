@@ -59,7 +59,18 @@ Criticità**.
 ### 1. Bovisa — cardine nord
 
 - **Ruolo**: bivio di smistamento; le diramazioni nord convergono qui.
-- **Binari**: fascio a ventaglio `[da OSM]`.
+- **Binari (8, mappatura con la trunk da Domodossola)**:
+  - **1–2**: innesto del **Passante** che arriva da Garibaldi (ramo Bovisa).
+  - **3–4**: continuazione del **fascio 1** della trunk (= binari 1–2 a
+    Domodossola).
+  - **5–6**: continuazione del **fascio 2** della trunk (= binari 3–4 a
+    Domodossola).
+  - **7–8**: **Passante, fissi verso Asso** (es. S2 → Seveso/Mariano).
+  - **Flessibilità**: i binari **5–6 possono proseguire sia verso Asso sia
+    verso Saronno** (scambi a nord della stazione: segnali/deviatoi 39, 48,
+    49a/b su OpenRailwayMap); 1–2, 3–4 lato Saronno; 7–8 fissi lato Asso.
+  - Innesto Passante visibile su OpenRailwayMap presso **P.M. Ghisolfa**
+    (ramo Bovisa / ramo Certosa / Cintura).
 - **Traffico**: suburbani nord (S1/S2/S3/S4/S12/S13…), regionali FNM.
 - **Connessioni**: → Passante (via Garibaldi) **oppure** → Cadorna (linee FN).
   Punto dove il fascio FNM "Passante-connesso" tocca i binari del Passante.
@@ -93,6 +104,17 @@ Criticità**.
 
 ### Regole di circolazione (valide su tutta la rete)
 
+- **Binario unico — blocchi e precedenze**: le tratte monobinario si riservano
+  **in blocco** tra due punti d'incrocio (stazioni con più binari); le
+  precedenze avvengono in quelle stazioni. Caso reale di riferimento (fonte:
+  Fabio): **Malnate ↔ Varese Nord** — tratto unico su linea altrimenti doppia,
+  incroci gestiti nelle due stazioni ai capi. Nel modello: catene di link a
+  capacità 1 tra punti d'incrocio condividono un unico `railsimResourceId`;
+  arbitraggio FCFS del `TrainDisposition` (politiche di precedenza = leva
+  sperimentale futura). Limite dichiarato: punti singoli più corti della
+  spaziatura tra stazioni (es. ponti) sono invisibili alla granularità meso,
+  trattabili spezzando il link se rilevanti.
+
 - **Circolazione a SINISTRA**: i treni tengono la sinistra (contrario delle
   auto). Determina l'assegnazione binario→direzione in ogni fascio a doppio
   binario.
@@ -119,6 +141,19 @@ Criticità**.
   - **Fascio 2** (bin. 3–4): a **Bovisa** si mischiano coi binari del Passante; si
     separano poi **verso Asso**. Portano i treni **arrivati da Bovisa / dal
     Passante** (da nord: Garbagnate, Novate…), **non** partiti da Cadorna.
+- **Scambi**: **molti crossover tra i fasci**, concentrati **in prossimità
+  delle stazioni** e **in uscita da Cadorna**; in piena linea i fasci viaggiano
+  segregati. → nel modello: risorse di conflitto (scambi) alle gole di
+  stazione, tratte di linea come risorse separate per fascio.
+- **Direzionalità**: dentro ogni fascio i binari sono **rigidamente
+  monodirezionali** (circolazione a sinistra, niente banalizzazione): il veloce
+  resta dietro il lento fino a un punto di precedenza — è il meccanismo del
+  fenomeno osservato.
+- **Bovisa → Saronno**: restano **4 binari fino a Saronno** (quadruplicazione
+  continua), con segregazione **lenti/veloci**: binari **1–2 = suburbani**
+  (S1/S3, fermano in tutte le stazioni), binari **3–4 = regionali in transito**
+  (da Bovisa a Saronno non fermano). A **Saronno** convergono inoltre **altri
+  binari che non arrivano da Cadorna** (rami Como/Varese/Novara/Seregno).
 - **Traffico**: regionali (Varese/Como/Malpensa/Novara) + suburbani.
 - **Connessioni**: Cadorna ↔ Bovisa ↔ Saronno; fascio 2 ↔ Passante (a Bovisa).
 - **Criticità**: **satura** dai regionali → margine minimo per aumentare la cadenza
@@ -206,6 +241,55 @@ Per la correttezza del fenomeno servono anche:
 - **Merci** (Greco Pirelli, Segrate, Rogoredo, Cintura di Milano).
 
 Cioè il traffico **eterogeneo** completo sui segmenti condivisi.
+
+### Parco rotabile reale (fonte: Fabio, 2026-08-05; sigle verificate su fonti pubbliche)
+
+- **Suburbani**: **TAF** e soprattutto **TSR**; su alcune linee stanno entrando i **Caravaggio** (Hitachi); su **S9 e S19** anche **ETR 245** (Alstom Coradia Meridian, 5 casse, 82,2 m, 230 posti, vmax 160 km/h).
+- **Regionali**: principalmente **Caravaggio**; in alcuni orari anche ETR 245, TSR e TAF. **Donizetti** (ETR 204, Alstom Coradia Stream) solo su alcune linee, es. quella per **Pavia**.
+- **Diesel** (S7 e regionale Como–Molteno–Lecco): **ATR 125**.
+- **Malpensa Express**: solo i **nuovi Caravaggio**.
+- Nota modellazione: l'assegnazione reale varia per orario/turno; la v1 usa il tipo **dominante per rotta** (semplificazione dichiarata), i mix diventano parametro di scenario negli esperimenti.
+
+#### Dati tecnici dalla pagina ufficiale flotta Trenord (consultata 2026-08-05)
+
+Fonte: `https://www.trenord.it/chi-siamo/la-flotta/`.
+
+| Rotabile | Dati dichiarati |
+|---|---|
+| **TSR** | elettrotreno 2 piani, modulare 3–6 casse, **298–640 posti**, vmax **140 km/h**, dal 2007 su **S1, S2, S5, S6, S13 del Passante** + regionali; «**accelerazioni simili a quelle di una metropolitana**» |
+| **TAF** | elettrotreno 2 piani, composizione fissa **4 casse, 467 posti**, vmax **140 km/h**, fine anni '90; doppia composizione possibile (8 casse); «buone prestazioni in accelerazione» |
+| **Caravaggio ETR 421** | 2 piani, **4 casse, 109,6 m, 466 posti** (infobox Wikipedia; altre fonti 443–479), vmax **160 km/h**, accel. max **1,10 m/s²**, 3400 kW — **Malpensa Express** in config. aeroportuale da marzo 2025 + regionali (fonte: Fabio + Wikipedia it `Elettrotreno_FS_ETR_421/521/521_S1/621`, 2026-08-05) |
+| **Caravaggio ETR 521** | 2 piani, **5 casse, 136,8 m, 598 posti** (pagina flotta Trenord: 563), vmax **160 km/h**, accel. max **1,10 m/s²** — **S11** (limite sagoma: attestato a Como S.G.) e **Milano–Saronno–Varese–Laveno (RE1)** da set. 2022 + regionali; 70 unità 521 S1 |
+| **Donizetti** | vmax **160 km/h**, >300 posti (4 casse), >200 (3 casse) |
+| **ETR 425 Coradia Meridian** | regionale, vmax **160 km/h** |
+| **ETR 245 Coradia Meridian** | **5 casse, 82,2 m, 230 posti**, vmax **160 km/h**, dal 2011, doppia composizione possibile (la pagina lo associa al Malpensa Express; oggi su MXP girano i nuovi Caravaggio e gli ETR 245 anche su S9/S19 — fonte: Fabio) |
+| **ATR 125** (GTW 4/12 «Besanino») | diesel-elettrico Stadler, **4 casse, 231 posti**, su **Milano–Molteno–Lecco (S7)**; vmax **140 km/h** |
+| **ATR 115** (GTW 2/6) | diesel-elettrico Stadler, **2 casse, 104 posti**, su Brescia–Iseo–Edolo e Como–Lecco; vmax **140 km/h** |
+| **ALn 668** | automotrice diesel, 68 posti, vmax 95–130 km/h |
+| **Colleoni** | diesel nuova generazione, 3 casse, **168 posti**; «+20% in accelerazione» rispetto alla flotta attuale |
+
+- **FLIRT TSI** (TILO RABe 524, per RE80): 6 casse, **105 m, 244 posti**, vmax
+  **160 km/h**, 2.600 kW (trainswiss/Wikipedia/sguggiari.ch, 2026-08-05). Il
+  RE80 usa Flirt TSI + Flirt 4/6; la v1 modella **solo il Flirt TSI**
+  (semplificazione dichiarata, fonte: Fabio).
+- **Mancano dalla fonte ufficiale**: accelerazione/decelerazione in m/s²
+  (`railsimAcceleration`/`railsimDeceleration`) e lunghezze di
+  TSR/TAF/Caravaggio/Donizetti → da schede tecniche costruttori, con fonte
+  citata e approvazione prima dell'uso.
+
+#### Assegnazione rotta→tipo v1 (fonte: Fabio, 2026-08-05)
+
+- **Suburbani** (S1–S13 tranne S7/S11, incluse S9/S19): sempre **TSR o TAF**,
+  con **alternanza per corsa** al **70% TSR / 30% TAF** (stima di dominio,
+  fonte: Fabio 2026-08-05 — i TAF sono in dismissione; parametro di scenario
+  regolabile); l'ETR 245 appare solo saltuariamente su S9/S19 (non
+  modellato in v1). Su S3 anche Caravaggio (non dominante).
+- **S11**: `caravaggio_521` (attestato Como S.G.). **S7**: `atr125`.
+- **RE1** (Laveno): `caravaggio_521`. **RE54/MXP**: `caravaggio_421`.
+- **Linee per Pavia** (R34…): `donizetti`. **Altri R/RE**: `caravaggio_521`
+  (dominante dichiarato: "regionali principalmente Caravaggio").
+- **TILO S10/S30/S40/S50: esclusi dalla v1** (non confluiscono sulla rete
+  suburbana); **RE80 incluso** con tipo `tilo_flirt_tsi`.
 
 ### Assi di eterogeneità (per i `vehicleType` railsim)
 
