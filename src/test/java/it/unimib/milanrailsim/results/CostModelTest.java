@@ -2,81 +2,22 @@ package it.unimib.milanrailsim.results;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.matsim.api.core.v01.Coord;
-import org.matsim.api.core.v01.Id;
-import org.matsim.api.core.v01.network.Link;
-import org.matsim.api.core.v01.network.Network;
-import org.matsim.api.core.v01.network.Node;
-import org.matsim.core.network.NetworkUtils;
-import org.matsim.core.population.routes.RouteUtils;
-import org.matsim.pt.transitSchedule.TransitScheduleFactoryImpl;
-import org.matsim.pt.transitSchedule.api.Departure;
-import org.matsim.pt.transitSchedule.api.TransitLine;
-import org.matsim.pt.transitSchedule.api.TransitRoute;
-import org.matsim.pt.transitSchedule.api.TransitSchedule;
-import org.matsim.pt.transitSchedule.api.TransitScheduleFactory;
-import org.matsim.pt.transitSchedule.api.TransitStopFacility;
-import org.matsim.vehicles.Vehicle;
-import org.matsim.vehicles.VehicleType;
-import org.matsim.vehicles.VehicleUtils;
-import org.matsim.vehicles.Vehicles;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CostModelTest {
 
-	private Network network;
-	private Vehicles vehicles;
-	private TransitSchedule schedule;
-	private TransitRoute route;
+	private TestRuns.Fixture fixture;
 
 	@BeforeEach
 	void tenKilometreRoute() {
-		network = NetworkUtils.createNetwork();
-		Node a = network.getFactory().createNode(Id.createNodeId("A"), new Coord(0, 0));
-		Node b = network.getFactory().createNode(Id.createNodeId("B"), new Coord(10_000, 0));
-		network.addNode(a);
-		network.addNode(b);
-		Link ab = network.getFactory().createLink(Id.createLinkId("A_B"), a, b);
-		ab.setLength(10_000);
-		network.addLink(ab);
-
-		TransitScheduleFactory factory = new TransitScheduleFactoryImpl();
-		schedule = factory.createTransitSchedule();
-		TransitStopFacility stopA = factory.createTransitStopFacility(
-			Id.create("A", TransitStopFacility.class), new Coord(0, 0), false);
-		TransitStopFacility stopB = factory.createTransitStopFacility(
-			Id.create("B", TransitStopFacility.class), new Coord(10_000, 0), false);
-		schedule.addStopFacility(stopA);
-		schedule.addStopFacility(stopB);
-		route = factory.createTransitRoute(Id.create("S1_1", TransitRoute.class),
-			RouteUtils.createNetworkRoute(List.of(Id.createLinkId("A_B")), network),
-			List.of(factory.createTransitRouteStop(stopA, 0, 0),
-				factory.createTransitRouteStop(stopB, 600, 600)), "rail");
-		TransitLine line = factory.createTransitLine(Id.create("S1", TransitLine.class));
-		line.addRoute(route);
-		schedule.addTransitLine(line);
-
-		vehicles = VehicleUtils.createVehiclesContainer();
-	}
-
-	private void addTrip(String vehicleId, String typeId, double departureTime) {
-		VehicleType type = vehicles.getVehicleTypes().get(Id.create(typeId, VehicleType.class));
-		if (type == null) {
-			type = VehicleUtils.createVehicleType(Id.create(typeId, VehicleType.class));
-			vehicles.addVehicleType(type);
-		}
-		Departure departure = new TransitScheduleFactoryImpl()
-			.createDeparture(Id.create(vehicleId, Departure.class), departureTime);
-		departure.setVehicleId(Id.create(vehicleId, Vehicle.class));
-		route.addDeparture(departure);
-		vehicles.addVehicle(VehicleUtils.createVehicle(Id.create(vehicleId, Vehicle.class), type));
+		fixture = TestRuns.tenKilometreFixture();
 	}
 
 	private CostParameters parameters(Path dir) throws IOException {
@@ -94,13 +35,13 @@ class CostModelTest {
 	}
 
 	@Test
-	void computesCategoryCostsFromScheduleQuantities(@org.junit.jupiter.api.io.TempDir Path dir)
-			throws IOException {
-		addTrip("t1", "tsr", 8 * 3600);
-		addTrip("t2", "tsr", 9 * 3600);
-		addTrip("t3", "atr125", 8 * 3600);
+	void computesCategoryCostsFromScheduleQuantities(@TempDir Path dir) throws IOException {
+		TestRuns.addTrip(fixture, "t1", "tsr", 8 * 3600);
+		TestRuns.addTrip(fixture, "t2", "tsr", 9 * 3600);
+		TestRuns.addTrip(fixture, "t3", "atr125", 8 * 3600);
 
-		CostModel.Breakdown breakdown = new CostModel(schedule, vehicles, network, parameters(dir)).compute();
+		CostModel.Breakdown breakdown = new CostModel(fixture.schedule(), fixture.vehicles(),
+			fixture.network(), parameters(dir)).compute();
 		Map<String, Double> costs = breakdown.byCategory();
 
 		// 3 trips x 10 km; electric 20 km, diesel 10 km; 3 x 600 s = 0.5 h
@@ -116,15 +57,16 @@ class CostModelTest {
 	}
 
 	@Test
-	void refusesUnsetCostParameters(@org.junit.jupiter.api.io.TempDir Path dir) throws IOException {
-		addTrip("t1", "tsr", 8 * 3600);
+	void refusesUnsetCostParameters(@TempDir Path dir) throws IOException {
+		TestRuns.addTrip(fixture, "t1", "tsr", 8 * 3600);
 		Path file = dir.resolve("costs.json");
 		Files.writeString(file, """
 			{"currency": "EUR", "categories": {
 				"staff": {"unitCost": 0.0, "unit": "train_hour", "source": "da stimare"}
 			}}""");
 
-		CostModel model = new CostModel(schedule, vehicles, network, CostParameters.load(file));
+		CostModel model = new CostModel(fixture.schedule(), fixture.vehicles(),
+			fixture.network(), CostParameters.load(file));
 
 		assertThrows(IllegalArgumentException.class, model::compute);
 	}
