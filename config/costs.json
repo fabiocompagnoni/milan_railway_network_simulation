@@ -1,10 +1,11 @@
 {
 	"currency": "EUR",
 	"categories": {
-		"staff": {"unitCost": 0.0, "unit": "train_hour", "source": "da stimare"},
-		"electricity": {"unitCost": 0.0, "unit": "train_km", "source": "da stimare"},
-		"diesel": {"unitCost": 0.0, "unit": "train_km", "source": "da stimare"},
-		"rolling_stock": {"unitCost": 0.0, "unit": "train_day", "source": "da stimare"},
-		"track_access": {"unitCost": 0.0, "unit": "train_km", "source": "da stimare"}
+		"staff": {"unitCost": 140.0, "unit": "train_hour", "source": "docs/network/costi-trasporto-ferroviario.md (confidenza media)"},
+		"electricity": {"unitCost": 1.7, "unit": "train_km", "source": "docs/network/costi-trasporto-ferroviario.md (confidenza media)"},
+		"diesel": {"unitCost": 3.0, "unit": "train_km", "source": "docs/network/costi-trasporto-ferroviario.md (confidenza bassa)"},
+		"maintenance": {"unitCost": 2.5, "unit": "train_km", "source": "docs/network/costi-trasporto-ferroviario.md (confidenza bassa)"},
+		"rolling_stock": {"unitCost": 650.0, "unit": "train_day", "source": "docs/network/costi-trasporto-ferroviario.md (confidenza media)"},
+		"track_access": {"unitCost": 2.5, "unit": "train_km", "source": "docs/network/costi-trasporto-ferroviario.md (confidenza media)"}
 	}
 }
