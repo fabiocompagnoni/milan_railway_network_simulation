@@ -1,0 +1,10 @@
+{
+	"currency": "EUR",
+	"categories": {
+		"staff": {"unitCost": 0.0, "unit": "train_hour", "source": "da stimare"},
+		"electricity": {"unitCost": 0.0, "unit": "train_km", "source": "da stimare"},
+		"diesel": {"unitCost": 0.0, "unit": "train_km", "source": "da stimare"},
+		"rolling_stock": {"unitCost": 0.0, "unit": "train_day", "source": "da stimare"},
+		"track_access": {"unitCost": 0.0, "unit": "train_km", "source": "da stimare"}
+	}
+}
