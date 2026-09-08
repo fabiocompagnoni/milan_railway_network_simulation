@@ -55,6 +55,7 @@ public final class CreateTransitScheduleFromFeed {
 		Vehicles circulations = VehicleCirculations.apply(result.schedule(), result.vehicles(),
 			TURNAROUND_SECONDS, assignment);
 		SingleTrackBlocks.apply(network);
+		TerminalCapacities.apply(result.schedule(), network);
 
 		try {
 			Files.createDirectories(outputDir);
