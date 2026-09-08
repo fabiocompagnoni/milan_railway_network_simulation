@@ -1,0 +1,64 @@
+.root {
+	-fx-font-family: "Inter";
+	-fx-font-size: 13px;
+	-fx-background-color: -app-bg;
+	-fx-text-fill: -text;
+}
+
+.label {
+	-fx-text-fill: -text;
+}
+
+.text-muted {
+	-fx-text-fill: -text-muted;
+}
+
+.title {
+	-fx-font-size: 24px;
+	-fx-font-weight: 600;
+}
+
+.sidebar {
+	-fx-background-color: -surface;
+	-fx-border-color: transparent -border transparent transparent;
+	-fx-padding: 16 8 16 8;
+	-fx-spacing: 4;
+}
+
+.sidebar .brand {
+	-fx-font-size: 15px;
+	-fx-font-weight: 600;
+	-fx-padding: 4 8 16 8;
+}
+
+.nav-button {
+	-fx-background-color: transparent;
+	-fx-background-radius: 6;
+	-fx-text-fill: -text;
+	-fx-alignment: center-left;
+	-fx-padding: 8 12 8 12;
+	-fx-max-width: infinity;
+	-fx-cursor: hand;
+}
+
+.nav-button:hover {
+	-fx-background-color: -surface-raised;
+}
+
+.nav-button:selected {
+	-fx-background-color: -accent;
+	-fx-text-fill: -accent-contrast;
+	-fx-font-weight: 500;
+}
+
+.content {
+	-fx-padding: 24;
+}
+
+.theme-toggle {
+	-fx-background-color: -surface-raised;
+	-fx-background-radius: 6;
+	-fx-text-fill: -text;
+	-fx-padding: 6 12 6 12;
+	-fx-cursor: hand;
+}
