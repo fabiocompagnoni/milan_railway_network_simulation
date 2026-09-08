@@ -1,0 +1,121 @@
+package it.unimib.milanrailsim.results;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.matsim.api.core.v01.Id;
+import org.matsim.core.api.experimental.events.VehicleArrivesAtFacilityEvent;
+import org.matsim.core.api.experimental.events.VehicleDepartsAtFacilityEvent;
+import org.matsim.core.api.experimental.events.handler.VehicleArrivesAtFacilityEventHandler;
+import org.matsim.core.api.experimental.events.handler.VehicleDepartsAtFacilityEventHandler;
+import org.matsim.pt.transitSchedule.api.Departure;
+import org.matsim.pt.transitSchedule.api.TransitLine;
+import org.matsim.pt.transitSchedule.api.TransitRoute;
+import org.matsim.pt.transitSchedule.api.TransitRouteStop;
+import org.matsim.pt.transitSchedule.api.TransitSchedule;
+import org.matsim.vehicles.Vehicle;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Compares simulated stop visits against the planned schedule, one record per
+ * vehicle and stop with arrival and departure delays.
+ * <p>
+ * Unlike the generation pipeline, this analysis tool never aborts on
+ * inconsistent input: anomalies (vehicles or stops outside the schedule) are
+ * counted, logged and reported so the remaining measurements still come out.
+ */
+public final class PunctualityAnalysis
+		implements VehicleArrivesAtFacilityEventHandler, VehicleDepartsAtFacilityEventHandler {
+
+	private static final Logger log = LogManager.getLogger(PunctualityAnalysis.class);
+
+	public record StopVisit(String vehicle, String line, String route, String stop,
+			double plannedArrival, double actualArrival,
+			double plannedDeparture, double actualDeparture) {
+
+		public double arrivalDelaySeconds() {
+			return actualArrival - plannedArrival;
+		}
+
+		public double departureDelaySeconds() {
+			return actualDeparture - plannedDeparture;
+		}
+	}
+
+	private record PlannedStop(String line, String route, String stop,
+			double plannedArrival, double plannedDeparture) {
+	}
+
+	private final Map<Id<Vehicle>, Deque<PlannedStop>> planByVehicle = new HashMap<>();
+	private final Map<Id<Vehicle>, StopVisit> openVisits = new HashMap<>();
+	private final List<StopVisit> visits = new ArrayList<>();
+	private int anomalyCount;
+
+	public PunctualityAnalysis(TransitSchedule schedule) {
+		for (TransitLine line : schedule.getTransitLines().values()) {
+			for (TransitRoute route : line.getRoutes().values()) {
+				for (Departure departure : route.getDepartures().values()) {
+					Deque<PlannedStop> plan = new ArrayDeque<>();
+					for (TransitRouteStop stop : route.getStops()) {
+						plan.add(new PlannedStop(line.getId().toString(), route.getId().toString(),
+							stop.getStopFacility().getId().toString(),
+							departure.getDepartureTime() + stop.getArrivalOffset().seconds(),
+							departure.getDepartureTime() + stop.getDepartureOffset().seconds()));
+					}
+					planByVehicle.put(departure.getVehicleId(), plan);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void handleEvent(VehicleArrivesAtFacilityEvent event) {
+		Deque<PlannedStop> plan = planByVehicle.get(event.getVehicleId());
+		if (plan == null) {
+			anomaly("vehicle outside the schedule: " + event.getVehicleId());
+			return;
+		}
+		PlannedStop next = plan.peek();
+		if (next == null || !next.stop().equals(event.getFacilityId().toString())) {
+			anomaly("unexpected stop " + event.getFacilityId() + " for vehicle " + event.getVehicleId());
+			return;
+		}
+		plan.poll();
+		openVisits.put(event.getVehicleId(), new StopVisit(event.getVehicleId().toString(),
+			next.line(), next.route(), next.stop(),
+			next.plannedArrival(), event.getTime(), next.plannedDeparture(), Double.NaN));
+	}
+
+	@Override
+	public void handleEvent(VehicleDepartsAtFacilityEvent event) {
+		StopVisit open = openVisits.remove(event.getVehicleId());
+		if (open == null || !open.stop().equals(event.getFacilityId().toString())) {
+			anomaly("departure without matching arrival at " + event.getFacilityId()
+				+ " for vehicle " + event.getVehicleId());
+			return;
+		}
+		visits.add(new StopVisit(open.vehicle(), open.line(), open.route(), open.stop(),
+			open.plannedArrival(), open.actualArrival(), open.plannedDeparture(), event.getTime()));
+	}
+
+	private void anomaly(String message) {
+		anomalyCount++;
+		log.warn("Punctuality anomaly: {}", message);
+	}
+
+	/** Completed visits; terminus arrivals without a departure event are appended here. */
+	public List<StopVisit> visits() {
+		List<StopVisit> all = new ArrayList<>(visits);
+		all.addAll(openVisits.values());
+		return List.copyOf(all);
+	}
+
+	public int anomalyCount() {
+		return anomalyCount;
+	}
+}
