@@ -16,6 +16,7 @@ import org.matsim.vehicles.Vehicle;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -57,20 +58,30 @@ public final class PunctualityAnalysis
 	private int anomalyCount;
 
 	public PunctualityAnalysis(TransitSchedule schedule) {
+		// a circulation vehicle serves several departures: collect them all,
+		// then flatten each vehicle's plan in chronological order
+		Map<Id<Vehicle>, List<List<PlannedStop>>> plansByVehicle = new HashMap<>();
 		for (TransitLine line : schedule.getTransitLines().values()) {
 			for (TransitRoute route : line.getRoutes().values()) {
 				for (Departure departure : route.getDepartures().values()) {
-					Deque<PlannedStop> plan = new ArrayDeque<>();
+					List<PlannedStop> plan = new ArrayList<>();
 					for (TransitRouteStop stop : route.getStops()) {
 						plan.add(new PlannedStop(line.getId().toString(), route.getId().toString(),
 							stop.getStopFacility().getId().toString(),
 							departure.getDepartureTime() + stop.getArrivalOffset().seconds(),
 							departure.getDepartureTime() + stop.getDepartureOffset().seconds()));
 					}
-					planByVehicle.put(departure.getVehicleId(), plan);
+					plansByVehicle.computeIfAbsent(departure.getVehicleId(), key -> new ArrayList<>())
+						.add(plan);
 				}
 			}
 		}
+		plansByVehicle.forEach((vehicleId, plans) -> {
+			plans.sort(Comparator.comparingDouble(plan -> plan.getFirst().plannedArrival()));
+			Deque<PlannedStop> flattened = new ArrayDeque<>();
+			plans.forEach(flattened::addAll);
+			planByVehicle.put(vehicleId, flattened);
+		});
 	}
 
 	@Override
