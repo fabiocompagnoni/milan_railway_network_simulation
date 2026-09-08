@@ -15866,8 +15866,7 @@
 		</link>
 		<link id="stop_S01066" from="S01066" to="S01066" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">10</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
@@ -17119,15 +17118,13 @@
 		</link>
 		<link id="stop_S01645" from="S01645" to="S01645" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
 		<link id="stop_S01647" from="S01647" to="S01647" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
