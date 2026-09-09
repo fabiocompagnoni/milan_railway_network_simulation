@@ -1,6 +1,11 @@
 package it.unimib.milanrailsim.gui.app;
 
+import it.unimib.milanrailsim.gui.config.AppPaths;
+import it.unimib.milanrailsim.gui.config.ScenarioFiles;
+import it.unimib.milanrailsim.gui.view.SimulationView;
 import javafx.application.Application;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -8,16 +13,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.List;
-
 /** Desktop application: the simulation is configured, run, watched and replayed from here. */
 public final class MilanRailSimApp extends Application {
 
-	private static final List<String> VIEWS = List.of(
-		"Libreria run", "Nuova simulazione", "Simulazione",
-		"Risultati", "Materiale rotabile", "Impostazioni");
-
-	private Theme theme = Theme.LIGHT;
+	private final ObjectProperty<Theme> theme = new SimpleObjectProperty<>(Theme.LIGHT);
 
 	public static void main(String[] args) {
 		launch(args);
@@ -26,20 +25,24 @@ public final class MilanRailSimApp extends Application {
 	@Override
 	public void start(Stage stage) {
 		Theme.loadFonts();
+		ScenarioFiles files = ScenarioFiles.milan();
+		AppPaths paths = AppPaths.defaults();
 		Navigation navigation = new Navigation();
-		VIEWS.forEach(name -> navigation.addView(name, () -> placeholder(name)));
+		navigation.addView("Libreria run", () -> placeholder("Libreria run"));
+		navigation.addView("Nuova simulazione", () -> placeholder("Nuova simulazione"));
+		navigation.addView("Simulazione", () -> new SimulationView(files, paths, theme));
+		navigation.addView("Risultati", () -> placeholder("Risultati"));
+		navigation.addView("Materiale rotabile", () -> placeholder("Materiale rotabile"));
+		navigation.addView("Impostazioni", () -> placeholder("Impostazioni"));
 
 		Scene scene = new Scene(navigation, 1280, 800);
-		theme.apply(scene);
+		theme.addListener((observable, previous, current) -> current.apply(scene));
+		theme.get().apply(scene);
 
 		Button themeToggle = new Button();
 		themeToggle.getStyleClass().add("theme-toggle");
-		themeToggle.setText("Tema: " + theme.label());
-		themeToggle.setOnAction(event -> {
-			theme = theme.other();
-			theme.apply(scene);
-			themeToggle.setText("Tema: " + theme.label());
-		});
+		themeToggle.textProperty().bind(theme.map(current -> "Tema: " + current.label()));
+		themeToggle.setOnAction(event -> theme.set(theme.get().other()));
 		navigation.addFooter(themeToggle);
 
 		stage.setTitle("Milan RailSim");
@@ -54,6 +57,8 @@ public final class MilanRailSimApp extends Application {
 		title.getStyleClass().add("title");
 		Label hint = new Label("Vista in costruzione.");
 		hint.getStyleClass().add("text-muted");
-		return new VBox(8, title, hint);
+		VBox box = new VBox(8, title, hint);
+		box.getStyleClass().add("content");
+		return box;
 	}
 }

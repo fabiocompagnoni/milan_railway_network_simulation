@@ -53,8 +53,6 @@ public final class Navigation extends BorderPane {
 	}
 
 	public void show(String name) {
-		Node view = views.get(name).get();
-		view.getStyleClass().add("content");
-		setCenter(view);
+		setCenter(views.get(name).get());
 	}
 }
