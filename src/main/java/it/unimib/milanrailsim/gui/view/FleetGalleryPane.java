@@ -25,6 +25,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -102,14 +103,16 @@ final class FleetGalleryPane extends VBox {
 		delete.setOnAction(event -> delete(type));
 		HBox actions = new HBox(8, photo, edit, delete);
 
+		List<String> citations = new ArrayList<>();
 		VBox figures = new VBox(6,
-			figure("Lunghezza", String.format("%.1f m", type.lengthMeters()), type, "length"),
-			figure("Posti", String.valueOf(type.seats()), type, "seats"),
-			figure("Velocità massima", (int) type.vmaxKmh() + " km/h", type, "vmax"),
-			figure("Accelerazione", String.format("%.2f m/s²", type.accelerationMps2()), type, "acceleration"),
-			figure("Decelerazione", String.format("%.2f m/s²", type.decelerationMps2()), type, "deceleration"),
-			figure("Trazione", type.traction().label(), type, "traction"),
-			figure("Linee dove circola", linesUsing(type.id()), type, "lines"));
+			figure("Lunghezza", String.format("%.1f m", type.lengthMeters()), type, "length", citations),
+			figure("Posti", String.valueOf(type.seats()), type, "seats", citations),
+			figure("Velocità massima", (int) type.vmaxKmh() + " km/h", type, "vmax", citations),
+			figure("Accelerazione", String.format("%.2f m/s²", type.accelerationMps2()), type, "acceleration", citations),
+			figure("Decelerazione", String.format("%.2f m/s²", type.decelerationMps2()), type, "deceleration", citations),
+			figure("Trazione", type.traction().label(), type, "traction", citations),
+			figure("Linee dove circola", linesUsing(type.id()), type, "lines", citations));
+		figures.getChildren().add(sourcesNote(citations, type));
 
 		Label title = new Label(type.name());
 		title.getStyleClass().add("section-title");
@@ -122,26 +125,46 @@ final class FleetGalleryPane extends VBox {
 		detail.getChildren().setAll(body);
 	}
 
-	private Node figure(String label, String value, TrainType type, String field) {
+	/** A figure with a numbered citation, collected in {@code citations} in first-use order. */
+	private Node figure(String label, String value, TrainType type, String field, List<String> citations) {
 		Label key = new Label(label);
 		key.getStyleClass().add("text-muted");
 		key.setMinWidth(150);
 		Label text = new Label(value);
 		text.getStyleClass().add("metric");
-		HBox row = new HBox(12, key, text);
-		if (type.isEstimated(field)) {
-			Label badge = new Label("stimato");
-			badge.getStyleClass().add("badge-warn");
-			row.getChildren().add(badge);
-		}
+		HBox row = new HBox(6, key, text);
 		String source = type.sources().get(field);
 		if (source != null) {
-			Label from = new Label("Fonte: " + source);
-			from.getStyleClass().add("text-muted");
-			row.getChildren().add(from);
+			if (!citations.contains(source)) {
+				citations.add(source);
+			}
+			Label reference = new Label(String.valueOf(citations.indexOf(source) + 1));
+			reference.getStyleClass().add("citation");
+			row.getChildren().add(reference);
+		} else if (type.isEstimated(field)) {
+			Label estimate = new Label("stima");
+			estimate.getStyleClass().add("estimate");
+			row.getChildren().add(estimate);
 		}
 		row.setAlignment(Pos.CENTER_LEFT);
 		return row;
+	}
+
+	private Node sourcesNote(List<String> citations, TrainType type) {
+		VBox note = new VBox(2);
+		note.setPadding(new Insets(8, 0, 0, 0));
+		for (int i = 0; i < citations.size(); i++) {
+			Label line = new Label((i + 1) + ". " + citations.get(i));
+			line.getStyleClass().add("footnote");
+			line.setWrapText(true);
+			note.getChildren().add(line);
+		}
+		if (type.estimated().stream().anyMatch(field -> !type.sources().containsKey(field))) {
+			Label estimate = new Label("I valori indicati come stima non hanno una fonte pubblicata.");
+			estimate.getStyleClass().add("footnote");
+			note.getChildren().add(estimate);
+		}
+		return note;
 	}
 
 	private String linesUsing(String typeId) {

@@ -337,12 +337,21 @@
 	-fx-background-color: -surface-raised;
 }
 
-.badge-warn {
-	-fx-background-color: -warn;
-	-fx-text-fill: white;
+.citation {
+	-fx-text-fill: -accent;
+	-fx-font-size: 10px;
+	-fx-translate-y: -4;
+}
+
+.estimate {
+	-fx-text-fill: -text-muted;
 	-fx-font-size: 11px;
-	-fx-padding: 1 6 1 6;
-	-fx-background-radius: 8;
+	-fx-font-style: italic;
+}
+
+.footnote {
+	-fx-text-fill: -text-muted;
+	-fx-font-size: 11px;
 }
 
 .list-row {
