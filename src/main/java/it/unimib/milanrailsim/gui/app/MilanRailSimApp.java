@@ -2,6 +2,7 @@ package it.unimib.milanrailsim.gui.app;
 
 import it.unimib.milanrailsim.gui.config.AppPaths;
 import it.unimib.milanrailsim.gui.config.ScenarioFiles;
+import it.unimib.milanrailsim.gui.view.FleetView;
 import it.unimib.milanrailsim.gui.view.NewSimulationView;
 import it.unimib.milanrailsim.gui.view.SimulationView;
 import javafx.application.Application;
@@ -34,7 +35,7 @@ public final class MilanRailSimApp extends Application {
 		}));
 		navigation.addView("Simulazione", () -> new SimulationView(model.files(), model.paths(), theme));
 		navigation.addView("Risultati", () -> placeholder("Risultati"));
-		navigation.addView("Materiale rotabile", () -> placeholder("Materiale rotabile"));
+		navigation.addView("Materiale rotabile", () -> new FleetView(model));
 		navigation.addView("Impostazioni", () -> placeholder("Impostazioni"));
 
 		Scene scene = new Scene(navigation, 1280, 800);
