@@ -17,6 +17,10 @@ public record AppPaths(Path root) {
 		return root.resolve("config");
 	}
 
+	public Path costsFile() {
+		return config().resolve("costs.json");
+	}
+
 	public Path tileCache() {
 		return root.resolve("cache", "tiles");
 	}
