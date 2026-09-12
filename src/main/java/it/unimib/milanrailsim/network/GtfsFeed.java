@@ -20,7 +20,7 @@ public final class GtfsFeed {
 	}
 
 	/** {@code color} is the GTFS {@code route_color} hex string without {@code #}. */
-	public record Route(String id, String shortName, int type, String color) {
+	public record Route(String id, String shortName, String longName, int type, String color) {
 	}
 
 	public record Trip(String id, String routeId, String serviceId) {
@@ -51,7 +51,7 @@ public final class GtfsFeed {
 			.collect(toMapById(Stop::id));
 		Map<String, Route> routes = CsvTable.read(directory.resolve("routes.txt")).stream()
 			.map(row -> new Route(row.get("route_id"), row.get("route_short_name"),
-				Integer.parseInt(row.get("route_type")), row.get("route_color")))
+				row.get("route_long_name"), Integer.parseInt(row.get("route_type")), row.get("route_color")))
 			.collect(toMapById(Route::id));
 		Map<String, Trip> trips = CsvTable.read(directory.resolve("trips.txt")).stream()
 			.map(row -> new Trip(row.get("trip_id"), row.get("route_id"), row.get("service_id")))
