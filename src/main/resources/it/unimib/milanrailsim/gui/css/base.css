@@ -377,3 +377,46 @@
 .button.primary:hover {
 	-fx-background-color: derive(-accent, -10%);
 }
+
+.sub-nav {
+	-fx-min-width: 170;
+	-fx-pref-width: 170;
+}
+
+.data-table {
+	-fx-background-color: -surface;
+	-fx-border-color: -border;
+	-fx-border-radius: 6;
+}
+
+.data-table .column-header-background {
+	-fx-background-color: -surface-raised;
+}
+
+.data-table .column-header, .data-table .filler {
+	-fx-background-color: transparent;
+	-fx-border-color: transparent -border -border transparent;
+}
+
+.data-table .column-header .label {
+	-fx-text-fill: -text-muted;
+	-fx-font-weight: 500;
+}
+
+.data-table .table-row-cell {
+	-fx-background-color: -surface;
+	-fx-border-color: transparent transparent -border transparent;
+}
+
+.data-table .table-row-cell:odd {
+	-fx-background-color: -app-bg;
+}
+
+.data-table .table-row-cell:selected {
+	-fx-background-color: -surface-raised;
+}
+
+.data-table .table-cell {
+	-fx-text-fill: -text;
+	-fx-border-color: transparent;
+}
