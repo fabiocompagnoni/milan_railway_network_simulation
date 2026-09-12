@@ -37,8 +37,8 @@ public record FleetConfig(List<TrainType> types) {
 
 	/**
 	 * @param id railsim vehicle type id, the key used by line assignments and past runs
-	 * @param sources provenance per figure, keyed by field name ({@code length}, {@code seats}, …)
-	 * @param estimated names of the figures that are estimates rather than published values
+	 * @param sources citation per figure, keyed by field name ({@code length}, {@code seats}, …)
+	 * @param estimated names of the figures that are estimates without a published source
 	 */
 	public record TrainType(String id, String name, double lengthMeters, int seats, double vmaxKmh,
 			double accelerationMps2, double decelerationMps2, Traction traction,
@@ -50,10 +50,9 @@ public record FleetConfig(List<TrainType> types) {
 	}
 
 	private static final ObjectMapper JSON = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-	private static final String TRENORD_FLEET = "trenord.it/chi-siamo/la-flotta (2026-08-05)";
-	private static final String WIKIPEDIA_CARAVAGGIO = "it.wikipedia.org, Elettrotreno FS ETR 421/521 (2026-08-05)";
-	private static final String DOMAIN_ESTIMATE = "stima di dominio (Fabio, 2026-08-05)";
-	private static final String TILO_SOURCES = "trainswiss / Wikipedia / sguggiari.ch (2026-08-05)";
+	private static final String TRENORD_FLEET = "Trenord, La flotta, trenord.it (consultato il 5 agosto 2026)";
+	private static final String WIKIPEDIA_CARAVAGGIO = "Wikipedia, Elettrotreno FS ETR 421/521 (consultato il 5 agosto 2026)";
+	private static final String TILO_SOURCES = "Schede RABe 524 FLIRT TSI: trainswiss.ch, sguggiari.ch, Wikipedia (consultati il 5 agosto 2026)";
 	private static final double ESTIMATED_DECELERATION = 0.5;
 
 	public FleetConfig {
@@ -68,12 +67,10 @@ public record FleetConfig(List<TrainType> types) {
 	public static FleetConfig defaults() {
 		return new FleetConfig(List.of(
 			type("tsr", "TSR", 104.98, 436, 140, 1.0, Traction.ELECTRIC,
-				Map.of("length", DOMAIN_ESTIMATE, "seats", TRENORD_FLEET + ", composizione 4 casse",
-					"vmax", TRENORD_FLEET, "acceleration", DOMAIN_ESTIMATE + ": «accelerazioni simili a una metropolitana»"),
+				Map.of("seats", TRENORD_FLEET + ", composizione a 4 casse", "vmax", TRENORD_FLEET),
 				Set.of("length", "acceleration", "deceleration")),
 			type("taf", "TAF", 103.97, 469, 140, 0.8, Traction.ELECTRIC,
-				Map.of("length", DOMAIN_ESTIMATE, "seats", TRENORD_FLEET, "vmax", TRENORD_FLEET,
-					"acceleration", DOMAIN_ESTIMATE + ": materiale anni '90"),
+				Map.of("seats", TRENORD_FLEET, "vmax", TRENORD_FLEET),
 				Set.of("length", "acceleration", "deceleration")),
 			type("caravaggio_421", "Caravaggio ETR 421", 109.6, 466, 160, 1.10, Traction.ELECTRIC,
 				Map.of("length", WIKIPEDIA_CARAVAGGIO, "seats", WIKIPEDIA_CARAVAGGIO, "vmax", TRENORD_FLEET,
@@ -84,20 +81,16 @@ public record FleetConfig(List<TrainType> types) {
 					"acceleration", WIKIPEDIA_CARAVAGGIO),
 				Set.of("deceleration")),
 			type("donizetti", "Donizetti ETR 204", 84.2, 262, 160, 1.0, Traction.ELECTRIC,
-				Map.of("length", DOMAIN_ESTIMATE, "seats", DOMAIN_ESTIMATE + " (Trenord: >200 posti, 3 casse)",
-					"vmax", TRENORD_FLEET, "acceleration", DOMAIN_ESTIMATE),
+				Map.of("seats", TRENORD_FLEET + ", oltre 200 posti a 3 casse", "vmax", TRENORD_FLEET),
 				Set.of("length", "seats", "acceleration", "deceleration")),
 			type("etr245", "ETR 245 Coradia Meridian", 82.2, 230, 160, 1.0, Traction.ELECTRIC,
-				Map.of("length", TRENORD_FLEET, "seats", TRENORD_FLEET, "vmax", TRENORD_FLEET,
-					"acceleration", DOMAIN_ESTIMATE),
+				Map.of("length", TRENORD_FLEET, "seats", TRENORD_FLEET, "vmax", TRENORD_FLEET),
 				Set.of("acceleration", "deceleration")),
 			type("atr125", "ATR 125 Stadler GTW", 77.33, 231, 140, 0.6, Traction.DIESEL,
-				Map.of("length", DOMAIN_ESTIMATE, "seats", TRENORD_FLEET, "vmax", TRENORD_FLEET,
-					"acceleration", DOMAIN_ESTIMATE + ": trazione diesel-elettrica"),
+				Map.of("seats", TRENORD_FLEET, "vmax", TRENORD_FLEET),
 				Set.of("length", "acceleration", "deceleration")),
 			type("tilo_flirt_tsi", "FLIRT TSI (TILO)", 105.0, 244, 160, 1.0, Traction.ELECTRIC,
-				Map.of("length", TILO_SOURCES, "seats", TILO_SOURCES, "vmax", TILO_SOURCES,
-					"acceleration", DOMAIN_ESTIMATE),
+				Map.of("length", TILO_SOURCES, "seats", TILO_SOURCES, "vmax", TILO_SOURCES),
 				Set.of("acceleration", "deceleration"))));
 	}
 
