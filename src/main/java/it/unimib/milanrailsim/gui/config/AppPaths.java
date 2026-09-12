@@ -21,6 +21,18 @@ public record AppPaths(Path root) {
 		return config().resolve("costs.json");
 	}
 
+	public Path fleetTypesFile() {
+		return config().resolve("fleet", "types.json");
+	}
+
+	public Path lineAssignmentsFile() {
+		return config().resolve("fleet", "assignments.json");
+	}
+
+	public Path fleetPhotos() {
+		return config().resolve("fleet", "photos");
+	}
+
 	public Path tileCache() {
 		return root.resolve("cache", "tiles");
 	}
