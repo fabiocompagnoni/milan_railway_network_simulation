@@ -1,6 +1,7 @@
 package it.unimib.milanrailsim.gui.app;
 
 import it.unimib.milanrailsim.gui.config.AppPaths;
+import it.unimib.milanrailsim.gui.config.RunLibrary;
 import it.unimib.milanrailsim.gui.config.ScenarioFiles;
 import it.unimib.milanrailsim.network.FleetConfig;
 import it.unimib.milanrailsim.network.GtfsFeed;
@@ -25,6 +26,7 @@ public final class AppModel {
 	private final ObjectProperty<CompletableFuture<GtfsFeed>> feed = new SimpleObjectProperty<>();
 	private final ObjectProperty<FleetConfig> fleet = new SimpleObjectProperty<>();
 	private final ObjectProperty<LineAssignments> assignments = new SimpleObjectProperty<>();
+	private final ObjectProperty<RunLibrary.Entry> selectedRun = new SimpleObjectProperty<>();
 
 	public AppModel(AppPaths paths, ScenarioFiles files) {
 		this.paths = paths;
@@ -46,6 +48,15 @@ public final class AppModel {
 
 	public ObjectProperty<Theme> theme() {
 		return theme;
+	}
+
+	public RunLibrary runs() {
+		return new RunLibrary(paths.runs());
+	}
+
+	/** The run the results view shows; null until one is opened from the library. */
+	public ObjectProperty<RunLibrary.Entry> selectedRun() {
+		return selectedRun;
 	}
 
 	public ObjectProperty<FleetConfig> fleet() {
