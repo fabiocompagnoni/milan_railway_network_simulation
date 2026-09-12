@@ -37,8 +37,18 @@
 	-fx-text-fill: -text;
 	-fx-alignment: center-left;
 	-fx-padding: 8 12 8 12;
+	-fx-graphic-text-gap: 10;
 	-fx-max-width: infinity;
 	-fx-cursor: hand;
+}
+
+.nav-button .ikonli-font-icon {
+	-fx-icon-color: -text-muted;
+	-fx-icon-size: 18;
+}
+
+.nav-button:selected .ikonli-font-icon {
+	-fx-icon-color: -accent-contrast;
 }
 
 .nav-button:hover {
@@ -55,12 +65,12 @@
 	-fx-padding: 24;
 }
 
-.theme-toggle {
+.sidebar .button.nav-button {
 	-fx-background-color: -surface-raised;
-	-fx-background-radius: 6;
-	-fx-text-fill: -text;
-	-fx-padding: 6 12 6 12;
-	-fx-cursor: hand;
+}
+
+.sidebar .button.nav-button:hover {
+	-fx-background-color: -border;
 }
 
 .control-bar {
@@ -419,4 +429,18 @@
 .data-table .table-cell {
 	-fx-text-fill: -text;
 	-fx-border-color: transparent;
+}
+
+.headline-value {
+	-fx-font-size: 24px;
+	-fx-font-weight: 600;
+}
+
+.split-pane {
+	-fx-background-color: transparent;
+}
+
+.split-pane > .split-pane-divider {
+	-fx-background-color: -border;
+	-fx-padding: 0 1 0 1;
 }

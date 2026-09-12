@@ -1,6 +1,7 @@
 package it.unimib.milanrailsim.gui.app;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
@@ -9,12 +10,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-/** Sidebar navigation: one button per view, labels hidden on narrow windows. */
+/** Sidebar navigation: one button per view with its icon; labels hidden on narrow windows. */
 public final class Navigation extends BorderPane {
 
 	private static final double COMPACT_BELOW_PX = 1100;
@@ -31,20 +33,25 @@ public final class Navigation extends BorderPane {
 		setLeft(sidebar);
 	}
 
-	public void addView(String name, Supplier<Node> view) {
+	/** @param icon an Ikonli literal such as {@code mdal-map}; alone on narrow windows, beside the name otherwise */
+	public void addView(String name, String icon, Supplier<Node> view) {
 		views.put(name, view);
-		ToggleButton button = new ToggleButton(name);
+		ToggleButton button = new ToggleButton(name, new FontIcon(icon));
 		button.setUserData(name);
 		button.getStyleClass().add("nav-button");
 		button.setToggleGroup(group);
-		button.textProperty().bind(Bindings.when(widthProperty().lessThan(COMPACT_BELOW_PX))
-			.then(name.substring(0, 1)).otherwise(name));
+		button.textProperty().bind(Bindings.when(compact()).then("").otherwise(name));
 		button.setOnAction(event -> show(name));
 		sidebar.getChildren().add(button);
 		if (group.getSelectedToggle() == null) {
 			button.setSelected(true);
 			show(name);
 		}
+	}
+
+	/** True on narrow windows, when the sidebar shows icons only. */
+	public BooleanBinding compact() {
+		return widthProperty().lessThan(COMPACT_BELOW_PX);
 	}
 
 	public void addFooter(Node node) {

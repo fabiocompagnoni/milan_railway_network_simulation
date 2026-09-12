@@ -9,24 +9,31 @@ import java.util.List;
 /** Light and dark palettes; the structural stylesheet is shared and reads the palette tokens. */
 public enum Theme {
 
-	LIGHT("theme-light.css", "Chiaro", MapPalette.LIGHT),
-	DARK("theme-dark.css", "Scuro", MapPalette.DARK);
+	LIGHT("theme-light.css", "Tema chiaro", "mdmz-wb_sunny", MapPalette.LIGHT),
+	DARK("theme-dark.css", "Tema scuro", "mdal-brightness_2", MapPalette.DARK);
 
 	private static final String CSS_ROOT = "/it/unimib/milanrailsim/gui/css/";
 	private static final String FONT_ROOT = "/it/unimib/milanrailsim/gui/fonts/";
 
 	private final String stylesheet;
 	private final String label;
+	private final String icon;
 	private final MapPalette mapPalette;
 
-	Theme(String stylesheet, String label, MapPalette mapPalette) {
+	Theme(String stylesheet, String label, String icon, MapPalette mapPalette) {
 		this.stylesheet = stylesheet;
 		this.label = label;
+		this.icon = icon;
 		this.mapPalette = mapPalette;
 	}
 
 	public String label() {
 		return label;
+	}
+
+	/** Ikonli literal of the icon representing this theme. */
+	public String icon() {
+		return icon;
 	}
 
 	public MapPalette mapPalette() {
