@@ -17,6 +17,10 @@ public record AppPaths(Path root) {
 		return root.resolve("config");
 	}
 
+	public Path gtfsDir() {
+		return config().resolve("gtfs");
+	}
+
 	public Path costsFile() {
 		return config().resolve("costs.json");
 	}
