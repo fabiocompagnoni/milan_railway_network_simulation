@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Font;
@@ -29,6 +30,7 @@ public final class MapCanvas extends Region {
 	private static final double SUBURBAN_TRACK_WIDTH_PX = 2.5;
 	private static final double MUTED_TRACK_WIDTH_PX = 1.2;
 	private static final double STATION_RADIUS_PX = 3;
+	private static final double SHARED_TRACK_SPACING_PX = 3;
 	private static final Font LABEL_FONT = Font.font("Inter", FontWeight.MEDIUM, 11);
 
 	private final Canvas canvas = new Canvas();
@@ -127,22 +129,41 @@ public final class MapCanvas extends Region {
 		g.drawImage(image, x, y, size, size);
 	}
 
+	/** Lines sharing a track are drawn side by side, transit-map style, in a stable order. */
 	private void drawTracks(GraphicsContext g) {
 		g.setLineCap(StrokeLineCap.ROUND);
 		g.setLineJoin(StrokeLineJoin.ROUND);
 		for (NetworkMap.Track track : network.tracks()) {
-			boolean suburban = track.color() != null;
-			g.setStroke(suburban ? track.color() : palette.mutedTrack());
-			g.setLineWidth(suburban ? SUBURBAN_TRACK_WIDTH_PX : MUTED_TRACK_WIDTH_PX);
-			strokePolyline(g, track.polyline());
+			List<Color> colors = track.lineColors();
+			if (colors.isEmpty()) {
+				g.setStroke(palette.mutedTrack());
+				g.setLineWidth(MUTED_TRACK_WIDTH_PX);
+				strokePolyline(g, track.polyline(), 0);
+				continue;
+			}
+			g.setLineWidth(SUBURBAN_TRACK_WIDTH_PX);
+			for (int i = 0; i < colors.size(); i++) {
+				g.setStroke(colors.get(i));
+				strokePolyline(g, track.polyline(), (i - (colors.size() - 1) / 2.0) * SHARED_TRACK_SPACING_PX);
+			}
 		}
 	}
 
-	private void strokePolyline(GraphicsContext g, Polyline polyline) {
+	/** Strokes the polyline shifted by {@code offset} pixels along each segment's normal. */
+	private void strokePolyline(GraphicsContext g, Polyline polyline, double offset) {
 		g.beginPath();
-		g.moveTo(viewport.toScreenX(polyline.x(0)), viewport.toScreenY(polyline.y(0)));
 		for (int i = 1; i < polyline.size(); i++) {
-			g.lineTo(viewport.toScreenX(polyline.x(i)), viewport.toScreenY(polyline.y(i)));
+			double x0 = viewport.toScreenX(polyline.x(i - 1));
+			double y0 = viewport.toScreenY(polyline.y(i - 1));
+			double x1 = viewport.toScreenX(polyline.x(i));
+			double y1 = viewport.toScreenY(polyline.y(i));
+			double length = Math.hypot(x1 - x0, y1 - y0);
+			double nx = length == 0 ? 0 : -(y1 - y0) / length * offset;
+			double ny = length == 0 ? 0 : (x1 - x0) / length * offset;
+			if (i == 1) {
+				g.moveTo(x0 + nx, y0 + ny);
+			}
+			g.lineTo(x1 + nx, y1 + ny);
 		}
 		g.stroke();
 	}

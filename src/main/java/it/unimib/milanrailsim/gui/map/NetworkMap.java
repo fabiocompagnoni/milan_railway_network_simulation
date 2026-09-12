@@ -42,8 +42,8 @@ public final class NetworkMap {
 	public record Station(String id, String name, double x, double y, int lineCount) {
 	}
 
-	/** {@code color} is null for tracks not served by any suburban line. */
-	public record Track(String linkId, Polyline polyline, Color color) {
+	/** {@code lineColors} lists the suburban lines over the track in id order; empty for regional-only tracks. */
+	public record Track(String linkId, Polyline polyline, List<Color> lineColors) {
 	}
 
 	public record Line(String id, Color color, boolean suburban, Set<String> linkIds) {
@@ -138,11 +138,10 @@ public final class NetworkMap {
 		return Set.copyOf(linkIds);
 	}
 
-	/** A track shared by several suburban lines takes the colour of the first line in id order. */
 	private static List<Track> tracks(Network network, Map<String, Polyline> geometry, List<Line> lines) {
-		Map<String, Color> colorByLink = new HashMap<>();
-		lines.stream().filter(Line::suburban)
-			.forEach(line -> line.linkIds().forEach(id -> colorByLink.putIfAbsent(id, line.color())));
+		Map<String, List<Color>> colorsByLink = new HashMap<>();
+		lines.stream().filter(Line::suburban).forEach(line -> line.linkIds()
+			.forEach(id -> colorsByLink.computeIfAbsent(id, key -> new ArrayList<>()).add(line.color())));
 
 		List<Track> tracks = new ArrayList<>();
 		for (Link link : network.getLinks().values()) {
@@ -154,9 +153,9 @@ public final class NetworkMap {
 			if (polyline == null) {
 				throw new IllegalStateException("No geometry for link " + id);
 			}
-			tracks.add(new Track(id, polyline, colorByLink.get(id)));
+			tracks.add(new Track(id, polyline, List.copyOf(colorsByLink.getOrDefault(id, List.of()))));
 		}
-		tracks.sort(Comparator.comparing(track -> track.color() != null));
+		tracks.sort(Comparator.comparing(track -> !track.lineColors().isEmpty()));
 		return List.copyOf(tracks);
 	}
 
