@@ -23,21 +23,26 @@ import java.util.zip.GZIPInputStream;
  */
 public record OsmRailWays(Map<Long, Coord> nodes, Map<Long, List<Long>> ways) {
 
-	/** Streams the snapshot (optionally gzipped): it is too large to hold as a tree. */
-	public static OsmRailWays read(Path snapshot, CoordinateTransformation toNetworkCrs) {
+	/**
+	 * Streams the snapshots (optionally gzipped) in order; a later snapshot
+	 * overrides elements of an earlier one, so gap fills win over the base sweep.
+	 */
+	public static OsmRailWays read(List<Path> snapshots, CoordinateTransformation toNetworkCrs) {
 		Map<Long, Coord> nodes = new HashMap<>();
 		Map<Long, List<Long>> ways = new HashMap<>();
-		try (InputStream input = open(snapshot); JsonParser parser = new JsonFactory().createParser(input)) {
-			while (parser.nextToken() != null) {
-				if (parser.currentToken() == JsonToken.FIELD_NAME && "elements".equals(parser.currentName())) {
-					parser.nextToken();
-					while (parser.nextToken() == JsonToken.START_OBJECT) {
-						readElement(parser, toNetworkCrs, nodes, ways);
+		for (Path snapshot : snapshots) {
+			try (InputStream input = open(snapshot); JsonParser parser = new JsonFactory().createParser(input)) {
+				while (parser.nextToken() != null) {
+					if (parser.currentToken() == JsonToken.FIELD_NAME && "elements".equals(parser.currentName())) {
+						parser.nextToken();
+						while (parser.nextToken() == JsonToken.START_OBJECT) {
+							readElement(parser, toNetworkCrs, nodes, ways);
+						}
 					}
 				}
+			} catch (IOException e) {
+				throw new UncheckedIOException("Cannot read OSM snapshot " + snapshot, e);
 			}
-		} catch (IOException e) {
-			throw new UncheckedIOException("Cannot read OSM snapshot " + snapshot, e);
 		}
 		return new OsmRailWays(Map.copyOf(nodes), Map.copyOf(ways));
 	}

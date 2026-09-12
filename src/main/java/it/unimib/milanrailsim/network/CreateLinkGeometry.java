@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -23,15 +24,17 @@ import java.util.stream.Collectors;
  * Consumed by the GUI map; regenerate whenever the network or the OSM snapshot changes.
  * <p>
  * Usage: {@code mvn exec:java -Dexec.mainClass=it.unimib.milanrailsim.network.CreateLinkGeometry}
- * with optional args {@code [networkFile] [osmSnapshot] [outputFile]}.
+ * with optional args {@code [networkFile] [outputFile] [osmSnapshot...]}.
  */
 public final class CreateLinkGeometry {
 
 	private static final Logger log = LogManager.getLogger(CreateLinkGeometry.class);
 
 	private static final String DEFAULT_NETWORK = "scenarios/milan/network.xml";
-	private static final String DEFAULT_SNAPSHOT = "data/osm/2026-08-05-network-sweep/network_rail.json.gz";
 	private static final String DEFAULT_OUTPUT = "scenarios/milan/link-geometry.csv";
+	private static final List<String> DEFAULT_SNAPSHOTS = List.of(
+		"data/osm/2026-08-05-network-sweep/network_rail.json.gz",
+		"data/osm/2026-09-09-gap-fill/gap_rail.json.gz");
 	private static final String NETWORK_CRS = "EPSG:32632";
 
 	private CreateLinkGeometry() {
@@ -39,14 +42,16 @@ public final class CreateLinkGeometry {
 
 	public static void main(String[] args) {
 		Path network = Path.of(args.length > 0 ? args[0] : DEFAULT_NETWORK);
-		Path snapshot = Path.of(args.length > 1 ? args[1] : DEFAULT_SNAPSHOT);
-		Path output = Path.of(args.length > 2 ? args[2] : DEFAULT_OUTPUT);
-		run(network, snapshot, output);
+		Path output = Path.of(args.length > 1 ? args[1] : DEFAULT_OUTPUT);
+		List<Path> snapshots = args.length > 2
+			? Arrays.stream(args).skip(2).map(Path::of).toList()
+			: DEFAULT_SNAPSHOTS.stream().map(Path::of).toList();
+		run(network, snapshots, output);
 	}
 
-	static void run(Path networkFile, Path snapshot, Path outputFile) {
+	static void run(Path networkFile, List<Path> snapshots, Path outputFile) {
 		Network network = NetworkUtils.readNetwork(networkFile.toString());
-		OsmRailWays osm = OsmRailWays.read(snapshot,
+		OsmRailWays osm = OsmRailWays.read(snapshots,
 			TransformationFactory.getCoordinateTransformation(TransformationFactory.WGS84, NETWORK_CRS));
 		log.info("Loaded {} links and {} OSM ways", network.getLinks().size(), osm.ways().size());
 
