@@ -55,8 +55,23 @@ class MesoMeasuresTableTest {
 
 	@Test
 	void implausibleRatioInvalidatesLength() throws IOException {
-		// ratio 2.8 (> 2.5): the path is a detour, its length must not be trusted
-		Path file = write("S1_S2,S1,S2,ok,2,2,3920.0,4000.0,1400.0,2.8,110.0,0.0,120,68,45.0,S1,12\n");
+		// ratio 4.5 (> 4.0): the path is a detour, its length must not be trusted
+		Path file = write("S1_S2,S1,S2,ok,2,2,6300.0,6400.0,1400.0,4.5,110.0,0.0,120,68,45.0,S1,12\n");
+		MesoMeasuresTable.Measure m = MesoMeasuresTable.load(file).byLinkId().get("S1_S2");
+		assertTrue(m.lengthM().isEmpty());
+	}
+
+	@Test
+	void pathSlightlyShorterThanBeelineIsTrusted() throws IOException {
+		// ratio 0.9: the station point lies off the track axis, the path is real
+		Path file = write("S1_S2,S1,S2,ok,2,2,1260.0,1300.0,1400.0,0.9,110.0,0.0,120,68,45.0,S1,12\n");
+		MesoMeasuresTable.Measure m = MesoMeasuresTable.load(file).byLinkId().get("S1_S2");
+		assertEquals(1260.0, m.lengthM().orElseThrow());
+	}
+
+	@Test
+	void pathFarShorterThanBeelineIsRejected() throws IOException {
+		Path file = write("S1_S2,S1,S2,ok,2,2,1000.0,1100.0,1400.0,0.71,110.0,0.0,120,68,45.0,S1,12\n");
 		MesoMeasuresTable.Measure m = MesoMeasuresTable.load(file).byLinkId().get("S1_S2");
 		assertTrue(m.lengthM().isEmpty());
 	}

@@ -15,13 +15,16 @@ final class MesoMeasuresTable {
 
 	/**
 	 * The path-length measure is trusted only when the shortest OSM path is
-	 * plausible against the straight line: below 1.0 is geometrically
-	 * impossible; above 2.5 the ruler found a detour, not the line (real
-	 * curvature observed in this network reaches ~2.3 on mountain branches,
-	 * and the GTFS oracle guards the range below that).
+	 * plausible against the straight line between the GTFS station points.
+	 * Those points sit up to 150 m off the track axis, so a path measured
+	 * between the track projections can be shorter than the straight line
+	 * (287 sweep links, minimum 0.895): the lower bound allows for that. The
+	 * upper bound admits the Porta Garibaldi–Centrale link, a real 3.9× detour
+	 * through the Greco Pirelli junction (2026-09-09 gap fill); no other
+	 * measured link exceeds 2.4, and the GTFS oracle guards the range below.
 	 */
-	private static final double MIN_PLAUSIBLE_RATIO = 1.0;
-	private static final double MAX_PLAUSIBLE_RATIO = 2.5;
+	private static final double MIN_PLAUSIBLE_RATIO = 0.85;
+	private static final double MAX_PLAUSIBLE_RATIO = 4.0;
 
 	record Measure(String linkId, Optional<Integer> tracksTotal, Optional<Double> lengthM,
 			Optional<Double> eqSpeedKmh, Optional<Integer> gtfsMinSeconds, String osmWayIds) {
