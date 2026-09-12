@@ -55,7 +55,7 @@ public final class CreateLinkGeometry {
 			TransformationFactory.getCoordinateTransformation(TransformationFactory.WGS84, NETWORK_CRS));
 		log.info("Loaded {} links and {} OSM ways", network.getLinks().size(), osm.ways().size());
 
-		LinkGeometryBuilder builder = new LinkGeometryBuilder(osm);
+		LinkGeometryBuilder builder = new LinkGeometryBuilder(osm, network);
 		int straight = 0;
 		try (BufferedWriter writer = Files.newBufferedWriter(outputFile)) {
 			writer.write("link_id,points\n");
