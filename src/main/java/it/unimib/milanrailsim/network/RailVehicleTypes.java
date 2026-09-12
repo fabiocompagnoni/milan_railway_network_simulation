@@ -6,43 +6,34 @@ import org.matsim.vehicles.VehicleUtils;
 
 import java.util.List;
 
-/**
- * Railsim vehicle types of the model. Figures and sources are documented in
- * docs/network/infrastruttura-nodo-milano.md ("Parco rotabile"); values
- * without a published source are marked {@code estimated} in the attributes.
- */
+/** Railsim vehicle types built from the fleet catalogue; estimates are flagged in the attributes. */
 public final class RailVehicleTypes {
-
-	private static final double ESTIMATED_DECELERATION = 0.5;
 
 	private RailVehicleTypes() {
 	}
 
 	public static List<VehicleType> all() {
-		return List.of(
-			type("tsr", 104.98, 436, 140, 1.0, true),
-			type("taf", 103.97, 469, 140, 0.8, true),
-			type("caravaggio_421", 109.6, 466, 160, 1.10, false),
-			type("caravaggio_521", 136.8, 598, 160, 1.10, false),
-			type("donizetti", 84.2, 262, 160, 1.0, true),
-			type("etr245", 82.2, 230, 160, 1.0, true),
-			type("atr125", 77.33, 231, 140, 0.6, true),
-			type("tilo_flirt_tsi", 105.0, 244, 160, 1.0, true));
+		return from(FleetConfig.defaults());
 	}
 
-	private static VehicleType type(String id, double lengthMeters, int seats, double vmaxKmh,
-			double acceleration, boolean accelerationEstimated) {
-		VehicleType vehicleType = VehicleUtils.createVehicleType(Id.create(id, VehicleType.class));
+	public static List<VehicleType> from(FleetConfig fleet) {
+		return fleet.types().stream().map(RailVehicleTypes::type).toList();
+	}
+
+	private static VehicleType type(FleetConfig.TrainType train) {
+		VehicleType vehicleType = VehicleUtils.createVehicleType(Id.create(train.id(), VehicleType.class));
 		vehicleType.setNetworkMode("rail");
-		vehicleType.setLength(lengthMeters);
-		vehicleType.setMaximumVelocity(vmaxKmh / 3.6);
-		vehicleType.getCapacity().setSeats(seats);
+		vehicleType.setLength(train.lengthMeters());
+		vehicleType.setMaximumVelocity(train.vmaxKmh() / 3.6);
+		vehicleType.getCapacity().setSeats(train.seats());
 		vehicleType.getCapacity().setStandingRoom(0);
-		vehicleType.getAttributes().putAttribute("railsimAcceleration", acceleration);
-		vehicleType.getAttributes().putAttribute("railsimDeceleration", ESTIMATED_DECELERATION);
-		vehicleType.getAttributes().putAttribute("decelerationDataStatus", "estimated");
-		if (accelerationEstimated) {
+		vehicleType.getAttributes().putAttribute("railsimAcceleration", train.accelerationMps2());
+		vehicleType.getAttributes().putAttribute("railsimDeceleration", train.decelerationMps2());
+		if (train.isEstimated("acceleration")) {
 			vehicleType.getAttributes().putAttribute("accelerationDataStatus", "estimated");
+		}
+		if (train.isEstimated("deceleration")) {
+			vehicleType.getAttributes().putAttribute("decelerationDataStatus", "estimated");
 		}
 		return vehicleType;
 	}
