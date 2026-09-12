@@ -2,10 +2,10 @@ package it.unimib.milanrailsim.gui.app;
 
 import it.unimib.milanrailsim.gui.config.AppPaths;
 import it.unimib.milanrailsim.gui.config.ScenarioFiles;
+import it.unimib.milanrailsim.gui.view.NewSimulationView;
 import it.unimib.milanrailsim.gui.view.SimulationView;
 import javafx.application.Application;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 /** Desktop application: the simulation is configured, run, watched and replayed from here. */
 public final class MilanRailSimApp extends Application {
 
-	private final ObjectProperty<Theme> theme = new SimpleObjectProperty<>(Theme.LIGHT);
+	private final AppModel model = new AppModel(AppPaths.defaults(), ScenarioFiles.milan());
 
 	public static void main(String[] args) {
 		launch(args);
@@ -25,12 +25,14 @@ public final class MilanRailSimApp extends Application {
 	@Override
 	public void start(Stage stage) {
 		Theme.loadFonts();
-		ScenarioFiles files = ScenarioFiles.milan();
-		AppPaths paths = AppPaths.defaults();
+		ObjectProperty<Theme> theme = model.theme();
 		Navigation navigation = new Navigation();
 		navigation.addView("Libreria run", () -> placeholder("Libreria run"));
-		navigation.addView("Nuova simulazione", () -> placeholder("Nuova simulazione"));
-		navigation.addView("Simulazione", () -> new SimulationView(files, paths, theme));
+		navigation.addView("Nuova simulazione", () -> new NewSimulationView(model, spec -> {
+			spec.write(model.paths().runs().resolve(spec.name()).resolve("scenario.json"));
+			navigation.show("Simulazione");
+		}));
+		navigation.addView("Simulazione", () -> new SimulationView(model.files(), model.paths(), theme));
 		navigation.addView("Risultati", () -> placeholder("Risultati"));
 		navigation.addView("Materiale rotabile", () -> placeholder("Materiale rotabile"));
 		navigation.addView("Impostazioni", () -> placeholder("Impostazioni"));

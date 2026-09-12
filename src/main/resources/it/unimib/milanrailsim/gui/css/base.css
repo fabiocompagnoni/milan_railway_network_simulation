@@ -83,3 +83,199 @@
 .control-bar .button:hover {
 	-fx-background-color: -border;
 }
+
+.section-title {
+	-fx-font-size: 15px;
+	-fx-font-weight: 600;
+}
+
+.plain-scroll {
+	-fx-background-color: transparent;
+}
+
+.plain-scroll > .viewport {
+	-fx-background-color: transparent;
+}
+
+.segmented {
+	-fx-spacing: 0;
+}
+
+.segment {
+	-fx-background-color: -surface;
+	-fx-border-color: -border;
+	-fx-border-width: 1 0 1 1;
+	-fx-text-fill: -text;
+	-fx-padding: 6 16 6 16;
+	-fx-cursor: hand;
+}
+
+.segment:hover {
+	-fx-background-color: -surface-raised;
+}
+
+.segment:selected {
+	-fx-background-color: -accent;
+	-fx-text-fill: -accent-contrast;
+	-fx-font-weight: 500;
+}
+
+.segmented .segment:first-child {
+	-fx-background-radius: 6 0 0 6;
+	-fx-border-radius: 6 0 0 6;
+}
+
+.segmented .segment:last-child {
+	-fx-background-radius: 0 6 6 0;
+	-fx-border-radius: 0 6 6 0;
+	-fx-border-width: 1;
+}
+
+.chip {
+	-fx-text-fill: white;
+	-fx-font-weight: 600;
+	-fx-font-size: 12px;
+	-fx-padding: 2 8 2 8;
+	-fx-background-radius: 10;
+}
+
+.metric {
+	-fx-font-weight: 500;
+}
+
+.finding-blocking {
+	-fx-text-fill: -warn;
+}
+
+.finding-warning {
+	-fx-text-fill: -text-muted;
+}
+
+.button.primary {
+	-fx-background-color: -accent;
+	-fx-text-fill: -accent-contrast;
+	-fx-font-weight: 500;
+	-fx-background-radius: 6;
+	-fx-padding: 8 18 8 18;
+	-fx-cursor: hand;
+}
+
+.button.primary:disabled {
+	-fx-opacity: 0.5;
+}
+
+.text-field, .spinner, .date-picker, .combo-box-base {
+	-fx-background-color: -surface;
+	-fx-background-radius: 6;
+	-fx-border-color: -border;
+	-fx-border-radius: 6;
+	-fx-text-fill: -text;
+	-fx-prompt-text-fill: -text-muted;
+}
+
+.text-field:focused, .spinner:focused, .date-picker:focused, .combo-box-base:focused {
+	-fx-border-color: -accent;
+}
+
+.spinner .text-field, .date-picker .text-field, .combo-box-base .text-field {
+	-fx-background-color: transparent;
+	-fx-border-color: transparent;
+}
+
+.spinner .increment-arrow-button, .spinner .decrement-arrow-button,
+.date-picker .arrow-button, .combo-box-base .arrow-button {
+	-fx-background-color: -surface-raised;
+}
+
+.spinner .increment-arrow, .spinner .decrement-arrow, .date-picker .arrow, .combo-box-base .arrow {
+	-fx-background-color: -text;
+}
+
+.date-picker-popup, .combo-box-popup .list-view {
+	-fx-background-color: -surface;
+	-fx-border-color: -border;
+}
+
+.date-picker-popup .month-year-pane {
+	-fx-background-color: -surface-raised;
+}
+
+.date-picker-popup .day-name-cell, .date-picker-popup .week-number-cell, .date-picker-popup .spinner .label {
+	-fx-text-fill: -text-muted;
+}
+
+.date-picker-popup .day-cell {
+	-fx-background-color: -surface;
+	-fx-text-fill: -text;
+}
+
+.date-picker-popup .day-cell:hover {
+	-fx-background-color: -surface-raised;
+}
+
+.date-picker-popup .day-cell:selected {
+	-fx-background-color: -accent;
+	-fx-text-fill: -accent-contrast;
+}
+
+.date-picker-popup .day-cell:disabled {
+	-fx-opacity: 0.35;
+}
+
+.combo-box-popup .list-cell {
+	-fx-background-color: -surface;
+	-fx-text-fill: -text;
+}
+
+.combo-box-popup .list-cell:hover, .combo-box-popup .list-cell:selected {
+	-fx-background-color: -surface-raised;
+}
+
+.radio-button {
+	-fx-text-fill: -text;
+}
+
+.radio-button .radio {
+	-fx-background-color: -surface;
+	-fx-border-color: -border;
+	-fx-border-radius: 10;
+}
+
+.radio-button:selected .radio .dot {
+	-fx-background-color: -accent;
+}
+
+.check-box .box {
+	-fx-background-color: -surface;
+	-fx-border-color: -border;
+	-fx-border-radius: 3;
+}
+
+.check-box:selected .box .mark {
+	-fx-background-color: -accent;
+}
+
+.slider .track {
+	-fx-background-color: -border;
+}
+
+.slider .thumb {
+	-fx-background-color: -accent;
+}
+
+.slider .axis {
+	-fx-tick-label-fill: -text-muted;
+}
+
+.scroll-bar {
+	-fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+	-fx-background-color: -border;
+	-fx-background-radius: 4;
+}
+
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
+	-fx-background-color: transparent;
+}

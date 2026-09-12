@@ -34,6 +34,7 @@ public final class Navigation extends BorderPane {
 	public void addView(String name, Supplier<Node> view) {
 		views.put(name, view);
 		ToggleButton button = new ToggleButton(name);
+		button.setUserData(name);
 		button.getStyleClass().add("nav-button");
 		button.setToggleGroup(group);
 		button.textProperty().bind(Bindings.when(widthProperty().lessThan(COMPACT_BELOW_PX))
@@ -53,6 +54,9 @@ public final class Navigation extends BorderPane {
 	}
 
 	public void show(String name) {
+		group.getToggles().stream()
+			.filter(toggle -> name.equals(toggle.getUserData()))
+			.forEach(toggle -> toggle.setSelected(true));
 		setCenter(views.get(name).get());
 	}
 }
