@@ -23,10 +23,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Everything the map draws that does not move: stations, track alignments and
@@ -42,22 +44,25 @@ public final class NetworkMap {
 	public record Station(String id, String name, double x, double y, int lineCount) {
 	}
 
-	/** {@code lineColors} lists the suburban lines over the track in id order; empty for regional-only tracks. */
-	public record Track(String linkId, Polyline polyline, List<Color> lineColors) {
+	/** {@code lineIds} lists every line over the track in id order. */
+	public record Track(String linkId, Polyline polyline, List<String> lineIds) {
 	}
 
-	public record Line(String id, Color color, boolean suburban, Set<String> linkIds) {
+	/** {@code dailyDepartures} counts the timetabled runs of the loaded service day. */
+	public record Line(String id, String name, Color color, boolean suburban, int dailyDepartures,
+			int stationCount, Set<String> linkIds) {
 	}
 
 	private final List<Station> stations;
 	private final List<Track> tracks;
-	private final List<Line> lines;
+	private final Map<String, Line> lines;
 	private final Bounds bounds;
 
 	private NetworkMap(List<Station> stations, List<Track> tracks, List<Line> lines, Bounds bounds) {
 		this.stations = stations;
 		this.tracks = tracks;
-		this.lines = lines;
+		this.lines = new LinkedHashMap<>();
+		lines.forEach(line -> this.lines.put(line.id(), line));
 		this.bounds = bounds;
 	}
 
@@ -65,13 +70,17 @@ public final class NetworkMap {
 		return stations;
 	}
 
-	/** Muted tracks first, so coloured suburban tracks are painted on top. */
+	/** Regional-only tracks first, so suburban tracks are painted on top. */
 	public List<Track> tracks() {
 		return tracks;
 	}
 
+	public Line line(String id) {
+		return lines.get(id);
+	}
+
 	public List<Line> lines() {
-		return lines;
+		return List.copyOf(lines.values());
 	}
 
 	public Bounds bounds() {
@@ -90,7 +99,7 @@ public final class NetworkMap {
 		CoordinateTransformation toMercator = TransformationFactory.getCoordinateTransformation(networkCrs, MERCATOR_CRS);
 		network.getNodes().values().forEach(node -> node.setCoord(toMercator.transform(node.getCoord())));
 
-		List<Line> lines = lines(scenario.getTransitSchedule(), lineColors(GtfsFeed.load(gtfsDir)));
+		List<Line> lines = lines(scenario.getTransitSchedule(), GtfsFeed.load(gtfsDir));
 		return new NetworkMap(stations(network, lines), tracks(network, readGeometry(geometryCsv, toMercator), lines),
 			lines, bounds(network));
 	}
@@ -107,23 +116,23 @@ public final class NetworkMap {
 		return geometry;
 	}
 
-	private static Map<String, Color> lineColors(GtfsFeed feed) {
-		Map<String, Color> colors = new HashMap<>();
-		feed.routesById().values().forEach(route -> colors.put(route.shortName(), Color.web("#" + route.color())));
-		return colors;
-	}
-
-	private static List<Line> lines(TransitSchedule schedule, Map<String, Color> colors) {
+	private static List<Line> lines(TransitSchedule schedule, GtfsFeed feed) {
+		Map<String, GtfsFeed.Route> routes = new HashMap<>();
+		feed.routesById().values().forEach(route -> routes.put(route.shortName(), route));
 		return schedule.getTransitLines().values().stream()
 			.map(line -> line.getId().toString())
 			.sorted()
 			.map(id -> {
-				Color color = colors.get(id);
-				if (color == null) {
-					throw new IllegalStateException("No GTFS colour for line " + id);
+				GtfsFeed.Route route = routes.get(id);
+				if (route == null) {
+					throw new IllegalStateException("No GTFS route for line " + id);
 				}
 				TransitLine line = schedule.getTransitLines().get(Id.create(id, TransitLine.class));
-				return new Line(id, color, id.startsWith("S"), linkIds(line));
+				int departures = line.getRoutes().values().stream().mapToInt(r -> r.getDepartures().size()).sum();
+				Set<String> linkIds = linkIds(line);
+				int stations = (int) linkIds.stream().filter(linkId -> linkId.startsWith("stop_")).count();
+				return new Line(id, route.longName(), Color.web("#" + route.color()), id.startsWith("S"),
+					departures, stations, linkIds);
 			})
 			.toList();
 	}
@@ -139,9 +148,11 @@ public final class NetworkMap {
 	}
 
 	private static List<Track> tracks(Network network, Map<String, Polyline> geometry, List<Line> lines) {
-		Map<String, List<Color>> colorsByLink = new HashMap<>();
-		lines.stream().filter(Line::suburban).forEach(line -> line.linkIds()
-			.forEach(id -> colorsByLink.computeIfAbsent(id, key -> new ArrayList<>()).add(line.color())));
+		Map<String, List<String>> linesByLink = new HashMap<>();
+		lines.forEach(line -> line.linkIds()
+			.forEach(id -> linesByLink.computeIfAbsent(id, key -> new ArrayList<>()).add(line.id())));
+		Set<String> suburbanLinks = lines.stream().filter(Line::suburban)
+			.flatMap(line -> line.linkIds().stream()).collect(Collectors.toSet());
 
 		List<Track> tracks = new ArrayList<>();
 		for (Link link : network.getLinks().values()) {
@@ -153,9 +164,9 @@ public final class NetworkMap {
 			if (polyline == null) {
 				throw new IllegalStateException("No geometry for link " + id);
 			}
-			tracks.add(new Track(id, polyline, List.copyOf(colorsByLink.getOrDefault(id, List.of()))));
+			tracks.add(new Track(id, polyline, List.copyOf(linesByLink.getOrDefault(id, List.of()))));
 		}
-		tracks.sort(Comparator.comparing(track -> !track.lineColors().isEmpty()));
+		tracks.sort(Comparator.comparing(track -> suburbanLinks.contains(track.linkId())));
 		return List.copyOf(tracks);
 	}
 
