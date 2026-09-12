@@ -27,7 +27,7 @@ class ScenarioSummaryTest {
 	@Test
 	void countsRailTripsOfTheServiceDayPerLine() {
 		// T1 and TN run on the weekday; T3 is a bus and T2 runs on another day
-		ScenarioSummary summary = ScenarioSummary.of(FEED, new RouteVehicleAssignment(),
+		ScenarioSummary summary = ScenarioSummary.of(FEED, RouteVehicleAssignment.defaults(),
 			spec(SimulationType.REAL, null, null));
 
 		assertEquals(2, summary.trips());
@@ -37,7 +37,7 @@ class ScenarioSummaryTest {
 	@Test
 	void timeWindowKeepsTripsByFirstDeparture() {
 		// TN departs at 24:01, outside 07:00–09:00
-		ScenarioSummary summary = ScenarioSummary.of(FEED, new RouteVehicleAssignment(),
+		ScenarioSummary summary = ScenarioSummary.of(FEED, RouteVehicleAssignment.defaults(),
 			spec(SimulationType.REAL, new TimeWindow(LocalTime.of(7, 0), LocalTime.of(9, 0)), null));
 
 		assertEquals(1, summary.trips());
@@ -45,17 +45,17 @@ class ScenarioSummaryTest {
 
 	@Test
 	void fleetSharesFollowTheAssignment() {
-		// S1 alternates tsr/taf by departure index: indexes 0 and 1 are both tsr
-		ScenarioSummary summary = ScenarioSummary.of(FEED, new RouteVehicleAssignment(),
+		// S1 runs 70/30 tsr/taf spread through the day: the second departure is the taf
+		ScenarioSummary summary = ScenarioSummary.of(FEED, RouteVehicleAssignment.defaults(),
 			spec(SimulationType.REAL, null, null));
 
-		assertEquals(Map.of("tsr", 2), summary.tripsByVehicleType());
+		assertEquals(Map.of("tsr", 1, "taf", 1), summary.tripsByVehicleType());
 	}
 
 	@Test
 	void dynamicReductionEstimatesExtraTrips() {
 		// 50% shorter headways double the service: 2 trips become 4
-		ScenarioSummary summary = ScenarioSummary.of(FEED, new RouteVehicleAssignment(),
+		ScenarioSummary summary = ScenarioSummary.of(FEED, RouteVehicleAssignment.defaults(),
 			spec(SimulationType.DYNAMIC, null, 50));
 
 		assertEquals(4, summary.trips());

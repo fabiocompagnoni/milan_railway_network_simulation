@@ -31,7 +31,7 @@ class VehicleCirculationsTest {
 		// fixture trips: T1 (S1->S2->S3, dep 08:01) and TN (S1->S2, dep 24:01), line S1
 		Network network = TestNetworks.threeStationLine();
 		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-minimal"));
-		result = new TransitScheduleBuilder(feed, network, DATE, new RouteVehicleAssignment()).build();
+		result = new TransitScheduleBuilder(feed, network, DATE, RouteVehicleAssignment.defaults()).build();
 	}
 
 	private TransitLine line() {
@@ -66,7 +66,7 @@ class VehicleCirculationsTest {
 			result.vehicles().getVehicleTypes().values().iterator().next()));
 
 		Vehicles circulated = VehicleCirculations.apply(result.schedule(), result.vehicles(),
-			TURNAROUND_SECONDS, new RouteVehicleAssignment());
+			TURNAROUND_SECONDS, RouteVehicleAssignment.defaults());
 
 		// full chain: T1 ends S3 08:13, TR starts S3 08:28, ends S1 08:38,
 		// and the after-midnight TN from S1 continues on the same vehicle
@@ -78,7 +78,7 @@ class VehicleCirculationsTest {
 	@Test
 	void tooShortTurnaroundStartsANewVehicle() {
 		Vehicles circulated = VehicleCirculations.apply(result.schedule(), result.vehicles(),
-			TURNAROUND_SECONDS, new RouteVehicleAssignment());
+			TURNAROUND_SECONDS, RouteVehicleAssignment.defaults());
 
 		// T1 ends at S3, TN starts at S1: no chain possible -> one vehicle each
 		assertEquals(2, vehicleIds(line()).size());
@@ -88,10 +88,11 @@ class VehicleCirculationsTest {
 	@Test
 	void circulationVehiclesCarryServedTripsAndLineType() {
 		Vehicles circulated = VehicleCirculations.apply(result.schedule(), result.vehicles(),
-			TURNAROUND_SECONDS, new RouteVehicleAssignment());
+			TURNAROUND_SECONDS, RouteVehicleAssignment.defaults());
 
+		// two circulations on a 70/30 line: the first takes the majority type, the second the minority
 		for (Vehicle vehicle : circulated.getVehicles().values()) {
-			assertEquals("tsr", vehicle.getType().getId().toString());
+			assertTrue(Set.of("tsr", "taf").contains(vehicle.getType().getId().toString()));
 			assertNotNull(vehicle.getAttributes().getAttribute("servedTrips"));
 		}
 	}

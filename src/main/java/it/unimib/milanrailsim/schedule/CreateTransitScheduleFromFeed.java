@@ -49,7 +49,7 @@ public final class CreateTransitScheduleFromFeed {
 	static void run(Path gtfsDir, Path networkFile, LocalDate serviceDate, Path outputDir) {
 		Network network = NetworkUtils.readNetwork(networkFile.toString());
 		GtfsFeed feed = GtfsFeed.load(gtfsDir);
-		RouteVehicleAssignment assignment = new RouteVehicleAssignment();
+		RouteVehicleAssignment assignment = RouteVehicleAssignment.defaults();
 		TransitScheduleBuilder.Result result = new TransitScheduleBuilder(
 			feed, network, serviceDate, assignment).build();
 		Vehicles circulations = VehicleCirculations.apply(result.schedule(), result.vehicles(),

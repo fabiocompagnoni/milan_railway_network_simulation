@@ -29,7 +29,7 @@ class TransitScheduleBuilderTest {
 
 	private TransitScheduleBuilder.Result build() {
 		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-minimal"));
-		return new TransitScheduleBuilder(feed, network, DATE, new RouteVehicleAssignment()).build();
+		return new TransitScheduleBuilder(feed, network, DATE, RouteVehicleAssignment.defaults()).build();
 	}
 
 	@Test

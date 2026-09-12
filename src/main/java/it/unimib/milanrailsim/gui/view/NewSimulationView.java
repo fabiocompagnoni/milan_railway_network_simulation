@@ -55,7 +55,7 @@ public final class NewSimulationView extends BorderPane {
 
 	private final AppModel model;
 	private final Consumer<ScenarioSpec> onStart;
-	private final RouteVehicleAssignment assignment = new RouteVehicleAssignment();
+	private final RouteVehicleAssignment assignment = RouteVehicleAssignment.defaults();
 
 	private final TextField name = new TextField();
 	private final DatePicker day = new DatePicker();
