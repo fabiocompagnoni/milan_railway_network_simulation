@@ -4,11 +4,13 @@ import it.unimib.milanrailsim.network.FleetConfig;
 import it.unimib.milanrailsim.network.GtfsFeed;
 import it.unimib.milanrailsim.network.StationTracks;
 import it.unimib.milanrailsim.network.micro.MicroNode;
+import it.unimib.milanrailsim.network.micro.Sidings;
 import it.unimib.milanrailsim.railsim.RailsimSetup;
 import it.unimib.milanrailsim.results.AnalyzeRun;
 import it.unimib.milanrailsim.results.RunArchive;
 import it.unimib.milanrailsim.runs.RunLibrary;
 import it.unimib.milanrailsim.runs.ScenarioSpec;
+import it.unimib.milanrailsim.schedule.CreateTransitScheduleFromFeed;
 import it.unimib.milanrailsim.schedule.LineAssignments;
 import it.unimib.milanrailsim.schedule.RouteVehicleAssignment;
 import it.unimib.milanrailsim.schedule.SchedulePipeline;
@@ -105,10 +107,12 @@ public final class RailsimJob implements SimulationServer.Job {
 		int end = spec.window() == null ? Integer.MAX_VALUE : spec.window().end().toSecondOfDay();
 		StationTracks tracks = inputs.stationTracksFile() != null && Files.exists(inputs.stationTracksFile())
 			? StationTracks.read(inputs.stationTracksFile()) : StationTracks.empty();
-		List<MicroNode> microNodes = inputs.microNodesDir() != null && Files.isDirectory(inputs.microNodesDir())
-			? MicroNode.readAll(inputs.microNodesDir()) : List.of();
+		boolean hasNodes = inputs.microNodesDir() != null && Files.isDirectory(inputs.microNodesDir());
+		List<MicroNode> microNodes = hasNodes ? MicroNode.readAll(inputs.microNodesDir()) : List.of();
+		Path sidingsFile = hasNodes ? inputs.microNodesDir().resolve(CreateTransitScheduleFromFeed.SIDINGS_FILE) : null;
+		Sidings sidings = sidingsFile != null && Files.exists(sidingsFile) ? Sidings.read(sidingsFile) : Sidings.none();
 		new SchedulePipeline(GtfsFeed.load(inputs.gtfsDir()), inputs.engineNetwork(), fleet,
-			new RouteVehicleAssignment(assignments), tracks, microNodes).generate(spec.serviceDate(), start, end, scenarioDir);
+			new RouteVehicleAssignment(assignments), tracks, microNodes, sidings).generate(spec.serviceDate(), start, end, scenarioDir);
 	}
 
 	private void simulate(Path scenarioDir, Path output, FrameSampler sampler, Pacer pacer, Emitter out, Path marker) {

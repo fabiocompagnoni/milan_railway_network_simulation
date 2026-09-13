@@ -5,6 +5,7 @@ import it.unimib.milanrailsim.network.GtfsFeed;
 import it.unimib.milanrailsim.network.RailVehicleTypes;
 import it.unimib.milanrailsim.network.StationTracks;
 import it.unimib.milanrailsim.network.micro.MicroNode;
+import it.unimib.milanrailsim.network.micro.Sidings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.matsim.api.core.v01.network.Network;
@@ -41,19 +42,22 @@ public final class SchedulePipeline {
 	private final RouteVehicleAssignment assignment;
 	private final StationTracks stationTracks;
 	private final List<MicroNode> microNodes;
+	private final Sidings sidings;
 
 	/**
 	 * @param networkFile the network the micro nodes were spliced into
 	 * @param microNodes  the nodes spliced into that network; empty for a purely mesoscopic network
+	 * @param sidings     where a long layover sends a train off the network
 	 */
 	public SchedulePipeline(GtfsFeed feed, Path networkFile, FleetConfig fleet, RouteVehicleAssignment assignment,
-			StationTracks stationTracks, List<MicroNode> microNodes) {
+			StationTracks stationTracks, List<MicroNode> microNodes, Sidings sidings) {
 		this.feed = feed;
 		this.network = NetworkUtils.readNetwork(networkFile.toString());
 		this.fleet = fleet;
 		this.assignment = assignment;
 		this.stationTracks = stationTracks;
 		this.microNodes = List.copyOf(microNodes);
+		this.sidings = sidings;
 	}
 
 	/**
@@ -100,6 +104,6 @@ public final class SchedulePipeline {
 		return new TransitScheduleBuilder(feed, network, serviceDate, assignment, RailVehicleTypes.from(fleet))
 			.withStationTracks(stationTracks)
 			.withMicroNodes(microNodes)
-			.withCirculations(TURNAROUND_SECONDS, stop -> Double.POSITIVE_INFINITY);
+			.withCirculations(TURNAROUND_SECONDS, sidings::maxLayoverSeconds);
 	}
 }

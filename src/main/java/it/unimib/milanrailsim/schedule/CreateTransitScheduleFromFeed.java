@@ -4,6 +4,7 @@ import it.unimib.milanrailsim.network.FleetConfig;
 import it.unimib.milanrailsim.network.GtfsFeed;
 import it.unimib.milanrailsim.network.StationTracks;
 import it.unimib.milanrailsim.network.micro.MicroNode;
+import it.unimib.milanrailsim.network.micro.Sidings;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,6 +24,8 @@ public final class CreateTransitScheduleFromFeed {
 	private static final String DEFAULT_GTFS_DIR = "orari_trenord";
 	private static final String DEFAULT_NETWORK = "scenarios/milan/network-micro.xml";
 	private static final Path MICRO_NODES = Path.of("data", "nodes");
+	/** Sidings declaration inside the micro nodes directory. */
+	public static final String SIDINGS_FILE = "sidings.json";
 	private static final String DEFAULT_SERVICE_DATE = "2026-09-16";
 	private static final String DEFAULT_OUTPUT_DIR = "scenarios/milan";
 	/** Local survey of terminal platform tracks; the generated network carries its values. */
@@ -42,7 +45,9 @@ public final class CreateTransitScheduleFromFeed {
 	static void run(Path gtfsDir, Path networkFile, LocalDate serviceDate, Path outputDir) {
 		StationTracks tracks = Files.exists(STATION_TRACKS) ? StationTracks.read(STATION_TRACKS) : StationTracks.empty();
 		List<MicroNode> nodes = Files.isDirectory(MICRO_NODES) ? MicroNode.readAll(MICRO_NODES) : List.of();
+		Path sidingsFile = MICRO_NODES.resolve(SIDINGS_FILE);
+		Sidings sidings = Files.exists(sidingsFile) ? Sidings.read(sidingsFile) : Sidings.none();
 		new SchedulePipeline(GtfsFeed.load(gtfsDir), networkFile, FleetConfig.defaults(), RouteVehicleAssignment.defaults(),
-			tracks, nodes).generate(serviceDate, Integer.MIN_VALUE, Integer.MAX_VALUE, outputDir);
+			tracks, nodes, sidings).generate(serviceDate, Integer.MIN_VALUE, Integer.MAX_VALUE, outputDir);
 	}
 }
