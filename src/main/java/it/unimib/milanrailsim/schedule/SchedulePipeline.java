@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.core.network.NetworkUtils;
 import org.matsim.core.network.io.NetworkWriter;
+import org.matsim.pt.transitSchedule.api.TransitSchedule;
 import org.matsim.pt.transitSchedule.api.TransitScheduleWriter;
 import org.matsim.vehicles.MatsimVehicleWriter;
 import org.matsim.vehicles.Vehicles;
@@ -63,8 +64,9 @@ public final class SchedulePipeline {
 	/**
 	 * @param windowStartSeconds first departure admitted, seconds since midnight, or a negative value for no bound
 	 * @param windowEndSeconds last departure admitted, or {@link Integer#MAX_VALUE} for no bound
+	 * @return the timetable written to {@code outputDir}
 	 */
-	public void generate(LocalDate serviceDate, int windowStartSeconds, int windowEndSeconds, Path outputDir) {
+	public TransitSchedule generate(LocalDate serviceDate, int windowStartSeconds, int windowEndSeconds, Path outputDir) {
 		sizeStationsForTheWholeDay(serviceDate);
 		TransitScheduleBuilder.Result result = builder(serviceDate)
 			.withWindow(windowStartSeconds, windowEndSeconds)
@@ -86,6 +88,7 @@ public final class SchedulePipeline {
 			.mapToInt(route -> route.getDepartures().size()).sum();
 		log.info("Wrote timetable for {} to {}: {} lines, {} departures, {} circulations", serviceDate, outputDir,
 			result.schedule().getTransitLines().size(), departures, circulations.getVehicles().size());
+		return result.schedule();
 	}
 
 	/**
@@ -104,6 +107,6 @@ public final class SchedulePipeline {
 		return new TransitScheduleBuilder(feed, network, serviceDate, assignment, RailVehicleTypes.from(fleet))
 			.withStationTracks(stationTracks)
 			.withMicroNodes(microNodes)
-			.withCirculations(TURNAROUND_SECONDS, sidings::maxLayoverSeconds);
+			.withCirculations(TURNAROUND_SECONDS, terminus -> sidings.maxLayoverSeconds());
 	}
 }

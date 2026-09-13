@@ -6,24 +6,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
- * Stations with sidings or a depot ({@code data/nodes/sidings.json}) and the
- * layover beyond which a train waiting there leaves the network instead of
- * holding a platform: by day the fleet is in continuous use, so a timetable
- * gap of hours at a terminus means the unit went to the sidings.
+ * The layover beyond which a train waiting at a terminus leaves the network
+ * instead of holding a platform ({@code data/nodes/sidings.json}): by day the
+ * fleet is in continuous use, so a timetable gap of hours at a terminus means
+ * the unit went to the sidings or the depot. The rule holds at every terminus;
+ * the file also documents where such facilities were surveyed.
  */
-public record Sidings(Set<String> stations, double longLayoverSeconds) {
-
-	public Sidings {
-		stations = Set.copyOf(stations);
-	}
+public record Sidings(double longLayoverSeconds) {
 
 	/** No sidings anywhere: every layover is spent on the platform. */
 	public static Sidings none() {
-		return new Sidings(Set.of(), Double.POSITIVE_INFINITY);
+		return new Sidings(Double.POSITIVE_INFINITY);
 	}
 
 	public static Sidings read(Path file) {
@@ -33,22 +28,14 @@ public record Sidings(Set<String> stations, double longLayoverSeconds) {
 			if (threshold == null || !threshold.isNumber()) {
 				throw new IllegalArgumentException("Sidings file " + file + " lacks longLayoverThresholdMin");
 			}
-			Set<String> stations = new LinkedHashSet<>();
-			for (JsonNode location : root.path("locations")) {
-				JsonNode station = location.get("station");
-				if (station == null || station.isNull()) {
-					throw new IllegalArgumentException("Sidings location without station in " + file);
-				}
-				stations.add(station.asText());
-			}
-			return new Sidings(stations, threshold.asDouble() * 60);
+			return new Sidings(threshold.asDouble() * 60);
 		} catch (IOException e) {
 			throw new UncheckedIOException("Cannot read sidings " + file, e);
 		}
 	}
 
-	/** The longest wait a circulation may spend at a stop before the next trip: the threshold where sidings exist, unbounded elsewhere. */
-	public double maxLayoverSeconds(String stopId) {
-		return stations.contains(stopId) ? longLayoverSeconds : Double.POSITIVE_INFINITY;
+	/** The longest wait a circulation may spend at a terminus before its next trip. */
+	public double maxLayoverSeconds() {
+		return longLayoverSeconds;
 	}
 }
