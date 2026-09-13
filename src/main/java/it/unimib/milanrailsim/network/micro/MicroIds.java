@@ -41,8 +41,9 @@ public final class MicroIds {
 		return Id.createLinkId(trackId + "." + name(travel == null ? Direction.NORTH : travel));
 	}
 
-	public static String junction(Station station, Direction side) {
-		return station.id() + "." + name(side);
+	/** Base id of the junction pair of one connection on one side; {@code .in} and {@code .out} name the two nodes. */
+	public static String junction(Station station, Direction side, String connectionKey) {
+		return station.id() + "." + name(side) + "." + connectionKey;
 	}
 
 	public static String name(Direction direction) {

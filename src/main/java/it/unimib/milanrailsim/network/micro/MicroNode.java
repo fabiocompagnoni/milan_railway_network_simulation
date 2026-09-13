@@ -43,8 +43,12 @@ public record MicroNode(String id, String title, List<Station> stations, List<Se
 	public record Connection(ConnectionKind kind, String target, String bundle) {
 	}
 
-	/** A named platform track; {@code direction} is null on bidirectional (terminal) tracks. */
-	public record Track(String ref, Direction direction) {
+	/** A named platform track; {@code direction} is null on bidirectional (terminal) tracks; {@code wayIds} are its OSM ways, if surveyed. */
+	public record Track(String ref, Direction direction, List<Long> wayIds) {
+
+		public Track(String ref, Direction direction) {
+			this(ref, direction, List.of());
+		}
 	}
 
 	public record Group(String id, GroupKind kind, List<Track> tracks, Integer capacity, int otherOperatorsShare,
@@ -267,7 +271,9 @@ public record MicroNode(String id, String title, List<Station> stations, List<Se
 		for (JsonNode track : node.path("tracks")) {
 			Direction direction = track.hasNonNull("direction")
 				? Direction.valueOf(track.get("direction").asText().toUpperCase(Locale.ROOT)) : null;
-			tracks.add(new Track(text(track, "ref"), direction));
+			List<Long> wayIds = new ArrayList<>();
+			track.path("wayIds").forEach(way -> wayIds.add(way.asLong()));
+			tracks.add(new Track(text(track, "ref"), direction, List.copyOf(wayIds)));
 		}
 		Map<Direction, List<Connection>> connections = new EnumMap<>(Direction.class);
 		node.path("connections").properties().forEach(entry -> {

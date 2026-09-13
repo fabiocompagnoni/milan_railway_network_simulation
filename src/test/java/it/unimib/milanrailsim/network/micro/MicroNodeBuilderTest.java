@@ -9,7 +9,6 @@ import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.api.core.v01.network.Node;
 import org.matsim.core.network.NetworkUtils;
-import org.matsim.core.network.turnRestrictions.DisallowedNextLinks;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,7 +29,7 @@ class MicroNodeBuilderTest {
 				{
 					"id": "A", "name": "A", "kind": "terminal", "platformLengthM": null,
 					"groups": [
-						{"id": "a_main", "kind": "terminal", "tracks": [{"ref": "1", "direction": null}, {"ref": "2", "direction": null}],
+						{"id": "a_main", "kind": "terminal", "tracks": [{"ref": "1", "direction": null, "wayIds": [101]}, {"ref": "2", "direction": null}],
 							"connections": {"north": ["segment:A_B:f1"]}},
 						{"id": "a_shared", "kind": "terminal", "capacity": 3, "otherOperatorsShare": 1,
 							"connections": {"north": ["segment:A_B:f1", "meso:X"]}}
@@ -70,6 +69,7 @@ class MicroNodeBuilderTest {
 		Files.writeString(file, NODE);
 		node = MicroNode.read(file);
 		network = NetworkUtils.createNetwork();
+		// X lies west of A yet is A's northern neighbour: the station frame must follow the neighbours, not the map
 		Node x = station("X", 0, 0);
 		Node a = station("A", 1000, 0);
 		Node b = station("B", 2500, 0);
@@ -99,10 +99,10 @@ class MicroNodeBuilderTest {
 		assertEquals(25, north.getFreespeed(), 1e-9);
 		assertEquals(Boolean.TRUE, link("A_B.f1.north.exit").getAttributes().getAttribute("railsimExit"));
 		assertEquals(Boolean.TRUE, link("A_B.f1.north.entry").getAttributes().getAttribute("railsimEntry"));
-		assertEquals("A.north", link("A_B.f1.north.exit").getFromNode().getId().toString());
-		assertEquals("B.south", link("A_B.f1.north.entry").getToNode().getId().toString());
-		assertEquals("B.south", link("A_B.f1.south.exit").getFromNode().getId().toString());
-		assertEquals("A.north", link("A_B.f1.south.entry").getToNode().getId().toString());
+		assertEquals("A.north.A_B.f1.out", link("A_B.f1.north.exit").getFromNode().getId().toString());
+		assertEquals("B.south.A_B.f1.in", link("A_B.f1.north.entry").getToNode().getId().toString());
+		assertEquals("B.south.A_B.f1.out", link("A_B.f1.south.exit").getFromNode().getId().toString());
+		assertEquals("A.north.A_B.f1.in", link("A_B.f1.south.entry").getToNode().getId().toString());
 	}
 
 	@Test
@@ -116,6 +116,8 @@ class MicroNodeBuilderTest {
 		assertEquals("A", in.getAttributes().getAttribute("microStation"));
 		assertEquals("a_main", in.getAttributes().getAttribute("microGroup"));
 		assertEquals("1", in.getAttributes().getAttribute("microTrack"));
+		assertEquals("101", in.getAttributes().getAttribute("osmWayIds"));
+		assertNull(link("A.p2.in").getAttributes().getAttribute("osmWayIds"));
 		assertEquals(in.getToNode(), out.getFromNode());
 		assertEquals(200, in.getLength(), 1e-9);
 		assertEquals("provisional", in.getAttributes().getAttribute("dataStatus"));
@@ -142,57 +144,65 @@ class MicroNodeBuilderTest {
 	}
 
 	@Test
-	void throatLinksShareTheThroatResourceAndAreNonBlocking() {
-		Link approach = link("A.p1.north.in");
-		assertEquals("A.north", approach.getFromNode().getId().toString());
+	void throatLinksJoinEachTrackOnlyToItsGroupsConnections() {
+		Link approach = link("A.p1.north.A_B.f1.in");
+		assertEquals("A.north.A_B.f1.in", approach.getFromNode().getId().toString());
 		assertEquals("A.p1.b", approach.getToNode().getId().toString());
 		assertEquals("a_throat", approach.getAttributes().getAttribute("railsimResourceId"));
 		assertEquals(Boolean.TRUE, approach.getAttributes().getAttribute("railsimNonBlockingArea"));
 		assertEquals(300, approach.getLength(), 1e-9);
 		assertEquals(30 / 3.6, approach.getFreespeed(), 1e-9);
-		assertEquals("A.north", link("A.p1.north.out").getToNode().getId().toString());
+		assertEquals("A.north.A_B.f1.out", link("A.p1.north.A_B.f1.out").getToNode().getId().toString());
+		// a_main is not connected to X, a_shared is
+		assertFalse(network.getLinks().containsKey(Id.createLinkId("A.p1.north.X.in")));
+		assertTrue(network.getLinks().containsKey(Id.createLinkId("A.a_shared.1.north.X.in")));
+		assertTrue(network.getLinks().containsKey(Id.createLinkId("A.a_shared.1.north.A_B.f1.out")));
 
-		Link plain = link("B.p1.south.in");
+		Link plain = link("B.p1.south.A_B.f1.in");
 		assertNull(plain.getAttributes().getAttribute("railsimResourceId"));
 		assertEquals(100, plain.getLength(), 1e-9);
 		assertEquals("provisional", plain.getAttributes().getAttribute("dataStatus"));
-		assertTrue(network.getLinks().containsKey(Id.createLinkId("B.p1.north.out")));
-		assertTrue(network.getLinks().containsKey(Id.createLinkId("B.p2.north.in")));
-		assertTrue(network.getLinks().containsKey(Id.createLinkId("B.p2.south.out")));
-		assertFalse(network.getLinks().containsKey(Id.createLinkId("B.p1.north.in")));
+		assertTrue(network.getLinks().containsKey(Id.createLinkId("B.p1.north.C.out")));
+		assertTrue(network.getLinks().containsKey(Id.createLinkId("B.p2.north.C.in")));
+		assertTrue(network.getLinks().containsKey(Id.createLinkId("B.p2.south.A_B.f1.out")));
+		assertFalse(network.getLinks().containsKey(Id.createLinkId("B.p1.north.C.in")), "a northbound track has no northern entrance");
 	}
 
 	@Test
-	void mesoLinksAreRedirectedToTheJunctionAndFlaggedEntryOrExit() {
+	void mesoLinksAreRedirectedToTheirJunctionsAndFlaggedEntryOrExit() {
 		Link entry = link("X_A");
-		assertEquals("A.north", entry.getToNode().getId().toString());
+		assertEquals("A.north.X.in", entry.getToNode().getId().toString());
 		assertEquals(Boolean.TRUE, entry.getAttributes().getAttribute("railsimEntry"));
 		assertEquals(1000, entry.getLength(), 1e-9);
 		Link exit = link("A_X");
-		assertEquals("A.north", exit.getFromNode().getId().toString());
+		assertEquals("A.north.X.out", exit.getFromNode().getId().toString());
 		assertEquals(Boolean.TRUE, exit.getAttributes().getAttribute("railsimExit"));
-		assertEquals("B.north", link("C_B").getToNode().getId().toString());
-		assertEquals("B.north", link("B_C").getFromNode().getId().toString());
+		assertEquals("B.north.C.in", link("C_B").getToNode().getId().toString());
+		assertEquals("B.north.C.out", link("B_C").getFromNode().getId().toString());
 		assertTrue(network.getNodes().get(Id.createNodeId("A")).getInLinks().isEmpty());
 		assertEquals("test", network.getNodes().get(Id.createNodeId("A")).getAttributes().getAttribute("microNode"));
 	}
 
 	@Test
-	void turnRestrictionsKeepTrainsOnConnectedGroupsAndThroughAPlatform() {
-		Set<Id<Link>> fromX = disallowedAfter("X_A");
-		assertTrue(fromX.contains(Id.createLinkId("A.p1.north.in")), "a_main is not reachable from X");
-		assertTrue(fromX.contains(Id.createLinkId("A.p2.north.in")));
-		assertFalse(fromX.contains(Id.createLinkId("A.a_shared.1.north.in")));
-		assertTrue(fromX.contains(Id.createLinkId("A_B.f1.north.exit")), "no bypass of the station");
+	void entriesLeadOnlyToConnectedPlatformsAndNeverStraightToAnExit() {
+		Node entryNode = link("X_A").getToNode();
+		assertEquals(Set.of("A.a_shared.1.north.X.in", "A.a_shared.2.north.X.in"),
+			entryNode.getOutLinks().keySet().stream().map(Id::toString).collect(java.util.stream.Collectors.toSet()));
+		Node exitNode = link("A_X").getFromNode();
+		assertEquals(Set.of("A_X"), exitNode.getOutLinks().keySet().stream().map(Id::toString).collect(java.util.stream.Collectors.toSet()));
+		assertNotEquals(entryNode, exitNode);
+	}
 
-		Set<Id<Link>> fromSection = disallowedAfter("A_B.f1.south.entry");
-		assertFalse(fromSection.contains(Id.createLinkId("A.p1.north.in")));
-		assertTrue(fromSection.contains(Id.createLinkId("A_X")), "no bypass of the station");
-
-		Set<Id<Link>> leavingP1 = disallowedAfter("A.p1.north.out");
-		assertTrue(leavingP1.contains(Id.createLinkId("A_X")), "a_main does not lead to X");
-		assertFalse(leavingP1.contains(Id.createLinkId("A_B.f1.north.exit")));
-		assertTrue(leavingP1.contains(Id.createLinkId("A.p2.north.in")), "no hopping between platforms");
+	@Test
+	void internalNodesFollowTheDirectionOfTheNorthernNeighbours() {
+		Node hub = network.getNodes().get(Id.createNodeId("A"));
+		Node junction = network.getNodes().get(Id.createNodeId("A.north.X.in"));
+		Node platformNorthEnd = network.getNodes().get(Id.createNodeId("A.p1.b"));
+		// X is at x = 0, west of A: "north" of A points to decreasing x
+		assertTrue(junction.getCoord().getX() < hub.getCoord().getX());
+		assertTrue(platformNorthEnd.getCoord().getX() < hub.getCoord().getX());
+		// 300 m along the axis, a few metres sideways since X is the second connection of that side
+		assertEquals(300, NetworkUtils.getEuclideanDistance(hub.getCoord(), junction.getCoord()), 15);
 	}
 
 	@Test
@@ -208,15 +218,10 @@ class MicroNodeBuilderTest {
 		assertTrue(milan.getLinks().containsKey(Id.createLinkId("S01066.p10.in")));
 		assertTrue(milan.getLinks().containsKey(Id.createLinkId("S01066_S01067.f1.north")));
 		assertFalse(milan.getLinks().containsKey(Id.createLinkId("S01066_S01067")));
-		assertEquals("S01642.south", milan.getLinks().get(Id.createLinkId("S01067_S01642.f1.north.entry")).getToNode().getId().toString());
+		assertEquals("S01642.south.S01067_S01642.f1.in",
+			milan.getLinks().get(Id.createLinkId("S01067_S01642.f1.north.entry")).getToNode().getId().toString());
 		assertEquals(Boolean.TRUE, milan.getLinks().get(Id.createLinkId("S01643_S01642")).getAttributes().getAttribute("railsimEntry"));
 		assertTrue(milan.getLinks().size() > linksBefore);
-	}
-
-	private Set<Id<Link>> disallowedAfter(String linkId) {
-		DisallowedNextLinks restrictions = NetworkUtils.getDisallowedNextLinks(link(linkId));
-		assertNotNull(restrictions, "no restrictions on " + linkId);
-		return Set.copyOf(restrictions.getDisallowedLinkSequences("rail").stream().map(List::getFirst).toList());
 	}
 
 	private Link link(String id) {

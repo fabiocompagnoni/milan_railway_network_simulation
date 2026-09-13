@@ -18,10 +18,8 @@ import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.api.core.v01.network.Node;
-import org.matsim.core.network.NetworkUtils;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,16 +34,23 @@ import java.util.stream.Collectors;
  * own resource), throat links sharing one conflict resource per bundle and
  * marked as non-blocking area, and per-track section links between the
  * stations of a node. Mesoscopic links adjacent to a micro station are
- * redirected to the station's side junction and flagged as rerouting entry or
- * exit, so railsim can divert a train to a free platform of its stop area.
- * Turn restrictions keep every train on the groups its side is connected to
- * and force it through a platform track.
+ * redirected to the station and flagged as rerouting entry or exit, so railsim
+ * can divert a train to a free platform of its stop area.
  * <p>
- * Ids: junctions {@code <station>.<side>}, platform tracks {@code <station>.p<ref>}
- * (or {@code <station>.<group>.<n>} for anonymous capacity), platform link
- * ends {@code .a} (south end) and {@code .b} (north end), approach links
- * {@code <track>.<side>.in|out}, sections {@code <from>_<to>.<bundle>.<north|south>}
- * with {@code .exit} and {@code .entry} stubs.
+ * Each connection of a station side (a meso neighbour or a section bundle)
+ * gets its own pair of junction nodes, one where trains enter and one where
+ * they leave, joined only to the platforms of the groups declaring that
+ * connection. Where a train may go is thus fixed by the topology alone: a
+ * railsim detour ends at the node the exit link starts from without checking
+ * turn restrictions, so restrictions could not have enforced it.
+ * <p>
+ * Ids: junctions {@code <station>.<side>.<connection>.in|out}, platform tracks
+ * {@code <station>.p<ref>} (or {@code <station>.<group>.<n>} for anonymous
+ * capacity), platform link ends {@code .a} (south end) and {@code .b} (north
+ * end), approach links {@code <track>.<side>.<connection>.in|out}, sections
+ * {@code <from>_<to>.<bundle>.<north|south>} with {@code .exit} and
+ * {@code .entry} stubs. Internal nodes are laid out along the direction of the
+ * station's northern neighbours, one track every {@value #TRACK_SPACING_M} m.
  */
 public final class MicroNodeBuilder {
 
@@ -56,23 +61,29 @@ public final class MicroNodeBuilder {
 	static final double APPROACH_SPEED_DEFAULT_KMH = 30.0;
 	static final double STUB_LENGTH_M = 100.0;
 	static final double MIN_SECTION_LENGTH_M = 100.0;
+	static final double TRACK_SPACING_M = 5.0;
 	private static final double PLATFORM_SPEED_MS = 13.9;
 	private static final double SECTION_SPEED_DEFAULT_MS = 25.0;
-	private static final double TRACK_SPACING_M = 5.0;
 	private static final double JUNCTION_OFFSET_M = 300.0;
+	private static final double JUNCTION_SPACING_M = 10.0;
 	private static final String MODE = "rail";
 	private static final String PROVISIONAL = "provisional";
 
 	private final Network network;
 
-	private record Approach(Station station, Group group, Direction side) {
+	/** Entry and exit node of one connection on one side of a station. */
+	private record Junction(Node in, Node out) {
 	}
 
-	/** Approach links from a junction into a platform, by link id. */
-	private final Map<Id<Link>, Approach> approachesIn = new HashMap<>();
-	/** Links a train may take after leaving a platform towards a junction, by approach-out link id. */
-	private final Map<Id<Link>, Set<Id<Link>>> exitsAfter = new HashMap<>();
-	private final Set<Id<Node>> junctions = new java.util.LinkedHashSet<>();
+	private record Frame(Coord origin, double[] north, double[] left) {
+
+		Coord at(double along, double across) {
+			return new Coord(origin.getX() + north[0] * along + left[0] * across,
+				origin.getY() + north[1] * along + left[1] * across);
+		}
+	}
+
+	private final Map<String, Junction> junctions = new HashMap<>();
 
 	public MicroNodeBuilder(Network network) {
 		this.network = network;
@@ -87,7 +98,6 @@ public final class MicroNodeBuilder {
 				buildSegment(node, segment);
 			}
 		}
-		applyTurnRestrictions();
 	}
 
 	private record TrackEnds(String id, Group group, Track track, Node a, Node b) {
@@ -99,30 +109,84 @@ public final class MicroNodeBuilder {
 			throw new IllegalArgumentException("Micro station " + station.id() + " is not a node of the meso network");
 		}
 		hub.getAttributes().putAttribute("microNode", node.id());
+		Frame frame = frameOf(station, hub);
 
-		Map<Direction, Node> sides = new EnumMap<>(Direction.class);
 		for (Direction side : Direction.values()) {
-			if (station.groups().stream().anyMatch(group -> group.connections().containsKey(side))) {
-				double dy = side == Direction.NORTH ? JUNCTION_OFFSET_M : -JUNCTION_OFFSET_M;
-				Node junction = addNode(MicroIds.junction(station, side), hub.getCoord().getX(), hub.getCoord().getY() + dy);
-				sides.put(side, junction);
-				junctions.add(junction.getId());
+			int index = 0;
+			for (Connection connection : connectionsOf(station, side)) {
+				double along = side == Direction.NORTH ? JUNCTION_OFFSET_M : -JUNCTION_OFFSET_M;
+				double across = index++ * JUNCTION_SPACING_M;
+				String base = MicroIds.junction(station, side, key(connection));
+				Junction junction = new Junction(
+					addNode(base + ".in", frame.at(along, across)),
+					addNode(base + ".out", frame.at(along, across + JUNCTION_SPACING_M / 2)));
+				junctions.put(base, junction);
 			}
 		}
 
 		int trackIndex = 0;
 		for (Group group : station.groups()) {
-			for (TrackEnds ends : platformTracks(node, station, group, hub, trackIndex)) {
+			for (TrackEnds ends : platformTracks(node, station, group, frame, trackIndex)) {
 				trackIndex++;
-				for (Direction side : group.connections().keySet()) {
-					addApproachLinks(node, station, group, ends, side, sides.get(side));
-				}
+				group.connections().forEach((side, connections) -> connections.forEach(connection ->
+					addApproachLinks(node, station, group, ends, side, connection)));
 			}
 		}
-		redirectMesoLinks(station, sides);
+		redirectMesoLinks(station);
 	}
 
-	private List<TrackEnds> platformTracks(MicroNode node, Station station, Group group, Node hub, int firstIndex) {
+	/** Every distinct connection any group of the station declares on a side, in declaration order. */
+	private static List<Connection> connectionsOf(Station station, Direction side) {
+		Map<String, Connection> distinct = new LinkedHashMap<>();
+		for (Group group : station.groups()) {
+			for (Connection connection : group.connections().getOrDefault(side, List.of())) {
+				distinct.putIfAbsent(key(connection), connection);
+			}
+		}
+		return List.copyOf(distinct.values());
+	}
+
+	static String key(Connection connection) {
+		return connection.kind() == ConnectionKind.MESO
+			? connection.target()
+			: connection.target() + "." + connection.bundle();
+	}
+
+	/**
+	 * Local axes of the station: "north" points at the mean of the meso
+	 * neighbours declared on the north side (or away from the southern ones),
+	 * "left" is perpendicular, where tracks are spread.
+	 */
+	private Frame frameOf(Station station, Node hub) {
+		double[] north = meanDirection(station, hub, Direction.NORTH);
+		if (north == null) {
+			double[] south = meanDirection(station, hub, Direction.SOUTH);
+			north = south == null ? new double[] { 0, 1 } : new double[] { -south[0], -south[1] };
+		}
+		return new Frame(hub.getCoord(), north, new double[] { -north[1], north[0] });
+	}
+
+	private double[] meanDirection(Station station, Node hub, Direction side) {
+		double dx = 0;
+		double dy = 0;
+		int count = 0;
+		for (Connection connection : connectionsOf(station, side)) {
+			if (connection.kind() != ConnectionKind.MESO) {
+				continue;
+			}
+			Node neighbour = network.getNodes().get(Id.createNodeId(connection.target()));
+			if (neighbour == null) {
+				continue;
+			}
+			dx += neighbour.getCoord().getX() - hub.getCoord().getX();
+			dy += neighbour.getCoord().getY() - hub.getCoord().getY();
+			count++;
+		}
+		double length = Math.hypot(dx, dy);
+		return count == 0 || length == 0 ? null : new double[] { dx / length, dy / length };
+	}
+
+	private List<TrackEnds> platformTracks(MicroNode node, Station station, Group group, Frame frame, int firstIndex) {
 		double length = station.platformLengthM().orElse(PLATFORM_LENGTH_DEFAULT_M);
 		boolean provisional = station.platformLengthM().isEmpty();
 		boolean oneSided = group.connections().size() == 1;
@@ -130,9 +194,9 @@ public final class MicroNodeBuilder {
 		int index = firstIndex;
 		for (Track track : group.effectiveTracks()) {
 			String id = MicroIds.trackId(station, group, track);
-			double x = hub.getCoord().getX() + index++ * TRACK_SPACING_M;
-			Node a = addNode(id + ".a", x, hub.getCoord().getY() - length / 2);
-			Node b = addNode(id + ".b", x, hub.getCoord().getY() + length / 2);
+			double across = index++ * TRACK_SPACING_M;
+			Node a = addNode(id + ".a", frame.at(-length / 2, across));
+			Node b = addNode(id + ".b", frame.at(length / 2, across));
 			if (track.direction() == Direction.NORTH) {
 				addPlatformLink(id, id, a, b, length, provisional, node, station, group, track);
 			} else if (track.direction() == Direction.SOUTH) {
@@ -162,12 +226,16 @@ public final class MicroNodeBuilder {
 		link.getAttributes().putAttribute("microStation", station.id());
 		link.getAttributes().putAttribute("microGroup", group.id());
 		link.getAttributes().putAttribute("microTrack", track.ref());
+		if (!track.wayIds().isEmpty()) {
+			link.getAttributes().putAttribute("osmWayIds", joinWays(track.wayIds()));
+		}
 		if (provisional) {
 			link.getAttributes().putAttribute("dataStatus", PROVISIONAL);
 		}
 	}
 
-	private void addApproachLinks(MicroNode node, Station station, Group group, TrackEnds ends, Direction side, Node junction) {
+	private void addApproachLinks(MicroNode node, Station station, Group group, TrackEnds ends, Direction side,
+			Connection connection) {
 		Node end = side == Direction.NORTH ? ends.b() : ends.a();
 		Direction trackDirection = ends.track().direction();
 		boolean inbound = trackDirection == null || (trackDirection == Direction.NORTH) == (side == Direction.SOUTH);
@@ -175,14 +243,13 @@ public final class MicroNodeBuilder {
 		Optional<Throat> throat = station.throats().stream()
 			.filter(candidate -> candidate.side() == side && candidate.groups().contains(group.id()))
 			.findFirst();
-		String prefix = ends.id() + "." + MicroIds.name(side);
+		Junction junction = junctions.get(MicroIds.junction(station, side, key(connection)));
+		String prefix = ends.id() + "." + MicroIds.name(side) + "." + key(connection);
 		if (inbound) {
-			Link in = addThroatLink(prefix + ".in", junction, end, throat, node, station);
-			approachesIn.put(in.getId(), new Approach(station, group, side));
+			addThroatLink(prefix + ".in", junction.in(), end, throat, node, station);
 		}
 		if (outbound) {
-			Link out = addThroatLink(prefix + ".out", end, junction, throat, node, station);
-			exitsAfter.put(out.getId(), exitsOf(station, group, side));
+			addThroatLink(prefix + ".out", end, junction.out(), throat, node, station);
 		}
 	}
 
@@ -204,30 +271,7 @@ public final class MicroNodeBuilder {
 		return link;
 	}
 
-	/** The links a train may take when it leaves a group's tracks towards a side: its declared connections only. */
-	private static Set<Id<Link>> exitsOf(Station station, Group group, Direction side) {
-		return group.connections().get(side).stream()
-			.map(connection -> exitLinkId(station, connection, side))
-			.collect(Collectors.toSet());
-	}
-
-	private static Id<Link> exitLinkId(Station station, Connection connection, Direction side) {
-		if (connection.kind() == ConnectionKind.MESO) {
-			return Id.createLinkId(station.id() + "_" + connection.target());
-		}
-		Direction travel = side == Direction.NORTH ? Direction.NORTH : Direction.SOUTH;
-		return Id.createLinkId(connection.target() + "." + connection.bundle() + "." + MicroIds.name(travel) + ".exit");
-	}
-
-	private static Id<Link> entryLinkId(Station station, Connection connection, Direction side) {
-		if (connection.kind() == ConnectionKind.MESO) {
-			return Id.createLinkId(connection.target() + "_" + station.id());
-		}
-		Direction travel = side == Direction.NORTH ? Direction.SOUTH : Direction.NORTH;
-		return Id.createLinkId(connection.target() + "." + connection.bundle() + "." + MicroIds.name(travel) + ".entry");
-	}
-
-	private void redirectMesoLinks(Station station, Map<Direction, Node> junctions) {
+	private void redirectMesoLinks(Station station) {
 		Map<String, Direction> sideOfNeighbour = new LinkedHashMap<>();
 		for (Group group : station.groups()) {
 			group.connections().forEach((side, connections) -> connections.stream()
@@ -241,15 +285,15 @@ public final class MicroNodeBuilder {
 				}));
 		}
 		sideOfNeighbour.forEach((neighbour, side) -> {
-			Node junction = junctions.get(side);
+			Junction junction = junctions.get(MicroIds.junction(station, side, neighbour));
 			Link incoming = network.getLinks().get(Id.createLinkId(neighbour + "_" + station.id()));
 			if (incoming != null) {
-				Link redirected = replaceEnd(incoming, station.id(), junction);
+				Link redirected = replaceEnd(incoming, station.id(), junction.in());
 				redirected.getAttributes().putAttribute("railsimEntry", true);
 			}
 			Link outgoing = network.getLinks().get(Id.createLinkId(station.id() + "_" + neighbour));
 			if (outgoing != null) {
-				Link redirected = replaceEnd(outgoing, station.id(), junction);
+				Link redirected = replaceEnd(outgoing, station.id(), junction.out());
 				redirected.getAttributes().putAttribute("railsimExit", true);
 			}
 			if (incoming == null && outgoing == null) {
@@ -278,26 +322,26 @@ public final class MicroNodeBuilder {
 	private void buildSegment(MicroNode node, Segment segment) {
 		Station from = node.station(segment.from());
 		Station to = node.station(segment.to());
-		Node fromJunction = network.getNodes().get(Id.createNodeId(from.id() + ".north"));
-		Node toJunction = network.getNodes().get(Id.createNodeId(to.id() + ".south"));
-		if (fromJunction == null || toJunction == null) {
-			throw new IllegalArgumentException("Segment " + segment.id() + " needs a north side at " + from.id()
-				+ " and a south side at " + to.id());
-		}
 		removeMesoLink(from.id() + "_" + to.id());
 		removeMesoLink(to.id() + "_" + from.id());
 		int bundleIndex = 0;
 		for (Map.Entry<String, Bundle> entry : segment.bundles().entrySet()) {
 			String bundleId = entry.getKey();
 			Bundle bundle = entry.getValue();
-			double fromApproach = approachLength(from, Direction.NORTH);
-			double toApproach = approachLength(to, Direction.SOUTH);
+			String connection = segment.id() + "." + bundleId;
+			Junction atFrom = junctions.get(MicroIds.junction(from, Direction.NORTH, connection));
+			Junction atTo = junctions.get(MicroIds.junction(to, Direction.SOUTH, connection));
+			if (atFrom == null || atTo == null) {
+				throw new IllegalArgumentException("Bundle " + bundleId + " of segment " + segment.id()
+					+ " must be a north connection at " + from.id() + " and a south connection at " + to.id());
+			}
+			double approaches = approachLength(from, Direction.NORTH) + approachLength(to, Direction.SOUTH);
 			double speed = equivalentSpeed(bundle, from);
 			double offset = bundleIndex++ * TRACK_SPACING_M;
-			addSectionTrack(node, segment, bundleId, Direction.NORTH, bundle.north(), fromJunction, toJunction,
-				fromApproach + toApproach, speed, offset);
-			addSectionTrack(node, segment, bundleId, Direction.SOUTH, bundle.south(), toJunction, fromJunction,
-				fromApproach + toApproach, speed, offset);
+			addSectionTrack(node, segment, bundleId, Direction.NORTH, bundle.north(), atFrom.out(), atTo.in(),
+				approaches, speed, offset);
+			addSectionTrack(node, segment, bundleId, Direction.SOUTH, bundle.south(), atTo.out(), atFrom.in(),
+				approaches, speed, offset);
 		}
 	}
 
@@ -305,8 +349,8 @@ public final class MicroNodeBuilder {
 			Node start, Node end, double approaches, double speed, double offset) {
 		String id = segment.id() + "." + bundleId + "." + MicroIds.name(travel);
 		double length = Math.max(MIN_SECTION_LENGTH_M, track.lengthM() - approaches - 2 * STUB_LENGTH_M);
-		Node a = addNode(id + ".a", lerp(start, end, 0.1) + offset, lerpY(start, end, 0.1));
-		Node b = addNode(id + ".b", lerp(start, end, 0.9) + offset, lerpY(start, end, 0.9));
+		Node a = addNode(id + ".a", between(start, end, 0.1, offset));
+		Node b = addNode(id + ".b", between(start, end, 0.9, offset));
 		Link exit = addLink(id + ".exit", start, a, STUB_LENGTH_M, speed);
 		exit.getAttributes().putAttribute("railsimExit", true);
 		Link main = addLink(id, a, b, length, speed);
@@ -314,8 +358,7 @@ public final class MicroNodeBuilder {
 		main.getAttributes().putAttribute("microSegment", segment.id());
 		main.getAttributes().putAttribute("microBundle", bundleId);
 		if (!track.wayIds().isEmpty()) {
-			main.getAttributes().putAttribute("osmWayIds",
-				track.wayIds().stream().map(String::valueOf).collect(Collectors.joining(" ")));
+			main.getAttributes().putAttribute("osmWayIds", joinWays(track.wayIds()));
 		}
 		Link entry = addLink(id + ".entry", b, end, STUB_LENGTH_M, speed);
 		entry.getAttributes().putAttribute("railsimEntry", true);
@@ -366,43 +409,12 @@ public final class MicroNodeBuilder {
 		return time > 0 && length > 0 ? length / time : SECTION_SPEED_DEFAULT_MS;
 	}
 
-	/**
-	 * At each junction an incoming link may continue only onto the approach
-	 * links of the groups connected to it, and a train leaving a platform only
-	 * onto that group's declared exits: no bypass of the station, no hopping
-	 * between platforms.
-	 */
-	private void applyTurnRestrictions() {
-		for (Id<Node> junctionId : junctions) {
-			Node junction = network.getNodes().get(junctionId);
-			for (Link incoming : junction.getInLinks().values()) {
-				Set<Id<Link>> allowed = exitsAfter.containsKey(incoming.getId())
-					? exitsAfter.get(incoming.getId())
-					: approachesReachableFrom(junction, incoming);
-				List<Id<Link>> disallowed = junction.getOutLinks().keySet().stream()
-					.filter(next -> !allowed.contains(next))
-					.toList();
-				for (Id<Link> next : disallowed) {
-					NetworkUtils.addDisallowedNextLinks(incoming, MODE, List.of(next));
-				}
-			}
-		}
+	private static String joinWays(List<Long> wayIds) {
+		return wayIds.stream().map(String::valueOf).collect(Collectors.joining(" "));
 	}
 
-	/** Approach links of the groups that declare the incoming link's origin as a connection on this side. */
-	private Set<Id<Link>> approachesReachableFrom(Node junction, Link incoming) {
-		return junction.getOutLinks().keySet().stream()
-			.filter(approachesIn::containsKey)
-			.filter(candidate -> {
-				Approach approach = approachesIn.get(candidate);
-				return approach.group().connections().getOrDefault(approach.side(), List.of()).stream()
-					.anyMatch(connection -> entryLinkId(approach.station(), connection, approach.side()).equals(incoming.getId()));
-			})
-			.collect(Collectors.toSet());
-	}
-
-	private Node addNode(String id, double x, double y) {
-		Node node = network.getFactory().createNode(Id.createNodeId(id), new Coord(x, y));
+	private Node addNode(String id, Coord coord) {
+		Node node = network.getFactory().createNode(Id.createNodeId(id), coord);
 		network.addNode(node);
 		return node;
 	}
@@ -418,11 +430,14 @@ public final class MicroNodeBuilder {
 		return link;
 	}
 
-	private static double lerp(Node start, Node end, double fraction) {
-		return start.getCoord().getX() + (end.getCoord().getX() - start.getCoord().getX()) * fraction;
-	}
-
-	private static double lerpY(Node start, Node end, double fraction) {
-		return start.getCoord().getY() + (end.getCoord().getY() - start.getCoord().getY()) * fraction;
+	/** A point along the line between two nodes, shifted sideways by {@code offset}. */
+	private static Coord between(Node start, Node end, double fraction, double offset) {
+		double dx = end.getCoord().getX() - start.getCoord().getX();
+		double dy = end.getCoord().getY() - start.getCoord().getY();
+		double length = Math.hypot(dx, dy);
+		double leftX = length == 0 ? 0 : -dy / length;
+		double leftY = length == 0 ? 0 : dx / length;
+		return new Coord(start.getCoord().getX() + dx * fraction + leftX * offset,
+			start.getCoord().getY() + dy * fraction + leftY * offset);
 	}
 }
