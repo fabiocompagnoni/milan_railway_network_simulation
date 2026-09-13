@@ -1473,7 +1473,7 @@
 			<attribute name="servedTrips" class="java.lang.String">125611-7b3aba72,125616-bbc8c56d,125621-c69edd5b,125626-de3c3d6c,125631-539d5dbd,125636-00651995,125641-5d8b59f1,125646-15bc2e28,125651-a61f8ec6,125656-76d57fb5,125661-3d748b28,125666-ae73d9b7</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S12_circ_2" type="tsr">
+	<vehicle id="S12_circ_2" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125613-1d0079e2,125618-dd0cab03,125623-618f7ba4,125628-ca0e6487,125633-e5b4e4b4,125638-5db1d45a,125643-cd150820,125648-41c9d824,125653-5f588b86,125658-e4804bef,125663-1a5c98c5,125668-bf6d83dc</attribute>
 		</attributes>
@@ -1498,7 +1498,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124311-3674fad3,124318-f228a37c,124323-36a32814,124330-28e52392,124335-dee3c50b,124342-834b3c9a,124347-e85130d5,124354-7b6ed539,124359-f38667dd,124366-da4286fc,124369-734f04b6,124376-a4b7f885,124379-25f13f67,124386-98d60fa9</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S13_circ_2" type="tsr">
+	<vehicle id="S13_circ_2" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124314-32bd94bc,124317-1a8ebda0,124324-c42d4e72,124329-25242500,124336-0c14500d,124341-73658de9,124348-f2470a46,124353-c7e86b15,124360-ef47bb9b,124365-fe394378,124372-68102bb6,124375-3638bd88,124382-df006e06</attribute>
 		</attributes>
@@ -1518,7 +1518,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124315-b95c1b15,124322-a03e60c1,124327-582327a4,124334-e58f4593,124339-eecd7ee6,124346-65107840,124351-828284bf,124358-e072d3ec,124363-f37b0be3,124370-2fa61d46,124373-93b0d12e,124380-c5b9a43f,124383-7c1c72ca</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S13_circ_6" type="tsr">
+	<vehicle id="S13_circ_6" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124321-b1c6b785,124328-2ebcae2a,124333-db3f96e3,124340-bb464f1b,124345-83bc02f9,124352-b529c96a,124357-c04591ec,124364-dd375ecc</attribute>
 		</attributes>
@@ -1528,7 +1528,7 @@
 			<attribute name="servedTrips" class="java.lang.String">125917-39ea49cc,125924-186910cb,125927-b10cbb1f,125934-00026bbf,125937-9eb2ae92,125944-23146fe2,125947-266b5f34,125954-5756c1d5,125957-514ac21b,125964-9ab99fb7,125967-7f2084f8,125974-9a90aa80</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S19_circ_2" type="tsr">
+	<vehicle id="S19_circ_2" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125920-0c024682,125923-da9bd19f,125930-f6d18778,125933-cd350ab7,125940-f21b222e,125943-ac5dbe56,125950-0a54ed45,125953-b1f2fce9,125960-b6dde266,125963-cd3f3f33,125970-3a271f40,125973-59915f3f,125980-d02493ba</attribute>
 		</attributes>
@@ -1553,7 +1553,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124111-43868258,124116-cf6cec6f,124125-61467e27,124130-35002628,124139-ef34df48,124144-df3cbd2a,124153-6067f499,124158-3de8c54f,124167-52186112,124172-9e3b1fb4</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S1_circ_2" type="tsr">
+	<vehicle id="S1_circ_2" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124113-567ec1f3,124118-7068ce60,124127-0f8e25fd,124132-535b2d79,124141-b370398c,124146-1f75aa2e,124155-31df849c,124160-73ca6d13,124169-6c9a2fc1,124174-0c081f19,124181-7a17793f,124186-9132a6eb</attribute>
 		</attributes>
@@ -1573,7 +1573,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124117-36e47bdc,124122-671f7120,124131-50584a60,124136-71c23657,124145-3734e1bd,124150-5b9eab97,124159-72ea8a65,124164-0e0e5b0b,124173-ea2edd90,124178-bbcd1506</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S1_circ_6" type="tsr">
+	<vehicle id="S1_circ_6" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124119-9d325949,124124-0985d049,124133-f7247fbf,124138-684a5d0a,124147-e62fa721,124152-1fc57654,124161-fda7d0fc,124166-5855de4d,124175-690d291d,124180-81de163a</attribute>
 		</attributes>
@@ -1583,7 +1583,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124121-b72870a6,124126-c1b71511,124135-293a2192,124140-2132ac92,124149-52bb08fa,124154-c8d002f8,124163-acf2bb5f,124168-df804fd3,124177-673f48e1,124182-cff35139</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S1_circ_8" type="taf">
+	<vehicle id="S1_circ_8" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124179-c0dae7d9,124184-48ed0764</attribute>
 		</attributes>
@@ -1593,7 +1593,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124217-347a1b62,124218-bb7c3fe6,124225-a2b846ca,124226-9d12c631,124235-814d759f,124236-1ff44a1f,124245-6e882d68,124246-c70fadcf,124255-eb229c00,124256-1cad9606,124265-188cf5e6,124266-fd343afa,1922680-2ee88ff1</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S2_circ_2" type="tsr">
+	<vehicle id="S2_circ_2" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124219-072a97c0,124220-52efd1c2,124229-aff8c5a2,124230-6bc5240f,124239-674eec6b,124240-e23995b0,124249-86a40bfd,124250-90783fd8,124259-e79e5c98,124260-389db21b,124269-f0cc7904,124270-5855ee65</attribute>
 		</attributes>
@@ -1638,7 +1638,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1900801-382f0274,1900806-291dfd4a,1900815-9b971b3d,1900822-fde6c18a,1900825-b36d46f3,1900830-cdfa46cf,1900833-c60499c6,1900838-d912e94c,1900841-d8c5a5af,1900846-edc14eb4,1900851-afeefb85,1900854-f4138328,1900861-e3117dee,1900866-de20f03d,1900875-c3b8e683,1900876-e83e9589,1900885-76474b5e,1900884-b6bf9bf5,1900895-b1745d2b,1900892-62f799ba</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S3_circ_2" type="tsr">
+	<vehicle id="S3_circ_2" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900802-6e221a8a,1900811-65cfab70,1900814-ecf13cae,1900821-495a1ce6,1900826-3a941cc7,1900829-660f85f1,1900834-0159aeda,1900837-e0d3a380,1900842-eb7a44d7,1900847-af1f8d1d,1900850-0ffb3e73,1900857-41c29bde,1900858-cb90856b,1900869-309edf9b,1900872-28e974b0,1900881-434e4256,1900880-5e80f67c,1900889-64a1aacb,1900888-728589df</attribute>
 		</attributes>
@@ -1658,7 +1658,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1900701-8a95b09d</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S4_circ_2" type="tsr">
+	<vehicle id="S4_circ_2" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1901709-ab14c15b,1900716-c483f38f,1900719-ac0c8d8b,1900728-9fa65ab3,1902729-47dc4abf,1902734-397b6bc5,1902735-77f4faf2,1902740-eca2244c,1902743-c0b1e0ea,1902746-e7a367db,1902749-4e4ebae9,1902752-0b3a3569,1902757-30a79b66,1902758-8f862dda,1900765-305307f9,1900770-f57e5ae7,1900777-bbbb705a,1900780-f0c0e72d,1900787-df466a25,1900788-56bd374c,1900795-607db9bd</attribute>
 		</attributes>
@@ -1683,7 +1683,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124515-84d000f3,124522-0534d859,124535-87bda4ee,124542-0d000b04,124555-3334616e,124562-352baebb,124575-11924b8f,124582-7dd4c0df</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S5_circ_10" type="tsr">
+	<vehicle id="S5_circ_10" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124512-fe2ab2d6,124525-81b657e5,124532-119fd47d,124545-7bc209e2,124552-1d716352,124565-6cdc15fb,124572-e89c3c25,124585-a5181eeb</attribute>
 		</attributes>
@@ -1703,7 +1703,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124517-9dc19de4,124524-defe3c17,124537-939b2175,124544-82d076e9,124557-525d0078,124564-76e25de5,124577-b8f59f02,124584-7a3d000c</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S5_circ_5" type="tsr">
+	<vehicle id="S5_circ_5" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124513-019428f2,124520-31fdf842,124533-39e4aa7c,124540-9f9c41e9,124553-c86efb6c,124560-39513bb0,124573-95e64137,124580-65873b6d</attribute>
 		</attributes>
@@ -1713,7 +1713,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124508-4af87136,124521-860e8e08,124528-30aba5a2,124541-9b2a2638,124548-c79531b3,124561-0a7924e9,124568-68dfcd9f,124581-eb38adc2</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S5_circ_7" type="taf">
+	<vehicle id="S5_circ_7" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124516-c905f837,124529-d41e3032,124536-5e511766,124549-4cebad86,124556-b39cf6ab,124569-7da7504a,124576-ef009568</attribute>
 		</attributes>
@@ -1723,7 +1723,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124519-3e7f602c,124526-e3c40f65,124539-376a7ebd,124546-fb139063,124559-88e10df5,124566-8478266b,124579-595258a4,124586-3aa1d9f0</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S5_circ_9" type="taf">
+	<vehicle id="S5_circ_9" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124510-4c234a49,124523-e38afd73,124530-d6a58d00,124543-0b6cdcc8,124550-d96d0edf,124563-eae311cf,124570-87962016,124583-07c4eea8</attribute>
 		</attributes>
@@ -1733,7 +1733,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124613-3d1682f0,124616-877e8b8d,124625-ecef9a8e,124632-35b366a0,124641-3b1b5319,124648-8e752ea2,124687-458303b5,124690-cea3fba6,124675-167f8a50,124682-b6f30214</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S6_circ_10" type="tsr">
+	<vehicle id="S6_circ_10" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124676-f4a48b21,124685-1bf7a808</attribute>
 		</attributes>
@@ -1753,7 +1753,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124614-001c765c,124623-c10c0719,124630-abd0df23,124639-6988689b,124646-8bec00aa,124655-df9d05a5,124662-a9341d15,124671-8c79e142,124678-3420d767</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S6_circ_5" type="tsr">
+	<vehicle id="S6_circ_5" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124605-76436081,124608-5f1bd89b,124637-ad60cf55,124644-5f4ab7da,124653-58b48016,124660-d74e91c7,124699-98beed5f</attribute>
 		</attributes>
@@ -1763,7 +1763,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124618-fc9fce06,124627-951e046a,124634-121c7d7d,124643-b65d5645,124650-9a086902,124689-bfed088b,124692-90172c50,124677-c43f926a,124684-af9726fe</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S6_circ_7" type="taf">
+	<vehicle id="S6_circ_7" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124600-802959b0,124629-7932b19d,124636-31bba830,124645-9317803e,124652-83346004,124691-526188ef,124694-3b56743e,124679-8dac217a</attribute>
 		</attributes>
@@ -1773,7 +1773,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124607-d0100c6a,124688-80a94204,124673-cbc7939a,124680-bd2c3abf</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S6_circ_9" type="taf">
+	<vehicle id="S6_circ_9" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124602-9e59dc3e,124631-c7a5ee74,124638-6e402f7e,124647-ae2d5fe2,124654-ed365d44,124693-2269242f,124696-137195a4,124681-2aaa44e4</attribute>
 		</attributes>
@@ -1828,7 +1828,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124817-ec76cc72,124820-3d742bcb,124831-a1ad1663,124834-b2d08bb3,124845-0f61e267,124848-be1155ef,124859-8bf26c2c,124862-5a55f47d,124873-b2fe41b3,124876-7e0f329a,124887-beab6d98</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S8_circ_2" type="tsr">
+	<vehicle id="S8_circ_2" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124814-052bb2da,124825-ec305a59,124828-9324e336,124839-84ef212b,124842-cb36d08b,124853-a53b462d,124856-92b5794c,124867-58692c83,124870-4e244c53,124881-6a81661d,124884-85cb6646</attribute>
 		</attributes>
@@ -1848,7 +1848,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124821-3962eb25,124824-1611ae5d,124835-0a053948,124838-a0e8c18c,124849-1ba74796,124852-a68d08a5,124863-7b874acd,124866-41110d9e,124877-59b09894,124880-14a7ca4f</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S8_circ_6" type="tsr">
+	<vehicle id="S8_circ_6" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124818-a9b99ddc,124829-36ed878e,124832-e06a9afb,124843-eaa5fec1,124846-d359769b,124857-3899c73d,124860-97a083b4,124871-3b8561b4,124874-74cd5ea7,124885-0f3a64ca</attribute>
 		</attributes>
@@ -1858,7 +1858,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124823-b6981705,124826-f5b2c3d2,124837-68d36a2a,124840-9e9eb874,124851-b91632aa,124854-74b8bb31,124865-0b0cb949,124868-f35f581d,124879-a836c432,124882-1d1cbf14</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S8_circ_8" type="taf">
+	<vehicle id="S8_circ_8" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124886-ca9daa91</attribute>
 		</attributes>
@@ -1868,7 +1868,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124914-6467a1e0,124925-5d5e9682,124934-fd86c87d,124945-de349411,124954-f8063c99,124965-f9ca3f38,124990-d2a5248d,124985-0fd10f11</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S9_circ_10" type="tsr">
+	<vehicle id="S9_circ_10" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124922-fd10e1b7,124933-397dbc5e,124942-0d3564c9,124953-f920ae7b,124962-9c42c8a1,124973-e0142985,124982-cbe8770d</attribute>
 		</attributes>
@@ -1888,7 +1888,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124921-0cd6c5b1,124930-595ca853,124941-f4a9f9c6,124950-3665b450,124961-39083981,124970-372de3b9,124981-b4cc9657</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S9_circ_5" type="tsr">
+	<vehicle id="S9_circ_5" type="taf">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124920-7042e9a5,124931-abe8e8d8,124940-54ea5fd5,124951-7af5ed06,124960-04bab37c,124971-40e98d7c,124980-00729287</attribute>
 		</attributes>
@@ -1898,7 +1898,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124917-8aba8928,124926-207e5d1a,124937-6f5e28f9,124946-e8e0905b,124957-9fac0bcf,124966-0341b4af,124977-052b8e2b,124986-e8ffe147</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S9_circ_7" type="taf">
+	<vehicle id="S9_circ_7" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124918-3b28c564,124929-46cb41aa,124938-724e5627,124949-8ae7745c,124958-d0d0392b,124969-23936b86,124998-686ff48b</attribute>
 		</attributes>
@@ -1908,7 +1908,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124909-69ac425c,124928-a2b7f32d,124939-438b741b,124948-c3fa2189,124959-7e8139c1,124968-eb11140d,124979-8e49170e</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S9_circ_9" type="taf">
+	<vehicle id="S9_circ_9" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124923-f595c031,124932-0e0bb073,124943-c1601baf,124952-79771441,124963-9228c6c3,124972-6060b3d7,124983-4d70bb33</attribute>
 		</attributes>
