@@ -47,7 +47,7 @@ public final class StationStopLinks {
 	public static void addStopLinks(Network network, StationTracks stationTracks) {
 		for (Node node : new ArrayList<>(network.getNodes().values())) {
 			Id<Link> id = stopLinkId(node.getId());
-			if (network.getLinks().containsKey(id)) {
+			if (network.getLinks().containsKey(id) || isMicro(node)) {
 				continue;
 			}
 			Optional<StationTracks.Tracks> surveyed = stationTracks.of(node.getId().toString());
@@ -80,6 +80,15 @@ public final class StationStopLinks {
 			}
 			network.addLink(stop);
 		}
+	}
+
+	/**
+	 * Stations spliced by the micro node builder have platform links of their
+	 * own, and their internal nodes (junctions, platform ends, section ends) are
+	 * not stations at all.
+	 */
+	public static boolean isMicro(Node node) {
+		return node.getAttributes().getAttribute("microNode") != null || node.getId().toString().contains(".");
 	}
 
 	private static int incidentTracks(Node node) {

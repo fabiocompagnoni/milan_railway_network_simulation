@@ -120,4 +120,22 @@ class StationStopLinksTest {
 		assertEquals(2, meda.getAttributes().getAttribute("railsimTrainCapacity"));
 		assertEquals("provisional", meda.getAttributes().getAttribute("dataStatus"));
 	}
+
+	@Test
+	void microStationsAndTheirInternalNodesGetNoLoopLink() {
+		Network network = NetworkUtils.createNetwork();
+		Node hub = network.getFactory().createNode(Id.createNodeId("S1"), new Coord(0, 0));
+		hub.getAttributes().putAttribute("microNode", "node");
+		Node junction = network.getFactory().createNode(Id.createNodeId("S1.north"), new Coord(0, 300));
+		Node meso = network.getFactory().createNode(Id.createNodeId("S2"), new Coord(1000, 0));
+		network.addNode(hub);
+		network.addNode(junction);
+		network.addNode(meso);
+
+		StationStopLinks.addStopLinks(network);
+
+		assertFalse(network.getLinks().containsKey(StationStopLinks.stopLinkId(hub.getId())));
+		assertFalse(network.getLinks().containsKey(StationStopLinks.stopLinkId(junction.getId())));
+		assertTrue(network.getLinks().containsKey(StationStopLinks.stopLinkId(meso.getId())));
+	}
 }

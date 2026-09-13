@@ -109,4 +109,22 @@ class SingleTrackBlocksTest {
 		assertNull(resource("P_Q"));
 		assertNull(resource("Q_P"));
 	}
+
+	@Test
+	void microNodeLinksKeepTheirOwnResources() {
+		// a throat link of a micro station carries the shared throat resource, never a block
+		network.addNode(network.getFactory().createNode(Id.createNodeId("E.north"), new Coord(0, 0)));
+		network.addNode(network.getFactory().createNode(Id.createNodeId("E.p1.b"), new Coord(0, 0)));
+		Link throat = network.getFactory().createLink(Id.createLinkId("E.p1.north.in"),
+			network.getNodes().get(Id.createNodeId("E.north")), network.getNodes().get(Id.createNodeId("E.p1.b")));
+		throat.setAllowedModes(Set.of("rail"));
+		throat.getAttributes().putAttribute("railsimTrainCapacity", 1);
+		throat.getAttributes().putAttribute("railsimResourceId", "e_throat");
+		throat.getAttributes().putAttribute("microNode", "e");
+		network.addLink(throat);
+
+		SingleTrackBlocks.apply(network);
+
+		assertEquals("e_throat", resource("E.p1.north.in"));
+	}
 }

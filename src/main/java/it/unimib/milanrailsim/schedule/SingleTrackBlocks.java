@@ -93,10 +93,13 @@ public final class SingleTrackBlocks {
 	 * Single track is marked by the shared resource the network enricher gives
 	 * both directions of a one-track section. A double-track section also holds
 	 * one train per direction, so capacity alone would wrongly merge it too.
+	 * Micro node links carry resources of their own (throats, per-track
+	 * sections) that must not be merged into blocks.
 	 */
 	private static boolean isSingleTrack(Link link) {
 		return !link.getFromNode().equals(link.getToNode())
 			&& link.getAttributes().getAttribute("stationLink") == null
+			&& link.getAttributes().getAttribute("microNode") == null
 			&& link.getAttributes().getAttribute("railsimResourceId") != null;
 	}
 
