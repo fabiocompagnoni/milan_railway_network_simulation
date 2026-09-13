@@ -25,7 +25,6 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -105,7 +104,7 @@ public final class MicroNodeBuilder {
 		for (Direction side : Direction.values()) {
 			if (station.groups().stream().anyMatch(group -> group.connections().containsKey(side))) {
 				double dy = side == Direction.NORTH ? JUNCTION_OFFSET_M : -JUNCTION_OFFSET_M;
-				Node junction = addNode(station.id() + "." + name(side), hub.getCoord().getX(), hub.getCoord().getY() + dy);
+				Node junction = addNode(MicroIds.junction(station, side), hub.getCoord().getX(), hub.getCoord().getY() + dy);
 				sides.put(side, junction);
 				junctions.add(junction.getId());
 			}
@@ -128,10 +127,9 @@ public final class MicroNodeBuilder {
 		boolean provisional = station.platformLengthM().isEmpty();
 		boolean oneSided = group.connections().size() == 1;
 		List<TrackEnds> result = new ArrayList<>();
-		List<Track> tracks = group.hasNamedTracks() ? group.tracks() : anonymousTracks(group);
 		int index = firstIndex;
-		for (Track track : tracks) {
-			String id = group.hasNamedTracks() ? station.id() + ".p" + track.ref() : station.id() + "." + group.id() + "." + track.ref();
+		for (Track track : group.effectiveTracks()) {
+			String id = MicroIds.trackId(station, group, track);
 			double x = hub.getCoord().getX() + index++ * TRACK_SPACING_M;
 			Node a = addNode(id + ".a", x, hub.getCoord().getY() - length / 2);
 			Node b = addNode(id + ".b", x, hub.getCoord().getY() + length / 2);
@@ -152,14 +150,6 @@ public final class MicroNodeBuilder {
 			result.add(new TrackEnds(id, group, track, a, b));
 		}
 		return result;
-	}
-
-	private static List<Track> anonymousTracks(Group group) {
-		List<Track> tracks = new ArrayList<>();
-		for (int i = 1; i <= group.trackCount(); i++) {
-			tracks.add(new Track(Integer.toString(i), null));
-		}
-		return tracks;
 	}
 
 	private void addPlatformLink(String linkId, String resource, Node from, Node to, double length, boolean provisional,
@@ -185,7 +175,7 @@ public final class MicroNodeBuilder {
 		Optional<Throat> throat = station.throats().stream()
 			.filter(candidate -> candidate.side() == side && candidate.groups().contains(group.id()))
 			.findFirst();
-		String prefix = ends.id() + "." + name(side);
+		String prefix = ends.id() + "." + MicroIds.name(side);
 		if (inbound) {
 			Link in = addThroatLink(prefix + ".in", junction, end, throat, node, station);
 			approachesIn.put(in.getId(), new Approach(station, group, side));
@@ -226,7 +216,7 @@ public final class MicroNodeBuilder {
 			return Id.createLinkId(station.id() + "_" + connection.target());
 		}
 		Direction travel = side == Direction.NORTH ? Direction.NORTH : Direction.SOUTH;
-		return Id.createLinkId(connection.target() + "." + connection.bundle() + "." + name(travel) + ".exit");
+		return Id.createLinkId(connection.target() + "." + connection.bundle() + "." + MicroIds.name(travel) + ".exit");
 	}
 
 	private static Id<Link> entryLinkId(Station station, Connection connection, Direction side) {
@@ -234,7 +224,7 @@ public final class MicroNodeBuilder {
 			return Id.createLinkId(connection.target() + "_" + station.id());
 		}
 		Direction travel = side == Direction.NORTH ? Direction.SOUTH : Direction.NORTH;
-		return Id.createLinkId(connection.target() + "." + connection.bundle() + "." + name(travel) + ".entry");
+		return Id.createLinkId(connection.target() + "." + connection.bundle() + "." + MicroIds.name(travel) + ".entry");
 	}
 
 	private void redirectMesoLinks(Station station, Map<Direction, Node> junctions) {
@@ -313,7 +303,7 @@ public final class MicroNodeBuilder {
 
 	private void addSectionTrack(MicroNode node, Segment segment, String bundleId, Direction travel, TrackWays track,
 			Node start, Node end, double approaches, double speed, double offset) {
-		String id = segment.id() + "." + bundleId + "." + name(travel);
+		String id = segment.id() + "." + bundleId + "." + MicroIds.name(travel);
 		double length = Math.max(MIN_SECTION_LENGTH_M, track.lengthM() - approaches - 2 * STUB_LENGTH_M);
 		Node a = addNode(id + ".a", lerp(start, end, 0.1) + offset, lerpY(start, end, 0.1));
 		Node b = addNode(id + ".b", lerp(start, end, 0.9) + offset, lerpY(start, end, 0.9));
@@ -426,10 +416,6 @@ public final class MicroNodeBuilder {
 		link.setAllowedModes(Set.of(MODE));
 		network.addLink(link);
 		return link;
-	}
-
-	private static String name(Direction direction) {
-		return direction.name().toLowerCase(Locale.ROOT);
 	}
 
 	private static double lerp(Node start, Node end, double fraction) {

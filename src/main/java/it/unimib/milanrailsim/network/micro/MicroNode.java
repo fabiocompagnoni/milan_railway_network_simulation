@@ -58,6 +58,18 @@ public record MicroNode(String id, String title, List<Station> stations, List<Se
 		public boolean hasNamedTracks() {
 			return !tracks.isEmpty();
 		}
+
+		/** The named tracks, or numbered bidirectional ones for a group declared by capacity. */
+		public List<Track> effectiveTracks() {
+			if (hasNamedTracks()) {
+				return tracks;
+			}
+			List<Track> anonymous = new ArrayList<>();
+			for (int i = 1; i <= trackCount(); i++) {
+				anonymous.add(new Track(Integer.toString(i), null));
+			}
+			return anonymous;
+		}
 	}
 
 	public record Throat(String id, Direction side, String resource, OptionalDouble lengthM, OptionalDouble speedKmh,
@@ -144,6 +156,45 @@ public record MicroNode(String id, String title, List<Station> stations, List<Se
 			}
 		}
 		return List.of();
+	}
+
+	/**
+	 * The side of a station on which another stop lies: a declared meso
+	 * neighbour or segment end, or a station of this node reached through the
+	 * chain of segments (sections run from south to north).
+	 */
+	public Optional<Direction> sideOf(String stationId, String otherStopId) {
+		Station station = station(stationId);
+		for (Group group : station.groups()) {
+			for (Map.Entry<Direction, List<Connection>> side : group.connections().entrySet()) {
+				for (Connection connection : side.getValue()) {
+					if (connection.kind() == ConnectionKind.MESO && connection.target().equals(otherStopId)) {
+						return Optional.of(side.getKey());
+					}
+					if (connection.kind() == ConnectionKind.SEGMENT
+							&& (connection.target().equals(stationId + "_" + otherStopId)
+								|| connection.target().equals(otherStopId + "_" + stationId))) {
+						return Optional.of(side.getKey());
+					}
+				}
+			}
+		}
+		if (!hasStation(otherStopId)) {
+			return Optional.empty();
+		}
+		if (reachesNorthward(stationId, otherStopId)) {
+			return Optional.of(Direction.NORTH);
+		}
+		if (reachesNorthward(otherStopId, stationId)) {
+			return Optional.of(Direction.SOUTH);
+		}
+		return Optional.empty();
+	}
+
+	private boolean reachesNorthward(String from, String to) {
+		return segments.stream()
+			.filter(segment -> segment.from().equals(from))
+			.anyMatch(segment -> segment.to().equals(to) || reachesNorthward(segment.to(), to));
 	}
 
 	public static MicroNode read(Path file) {

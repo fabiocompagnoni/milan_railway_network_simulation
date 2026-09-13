@@ -103,6 +103,17 @@ class MicroNodeTest {
 	}
 
 	@Test
+	void locatesOtherStopsOnASideOfAStation(@TempDir Path dir) throws IOException {
+		MicroNode node = MicroNode.read(write(dir, NODE));
+
+		assertEquals(MicroNode.Direction.NORTH, node.sideOf("A", "X").orElseThrow());
+		assertEquals(MicroNode.Direction.NORTH, node.sideOf("A", "B").orElseThrow());
+		assertEquals(MicroNode.Direction.SOUTH, node.sideOf("B", "A").orElseThrow());
+		assertEquals(MicroNode.Direction.NORTH, node.sideOf("B", "C").orElseThrow());
+		assertTrue(node.sideOf("B", "Z").isEmpty());
+	}
+
+	@Test
 	void rejectsLineReferencingUnknownGroup(@TempDir Path dir) throws IOException {
 		String broken = NODE.replace("\"B\": [\"b_f1\"]", "\"B\": [\"nope\"]");
 
