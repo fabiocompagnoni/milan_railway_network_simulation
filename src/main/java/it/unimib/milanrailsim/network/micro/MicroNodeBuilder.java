@@ -62,6 +62,7 @@ public final class MicroNodeBuilder {
 	static final double STUB_LENGTH_M = 100.0;
 	static final double MIN_SECTION_LENGTH_M = 100.0;
 	static final double TRACK_SPACING_M = 5.0;
+	static final int MIN_THROAT_CAPACITY = 2;
 	private static final double PLATFORM_SPEED_MS = 13.9;
 	private static final double SECTION_SPEED_DEFAULT_MS = 25.0;
 	private static final double JUNCTION_OFFSET_M = 300.0;
@@ -245,19 +246,35 @@ public final class MicroNodeBuilder {
 			.findFirst();
 		Junction junction = junctions.get(MicroIds.junction(station, side, key(connection)));
 		String prefix = ends.id() + "." + MicroIds.name(side) + "." + key(connection);
+		int capacity = throatCapacity(station, side);
 		if (inbound) {
-			addThroatLink(prefix + ".in", junction.in(), end, throat, node, station);
+			addThroatLink(prefix + ".in", junction.in(), end, throat, capacity, node, station);
 		}
 		if (outbound) {
-			addThroatLink(prefix + ".out", end, junction.out(), throat, node, station);
+			addThroatLink(prefix + ".out", end, junction.out(), throat, capacity, node, station);
 		}
 	}
 
-	private Link addThroatLink(String id, Node from, Node to, Optional<Throat> throat, MicroNode node, Station station) {
+	/**
+	 * Simultaneous movements a throat admits: one per connection, since routes
+	 * to different neighbours run over parallel tracks, and never fewer than
+	 * {@value #MIN_THROAT_CAPACITY}. A throat of capacity 1 would be a "conflict
+	 * point" for railsim's deadlock avoidance, which reserves it for a train
+	 * still approaching on the section; that train then waits for an occupied
+	 * platform while the train on it cannot leave through the reserved throat.
+	 * Above 1 the avoidance ignores the throat and the non-blocking area alone
+	 * governs entry, which admits a train only once its platform is free.
+	 */
+	private static int throatCapacity(Station station, Direction side) {
+		return Math.max(MIN_THROAT_CAPACITY, connectionsOf(station, side).size());
+	}
+
+	private Link addThroatLink(String id, Node from, Node to, Optional<Throat> throat, int capacity, MicroNode node,
+			Station station) {
 		double length = throat.flatMap(t -> t.lengthM().stream().boxed().findFirst()).orElse(APPROACH_LENGTH_DEFAULT_M);
 		double speedKmh = throat.flatMap(t -> t.speedKmh().stream().boxed().findFirst()).orElse(APPROACH_SPEED_DEFAULT_KMH);
 		Link link = addLink(id, from, to, length, speedKmh / 3.6);
-		link.getAttributes().putAttribute("railsimTrainCapacity", 1);
+		link.getAttributes().putAttribute("railsimTrainCapacity", capacity);
 		link.getAttributes().putAttribute("railsimNonBlockingArea", true);
 		link.getAttributes().putAttribute("microNode", node.id());
 		link.getAttributes().putAttribute("microStation", station.id());

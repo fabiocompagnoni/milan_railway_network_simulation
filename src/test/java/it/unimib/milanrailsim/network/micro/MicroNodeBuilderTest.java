@@ -152,6 +152,9 @@ class MicroNodeBuilderTest {
 		assertEquals(Boolean.TRUE, approach.getAttributes().getAttribute("railsimNonBlockingArea"));
 		assertEquals(300, approach.getLength(), 1e-9);
 		assertEquals(30 / 3.6, approach.getFreespeed(), 1e-9);
+		// two connections on A's north side, one on B's: never below the minimum
+		assertEquals(2, approach.getAttributes().getAttribute("railsimTrainCapacity"));
+		assertEquals(2, link("B.p1.north.C.out").getAttributes().getAttribute("railsimTrainCapacity"));
 		assertEquals("A.north.A_B.f1.out", link("A.p1.north.A_B.f1.out").getToNode().getId().toString());
 		// a_main is not connected to X, a_shared is
 		assertFalse(network.getLinks().containsKey(Id.createLinkId("A.p1.north.X.in")));
