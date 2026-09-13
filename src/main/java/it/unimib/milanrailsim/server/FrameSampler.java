@@ -30,6 +30,8 @@ public final class FrameSampler
 	private final Consumer<Frame> sink;
 	private final Map<String, TrainState> latest = new LinkedHashMap<>();
 	private double nextFrameTime;
+	private int arrived;
+	private int aborted;
 
 	/**
 	 * @param interval simulated seconds between frames
@@ -49,13 +51,17 @@ public final class FrameSampler
 
 	@Override
 	public void handleEvent(VehicleLeavesTrafficEvent event) {
-		latest.remove(event.getVehicleId().toString());
+		if (latest.remove(event.getVehicleId().toString()) != null) {
+			arrived++;
+		}
 	}
 
 	/** Trains the mobsim gives up on at the end of the day leave the map too. */
 	@Override
 	public void handleEvent(VehicleAbortsEvent event) {
-		latest.remove(event.getVehicleId().toString());
+		if (latest.remove(event.getVehicleId().toString()) != null) {
+			aborted++;
+		}
 	}
 
 	/** Called once per simulation step; emits a frame whenever the sampling interval has elapsed. */
@@ -69,6 +75,16 @@ public final class FrameSampler
 
 	public int activeTrains() {
 		return latest.size();
+	}
+
+	/** Trains that completed their circulation and left the network. */
+	public int arrivedTrains() {
+		return arrived;
+	}
+
+	/** Trains the mobsim aborted, typically stuck ones at the end of the simulated day. */
+	public int abortedTrains() {
+		return aborted;
 	}
 
 	/** Vehicles are named {@code <line>_circ_<n>} by the circulation builder. */

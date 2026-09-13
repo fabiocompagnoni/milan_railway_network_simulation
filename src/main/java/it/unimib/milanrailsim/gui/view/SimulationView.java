@@ -6,6 +6,7 @@ import it.unimib.milanrailsim.gui.map.NetworkMap;
 import it.unimib.milanrailsim.gui.sim.LiveSession;
 import it.unimib.milanrailsim.gui.sim.TrainPositions;
 import it.unimib.milanrailsim.server.Protocol;
+import it.unimib.milanrailsim.server.Protocol.Summary;
 import it.unimib.milanrailsim.server.Protocol.TrainState;
 import javafx.animation.AnimationTimer;
 import javafx.concurrent.Task;
@@ -235,7 +236,8 @@ public final class SimulationView extends BorderPane {
 	private void showCompleted(LiveSession session) {
 		Label title = new Label("Simulazione completata");
 		title.getStyleClass().add("section-title");
-		Label text = muted("Il run «" + session.runDir().getFileName() + "» è stato analizzato e archiviato.");
+		Label text = muted("Il run «" + session.runDir().getFileName() + "» è stato analizzato e archiviato."
+			+ outcome(session.summary().get()));
 		Button results = new Button("Vedi risultati");
 		results.getStyleClass().add("primary");
 		results.setOnAction(event -> {
@@ -252,6 +254,23 @@ public final class SimulationView extends BorderPane {
 		StackPane.setAlignment(banner, Pos.TOP_CENTER);
 		StackPane.setMargin(banner, new Insets(16, 0, 0, 0));
 		stack.getChildren().add(banner);
+	}
+
+	/** One line on how the day ended: what arrived, what the engine gave up on, what was still out there. */
+	static String outcome(Summary summary) {
+		if (summary == null) {
+			return "";
+		}
+		StringBuilder text = new StringBuilder("\nTreni arrivati: ").append(summary.arrived());
+		if (summary.aborted() > 0) {
+			text.append(" · abortiti: ").append(summary.aborted());
+		}
+		if (summary.stalled() > 0) {
+			text.append(" · ancora in rete alle ").append(clock(summary.endTime())).append(": ").append(summary.stalled());
+		} else {
+			text.append(" · tutti fermi entro le ").append(clock(summary.endTime()));
+		}
+		return text.toString();
 	}
 
 	/** A run that failed deserves more than a line in the control bar. */

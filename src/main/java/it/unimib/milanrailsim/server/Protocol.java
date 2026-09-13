@@ -47,10 +47,18 @@ public final class Protocol {
 	public record Frame(double time, List<TrainState> trains) {
 	}
 
+	/**
+	 * How the run ended: trains that completed their circulation, trains the
+	 * mobsim aborted, trains still on the network when the simulation stopped,
+	 * and the simulated time it stopped at.
+	 */
+	public record Summary(int arrived, int aborted, int stalled, double endTime) {
+	}
+
 	/** Engine → client. Exactly the fields of the given {@code type} are set. */
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public record Message(String type, Integer port, String token, Double time, Integer activeTrains, String phase,
-			Frame frame, String runDir, String message) {
+			Frame frame, String runDir, String message, Summary summary) {
 		public static final String READY = "ready";
 		public static final String PROGRESS = "progress";
 		public static final String FRAME = "frame";
@@ -58,23 +66,23 @@ public final class Protocol {
 		public static final String ERROR = "error";
 
 		public static Message ready(int port, String token) {
-			return new Message(READY, port, token, null, null, null, null, null, null);
+			return new Message(READY, port, token, null, null, null, null, null, null, null);
 		}
 
 		public static Message progress(double time, int activeTrains, String phase) {
-			return new Message(PROGRESS, null, null, time, activeTrains, phase, null, null, null);
+			return new Message(PROGRESS, null, null, time, activeTrains, phase, null, null, null, null);
 		}
 
 		public static Message frame(Frame frame) {
-			return new Message(FRAME, null, null, null, null, null, frame, null, null);
+			return new Message(FRAME, null, null, null, null, null, frame, null, null, null);
 		}
 
-		public static Message done(String runDir) {
-			return new Message(DONE, null, null, null, null, null, null, runDir, null);
+		public static Message done(String runDir, Summary summary) {
+			return new Message(DONE, null, null, null, null, null, null, runDir, null, summary);
 		}
 
 		public static Message error(String message) {
-			return new Message(ERROR, null, null, null, null, null, null, null, message);
+			return new Message(ERROR, null, null, null, null, null, null, null, message, null);
 		}
 	}
 

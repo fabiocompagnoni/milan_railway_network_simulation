@@ -25,7 +25,7 @@ class SimulationClientTest {
 			pacer.afterSimStep(0);
 			resumed.countDown();
 			out.send(Message.frame(new Frame(0, List.of())));
-			out.send(Message.done("run"));
+			out.send(Message.done("run", new it.unimib.milanrailsim.server.Protocol.Summary(1, 0, 0, 3600)));
 		};
 		SimulationServer server = new SimulationServer(job, 0);
 		ByteArrayOutputStream announced = new ByteArrayOutputStream();

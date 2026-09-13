@@ -15,6 +15,7 @@ import it.unimib.milanrailsim.schedule.LineAssignments;
 import it.unimib.milanrailsim.schedule.RouteVehicleAssignment;
 import it.unimib.milanrailsim.schedule.SchedulePipeline;
 import it.unimib.milanrailsim.server.Protocol.Message;
+import it.unimib.milanrailsim.server.Protocol.Summary;
 import it.unimib.milanrailsim.server.SimulationServer.Emitter;
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.core.config.Config;
@@ -26,6 +27,10 @@ import org.matsim.core.controler.listener.IterationEndsListener;
 import org.matsim.core.mobsim.framework.events.MobsimAfterSimStepEvent;
 import org.matsim.core.mobsim.framework.listeners.MobsimAfterSimStepListener;
 import org.matsim.core.scenario.ScenarioUtils;
+import org.matsim.pt.transitSchedule.api.Departure;
+import org.matsim.pt.transitSchedule.api.TransitLine;
+import org.matsim.pt.transitSchedule.api.TransitRoute;
+import org.matsim.pt.transitSchedule.api.TransitSchedule;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -43,6 +48,8 @@ public final class RailsimJob implements SimulationServer.Job {
 	/** Simulated seconds between frames; the client extrapolates in between. */
 	public static final double FRAME_INTERVAL_S = 5;
 	private static final double PROGRESS_INTERVAL_S = 60;
+	/** Grace after the last planned arrival for late trains to finish before the run is cut. */
+	static final double END_MARGIN_S = 3 * 3600;
 	private static final String SPACE_TIME_LINE = "S1";
 
 	/**
@@ -84,19 +91,21 @@ public final class RailsimJob implements SimulationServer.Job {
 		out.send(Message.progress(0, 0, "Simulazione"));
 		Path output = inputs.runDir().resolve("output");
 		FrameSampler sampler;
+		double endTime;
 		try (FrameRecorder recorder = new FrameRecorder(inputs.runDir().resolve(FrameRecorder.FILE_NAME))) {
 			sampler = new FrameSampler(FRAME_INTERVAL_S, frame -> {
 				recorder.record(frame);
 				out.send(Message.frame(frame));
 			});
-			simulate(scenarioDir, output, sampler, pacer, out, marker);
+			endTime = simulate(scenarioDir, output, sampler, pacer, out, marker);
 		}
 
 		out.send(Message.progress(0, 0, "Analisi"));
 		AnalyzeRun.analyze(output, RunArchive.at(inputs.runDir()), spec.type().name().toLowerCase(),
 			inputs.costsFile(), SPACE_TIME_LINE);
 		Files.deleteIfExists(marker);
-		out.send(Message.done(inputs.runDir().toString()));
+		out.send(Message.done(inputs.runDir().toString(),
+			new Summary(sampler.arrivedTrains(), sampler.abortedTrains(), sampler.activeTrains(), endTime)));
 	}
 
 	private void generateTimetable(ScenarioSpec spec, Path scenarioDir) {
@@ -115,7 +124,15 @@ public final class RailsimJob implements SimulationServer.Job {
 			new RouteVehicleAssignment(assignments), tracks, microNodes, sidings).generate(spec.serviceDate(), start, end, scenarioDir);
 	}
 
-	private void simulate(Path scenarioDir, Path output, FrameSampler sampler, Pacer pacer, Emitter out, Path marker) {
+	/**
+	 * Runs the mobsim until every train has finished, or at the latest
+	 * {@link #END_MARGIN_S} after the last planned arrival of the timetable:
+	 * the day is over when the timetable is, and what is still moving then is
+	 * late, not scheduled.
+	 *
+	 * @return the simulated time the run was allowed to reach
+	 */
+	private double simulate(Path scenarioDir, Path output, FrameSampler sampler, Pacer pacer, Emitter out, Path marker) {
 		Config config = ConfigUtils.loadConfig(inputs.configTemplate().toString());
 		config.network().setInputFile(scenarioDir.resolve("network-with-stations.xml").toAbsolutePath().toString());
 		config.transit().setTransitScheduleFile(scenarioDir.resolve("transitSchedule.xml").toAbsolutePath().toString());
@@ -125,6 +142,8 @@ public final class RailsimJob implements SimulationServer.Job {
 		config.controller().setOverwriteFileSetting(OutputDirectoryHierarchy.OverwriteFileSetting.deleteDirectoryIfExists);
 
 		Scenario scenario = ScenarioUtils.loadScenario(config);
+		double endTime = lastPlannedArrival(scenario.getTransitSchedule()) + END_MARGIN_S;
+		config.qsim().setEndTime(endTime);
 		Controler controler = new Controler(scenario);
 		RailsimSetup.install(controler);
 		MobsimAfterSimStepListener step = new MobsimAfterSimStepListener() {
@@ -160,6 +179,21 @@ public final class RailsimJob implements SimulationServer.Job {
 			}
 		});
 		controler.run();
+		return endTime;
+	}
+
+	/** Departure time plus the last stop's arrival offset, over every departure of the schedule. */
+	static double lastPlannedArrival(TransitSchedule schedule) {
+		double last = 0;
+		for (TransitLine line : schedule.getTransitLines().values()) {
+			for (TransitRoute route : line.getRoutes().values()) {
+				double lastOffset = route.getStops().getLast().getArrivalOffset().orElse(0);
+				for (Departure departure : route.getDepartures().values()) {
+					last = Math.max(last, departure.getDepartureTime() + lastOffset);
+				}
+			}
+		}
+		return last;
 	}
 
 	private static void touch(Path marker) {

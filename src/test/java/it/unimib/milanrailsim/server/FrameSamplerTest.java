@@ -57,5 +57,19 @@ class FrameSamplerTest {
 
 		assertTrue(frames.getFirst().trains().isEmpty());
 		assertEquals(0, sampler.activeTrains());
+		assertEquals(1, sampler.arrivedTrains());
+		assertEquals(0, sampler.abortedTrains());
+	}
+
+	@Test
+	void abortedTrainsAreCountedApartFromArrivals() {
+		sampler.handleEvent(state(0, "S1_circ_1", "A_B", 10, 10));
+		sampler.handleEvent(state(0, "S1_circ_2", "A_B", 10, 10));
+		sampler.handleEvent(new org.matsim.api.core.v01.events.VehicleAbortsEvent(3, Id.create("S1_circ_1", Vehicle.class),
+			Id.createLinkId("A_B")));
+
+		assertEquals(1, sampler.abortedTrains());
+		assertEquals(0, sampler.arrivedTrains());
+		assertEquals(1, sampler.activeTrains());
 	}
 }

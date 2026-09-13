@@ -32,7 +32,7 @@ class SimulationServerTest {
 			pacer.afterSimStep(t * 5);
 			out.send(Message.frame(new Frame(t * 5, List.of(new TrainState("S1_circ_1", "S1", "A_B", t, 1, 0, 0)))));
 		}
-		out.send(Message.done("run"));
+		out.send(Message.done("run", new Protocol.Summary(1, 0, 0, 3600)));
 	};
 
 	private record Endpoint(int port, String token) {
