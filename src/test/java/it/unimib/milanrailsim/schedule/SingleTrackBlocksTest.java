@@ -75,6 +75,16 @@ class SingleTrackBlocksTest {
 	}
 
 	@Test
+	void oneTrackStationsInsideABlockBelongToIt() {
+		SingleTrackBlocks.apply(network);
+
+		assertEquals(resource("A_B"), resource("stop_B"));
+		assertNull(resource("stop_A"), "crossing points keep their own stop resources");
+		assertNull(resource("stop_C"));
+		assertNull(resource("stop_D"), "a boundary at the end of single track too");
+	}
+
+	@Test
 	void doubleTrackLinksAreUntouched() {
 		SingleTrackBlocks.apply(network);
 

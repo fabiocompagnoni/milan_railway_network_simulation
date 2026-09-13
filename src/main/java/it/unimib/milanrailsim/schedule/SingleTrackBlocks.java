@@ -62,6 +62,9 @@ public final class SingleTrackBlocks {
 			boolean renamed = false;
 			for (Link segment : chain) {
 				renamed |= rename(network, segment, blockId);
+				if (!segment.getToNode().equals(cursor)) {
+					renamed |= joinStopToBlock(network, segment.getToNode(), blockId);
+				}
 			}
 			if (renamed) {
 				blocks++;
@@ -80,6 +83,21 @@ public final class SingleTrackBlocks {
 		if (opposite != null) {
 			opposite.getAttributes().putAttribute("railsimResourceId", blockId);
 		}
+		return true;
+	}
+
+	/**
+	 * A one-track station inside the block belongs to it: a train dwelling
+	 * there still bars the section, otherwise the stop would release the block
+	 * to an opposing train and the two would face each other with no loop to
+	 * pass on (seen at Mezzani Rondani on the Brescia-Parma line).
+	 */
+	private static boolean joinStopToBlock(Network network, Node station, String blockId) {
+		Link stop = network.getLinks().get(StationStopLinks.stopLinkId(station.getId()));
+		if (stop == null || blockId.equals(stop.getAttributes().getAttribute("railsimResourceId"))) {
+			return false;
+		}
+		stop.getAttributes().putAttribute("railsimResourceId", blockId);
 		return true;
 	}
 
