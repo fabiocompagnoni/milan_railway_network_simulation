@@ -89,10 +89,15 @@ public final class SingleTrackBlocks {
 			.findFirst().orElse(null);
 	}
 
+	/**
+	 * Single track is marked by the shared resource the network enricher gives
+	 * both directions of a one-track section. A double-track section also holds
+	 * one train per direction, so capacity alone would wrongly merge it too.
+	 */
 	private static boolean isSingleTrack(Link link) {
 		return !link.getFromNode().equals(link.getToNode())
 			&& link.getAttributes().getAttribute("stationLink") == null
-			&& Integer.valueOf(1).equals(link.getAttributes().getAttribute("railsimTrainCapacity"));
+			&& link.getAttributes().getAttribute("railsimResourceId") != null;
 	}
 
 	/** Crossing point: a station able to host a meet, a junction, or the end of single track. */

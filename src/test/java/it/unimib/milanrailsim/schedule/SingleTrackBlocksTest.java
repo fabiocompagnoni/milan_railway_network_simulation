@@ -96,4 +96,17 @@ class SingleTrackBlocksTest {
 				&& !l.getFromNode().getId().equals(l.getToNode().getId()))
 			.map(l -> l.getId().toString()).toList());
 	}
+
+	@Test
+	void doubleTrackWithOneTrainPerDirectionIsNotSingleTrack() {
+		// two tracks give one train per direction, with no shared resource: never a block
+		addStation("P", 2);
+		addStation("Q", 2);
+		addPair("P", "Q", 1, false);
+
+		SingleTrackBlocks.apply(network);
+
+		assertNull(resource("P_Q"));
+		assertNull(resource("Q_P"));
+	}
 }
