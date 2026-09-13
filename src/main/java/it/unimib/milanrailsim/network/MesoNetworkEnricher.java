@@ -83,6 +83,7 @@ final class MesoNetworkEnricher {
 	}
 
 	private void applyCapacity(Link link, int tracksTotal) {
+		link.getAttributes().putAttribute("tracksTotal", tracksTotal);
 		if (tracksTotal == 1) {
 			link.getAttributes().putAttribute("railsimTrainCapacity", 1);
 			link.getAttributes().putAttribute("railsimResourceId", sharedResourceId(link));

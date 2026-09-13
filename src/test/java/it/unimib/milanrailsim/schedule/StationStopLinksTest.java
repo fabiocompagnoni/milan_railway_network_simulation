@@ -1,6 +1,8 @@
 package it.unimib.milanrailsim.schedule;
 
+import it.unimib.milanrailsim.network.StationTracks;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
@@ -8,6 +10,9 @@ import org.matsim.api.core.v01.network.Network;
 import org.matsim.api.core.v01.network.Node;
 import org.matsim.core.network.NetworkUtils;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -75,5 +80,44 @@ class StationStopLinksTest {
 
 		Link stop = network.getLinks().get(StationStopLinks.stopLinkId(Id.createNodeId("X")));
 		assertEquals(1, stop.getAttributes().getAttribute("railsimTrainCapacity"));
+	}
+
+	@Test
+	void doubleTrackStationHoldsOneTrainPerDirection() {
+		Network network = NetworkUtils.createNetwork();
+		Node a = network.getFactory().createNode(Id.createNodeId("S1"), new Coord(0, 0));
+		Node b = network.getFactory().createNode(Id.createNodeId("S2"), new Coord(1000, 0));
+		network.addNode(a);
+		network.addNode(b);
+		Link ab = network.getFactory().createLink(Id.createLinkId("S1_S2"), a, b);
+		ab.getAttributes().putAttribute("railsimTrainCapacity", 1);
+		ab.getAttributes().putAttribute("tracksTotal", 2);
+		network.addLink(ab);
+
+		StationStopLinks.addStopLinks(network);
+
+		assertEquals(2, network.getLinks().get(StationStopLinks.stopLinkId(a.getId()))
+			.getAttributes().getAttribute("railsimTrainCapacity"));
+	}
+
+	@Test
+	void surveyedPlatformsOverrideEverythingAndAreNotProvisional(@TempDir Path dir) throws IOException {
+		Network network = NetworkUtils.createNetwork();
+		network.addNode(network.getFactory().createNode(Id.createNodeId("S09999"), new Coord(0, 0)));
+		network.addNode(network.getFactory().createNode(Id.createNodeId("S01087"), new Coord(0, 0)));
+		StationTracks tracks = StationTracks.read(Files.writeString(dir.resolve("t.csv"), """
+			stop_id,nome,corse_giorno,banchine_OSM_da_correggere,linee,binari_reali
+			S09999,Brescia,208,8,"R1,R3",12
+			S01087,Meda,6,2,S2,
+			"""));
+
+		StationStopLinks.addStopLinks(network, tracks);
+
+		Link brescia = network.getLinks().get(StationStopLinks.stopLinkId(Id.createNodeId("S09999")));
+		assertEquals(12, brescia.getAttributes().getAttribute("railsimTrainCapacity"));
+		assertNull(brescia.getAttributes().getAttribute("dataStatus"));
+		Link meda = network.getLinks().get(StationStopLinks.stopLinkId(Id.createNodeId("S01087")));
+		assertEquals(2, meda.getAttributes().getAttribute("railsimTrainCapacity"));
+		assertEquals("provisional", meda.getAttributes().getAttribute("dataStatus"));
 	}
 }
