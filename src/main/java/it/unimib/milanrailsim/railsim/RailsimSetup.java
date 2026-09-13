@@ -2,6 +2,7 @@ package it.unimib.milanrailsim.railsim;
 
 import ch.sbb.matsim.contrib.railsim.RailsimModule;
 import ch.sbb.matsim.contrib.railsim.qsimengine.RailsimQSimModule;
+import ch.sbb.matsim.contrib.railsim.qsimengine.deadlocks.DeadlockAvoidance;
 import ch.sbb.matsim.contrib.railsim.qsimengine.resources.RailResourceManager;
 import ch.sbb.matsim.contrib.railsim.qsimengine.resources.RailResourceManagerImpl;
 import com.google.inject.Singleton;
@@ -22,6 +23,7 @@ public final class RailsimSetup {
 			protected void configureQSim() {
 				bind(RailResourceManagerImpl.class).in(Singleton.class);
 				bind(RailResourceManager.class).to(StationTrackResources.class).asEagerSingleton();
+				bind(DeadlockAvoidance.class).to(ThroatAwareDeadlockAvoidance.class).asEagerSingleton();
 			}
 		});
 	}
