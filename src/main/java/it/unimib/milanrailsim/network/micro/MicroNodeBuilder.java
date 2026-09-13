@@ -20,6 +20,7 @@ import org.matsim.api.core.v01.network.Network;
 import org.matsim.api.core.v01.network.Node;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -101,7 +102,14 @@ public final class MicroNodeBuilder {
 		}
 	}
 
-	private record TrackEnds(String id, Group group, Track track, Node a, Node b) {
+	/**
+	 * A platform track with the nodes trains enter it by and leave it from,
+	 * per side. Entrances and exits are distinct nodes even at the same end,
+	 * so an approach cannot chain into an exit and skip the platform: with one
+	 * node per end a train could enter from the south and leave southwards
+	 * without touching the track, and the router took such U-turns.
+	 */
+	private record TrackEnds(String id, Group group, Track track, Map<Direction, Node> entrances, Map<Direction, Node> exits) {
 	}
 
 	private void buildStation(MicroNode node, Station station) {
@@ -196,23 +204,36 @@ public final class MicroNodeBuilder {
 		for (Track track : group.effectiveTracks()) {
 			String id = MicroIds.trackId(station, group, track);
 			double across = index++ * TRACK_SPACING_M;
-			Node a = addNode(id + ".a", frame.at(-length / 2, across));
-			Node b = addNode(id + ".b", frame.at(length / 2, across));
+			Coord a = frame.at(-length / 2, across);
+			Coord b = frame.at(length / 2, across);
+			Map<Direction, Node> entrances = new EnumMap<>(Direction.class);
+			Map<Direction, Node> exits = new EnumMap<>(Direction.class);
 			if (track.direction() == Direction.NORTH) {
-				addPlatformLink(id, id, a, b, length, provisional, node, station, group, track);
+				entrances.put(Direction.SOUTH, addNode(id + ".a.in", a));
+				exits.put(Direction.NORTH, addNode(id + ".b.out", b));
+				addPlatformLink(id, id, entrances.get(Direction.SOUTH), exits.get(Direction.NORTH), length, provisional, node, station, group, track);
 			} else if (track.direction() == Direction.SOUTH) {
-				addPlatformLink(id, id, b, a, length, provisional, node, station, group, track);
+				entrances.put(Direction.NORTH, addNode(id + ".b.in", b));
+				exits.put(Direction.SOUTH, addNode(id + ".a.out", a));
+				addPlatformLink(id, id, entrances.get(Direction.NORTH), exits.get(Direction.SOUTH), length, provisional, node, station, group, track);
 			} else if (oneSided) {
 				Direction side = group.connections().keySet().iterator().next();
-				Node entrance = side == Direction.NORTH ? b : a;
-				Node buffer = side == Direction.NORTH ? a : b;
-				addPlatformLink(id + ".in", id, entrance, buffer, length, provisional, node, station, group, track);
-				addPlatformLink(id + ".out", id, buffer, entrance, length, provisional, node, station, group, track);
+				String entranceEnd = side == Direction.NORTH ? ".b" : ".a";
+				Coord entranceCoord = side == Direction.NORTH ? b : a;
+				Node buffer = addNode(id + (side == Direction.NORTH ? ".a" : ".b"), side == Direction.NORTH ? a : b);
+				entrances.put(side, addNode(id + entranceEnd + ".in", entranceCoord));
+				exits.put(side, addNode(id + entranceEnd + ".out", entranceCoord));
+				addPlatformLink(id + ".in", id, entrances.get(side), buffer, length, provisional, node, station, group, track);
+				addPlatformLink(id + ".out", id, buffer, exits.get(side), length, provisional, node, station, group, track);
 			} else {
-				addPlatformLink(id + ".north", id, a, b, length, provisional, node, station, group, track);
-				addPlatformLink(id + ".south", id, b, a, length, provisional, node, station, group, track);
+				entrances.put(Direction.SOUTH, addNode(id + ".a.in", a));
+				entrances.put(Direction.NORTH, addNode(id + ".b.in", b));
+				exits.put(Direction.NORTH, addNode(id + ".b.out", b));
+				exits.put(Direction.SOUTH, addNode(id + ".a.out", a));
+				addPlatformLink(id + ".north", id, entrances.get(Direction.SOUTH), exits.get(Direction.NORTH), length, provisional, node, station, group, track);
+				addPlatformLink(id + ".south", id, entrances.get(Direction.NORTH), exits.get(Direction.SOUTH), length, provisional, node, station, group, track);
 			}
-			result.add(new TrackEnds(id, group, track, a, b));
+			result.add(new TrackEnds(id, group, track, entrances, exits));
 		}
 		return result;
 	}
@@ -237,21 +258,17 @@ public final class MicroNodeBuilder {
 
 	private void addApproachLinks(MicroNode node, Station station, Group group, TrackEnds ends, Direction side,
 			Connection connection) {
-		Node end = side == Direction.NORTH ? ends.b() : ends.a();
-		Direction trackDirection = ends.track().direction();
-		boolean inbound = trackDirection == null || (trackDirection == Direction.NORTH) == (side == Direction.SOUTH);
-		boolean outbound = trackDirection == null || (trackDirection == Direction.NORTH) == (side == Direction.NORTH);
 		Optional<Throat> throat = station.throats().stream()
 			.filter(candidate -> candidate.side() == side && candidate.groups().contains(group.id()))
 			.findFirst();
 		Junction junction = junctions.get(MicroIds.junction(station, side, key(connection)));
 		String prefix = ends.id() + "." + MicroIds.name(side) + "." + key(connection);
 		int capacity = throatCapacity(station, side);
-		if (inbound) {
-			addThroatLink(prefix + ".in", junction.in(), end, throat, capacity, node, station);
+		if (ends.entrances().containsKey(side)) {
+			addThroatLink(prefix + ".in", junction.in(), ends.entrances().get(side), throat, capacity, node, station);
 		}
-		if (outbound) {
-			addThroatLink(prefix + ".out", end, junction.out(), throat, capacity, node, station);
+		if (ends.exits().containsKey(side)) {
+			addThroatLink(prefix + ".out", ends.exits().get(side), junction.out(), throat, capacity, node, station);
 		}
 	}
 

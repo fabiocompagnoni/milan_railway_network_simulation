@@ -134,10 +134,10 @@ class MicroNodeBuilderTest {
 	void throughTracksAreDirectional() {
 		Link p1 = link("B.p1");
 		Link p2 = link("B.p2");
-		assertEquals("B.p1.a", p1.getFromNode().getId().toString());
-		assertEquals("B.p1.b", p1.getToNode().getId().toString());
-		assertEquals("B.p2.b", p2.getFromNode().getId().toString());
-		assertEquals("B.p2.a", p2.getToNode().getId().toString());
+		assertEquals("B.p1.a.in", p1.getFromNode().getId().toString());
+		assertEquals("B.p1.b.out", p1.getToNode().getId().toString());
+		assertEquals("B.p2.b.in", p2.getFromNode().getId().toString());
+		assertEquals("B.p2.a.out", p2.getToNode().getId().toString());
 		assertEquals(250, p1.getLength(), 1e-9);
 		assertNull(p1.getAttributes().getAttribute("dataStatus"));
 		assertFalse(network.getLinks().containsKey(Id.createLinkId("B.p1.in")));
@@ -147,7 +147,7 @@ class MicroNodeBuilderTest {
 	void throatLinksJoinEachTrackOnlyToItsGroupsConnections() {
 		Link approach = link("A.p1.north.A_B.f1.in");
 		assertEquals("A.north.A_B.f1.in", approach.getFromNode().getId().toString());
-		assertEquals("A.p1.b", approach.getToNode().getId().toString());
+		assertEquals("A.p1.b.in", approach.getToNode().getId().toString());
 		assertEquals("a_throat", approach.getAttributes().getAttribute("railsimResourceId"));
 		assertEquals(Boolean.TRUE, approach.getAttributes().getAttribute("railsimNonBlockingArea"));
 		assertEquals(300, approach.getLength(), 1e-9);
@@ -197,10 +197,22 @@ class MicroNodeBuilderTest {
 	}
 
 	@Test
+	void anEntranceLeadsOnlyOntoItsPlatform() {
+		assertEquals(Set.of("A.p1.in"), outLinksOf("A.p1.b.in"), "a terminal entrance cannot turn straight back out");
+		assertEquals(Set.of("B.p1"), outLinksOf("B.p1.a.in"));
+		assertEquals(Set.of("A.a_shared.1.in"), outLinksOf("A.a_shared.1.b.in"));
+	}
+
+	private Set<String> outLinksOf(String nodeId) {
+		return network.getNodes().get(Id.createNodeId(nodeId)).getOutLinks().keySet().stream()
+			.map(Id::toString).collect(java.util.stream.Collectors.toSet());
+	}
+
+	@Test
 	void internalNodesFollowTheDirectionOfTheNorthernNeighbours() {
 		Node hub = network.getNodes().get(Id.createNodeId("A"));
 		Node junction = network.getNodes().get(Id.createNodeId("A.north.X.in"));
-		Node platformNorthEnd = network.getNodes().get(Id.createNodeId("A.p1.b"));
+		Node platformNorthEnd = network.getNodes().get(Id.createNodeId("A.p1.b.in"));
 		// X is at x = 0, west of A: "north" of A points to decreasing x
 		assertTrue(junction.getCoord().getX() < hub.getCoord().getX());
 		assertTrue(platformNorthEnd.getCoord().getX() < hub.getCoord().getX());
