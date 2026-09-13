@@ -1,7 +1,8 @@
 {
 	"title": "Binari di ricovero e deposito usati nella simulazione",
 	"status": "bozza",
-	"rule": "un treno che termina l'ultima corsa in una stazione con ricovero esce dalla rete; una sosta in banchina piu' lunga della soglia e' un artefatto della turnazione e viene modellata come uscita dalla rete e nuovo treno che entra alla partenza successiva. Di giorno i treni sono in uso continuo: il ricovero serve di notte (rilievo 2026-09-13)",
+	"rule": "una sosta in banchina piu' lunga della soglia e' un artefatto della turnazione e viene modellata come uscita dalla rete e nuovo treno che entra alla partenza successiva. Di giorno i treni sono in uso continuo: il ricovero serve di notte (rilievo 2026-09-13)",
+	"scope": "la soglia vale in ogni capolinea, non solo dove il ricovero e' stato rilevato: nella simulazione del 2026-09-13 soste di 2-6 ore in banchina a Saronno, Garibaldi e Rogoredo bloccavano i binari, e un'unita' ferma per ore sta comunque fuori dalla banchina (ricovero, deposito o scalo non ancora rilevati)",
 	"longLayoverThresholdMin": 60,
 	"thresholdSource": "stima provvisoria, da confermare",
 	"reentryNote": "il rientro dal ricovero non e' simulato: il nuovo treno compare sul binario di partenza all'orario di partenza",
