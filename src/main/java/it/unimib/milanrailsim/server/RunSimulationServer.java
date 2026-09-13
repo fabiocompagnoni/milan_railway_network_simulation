@@ -29,7 +29,8 @@ public final class RunSimulationServer {
 			Path.of(require(options, "fleet")),
 			Path.of(require(options, "assignments")),
 			Path.of(require(options, "costs")),
-			options.containsKey("station-tracks") ? Path.of(options.get("station-tracks")) : null);
+			options.containsKey("station-tracks") ? Path.of(options.get("station-tracks")) : null,
+			options.containsKey("nodes") ? Path.of(options.get("nodes")) : null);
 		double speed = options.containsKey("speed") ? Double.parseDouble(options.get("speed")) : Protocol.UNTHROTTLED;
 		new SimulationServer(new RailsimJob(inputs), speed).serve(System.out);
 	}

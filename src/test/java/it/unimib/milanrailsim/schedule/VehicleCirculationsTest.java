@@ -7,7 +7,6 @@ import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.pt.transitSchedule.api.Departure;
 import org.matsim.pt.transitSchedule.api.TransitLine;
-import org.matsim.pt.transitSchedule.api.TransitSchedule;
 import org.matsim.vehicles.Vehicle;
 import org.matsim.vehicles.Vehicles;
 
@@ -22,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class VehicleCirculationsTest {
 
 	private static final LocalDate DATE = LocalDate.of(2026, 9, 16);
-	private static final int TURNAROUND_SECONDS = 15 * 60;
 
 	private TransitScheduleBuilder.Result result;
 
@@ -46,54 +44,46 @@ class VehicleCirculationsTest {
 	}
 
 	@Test
-	void chainsReturnTripOntoTheSameVehicle() {
-		// add a return trip S3->S1 leaving after T1 arrives (08:13) plus turnaround
-		TransitSchedule schedule = result.schedule();
-		var factory = schedule.getFactory();
-		var back = factory.createTransitRoute(Id.create("S1_back", org.matsim.pt.transitSchedule.api.TransitRoute.class),
-			null,
-			List.of(factory.createTransitRouteStop(
-					schedule.getFacilities().get(Id.create("S3", org.matsim.pt.transitSchedule.api.TransitStopFacility.class)), 0, 0),
-				factory.createTransitRouteStop(
-					schedule.getFacilities().get(Id.create("S1", org.matsim.pt.transitSchedule.api.TransitStopFacility.class)), 600, 600)),
-			"rail");
-		Departure ret = factory.createDeparture(Id.create("TR", Departure.class), 8 * 3600 + 13 * 60 + TURNAROUND_SECONDS);
-		ret.setVehicleId(Id.create("TR", Vehicle.class));
-		back.addDeparture(ret);
-		line().addRoute(back);
-		result.vehicles().addVehicle(org.matsim.vehicles.VehicleUtils.createVehicle(
-			Id.create("TR", Vehicle.class),
-			result.vehicles().getVehicleTypes().values().iterator().next()));
-
-		Vehicles circulated = VehicleCirculations.apply(result.schedule(), result.vehicles(),
-			TURNAROUND_SECONDS, RouteVehicleAssignment.defaults());
-
-		// full chain: T1 ends S3 08:13, TR starts S3 08:28, ends S1 08:38,
-		// and the after-midnight TN from S1 continues on the same vehicle
-		assertEquals(1, vehicleIds(line()).size());
-		Vehicle vehicle = circulated.getVehicles().values().iterator().next();
-		assertEquals("T1,TR,TN", vehicle.getAttributes().getAttribute("servedTrips"));
-	}
-
-	@Test
-	void tooShortTurnaroundStartsANewVehicle() {
-		Vehicles circulated = VehicleCirculations.apply(result.schedule(), result.vehicles(),
-			TURNAROUND_SECONDS, RouteVehicleAssignment.defaults());
-
+	void builderChainsAreOneVehicleEach() {
 		// T1 ends at S3, TN starts at S1: no chain possible -> one vehicle each
+		assertEquals(List.of(List.of("T1"), List.of("TN")), result.chains());
+
+		Vehicles circulated = VehicleCirculations.apply(result.schedule(), result.vehicles(), result.chains(),
+			RouteVehicleAssignment.defaults());
+
 		assertEquals(2, vehicleIds(line()).size());
 		assertEquals(2, circulated.getVehicles().size());
 	}
 
 	@Test
-	void circulationVehiclesCarryServedTripsAndLineType() {
+	void aChainPutsAllItsTripsOnOneVehicle() {
 		Vehicles circulated = VehicleCirculations.apply(result.schedule(), result.vehicles(),
-			TURNAROUND_SECONDS, RouteVehicleAssignment.defaults());
+			List.of(List.of("T1", "TN")), RouteVehicleAssignment.defaults());
+
+		assertEquals(1, vehicleIds(line()).size());
+		Vehicle vehicle = circulated.getVehicles().values().iterator().next();
+		assertEquals("S1_circ_1", vehicle.getId().toString());
+		assertEquals("T1,TN", vehicle.getAttributes().getAttribute("servedTrips"));
+		for (Departure departure : line().getRoutes().values().stream()
+				.flatMap(route -> route.getDepartures().values().stream()).toList()) {
+			assertEquals(vehicle.getId(), departure.getVehicleId());
+		}
+	}
+
+	@Test
+	void circulationVehiclesCarryTheLineType() {
+		Vehicles circulated = VehicleCirculations.apply(result.schedule(), result.vehicles(), result.chains(),
+			RouteVehicleAssignment.defaults());
 
 		// two circulations on a 70/30 line: the first takes the majority type, the second the minority
 		for (Vehicle vehicle : circulated.getVehicles().values()) {
 			assertTrue(Set.of("tsr", "taf").contains(vehicle.getType().getId().toString()));
-			assertNotNull(vehicle.getAttributes().getAttribute("servedTrips"));
 		}
+	}
+
+	@Test
+	void rejectsChainsWithUnknownTrips() {
+		assertThrows(IllegalArgumentException.class, () -> VehicleCirculations.apply(result.schedule(),
+			result.vehicles(), List.of(List.of("nope")), RouteVehicleAssignment.defaults()));
 	}
 }

@@ -4,6 +4,7 @@ import it.unimib.milanrailsim.network.FleetConfig;
 import it.unimib.milanrailsim.network.GtfsFeed;
 import it.unimib.milanrailsim.network.RailVehicleTypes;
 import it.unimib.milanrailsim.network.StationTracks;
+import it.unimib.milanrailsim.network.micro.MicroNode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.matsim.api.core.v01.network.Network;
@@ -18,12 +19,14 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Builds the railsim timetable of one service day from the GTFS feed and the
- * mesoscopic network: trips, circulations, single-track blocks and terminal
- * capacities, written as {@code transitSchedule.xml}, {@code transitVehicles.xml}
- * and {@code network-with-stations.xml}.
+ * network with its micro nodes: trips, circulations, planned platforms,
+ * single-track blocks and terminal capacities, written as
+ * {@code transitSchedule.xml}, {@code transitVehicles.xml} and
+ * {@code network-with-stations.xml}.
  */
 public final class SchedulePipeline {
 
@@ -37,14 +40,20 @@ public final class SchedulePipeline {
 	private final FleetConfig fleet;
 	private final RouteVehicleAssignment assignment;
 	private final StationTracks stationTracks;
+	private final List<MicroNode> microNodes;
 
+	/**
+	 * @param networkFile the network the micro nodes were spliced into
+	 * @param microNodes  the nodes spliced into that network; empty for a purely mesoscopic network
+	 */
 	public SchedulePipeline(GtfsFeed feed, Path networkFile, FleetConfig fleet, RouteVehicleAssignment assignment,
-			StationTracks stationTracks) {
+			StationTracks stationTracks, List<MicroNode> microNodes) {
 		this.feed = feed;
 		this.network = NetworkUtils.readNetwork(networkFile.toString());
 		this.fleet = fleet;
 		this.assignment = assignment;
 		this.stationTracks = stationTracks;
+		this.microNodes = List.copyOf(microNodes);
 	}
 
 	/**
@@ -56,8 +65,7 @@ public final class SchedulePipeline {
 		TransitScheduleBuilder.Result result = builder(serviceDate)
 			.withWindow(windowStartSeconds, windowEndSeconds)
 			.build();
-		Vehicles circulations = VehicleCirculations.apply(result.schedule(), result.vehicles(),
-			TURNAROUND_SECONDS, assignment);
+		Vehicles circulations = VehicleCirculations.apply(result.schedule(), result.vehicles(), result.chains(), assignment);
 		SingleTrackBlocks.apply(network);
 
 		try {
@@ -83,13 +91,15 @@ public final class SchedulePipeline {
 	 */
 	private void sizeStationsForTheWholeDay(LocalDate serviceDate) {
 		TransitScheduleBuilder.Result wholeDay = builder(serviceDate).build();
-		VehicleCirculations.apply(wholeDay.schedule(), wholeDay.vehicles(), TURNAROUND_SECONDS, assignment);
+		VehicleCirculations.apply(wholeDay.schedule(), wholeDay.vehicles(), wholeDay.chains(), assignment);
 		MeetCapacities.apply(wholeDay.schedule(), network);
 		TerminalCapacities.apply(wholeDay.schedule(), network);
 	}
 
 	private TransitScheduleBuilder builder(LocalDate serviceDate) {
 		return new TransitScheduleBuilder(feed, network, serviceDate, assignment, RailVehicleTypes.from(fleet))
-			.withStationTracks(stationTracks);
+			.withStationTracks(stationTracks)
+			.withMicroNodes(microNodes)
+			.withCirculations(TURNAROUND_SECONDS, stop -> Double.POSITIVE_INFINITY);
 	}
 }

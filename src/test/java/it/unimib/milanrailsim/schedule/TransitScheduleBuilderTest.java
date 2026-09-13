@@ -1,8 +1,11 @@
 package it.unimib.milanrailsim.schedule;
 
 import it.unimib.milanrailsim.network.GtfsFeed;
+import it.unimib.milanrailsim.network.micro.MicroNode;
+import it.unimib.milanrailsim.network.micro.MicroNodeBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.matsim.core.network.NetworkUtils;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
@@ -11,7 +14,10 @@ import org.matsim.api.core.v01.network.Network;
 import org.matsim.pt.transitSchedule.api.Departure;
 import org.matsim.pt.transitSchedule.api.TransitLine;
 import org.matsim.pt.transitSchedule.api.TransitRoute;
+import org.matsim.pt.transitSchedule.api.TransitStopFacility;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
@@ -90,6 +96,56 @@ class TransitScheduleBuilderTest {
 			.flatMap(line -> line.getRoutes().values().stream())
 			.mapToInt(route -> route.getDepartures().size()).sum();
 		assertEquals(1, departures);
+	}
+
+	private static final String MICRO_NODE = """
+		{
+			"node": "fixture", "title": "Fixture node",
+			"stations": [
+				{"id": "S1", "name": "S1", "kind": "terminal", "platformLengthM": null,
+					"groups": [{"id": "s1_main", "kind": "terminal", "tracks": [{"ref": "1", "direction": null}, {"ref": "2", "direction": null}],
+						"connections": {"north": ["segment:S1_S2:f1"]}}], "throats": []},
+				{"id": "S2", "name": "S2", "kind": "through", "platformLengthM": null,
+					"groups": [{"id": "s2_f1", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
+						"connections": {"south": ["segment:S1_S2:f1"], "north": ["meso:S3"]}}], "throats": []}
+			],
+			"segments": [{"from": "S1", "to": "S2", "bundles": {"f1": {
+				"north": {"wayIds": [], "lengthM": 2000}, "south": {"wayIds": [], "lengthM": 2000}, "speedProfile": []}}}],
+			"lines": {"S1": {"bundle": "f1", "stations": {"S1": ["s1_main"], "S2": ["s2_f1"]}}}
+		}
+		""";
+
+	@Test
+	void microStationsGetPlatformFacilitiesAndRoutesThroughTheirTracks(@TempDir Path dir) throws IOException {
+		Path file = dir.resolve("fixture.json");
+		Files.writeString(file, MICRO_NODE);
+		List<MicroNode> nodes = List.of(MicroNode.read(file));
+		new MicroNodeBuilder(network).splice(nodes);
+		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-minimal"));
+
+		TransitScheduleBuilder.Result result = new TransitScheduleBuilder(feed, network, DATE, RouteVehicleAssignment.defaults())
+			.withMicroNodes(nodes).build();
+
+		TransitLine line = result.schedule().getTransitLines().get(Id.create("S1", TransitLine.class));
+		TransitRoute t1Route = line.getRoutes().values().stream()
+			.filter(r -> r.getStops().size() == 3).findFirst().orElseThrow();
+		List<Id<Link>> chain = new java.util.ArrayList<>();
+		chain.add(t1Route.getRoute().getStartLinkId());
+		chain.addAll(t1Route.getRoute().getLinkIds());
+		chain.add(t1Route.getRoute().getEndLinkId());
+		assertEquals(List.of("S1.p1.in", "S1.p1.out", "S1.p1.north.out", "S1_S2.f1.north.exit", "S1_S2.f1.north",
+				"S1_S2.f1.north.entry", "S2.p1.south.in", "S2.p1", "S2.p1.north.out", "S2_S3", "stop_S3"),
+			chain.stream().map(Id::toString).toList());
+
+		TransitStopFacility first = t1Route.getStops().getFirst().getStopFacility();
+		assertEquals("S1.p1.in|S1|S1|terminal", first.getId().toString());
+		assertEquals("S1|S1|terminal", first.getStopAreaId().toString());
+		assertEquals("S1", first.getName());
+		assertNotNull(result.schedule().getFacilities().get(Id.create("S1.p2.in|S1|S1|terminal", TransitStopFacility.class)),
+			"every platform of the area is a facility");
+		TransitStopFacility second = t1Route.getStops().get(1).getStopFacility();
+		assertEquals("S2|S1|through", second.getStopAreaId().toString());
+		assertEquals("S3", t1Route.getStops().getLast().getStopFacility().getId().toString());
 	}
 
 	@Test

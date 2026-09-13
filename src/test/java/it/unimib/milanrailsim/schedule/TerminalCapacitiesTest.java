@@ -19,7 +19,7 @@ class TerminalCapacitiesTest {
 		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-minimal"));
 		TransitScheduleBuilder.Result result = new TransitScheduleBuilder(
 			feed, network, LocalDate.of(2026, 9, 16), RouteVehicleAssignment.defaults()).build();
-		VehicleCirculations.apply(result.schedule(), result.vehicles(), 15 * 60,
+		VehicleCirculations.apply(result.schedule(), result.vehicles(), result.chains(),
 			RouteVehicleAssignment.defaults());
 
 		TerminalCapacities.apply(result.schedule(), network);

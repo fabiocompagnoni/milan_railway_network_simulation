@@ -3,6 +3,7 @@ package it.unimib.milanrailsim.server;
 import it.unimib.milanrailsim.network.FleetConfig;
 import it.unimib.milanrailsim.network.GtfsFeed;
 import it.unimib.milanrailsim.network.StationTracks;
+import it.unimib.milanrailsim.network.micro.MicroNode;
 import it.unimib.milanrailsim.railsim.RailsimSetup;
 import it.unimib.milanrailsim.results.AnalyzeRun;
 import it.unimib.milanrailsim.results.RunArchive;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 /**
  * One run end to end: timetable of the requested day, railsim simulation
@@ -46,8 +48,12 @@ public final class RailsimJob implements SimulationServer.Job {
 	 *
 	 * @param stationTracksFile survey of terminal platform tracks, or null to size stations from their sections
 	 */
-	public record Inputs(Path runDir, Path configTemplate, Path mesoNetwork, Path gtfsDir, Path fleetFile,
-			Path assignmentsFile, Path costsFile, Path stationTracksFile) {
+	/**
+	 * @param engineNetwork the network with the micro nodes spliced in
+	 * @param microNodesDir the node declarations that were spliced, or null for a purely mesoscopic network
+	 */
+	public record Inputs(Path runDir, Path configTemplate, Path engineNetwork, Path gtfsDir, Path fleetFile,
+			Path assignmentsFile, Path costsFile, Path stationTracksFile, Path microNodesDir) {
 	}
 
 	/** Thrown by the step listener to leave the mobsim when the client asked to stop. */
@@ -99,8 +105,10 @@ public final class RailsimJob implements SimulationServer.Job {
 		int end = spec.window() == null ? Integer.MAX_VALUE : spec.window().end().toSecondOfDay();
 		StationTracks tracks = inputs.stationTracksFile() != null && Files.exists(inputs.stationTracksFile())
 			? StationTracks.read(inputs.stationTracksFile()) : StationTracks.empty();
-		new SchedulePipeline(GtfsFeed.load(inputs.gtfsDir()), inputs.mesoNetwork(), fleet,
-			new RouteVehicleAssignment(assignments), tracks).generate(spec.serviceDate(), start, end, scenarioDir);
+		List<MicroNode> microNodes = inputs.microNodesDir() != null && Files.isDirectory(inputs.microNodesDir())
+			? MicroNode.readAll(inputs.microNodesDir()) : List.of();
+		new SchedulePipeline(GtfsFeed.load(inputs.gtfsDir()), inputs.engineNetwork(), fleet,
+			new RouteVehicleAssignment(assignments), tracks, microNodes).generate(spec.serviceDate(), start, end, scenarioDir);
 	}
 
 	private void simulate(Path scenarioDir, Path output, FrameSampler sampler, Pacer pacer, Emitter out, Path marker) {

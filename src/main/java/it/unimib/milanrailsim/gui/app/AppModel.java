@@ -41,8 +41,10 @@ public final class AppModel {
 		this.paths = paths;
 		this.files = files;
 		feed.set(CompletableFuture.supplyAsync(() -> GtfsFeed.load(gtfsDir())));
-		networkStops = CompletableFuture.supplyAsync(() -> NetworkUtils.readNetwork(files.mesoNetwork().toString())
-			.getNodes().keySet().stream().map(Object::toString).collect(Collectors.toUnmodifiableSet()));
+		networkStops = CompletableFuture.supplyAsync(() -> NetworkUtils.readNetwork(files.engineNetwork().toString())
+			.getNodes().values().stream()
+			.filter(node -> node.getAttributes().getAttribute("gtfsStopName") != null)
+			.map(node -> node.getId().toString()).collect(Collectors.toUnmodifiableSet()));
 		seedCosts();
 		fleet.set(Files.exists(paths.fleetTypesFile()) ? FleetConfig.read(paths.fleetTypesFile()) : FleetConfig.defaults());
 		assignments.set(Files.exists(paths.lineAssignmentsFile())
@@ -71,8 +73,9 @@ public final class AppModel {
 		Path runDir = paths.runs().resolve(spec.name());
 		spec.write(runDir.resolve("scenario.json"));
 		RailsimJob.Inputs inputs = new RailsimJob.Inputs(runDir, Path.of("scenarios", "milan", "config.xml"),
-			files.mesoNetwork(), gtfsDir(), paths.fleetTypesFile(), paths.lineAssignmentsFile(), paths.costsFile(),
-			Files.exists(CreateTransitScheduleFromFeed.STATION_TRACKS) ? CreateTransitScheduleFromFeed.STATION_TRACKS : null);
+			files.engineNetwork(), gtfsDir(), paths.fleetTypesFile(), paths.lineAssignmentsFile(), paths.costsFile(),
+			Files.exists(CreateTransitScheduleFromFeed.STATION_TRACKS) ? CreateTransitScheduleFromFeed.STATION_TRACKS : null,
+			Files.isDirectory(files.microNodes()) ? files.microNodes() : null);
 		LiveSession started = LiveSession.start(inputs, initialSpeed);
 		session.set(started);
 		return started;

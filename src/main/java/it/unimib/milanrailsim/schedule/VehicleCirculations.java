@@ -7,28 +7,21 @@ import org.matsim.pt.transitSchedule.api.Departure;
 import org.matsim.pt.transitSchedule.api.TransitLine;
 import org.matsim.pt.transitSchedule.api.TransitRoute;
 import org.matsim.pt.transitSchedule.api.TransitSchedule;
-import org.matsim.pt.transitSchedule.api.TransitStopFacility;
 import org.matsim.vehicles.Vehicle;
 import org.matsim.vehicles.VehicleType;
 import org.matsim.vehicles.VehicleUtils;
 import org.matsim.vehicles.Vehicles;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
- * Chains the one-vehicle-per-trip schedule into realistic circulations: a
- * vehicle ending a trip takes the line's next departure from the same
- * terminus once the turnaround time has passed (crews change ends, shifts
- * rotate). Departures that cannot be chained start a new vehicle — no
- * artificial transfer legs are ever added.
- * <p>
- * Design follows gtfs2matsim's CreateVehicleCirculation, reimplemented
- * because that class is package-private and injects deadhead links into the
- * network.
+ * Turns the one-vehicle-per-trip schedule into circulations: every chain of
+ * trips (see {@link TripChains}) becomes one vehicle, typed through the line
+ * assignment, listing its GTFS trips in {@code servedTrips}. The chains are
+ * the ones the timetable was built with, so a train's next leg starts on the
+ * platform its previous leg ended on.
  */
 public final class VehicleCirculations {
 
@@ -37,108 +30,50 @@ public final class VehicleCirculations {
 	private VehicleCirculations() {
 	}
 
-	/**
-	 * Rewrites departure vehicle ids in place and returns the replacement
-	 * vehicles container: one vehicle per circulation, typed through the
-	 * line assignment, listing its GTFS trips in {@code servedTrips}.
-	 */
-	public static Vehicles apply(TransitSchedule schedule, Vehicles tripVehicles,
-			int turnaroundSeconds, RouteVehicleAssignment assignment) {
+	private record Stop(TransitLine line, Departure departure) {
+	}
+
+	/** Rewrites departure vehicle ids in place and returns the replacement vehicles container. */
+	public static Vehicles apply(TransitSchedule schedule, Vehicles tripVehicles, List<List<String>> chains,
+			RouteVehicleAssignment assignment) {
 		Vehicles circulated = VehicleUtils.createVehiclesContainer();
 		tripVehicles.getVehicleTypes().values().forEach(circulated::addVehicleType);
 
-		int totalCirculations = 0;
+		Map<String, Stop> departuresByTrip = new HashMap<>();
 		for (TransitLine line : schedule.getTransitLines().values()) {
-			totalCirculations += chainLine(line, circulated, turnaroundSeconds, assignment);
-		}
-		log.info("Chained {} trips into {} circulations",
-			tripVehicles.getVehicles().size(), totalCirculations);
-		return circulated;
-	}
-
-	private record Trip(TransitRoute route, Departure departure) {
-
-		double start() {
-			return departure.getDepartureTime();
-		}
-
-		double end() {
-			return departure.getDepartureTime()
-				+ route.getStops().getLast().getArrivalOffset().seconds();
-		}
-
-		Id<TransitStopFacility> firstStop() {
-			return route.getStops().getFirst().getStopFacility().getId();
-		}
-
-		Id<TransitStopFacility> lastStop() {
-			return route.getStops().getLast().getStopFacility().getId();
-		}
-	}
-
-	private static final class Circulation {
-
-		private final Id<Vehicle> vehicleId;
-		private final List<String> servedTrips = new ArrayList<>();
-		private Id<TransitStopFacility> currentStop;
-		private double freeFrom;
-
-		private Circulation(Id<Vehicle> vehicleId, Trip first) {
-			this.vehicleId = vehicleId;
-			serve(first);
-		}
-
-		private boolean canTake(Trip trip, int turnaroundSeconds) {
-			return trip.firstStop().equals(currentStop)
-				&& trip.start() >= freeFrom + turnaroundSeconds;
-		}
-
-		private void serve(Trip trip) {
-			trip.departure().setVehicleId(vehicleId);
-			servedTrips.add(trip.departure().getId().toString());
-			currentStop = trip.lastStop();
-			freeFrom = trip.end();
-		}
-	}
-
-	private static int chainLine(TransitLine line, Vehicles circulated, int turnaroundSeconds,
-			RouteVehicleAssignment assignment) {
-		List<Trip> trips = new ArrayList<>();
-		for (TransitRoute route : line.getRoutes().values()) {
-			for (Departure departure : route.getDepartures().values()) {
-				trips.add(new Trip(route, departure));
-			}
-		}
-		trips.sort(Comparator.comparingDouble(Trip::start));
-
-		List<Circulation> circulations = new ArrayList<>();
-		for (Trip trip : trips) {
-			Circulation free = circulations.stream()
-				.filter(circulation -> circulation.canTake(trip, turnaroundSeconds))
-				.min(Comparator.comparingDouble(circulation -> circulation.freeFrom))
-				.orElse(null);
-			if (free != null) {
-				free.serve(trip);
-			} else {
-				Id<Vehicle> vehicleId = Id.create(
-					line.getId() + "_circ_" + (circulations.size() + 1), Vehicle.class);
-				circulations.add(new Circulation(vehicleId, trip));
+			for (TransitRoute route : line.getRoutes().values()) {
+				for (Departure departure : route.getDepartures().values()) {
+					departuresByTrip.put(departure.getId().toString(), new Stop(line, departure));
+				}
 			}
 		}
 
-		Map<Id<Vehicle>, Circulation> byId = new TreeMap<>();
-		circulations.forEach(circulation -> byId.put(circulation.vehicleId, circulation));
-		int index = 0;
-		for (Circulation circulation : byId.values()) {
-			String typeId = assignment.vehicleTypeId(line.getId().toString(), index++);
+		Map<String, Integer> perLine = new HashMap<>();
+		for (List<String> chain : chains) {
+			Stop first = departuresByTrip.get(chain.getFirst());
+			if (first == null) {
+				throw new IllegalArgumentException("Chain starts with unknown trip " + chain.getFirst());
+			}
+			String lineId = first.line().getId().toString();
+			int index = perLine.merge(lineId, 1, Integer::sum) - 1;
+			Id<Vehicle> vehicleId = Id.create(lineId + "_circ_" + (index + 1), Vehicle.class);
+			for (String tripId : chain) {
+				Stop stop = departuresByTrip.get(tripId);
+				if (stop == null) {
+					throw new IllegalArgumentException("Chain refers to unknown trip " + tripId);
+				}
+				stop.departure().setVehicleId(vehicleId);
+			}
+			String typeId = assignment.vehicleTypeId(lineId, index);
 			VehicleType type = circulated.getVehicleTypes().get(Id.create(typeId, VehicleType.class));
 			if (type == null) {
 				throw new IllegalArgumentException("Unknown vehicle type: " + typeId);
 			}
-			Vehicle vehicle = VehicleUtils.createVehicle(circulation.vehicleId, type);
-			vehicle.getAttributes().putAttribute("servedTrips", String.join(",", circulation.servedTrips));
+			Vehicle vehicle = VehicleUtils.createVehicle(vehicleId, type);
+			vehicle.getAttributes().putAttribute("servedTrips", String.join(",", chain));
 			circulated.addVehicle(vehicle);
 		}
-		return circulations.size();
+		log.info("Chained {} trips into {} circulations", tripVehicles.getVehicles().size(), chains.size());
+		return circulated;
 	}
 }

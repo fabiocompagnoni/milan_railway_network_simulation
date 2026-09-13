@@ -41,7 +41,7 @@ public final class EngineProcess {
 			RunSimulationServer.class.getName(),
 			"--run", inputs.runDir().toString(),
 			"--config", inputs.configTemplate().toString(),
-			"--network", inputs.mesoNetwork().toString(),
+			"--network", inputs.engineNetwork().toString(),
 			"--gtfs", inputs.gtfsDir().toString(),
 			"--fleet", inputs.fleetFile().toString(),
 			"--assignments", inputs.assignmentsFile().toString(),
@@ -49,6 +49,9 @@ public final class EngineProcess {
 			"--speed", String.valueOf(initialSpeed)));
 		if (inputs.stationTracksFile() != null) {
 			command.addAll(List.of("--station-tracks", inputs.stationTracksFile().toString()));
+		}
+		if (inputs.microNodesDir() != null) {
+			command.addAll(List.of("--nodes", inputs.microNodesDir().toString()));
 		}
 		try {
 			Files.createDirectories(inputs.runDir());

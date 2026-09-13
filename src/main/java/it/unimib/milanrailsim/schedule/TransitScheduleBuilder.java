@@ -4,6 +4,14 @@ import it.unimib.milanrailsim.network.GtfsFeed;
 import it.unimib.milanrailsim.network.RailVehicleTypes;
 import it.unimib.milanrailsim.network.StationTracks;
 import it.unimib.milanrailsim.network.ServiceCalendar;
+import it.unimib.milanrailsim.network.micro.MicroIds;
+import it.unimib.milanrailsim.network.micro.MicroNode;
+import it.unimib.milanrailsim.network.micro.MicroNode.Group;
+import it.unimib.milanrailsim.network.micro.MicroNode.Station;
+import it.unimib.milanrailsim.network.micro.MicroNode.Track;
+import it.unimib.milanrailsim.schedule.PlatformPlanner.Call;
+import it.unimib.milanrailsim.schedule.PlatformPlanner.TripCalls;
+import it.unimib.milanrailsim.schedule.TripChains.Journey;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.matsim.api.core.v01.Id;
@@ -19,6 +27,7 @@ import org.matsim.pt.transitSchedule.api.TransitRoute;
 import org.matsim.pt.transitSchedule.api.TransitRouteStop;
 import org.matsim.pt.transitSchedule.api.TransitSchedule;
 import org.matsim.pt.transitSchedule.api.TransitScheduleFactory;
+import org.matsim.pt.transitSchedule.api.TransitStopArea;
 import org.matsim.pt.transitSchedule.api.TransitStopFacility;
 import org.matsim.vehicles.Vehicle;
 import org.matsim.vehicles.VehicleType;
@@ -33,19 +42,28 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.ToDoubleFunction;
 
 /**
  * Turns the GTFS trips active on a given service date into a MATSim
- * {@link TransitSchedule} and matching {@link Vehicles} container, routed on
- * the mesoscopic rail network via {@link MesoRouter}.
+ * {@link TransitSchedule} and matching {@link Vehicles} container. Trips are
+ * first chained into circulations, so that at a micro station a train keeps
+ * the platform it arrived on until it leaves again; each call at a micro
+ * station gets a stop facility on its planned platform link, grouped in a
+ * stop area per line so railsim can divert the train to another platform
+ * the line may use. Routes are cheapest link chains that keep a line on its
+ * declared bundle.
  */
 public final class TransitScheduleBuilder {
 
 	private static final Logger LOG = LogManager.getLogger(TransitScheduleBuilder.class);
 	private static final int RAIL_ROUTE_TYPE = 2;
 	private static final String MODE = "rail";
+	/** Makes a link chain over the wrong bundle or platform group lose against any detour on the right one. */
+	private static final double OFF_ROUTE_PENALTY_M = 1_000_000.0;
 
-	public record Result(TransitSchedule schedule, Vehicles vehicles) {
+	/** @param chains trip ids of each circulation, in service order */
+	public record Result(TransitSchedule schedule, Vehicles vehicles, List<List<String>> chains) {
 	}
 
 	private final GtfsFeed feed;
@@ -56,11 +74,18 @@ public final class TransitScheduleBuilder {
 	private int windowStartSeconds = Integer.MIN_VALUE;
 	private int windowEndSeconds = Integer.MAX_VALUE;
 	private StationTracks stationTracks = StationTracks.empty();
+	private List<MicroNode> microNodes = List.of();
+	private int turnaroundSeconds = SchedulePipeline.TURNAROUND_SECONDS;
+	private ToDoubleFunction<String> maxLayoverSeconds = stop -> Double.POSITIVE_INFINITY;
 
 	private final TransitScheduleFactory factory = new TransitScheduleFactoryImpl();
-	private final Map<String, TransitStopFacility> stopFacilities = new HashMap<>();
+	private final Map<String, TransitStopFacility> facilities = new HashMap<>();
 	private final Map<String, String> patternToRouteId = new HashMap<>();
 	private final Map<String, Integer> routeCounters = new HashMap<>();
+	private final Map<String, ToDoubleFunction<Link>> lineCosts = new HashMap<>();
+	private PlatformPlanner planner;
+	private PlatformPlanner.Plan plan;
+	private LinkRouter router;
 
 	public TransitScheduleBuilder(GtfsFeed feed, Network network, LocalDate serviceDate,
 			RouteVehicleAssignment assignment) {
@@ -76,9 +101,22 @@ public final class TransitScheduleBuilder {
 		this.vehicleTypes = vehicleTypes;
 	}
 
-	/** Platform counts that size the station loop links. */
+	/** Platform counts that size the station loop links of the mesoscopic stations. */
 	public TransitScheduleBuilder withStationTracks(StationTracks tracks) {
 		this.stationTracks = tracks;
+		return this;
+	}
+
+	/** Micro nodes already spliced into the network: their stations get platform facilities. */
+	public TransitScheduleBuilder withMicroNodes(List<MicroNode> nodes) {
+		this.microNodes = List.copyOf(nodes);
+		return this;
+	}
+
+	/** Chaining parameters: turnaround and the longest layover a terminus allows before a train leaves for the sidings. */
+	public TransitScheduleBuilder withCirculations(int turnaroundSeconds, ToDoubleFunction<String> maxLayoverSeconds) {
+		this.turnaroundSeconds = turnaroundSeconds;
+		this.maxLayoverSeconds = maxLayoverSeconds;
 		return this;
 	}
 
@@ -91,7 +129,8 @@ public final class TransitScheduleBuilder {
 
 	public Result build() {
 		StationStopLinks.addStopLinks(network, stationTracks);
-		MesoRouter router = new MesoRouter(network);
+		router = new LinkRouter(network);
+		planner = new PlatformPlanner(microNodes, turnaroundSeconds);
 
 		TransitSchedule schedule = factory.createTransitSchedule();
 		Vehicles vehicles = VehicleUtils.createVehiclesContainer();
@@ -100,11 +139,17 @@ public final class TransitScheduleBuilder {
 		Set<String> activeServiceIds = ServiceCalendar.activeServiceIds(feed.calendarDateRows(), serviceDate);
 		Map<String, List<GtfsFeed.Trip>> includedTripsByRoute = includedTripsByRoute(activeServiceIds);
 
+		List<List<TripCalls>> chains = chains(includedTripsByRoute);
+		plan = planner.plan(chains);
+
 		for (Map.Entry<String, List<GtfsFeed.Trip>> entry : includedTripsByRoute.entrySet()) {
-			buildLine(entry.getKey(), entry.getValue(), schedule, vehicles, router);
+			buildLine(entry.getKey(), entry.getValue(), schedule, vehicles);
 		}
 
-		return new Result(schedule, vehicles);
+		List<List<String>> chainIds = chains.stream()
+			.map(chain -> chain.stream().map(TripCalls::tripId).toList())
+			.toList();
+		return new Result(schedule, vehicles, chainIds);
 	}
 
 	private Map<String, List<GtfsFeed.Trip>> includedTripsByRoute(Set<String> activeServiceIds) {
@@ -146,8 +191,24 @@ public final class TransitScheduleBuilder {
 		return tripsByRoute;
 	}
 
-	private void buildLine(String routeShortName, List<GtfsFeed.Trip> trips, TransitSchedule schedule,
-			Vehicles vehicles, MesoRouter router) {
+	private List<List<TripCalls>> chains(Map<String, List<GtfsFeed.Trip>> tripsByRoute) {
+		List<Journey> journeys = new ArrayList<>();
+		Map<String, TripCalls> callsByTrip = new HashMap<>();
+		tripsByRoute.forEach((line, trips) -> trips.forEach(trip -> {
+			List<GtfsFeed.StopTime> stopTimes = feed.stopTimesByTripId().get(trip.id());
+			List<Call> calls = stopTimes.stream()
+				.map(stopTime -> new Call(stopTime.stopId(), stopTime.arrivalSeconds(), stopTime.departureSeconds()))
+				.toList();
+			callsByTrip.put(trip.id(), new TripCalls(trip.id(), line, calls));
+			journeys.add(new Journey(trip.id(), line, calls.getFirst().stopId(), calls.getLast().stopId(),
+				calls.getFirst().departureSeconds(), calls.getLast().arrivalSeconds()));
+		}));
+		return TripChains.chain(journeys, turnaroundSeconds, maxLayoverSeconds).stream()
+			.map(chain -> chain.stream().map(journey -> callsByTrip.get(journey.tripId())).toList())
+			.toList();
+	}
+
+	private void buildLine(String routeShortName, List<GtfsFeed.Trip> trips, TransitSchedule schedule, Vehicles vehicles) {
 		List<GtfsFeed.Trip> orderedTrips = trips.stream()
 			.sorted(Comparator.comparingInt(trip -> firstDeparture(trip.id())))
 			.toList();
@@ -157,18 +218,21 @@ public final class TransitScheduleBuilder {
 
 		int departureIndex = 0;
 		for (GtfsFeed.Trip trip : orderedTrips) {
-			TransitRoute transitRoute = routeForTrip(routeShortName, trip, schedule, router, line);
+			TransitRoute transitRoute = routeForTrip(routeShortName, trip, schedule, line);
 			addDepartureAndVehicle(trip, routeShortName, departureIndex, transitRoute, vehicles);
 			departureIndex++;
 		}
 	}
 
-	private TransitRoute routeForTrip(String routeShortName, GtfsFeed.Trip trip, TransitSchedule schedule,
-			MesoRouter router, TransitLine line) {
+	private TransitRoute routeForTrip(String routeShortName, GtfsFeed.Trip trip, TransitSchedule schedule, TransitLine line) {
 		List<GtfsFeed.StopTime> stopTimes = feed.stopTimesByTripId().get(trip.id());
 		int firstDeparture = stopTimes.get(0).departureSeconds();
 
-		String pattern = pattern(trip.routeId(), stopTimes, firstDeparture);
+		List<TransitStopFacility> stopFacilities = new ArrayList<>();
+		for (int i = 0; i < stopTimes.size(); i++) {
+			stopFacilities.add(facilityFor(schedule, routeShortName, trip.id(), stopTimes, i));
+		}
+		String pattern = pattern(trip.routeId(), stopTimes, stopFacilities, firstDeparture);
 		String existingRouteId = patternToRouteId.get(pattern);
 		if (existingRouteId != null) {
 			return line.getRoutes().get(Id.create(existingRouteId, TransitRoute.class));
@@ -178,16 +242,16 @@ public final class TransitScheduleBuilder {
 		List<Id<Link>> chain = new ArrayList<>();
 		for (int i = 0; i < stopTimes.size(); i++) {
 			GtfsFeed.StopTime stopTime = stopTimes.get(i);
-			TransitStopFacility facility = stopFacility(schedule, stopTime.stopId());
-			if (i > 0) {
-				Id<Node> from = Id.createNodeId(stopTimes.get(i - 1).stopId());
-				chain.addAll(router.shortestPath(from, Id.createNodeId(stopTime.stopId())));
+			TransitStopFacility facility = stopFacilities.get(i);
+			if (i == 0) {
+				chain.add(facility.getLinkId());
+			} else {
+				chain.addAll(router.path(stopFacilities.get(i - 1).getLinkId(), facility.getLinkId(),
+					routeShortName, lineCost(routeShortName)));
 			}
-			chain.add(StationStopLinks.stopLinkId(Id.createNodeId(stopTime.stopId())));
 			double arrivalOffset = stopTime.arrivalSeconds() - firstDeparture;
 			double departureOffset = stopTime.departureSeconds() - firstDeparture;
-			TransitRouteStop routeStop =
-				factory.createTransitRouteStop(facility, arrivalOffset, departureOffset);
+			TransitRouteStop routeStop = factory.createTransitRouteStop(facility, arrivalOffset, departureOffset);
 			// without passengers a driver would skip stops and run early;
 			// holding to the timetable keeps the simulation on the GTFS times
 			routeStop.setAwaitDepartureTime(true);
@@ -201,6 +265,105 @@ public final class TransitScheduleBuilder {
 		line.addRoute(transitRoute);
 		patternToRouteId.put(pattern, routeId);
 		return transitRoute;
+	}
+
+	private TransitStopFacility facilityFor(TransitSchedule schedule, String line, String tripId,
+			List<GtfsFeed.StopTime> stopTimes, int index) {
+		String stopId = stopTimes.get(index).stopId();
+		if (!planner.isMicro(stopId)) {
+			return stopFacility(schedule, stopId);
+		}
+		Id<Link> platform = plan.platform(tripId, index)
+			.orElseThrow(() -> new IllegalStateException("No platform planned for trip " + tripId + " at " + stopId));
+		boolean terminating = index == 0 || index == stopTimes.size() - 1;
+		return platformFacility(schedule, stopId, line, terminating, platform);
+	}
+
+	/**
+	 * Every platform link the line may use at the station becomes a facility of
+	 * one stop area, so railsim can remap a diverted train to the platform it
+	 * actually reaches; the call itself refers to the planned platform's facility.
+	 */
+	private TransitStopFacility platformFacility(TransitSchedule schedule, String stopId, String line,
+			boolean terminating, Id<Link> platform) {
+		MicroNode node = planner.nodeOf(stopId).orElseThrow();
+		Station station = node.station(stopId);
+		List<String> groups = node.preferredGroups(line, stopId, terminating);
+		if (groups.isEmpty()) {
+			groups = station.groups().stream().map(Group::id).toList();
+		}
+		String area = stopId + "|" + line + "|" + (terminating ? "terminal" : "through");
+		for (String groupId : groups) {
+			Group group = station.group(groupId);
+			for (Track track : group.effectiveTracks()) {
+				String trackId = MicroIds.trackId(station, group, track);
+				for (Id<Link> link : platformLinksOf(trackId)) {
+					String facilityId = link + "|" + area;
+					facilities.computeIfAbsent(facilityId, id -> {
+						Node hub = network.getNodes().get(Id.createNodeId(stopId));
+						TransitStopFacility facility = factory.createTransitStopFacility(
+							Id.create(id, TransitStopFacility.class), hub.getCoord(), false);
+						facility.setLinkId(link);
+						facility.setStopAreaId(Id.create(area, TransitStopArea.class));
+						facility.setName(stopId);
+						schedule.addStopFacility(facility);
+						return facility;
+					});
+				}
+			}
+		}
+		TransitStopFacility planned = facilities.get(platform + "|" + area);
+		if (planned == null) {
+			throw new IllegalStateException("Planned platform " + platform + " is not in area " + area);
+		}
+		return planned;
+	}
+
+	/** The platform links of a track: the track itself, or its two directional variants. */
+	private List<Id<Link>> platformLinksOf(String trackId) {
+		List<Id<Link>> links = new ArrayList<>();
+		for (String suffix : List.of("", ".in", ".north", ".south")) {
+			Id<Link> candidate = Id.createLinkId(trackId + suffix);
+			if (network.getLinks().containsKey(candidate)) {
+				links.add(candidate);
+			}
+		}
+		if (links.isEmpty()) {
+			throw new IllegalStateException("Track " + trackId + " has no platform link in the network");
+		}
+		return links;
+	}
+
+	/**
+	 * Length, with a prohibitive penalty on links of another bundle than the
+	 * line's in a node, and on platforms of groups the line may not pass through.
+	 */
+	private ToDoubleFunction<Link> lineCost(String line) {
+		return lineCosts.computeIfAbsent(line, key -> link -> {
+			double cost = link.getLength();
+			Object nodeId = link.getAttributes().getAttribute("microNode");
+			if (nodeId == null) {
+				return cost;
+			}
+			MicroNode node = microNodes.stream().filter(candidate -> candidate.id().equals(nodeId)).findFirst().orElse(null);
+			if (node == null) {
+				return cost;
+			}
+			Object bundle = link.getAttributes().getAttribute("microBundle");
+			MicroNode.Line declared = node.lines().get(line);
+			if (bundle != null && declared != null && declared.bundle().isPresent() && !declared.bundle().get().equals(bundle)) {
+				cost += OFF_ROUTE_PENALTY_M;
+			}
+			Object group = link.getAttributes().getAttribute("microGroup");
+			Object station = link.getAttributes().getAttribute("microStation");
+			if (group != null && station != null) {
+				List<String> allowed = node.preferredGroups(line, station.toString(), false);
+				if (!allowed.isEmpty() && !allowed.contains(group.toString())) {
+					cost += OFF_ROUTE_PENALTY_M;
+				}
+			}
+			return cost;
+		});
 	}
 
 	private void addDepartureAndVehicle(GtfsFeed.Trip trip, String routeShortName, int departureIndex,
@@ -220,7 +383,7 @@ public final class TransitScheduleBuilder {
 	}
 
 	private TransitStopFacility stopFacility(TransitSchedule schedule, String stopId) {
-		return stopFacilities.computeIfAbsent(stopId, id -> {
+		return facilities.computeIfAbsent(stopId, id -> {
 			Node node = network.getNodes().get(Id.createNodeId(id));
 			if (node == null) {
 				throw new IllegalArgumentException("Unknown station node for GTFS stop: " + id);
@@ -228,15 +391,18 @@ public final class TransitScheduleBuilder {
 			TransitStopFacility facility = factory.createTransitStopFacility(
 				Id.create(id, TransitStopFacility.class), node.getCoord(), false);
 			facility.setLinkId(StationStopLinks.stopLinkId(node.getId()));
+			facility.setName(stopId);
 			schedule.addStopFacility(facility);
 			return facility;
 		});
 	}
 
-	private String pattern(String routeId, List<GtfsFeed.StopTime> stopTimes, int firstDeparture) {
+	private String pattern(String routeId, List<GtfsFeed.StopTime> stopTimes, List<TransitStopFacility> stopFacilities,
+			int firstDeparture) {
 		StringBuilder key = new StringBuilder(routeId);
-		for (GtfsFeed.StopTime stopTime : stopTimes) {
-			key.append('|').append(stopTime.stopId())
+		for (int i = 0; i < stopTimes.size(); i++) {
+			GtfsFeed.StopTime stopTime = stopTimes.get(i);
+			key.append('|').append(stopFacilities.get(i).getId())
 				.append(':').append(stopTime.arrivalSeconds() - firstDeparture)
 				.append(':').append(stopTime.departureSeconds() - firstDeparture);
 		}
