@@ -7,8 +7,7 @@ import org.matsim.core.controler.Controler;
 import org.matsim.core.controler.OutputDirectoryHierarchy;
 import org.matsim.core.scenario.ScenarioUtils;
 
-import ch.sbb.matsim.contrib.railsim.RailsimModule;
-import ch.sbb.matsim.contrib.railsim.qsimengine.RailsimQSimModule;
+import it.unimib.milanrailsim.railsim.RailsimSetup;
 
 /**
  * Entry point of the project: loads a railsim scenario and runs the simulation.
@@ -36,12 +35,7 @@ public final class RunMilanRailsim {
 
 		Scenario scenario = ScenarioUtils.loadScenario(config);
 		Controler controler = new Controler(scenario);
-
-		// railsim replaces the mobsim for the 'rail' mode; both bindings are required.
-		controler.addOverridingModule(new RailsimModule());
-		controler.configureQSimComponents(components ->
-			new RailsimQSimModule().configure(components));
-
+		RailsimSetup.install(controler);
 		controler.run();
 	}
 }
