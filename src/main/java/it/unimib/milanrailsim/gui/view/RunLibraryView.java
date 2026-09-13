@@ -1,10 +1,10 @@
 package it.unimib.milanrailsim.gui.view;
 
 import it.unimib.milanrailsim.gui.app.AppModel;
-import it.unimib.milanrailsim.gui.config.RunLibrary;
-import it.unimib.milanrailsim.gui.config.RunLibrary.Entry;
-import it.unimib.milanrailsim.gui.config.RunLibrary.Status;
-import it.unimib.milanrailsim.gui.config.ScenarioSpec.SimulationType;
+import it.unimib.milanrailsim.runs.RunLibrary.Entry;
+import it.unimib.milanrailsim.runs.RunLibrary.Status;
+import it.unimib.milanrailsim.runs.RunLibrary;
+import it.unimib.milanrailsim.runs.ScenarioSpec.SimulationType;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;

@@ -8,6 +8,7 @@ import it.unimib.milanrailsim.gui.view.ResultsView;
 import it.unimib.milanrailsim.gui.view.RunLibraryView;
 import it.unimib.milanrailsim.gui.view.SettingsView;
 import it.unimib.milanrailsim.gui.view.SimulationView;
+import it.unimib.milanrailsim.server.Protocol;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -32,9 +33,12 @@ public final class MilanRailSimApp extends Application {
 		Theme.loadFonts();
 		ObjectProperty<Theme> theme = model.theme();
 		Navigation navigation = new Navigation();
-		navigation.addView("Simulazione", "mdmz-map", () -> new SimulationView(model.files(), model.paths(), theme));
+		navigation.addView("Simulazione", "mdmz-map", () -> new SimulationView(model, runDir -> {
+			model.selectedRun().set(model.runs().entry(runDir));
+			navigation.show("Risultati");
+		}));
 		navigation.addView("Nuova simulazione", "mdal-add_circle_outline", () -> new NewSimulationView(model, spec -> {
-			spec.write(model.paths().runs().resolve(spec.name()).resolve("scenario.json"));
+			model.startRun(spec, Protocol.UNTHROTTLED);
 			navigation.show("Simulazione");
 		}));
 		navigation.addView("Archivio", "mdal-folder_open", () -> new RunLibraryView(model, run -> {

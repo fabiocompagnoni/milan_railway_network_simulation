@@ -1,19 +1,26 @@
 package it.unimib.milanrailsim.gui.app;
 
 import it.unimib.milanrailsim.gui.config.AppPaths;
-import it.unimib.milanrailsim.gui.config.RunLibrary;
 import it.unimib.milanrailsim.gui.config.ScenarioFiles;
+import it.unimib.milanrailsim.gui.sim.LiveSession;
 import it.unimib.milanrailsim.network.FleetConfig;
 import it.unimib.milanrailsim.network.GtfsFeed;
+import it.unimib.milanrailsim.runs.RunLibrary;
+import it.unimib.milanrailsim.runs.ScenarioSpec;
+import it.unimib.milanrailsim.server.RailsimJob;
+import it.unimib.milanrailsim.schedule.CreateTransitScheduleFromFeed;
 import it.unimib.milanrailsim.schedule.LineAssignments;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import org.matsim.core.network.NetworkUtils;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 /** State shared by every view: folders, scenario files, theme and the timetable, loaded once in the background. */
 public final class AppModel {
@@ -27,11 +34,15 @@ public final class AppModel {
 	private final ObjectProperty<FleetConfig> fleet = new SimpleObjectProperty<>();
 	private final ObjectProperty<LineAssignments> assignments = new SimpleObjectProperty<>();
 	private final ObjectProperty<RunLibrary.Entry> selectedRun = new SimpleObjectProperty<>();
+	private final ObjectProperty<LiveSession> session = new SimpleObjectProperty<>();
+	private final CompletableFuture<Set<String>> networkStops;
 
 	public AppModel(AppPaths paths, ScenarioFiles files) {
 		this.paths = paths;
 		this.files = files;
 		feed.set(CompletableFuture.supplyAsync(() -> GtfsFeed.load(gtfsDir())));
+		networkStops = CompletableFuture.supplyAsync(() -> NetworkUtils.readNetwork(files.mesoNetwork().toString())
+			.getNodes().keySet().stream().map(Object::toString).collect(Collectors.toUnmodifiableSet()));
 		seedCosts();
 		fleet.set(Files.exists(paths.fleetTypesFile()) ? FleetConfig.read(paths.fleetTypesFile()) : FleetConfig.defaults());
 		assignments.set(Files.exists(paths.lineAssignmentsFile())
@@ -48,6 +59,23 @@ public final class AppModel {
 
 	public ObjectProperty<Theme> theme() {
 		return theme;
+	}
+
+	/** The run being simulated now, if any; views observe it to show the live map. */
+	public ObjectProperty<LiveSession> session() {
+		return session;
+	}
+
+	/** Writes the scenario into its run folder and spawns the engine on it. */
+	public LiveSession startRun(ScenarioSpec spec, double initialSpeed) {
+		Path runDir = paths.runs().resolve(spec.name());
+		spec.write(runDir.resolve("scenario.json"));
+		RailsimJob.Inputs inputs = new RailsimJob.Inputs(runDir, Path.of("scenarios", "milan", "config.xml"),
+			files.mesoNetwork(), gtfsDir(), paths.fleetTypesFile(), paths.lineAssignmentsFile(), paths.costsFile(),
+			Files.exists(CreateTransitScheduleFromFeed.STATION_TRACKS) ? CreateTransitScheduleFromFeed.STATION_TRACKS : null);
+		LiveSession started = LiveSession.start(inputs, initialSpeed);
+		session.set(started);
+		return started;
 	}
 
 	public RunLibrary runs() {
@@ -76,6 +104,11 @@ public final class AppModel {
 	public void saveAssignments(LineAssignments updated) {
 		updated.write(paths.lineAssignmentsFile());
 		assignments.set(updated);
+	}
+
+	/** Ids of the stations the mesoscopic network models, loaded once in the background. */
+	public CompletableFuture<Set<String>> networkStops() {
+		return networkStops;
 	}
 
 	/** The feed loaded by the user, if any, otherwise the one committed with the scenario. */

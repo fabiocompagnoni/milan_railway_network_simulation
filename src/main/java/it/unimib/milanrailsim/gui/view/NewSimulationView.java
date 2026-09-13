@@ -1,13 +1,13 @@
 package it.unimib.milanrailsim.gui.view;
 
 import it.unimib.milanrailsim.gui.app.AppModel;
-import it.unimib.milanrailsim.gui.config.ScenarioSpec;
-import it.unimib.milanrailsim.gui.config.ScenarioSpec.SimulationType;
-import it.unimib.milanrailsim.gui.config.ScenarioSpec.TimeWindow;
 import it.unimib.milanrailsim.gui.sim.Preflight;
 import it.unimib.milanrailsim.gui.sim.ScenarioSummary;
 import it.unimib.milanrailsim.network.GtfsFeed;
 import it.unimib.milanrailsim.network.ServiceCalendar;
+import it.unimib.milanrailsim.runs.ScenarioSpec.SimulationType;
+import it.unimib.milanrailsim.runs.ScenarioSpec.TimeWindow;
+import it.unimib.milanrailsim.runs.ScenarioSpec;
 import it.unimib.milanrailsim.schedule.RouteVehicleAssignment;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -41,6 +41,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
+import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -81,6 +82,7 @@ public final class NewSimulationView extends BorderPane {
 
 	private final Map<SimulationType, Node> parameterPanels = new EnumMap<>(SimulationType.class);
 	private GtfsFeed feed;
+	private Set<String> networkStops;
 	private boolean blocked = true;
 
 	public NewSimulationView(AppModel model, Consumer<ScenarioSpec> onStart) {
@@ -102,7 +104,8 @@ public final class NewSimulationView extends BorderPane {
 			}
 		});
 		showLoading();
-		model.feed().thenAccept(loaded -> Platform.runLater(() -> onFeedLoaded(loaded)));
+		model.feed().thenCombine(model.networkStops(), Map::entry)
+			.thenAccept(loaded -> Platform.runLater(() -> onFeedLoaded(loaded.getKey(), loaded.getValue())));
 	}
 
 	private Node scenarioSection() {
@@ -245,8 +248,9 @@ public final class NewSimulationView extends BorderPane {
 		start.setDisable(true);
 	}
 
-	private void onFeedLoaded(GtfsFeed loaded) {
+	private void onFeedLoaded(GtfsFeed loaded, Set<String> stops) {
 		feed = loaded;
+		networkStops = stops;
 		NavigableSet<LocalDate> dates = ServiceCalendar.availableDates(loaded.calendarDateRows());
 		day.setDayCellFactory(picker -> new DateCell() {
 			@Override
@@ -280,7 +284,7 @@ public final class NewSimulationView extends BorderPane {
 
 	private void refresh() {
 		ScenarioSpec spec = spec();
-		ScenarioSummary summary = ScenarioSummary.of(feed, assignment, spec);
+		ScenarioSummary summary = ScenarioSummary.of(feed, assignment, spec, networkStops);
 		List<Preflight.Finding> checks = new Preflight(model.paths().runs(), model.paths().costsFile())
 			.check(spec.name(), spec.runCount());
 		showSummary(spec, summary);
@@ -304,6 +308,9 @@ public final class NewSimulationView extends BorderPane {
 		row = metric(row, "Linee coinvolte", String.valueOf(summary.lines().size()));
 		row = metric(row, "Corse attese", summary.extraTrips() > 0
 			? summary.trips() + " (di cui " + summary.extraTrips() + " aggiunte, stima)" : String.valueOf(summary.trips()));
+		if (summary.offNetworkTrips() > 0) {
+			row = metric(row, "Corse escluse", summary.offNetworkTrips() + " (fermano fuori dalla rete modellata)");
+		}
 		row = metric(row, "Flotta", fleetText(summary.fleetSharesPercent()));
 		row = metric(row, "Run prodotti", String.valueOf(spec.runCount()));
 		metric(row, "Spazio stimato", String.format("~%.1f GB", spec.runCount() * 1.0));

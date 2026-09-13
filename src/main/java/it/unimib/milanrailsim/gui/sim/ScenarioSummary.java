@@ -1,10 +1,10 @@
 package it.unimib.milanrailsim.gui.sim;
 
-import it.unimib.milanrailsim.gui.config.ScenarioSpec;
-import it.unimib.milanrailsim.gui.config.ScenarioSpec.SimulationType;
-import it.unimib.milanrailsim.gui.config.ScenarioSpec.TimeWindow;
 import it.unimib.milanrailsim.network.GtfsFeed;
 import it.unimib.milanrailsim.network.ServiceCalendar;
+import it.unimib.milanrailsim.runs.ScenarioSpec.SimulationType;
+import it.unimib.milanrailsim.runs.ScenarioSpec.TimeWindow;
+import it.unimib.milanrailsim.runs.ScenarioSpec;
 import it.unimib.milanrailsim.schedule.RouteVehicleAssignment;
 
 import java.util.ArrayList;
@@ -22,20 +22,30 @@ import java.util.stream.Collectors;
  *
  * @param trips runs the engine will schedule (estimated for compressed scenarios)
  * @param extraTrips runs added on top of the timetable by the scenario's compression
+ * @param offNetworkTrips timetabled runs dropped because they call at stations outside the modelled network
  */
-public record ScenarioSummary(List<String> lines, int trips, int extraTrips, Map<String, Integer> tripsByVehicleType) {
+public record ScenarioSummary(List<String> lines, int trips, int extraTrips, int offNetworkTrips,
+		Map<String, Integer> tripsByVehicleType) {
 
 	private static final int RAIL_ROUTE_TYPE = 2;
 
-	public static ScenarioSummary of(GtfsFeed feed, RouteVehicleAssignment assignment, ScenarioSpec spec) {
+	/** @param networkStops ids of the stations the network models; trips calling elsewhere are counted, not scheduled */
+	public static ScenarioSummary of(GtfsFeed feed, RouteVehicleAssignment assignment, ScenarioSpec spec,
+			Set<String> networkStops) {
 		Set<String> services = ServiceCalendar.activeServiceIds(feed.calendarDateRows(), spec.serviceDate());
 		Map<String, List<GtfsFeed.Trip>> tripsByLine = new TreeMap<>();
+		int offNetwork = 0;
 		for (GtfsFeed.Trip trip : feed.tripsById().values()) {
 			GtfsFeed.Route route = feed.routesById().get(trip.routeId());
-			if (services.contains(trip.serviceId()) && route.type() == RAIL_ROUTE_TYPE
-					&& !assignment.isExcluded(route.shortName()) && inWindow(feed, trip, spec.window())) {
-				tripsByLine.computeIfAbsent(route.shortName(), key -> new ArrayList<>()).add(trip);
+			if (!services.contains(trip.serviceId()) || route.type() != RAIL_ROUTE_TYPE
+					|| assignment.isExcluded(route.shortName()) || !inWindow(feed, trip, spec.window())) {
+				continue;
 			}
+			if (feed.stopTimesByTripId().get(trip.id()).stream().anyMatch(stop -> !networkStops.contains(stop.stopId()))) {
+				offNetwork++;
+				continue;
+			}
+			tripsByLine.computeIfAbsent(route.shortName(), key -> new ArrayList<>()).add(trip);
 		}
 
 		Map<String, Integer> byVehicleType = new TreeMap<>();
@@ -50,7 +60,7 @@ public record ScenarioSummary(List<String> lines, int trips, int extraTrips, Map
 			timetabled += trips.size();
 		}
 		int extra = extraTrips(spec, timetabled);
-		return new ScenarioSummary(List.copyOf(tripsByLine.keySet()), timetabled + extra, extra, byVehicleType);
+		return new ScenarioSummary(List.copyOf(tripsByLine.keySet()), timetabled + extra, extra, offNetwork, byVehicleType);
 	}
 
 	/** Shorter headways scale service by 1 / (1 - reduction); collapse and metro-like are sized at run time. */

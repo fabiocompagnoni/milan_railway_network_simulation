@@ -87,6 +87,20 @@ public final class NetworkMap {
 		return bounds;
 	}
 
+	/** Track alignments keyed by link id, for placing trains. */
+	public Map<String, Polyline> geometry() {
+		Map<String, Polyline> geometry = new HashMap<>();
+		tracks.forEach(track -> geometry.put(track.linkId(), track.polyline()));
+		return Map.copyOf(geometry);
+	}
+
+	/** Station points keyed by station id, for placing dwelling trains. */
+	public Map<String, double[]> stationPoints() {
+		Map<String, double[]> points = new HashMap<>();
+		stations.forEach(station -> points.put(station.id(), new double[] { station.x(), station.y() }));
+		return Map.copyOf(points);
+	}
+
 	/**
 	 * @param networkCrs the CRS of the network and geometry files, e.g. {@code EPSG:32632}
 	 * @throws IllegalStateException if a link lacks geometry or a line lacks a GTFS colour

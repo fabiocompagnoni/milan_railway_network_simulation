@@ -444,3 +444,60 @@
 	-fx-background-color: -border;
 	-fx-padding: 0 1 0 1;
 }
+
+.drawer {
+	-fx-background-color: -surface;
+	-fx-background-radius: 8;
+	-fx-border-color: -border;
+	-fx-border-radius: 8;
+	-fx-padding: 12;
+	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 12, 0, 0, 2);
+}
+
+.clock {
+	-fx-font-size: 15px;
+	-fx-font-weight: 600;
+	-fx-padding: 0 8 0 8;
+}
+
+.control-bar .toggle-button {
+	-fx-background-color: -surface-raised;
+	-fx-background-radius: 6;
+	-fx-text-fill: -text;
+	-fx-padding: 6 10 6 10;
+	-fx-cursor: hand;
+}
+
+.control-bar .toggle-button:selected {
+	-fx-background-color: -accent;
+	-fx-text-fill: -accent-contrast;
+}
+
+.control-bar .ikonli-font-icon {
+	-fx-icon-color: -text;
+	-fx-icon-size: 18;
+}
+
+.control-bar .toggle-button:selected .ikonli-font-icon {
+	-fx-icon-color: -accent-contrast;
+}
+
+.banner-error {
+	-fx-background-color: -surface;
+	-fx-background-radius: 8;
+	-fx-border-color: -warn;
+	-fx-border-width: 0 0 0 4;
+	-fx-border-radius: 8;
+	-fx-padding: 12 16 12 16;
+	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 12, 0, 0, 2);
+}
+
+.banner-done {
+	-fx-background-color: -surface;
+	-fx-background-radius: 8;
+	-fx-border-color: -accent;
+	-fx-border-width: 0 0 0 4;
+	-fx-border-radius: 8;
+	-fx-padding: 12 16 12 16;
+	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 12, 0, 0, 2);
+}

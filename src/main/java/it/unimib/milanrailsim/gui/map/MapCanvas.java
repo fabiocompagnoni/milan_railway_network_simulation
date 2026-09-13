@@ -1,5 +1,7 @@
 package it.unimib.milanrailsim.gui.map;
 
+import it.unimib.milanrailsim.gui.sim.TrainPositions;
+import it.unimib.milanrailsim.server.Protocol.TrainState;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -17,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Map of the network over OpenStreetMap tiles: tracks, stations and, later,
@@ -33,6 +37,10 @@ public final class MapCanvas extends Region {
 	private static final double SHARED_TRACK_SPACING_PX = 3;
 	private static final double HOVER_TOLERANCE_PX = 6;
 	private static final double STATION_RADIUS_PX = 3;
+	private static final double TRAIN_RADIUS_PX = 5;
+	private static final double TRAIN_PICK_PX = 9;
+	private static final double SHARED_POINT_SPACING_PX = 12;
+	private static final double LATE_THRESHOLD_S = 300;
 	private static final Font LABEL_FONT = Font.font("Inter", FontWeight.MEDIUM, 11);
 	private static final Font CARD_TITLE_FONT = Font.font("Inter", FontWeight.SEMI_BOLD, 13);
 	private static final Font CARD_FONT = Font.font("Inter", 12);
@@ -48,6 +56,11 @@ public final class MapCanvas extends Region {
 	private double dragX;
 	private double dragY;
 	private Hover hover;
+	private List<TrainPositions.Placement> trains = List.of();
+	private Set<String> hiddenLines = Set.of();
+	private String selectedTrain;
+	private Consumer<TrainState> onTrainSelected = state -> {
+	};
 
 	/** The line under the cursor, or every line of a regional-only track. */
 	private record Hover(List<NetworkMap.Line> lines, double x, double y) {
@@ -76,6 +89,11 @@ public final class MapCanvas extends Region {
 		});
 		setOnZoom(event -> zoom(event.getZoomFactor(), event.getX(), event.getY()));
 		setOnMousePressed(this::startDrag);
+		setOnMouseClicked(event -> {
+			if (event.isStillSincePress()) {
+				selectTrainAt(event.getX(), event.getY());
+			}
+		});
 		setOnMouseDragged(event -> {
 			viewport.pan(event.getX() - dragX, event.getY() - dragY);
 			startDrag(event);
@@ -83,6 +101,22 @@ public final class MapCanvas extends Region {
 		});
 		setOnMouseMoved(event -> updateHover(event.getX(), event.getY()));
 		setOnMouseExited(event -> updateHover(-1, -1));
+	}
+
+	/** Trains to draw, already placed in world coordinates; call each animation tick. */
+	public void setTrains(List<TrainPositions.Placement> placements) {
+		this.trains = placements;
+		draw();
+	}
+
+	/** Lines whose tracks and trains are not drawn. */
+	public void setHiddenLines(Set<String> lines) {
+		this.hiddenLines = Set.copyOf(lines);
+		draw();
+	}
+
+	public void setOnTrainSelected(Consumer<TrainState> listener) {
+		this.onTrainSelected = listener;
 	}
 
 	public void setPalette(MapPalette palette) {
@@ -111,6 +145,7 @@ public final class MapCanvas extends Region {
 		drawTiles(g);
 		drawTracks(g);
 		drawStations(g);
+		drawTrains(g);
 		drawAttribution(g);
 		if (hover != null) {
 			drawCard(g, hover);
@@ -159,6 +194,66 @@ public final class MapCanvas extends Region {
 		return best;
 	}
 
+	private void selectTrainAt(double x, double y) {
+		TrainPositions.Placement best = null;
+		double bestDistance = TRAIN_PICK_PX;
+		for (TrainPositions.Placement placement : trains) {
+			double distance = Math.hypot(viewport.toScreenX(placement.x()) - x, viewport.toScreenY(placement.y()) - y);
+			if (distance < bestDistance) {
+				bestDistance = distance;
+				best = placement;
+			}
+		}
+		selectedTrain = best == null ? null : best.state().id();
+		onTrainSelected.accept(best == null ? null : best.state());
+		draw();
+	}
+
+	/**
+	 * Dots coloured by line, darker with delay; a warning ring past the late
+	 * threshold; a halo on the selected one. Trains sharing a point, as at a
+	 * station meet, are spread side by side so each stays visible.
+	 */
+	private void drawTrains(GraphicsContext g) {
+		Map<String, Integer> sharingPoint = new HashMap<>();
+		Map<String, Integer> drawnAtPoint = new HashMap<>();
+		for (TrainPositions.Placement placement : trains) {
+			if (!hiddenLines.contains(placement.state().line())) {
+				sharingPoint.merge(pointKey(placement), 1, Integer::sum);
+			}
+		}
+		for (TrainPositions.Placement placement : trains) {
+			TrainState state = placement.state();
+			NetworkMap.Line line = network.line(state.line());
+			if (line == null || hiddenLines.contains(state.line())) {
+				continue;
+			}
+			String key = pointKey(placement);
+			int index = drawnAtPoint.merge(key, 1, Integer::sum) - 1;
+			double x = viewport.toScreenX(placement.x()) + (index - (sharingPoint.get(key) - 1) / 2.0) * SHARED_POINT_SPACING_PX;
+			double y = viewport.toScreenY(placement.y());
+			if (x < -TRAIN_RADIUS_PX || y < -TRAIN_RADIUS_PX || x > getWidth() + TRAIN_RADIUS_PX || y > getHeight() + TRAIN_RADIUS_PX) {
+				continue;
+			}
+			double radius = line.suburban() ? TRAIN_RADIUS_PX : TRAIN_RADIUS_PX - 1;
+			if (state.id().equals(selectedTrain)) {
+				g.setStroke(palette.label());
+				g.setLineWidth(2);
+				g.strokeOval(x - radius - 4, y - radius - 4, 2 * radius + 8, 2 * radius + 8);
+			}
+			double lateness = Math.min(1, Math.max(0, state.delay()) / (2 * LATE_THRESHOLD_S));
+			g.setFill(line.color().deriveColor(0, 1 + lateness * 0.3, 1 - lateness * 0.35, 1));
+			g.fillOval(x - radius, y - radius, 2 * radius, 2 * radius);
+			g.setStroke(state.delay() > LATE_THRESHOLD_S ? palette.warn() : palette.station());
+			g.setLineWidth(state.delay() > LATE_THRESHOLD_S ? 2 : 1);
+			g.strokeOval(x - radius, y - radius, 2 * radius, 2 * radius);
+		}
+	}
+
+	private static String pointKey(TrainPositions.Placement placement) {
+		return Math.round(placement.x()) + ":" + Math.round(placement.y());
+	}
+
 	private void drawTiles(GraphicsContext g) {
 		Bounds visible = new Bounds(viewport.toWorldX(0), viewport.toWorldY(getHeight()),
 			viewport.toWorldX(getWidth()), viewport.toWorldY(0));
@@ -183,7 +278,8 @@ public final class MapCanvas extends Region {
 		g.setLineJoin(StrokeLineJoin.ROUND);
 		List<NetworkMap.Line> highlighted = hover == null ? List.of() : hover.lines();
 		for (NetworkMap.Track track : network.tracks()) {
-			List<NetworkMap.Line> suburban = suburbanLines(track);
+			List<NetworkMap.Line> suburban = suburbanLines(track).stream()
+				.filter(line -> !hiddenLines.contains(line.id())).toList();
 			if (suburban.isEmpty()) {
 				boolean lit = allLines(track).stream().anyMatch(highlighted::contains);
 				g.setStroke(lit ? palette.label() : palette.mutedTrack());
