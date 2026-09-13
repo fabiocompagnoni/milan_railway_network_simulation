@@ -1,4 +1,4 @@
-package it.unimib.milanrailsim.gui.config;
+package it.unimib.milanrailsim.runs;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

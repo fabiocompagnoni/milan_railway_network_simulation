@@ -1,4 +1,4 @@
-package it.unimib.milanrailsim.gui.config;
+package it.unimib.milanrailsim.runs;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
