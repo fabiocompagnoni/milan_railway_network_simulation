@@ -12,6 +12,8 @@ public final class RailVehicleTypes {
 	private RailVehicleTypes() {
 	}
 
+	static final double REVERSING_SECONDS = 60.0;
+
 	public static List<VehicleType> all() {
 		return from(FleetConfig.defaults());
 	}
@@ -29,6 +31,10 @@ public final class RailVehicleTypes {
 		vehicleType.getCapacity().setStandingRoom(0);
 		vehicleType.getAttributes().putAttribute("railsimAcceleration", train.accelerationMps2());
 		vehicleType.getAttributes().putAttribute("railsimDeceleration", train.decelerationMps2());
+		// every unit of the fleet has a cab at both ends, so it reverses on a terminal platform;
+		// the seconds to change ends are a placeholder until surveyed
+		vehicleType.getAttributes().putAttribute("railsimReversible", REVERSING_SECONDS);
+		vehicleType.getAttributes().putAttribute("reversibleDataStatus", "estimated");
 		if (train.isEstimated("acceleration")) {
 			vehicleType.getAttributes().putAttribute("accelerationDataStatus", "estimated");
 		}

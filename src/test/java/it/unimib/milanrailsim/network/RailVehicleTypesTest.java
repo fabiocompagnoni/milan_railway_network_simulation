@@ -29,6 +29,8 @@ class RailVehicleTypesTest {
 			assertEquals("rail", type.getNetworkMode(), type.getId().toString());
 			assertNotNull(type.getAttributes().getAttribute("railsimAcceleration"));
 			assertNotNull(type.getAttributes().getAttribute("railsimDeceleration"));
+			assertEquals(RailVehicleTypes.REVERSING_SECONDS, type.getAttributes().getAttribute("railsimReversible"));
+			assertEquals("estimated", type.getAttributes().getAttribute("reversibleDataStatus"));
 			assertTrue(type.getMaximumVelocity() > 0);
 			assertTrue(type.getLength() > 0);
 		}
