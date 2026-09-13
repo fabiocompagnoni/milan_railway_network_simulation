@@ -6,7 +6,8 @@
 	"sources": [
 		"docs/network/infrastruttura-nodo-milano.md (Bovisa, Cadorna, trunk FNM, regole di circolazione; rilievo 2026-08-05)",
 		"docs/network/misure/trunk-cadorna-saronno.md (OSM 2026-07-30: lunghezze e maxspeed per binario, cluster di scambi, way per binario)",
-		"rilievo diretto 2026-09-13: binari di Bovisa per gruppo e direzione, uso dei binari di Cadorna e Domodossola, Malpensa Express, RE51, R16, S3 su 5-6, ricovero di Cadorna"
+		"rilievo diretto 2026-09-13: binari di Bovisa per gruppo e direzione, uso dei binari di Cadorna e Domodossola, Malpensa Express, RE51, R16, S3 su 5-6, ricovero di Cadorna",
+		"data/osm/2026-09-13-micro-nodes/platform_ways.csv: way OSM (railway:track_ref) dei binari di Domodossola e Bovisa; Cadorna senza tag"
 	],
 
 	"stations": [
@@ -46,10 +47,10 @@
 			"kind": "through",
 			"platformLengthM": null,
 			"groups": [
-				{"id": "domodossola_saronno", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
+				{"id": "domodossola_saronno", "kind": "through", "tracks": [{"ref": "1", "direction": "north", "wayIds": [907147568]}, {"ref": "2", "direction": "south", "wayIds": [907147567]}],
 					"connections": {"south": ["segment:S01066_S01067:f1"], "north": ["segment:S01067_S01642:f1"]},
 					"notes": "ramo Saronno (fascio f1); 2 verso Milano"},
-				{"id": "domodossola_asso", "kind": "through", "tracks": [{"ref": "3", "direction": "north"}, {"ref": "4", "direction": "south"}],
+				{"id": "domodossola_asso", "kind": "through", "tracks": [{"ref": "3", "direction": "north", "wayIds": [907147566]}, {"ref": "4", "direction": "south", "wayIds": [907147565]}],
 					"connections": {"south": ["segment:S01066_S01067:f2"], "north": ["segment:S01067_S01642:f2"]},
 					"notes": "ramo Asso/Seveso (fascio f2); 4 verso Milano"}
 			],
@@ -62,16 +63,16 @@
 			"kind": "through",
 			"platformLengthM": null,
 			"groups": [
-				{"id": "bovisa_passante_saronno", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
+				{"id": "bovisa_passante_saronno", "kind": "through", "tracks": [{"ref": "1", "direction": "north", "wayIds": [139099946]}, {"ref": "2", "direction": "south", "wayIds": [900179794]}],
 					"connections": {"south": ["meso:S01643", "meso:S01645"], "north": ["meso:S01069", "meso:S01933"]},
 					"notes": "Passante da e verso Garibaldi, ramo Saronno; anche RE51 e Malpensa Express per Centrale"},
-				{"id": "bovisa_cadorna_saronno", "kind": "through", "tracks": [{"ref": "3", "direction": "north"}, {"ref": "4", "direction": "south"}],
+				{"id": "bovisa_cadorna_saronno", "kind": "through", "tracks": [{"ref": "3", "direction": "north", "wayIds": [139099942]}, {"ref": "4", "direction": "south", "wayIds": [139099944]}],
 					"connections": {"south": ["segment:S01067_S01642:f1"], "north": ["meso:S01933", "meso:S01071", "meso:S01069"]},
 					"notes": "3 verso Saronno, 4 verso Cadorna; regionali e Malpensa Express da Cadorna"},
-				{"id": "bovisa_asso", "kind": "through", "tracks": [{"ref": "5", "direction": "north"}, {"ref": "6", "direction": "south"}],
+				{"id": "bovisa_asso", "kind": "through", "tracks": [{"ref": "5", "direction": "north", "wayIds": [372064066]}, {"ref": "6", "direction": "south", "wayIds": [139089343]}],
 					"connections": {"south": ["segment:S01067_S01642:f2", "segment:S01067_S01642:f1"], "north": ["meso:S01078", "meso:S01071", "meso:S01933"]},
 					"notes": "verso Asso; riserva per il ramo Saronno (S3 osservata su 5-6): a sud raggiunge anche il fascio f1 attraverso gli scambi della gola (da verificare)"},
-				{"id": "bovisa_passante_asso", "kind": "through", "tracks": [{"ref": "7", "direction": "north"}, {"ref": "8", "direction": "south"}],
+				{"id": "bovisa_passante_asso", "kind": "through", "tracks": [{"ref": "7", "direction": "north", "wayIds": [139089345]}, {"ref": "8", "direction": "south", "wayIds": [139089334]}],
 					"connections": {"south": ["meso:S01643"], "north": ["meso:S01078"]},
 					"notes": "Passante da e verso Lancetti, ramo Asso (interpretazione da confermare)"}
 			],
