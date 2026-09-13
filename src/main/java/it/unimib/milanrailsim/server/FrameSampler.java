@@ -4,12 +4,15 @@ import ch.sbb.matsim.contrib.railsim.eventhandlers.RailsimTrainStateEventHandler
 import ch.sbb.matsim.contrib.railsim.events.RailsimTrainStateEvent;
 import it.unimib.milanrailsim.server.Protocol.Frame;
 import it.unimib.milanrailsim.server.Protocol.TrainState;
+import org.matsim.api.core.v01.events.PersonArrivalEvent;
+import org.matsim.api.core.v01.events.TransitDriverStartsEvent;
 import org.matsim.api.core.v01.events.VehicleAbortsEvent;
-import org.matsim.api.core.v01.events.VehicleLeavesTrafficEvent;
+import org.matsim.api.core.v01.events.handler.PersonArrivalEventHandler;
+import org.matsim.api.core.v01.events.handler.TransitDriverStartsEventHandler;
 import org.matsim.api.core.v01.events.handler.VehicleAbortsEventHandler;
-import org.matsim.api.core.v01.events.handler.VehicleLeavesTrafficEventHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,27 +21,38 @@ import java.util.function.Consumer;
 /**
  * Turns the dense railsim state events into one frame every {@code interval}
  * simulated seconds, holding the latest state of every train still in
- * traffic. The client extrapolates positions between frames from speed and
+ * service. The client extrapolates positions between frames from speed and
  * acceleration, so the interval trades bandwidth for accuracy, not smoothness.
+ * <p>
+ * A train leaves the frames when its driver arrives from the last trip of the
+ * circulation: one driver serves every trip of a vehicle and arrives at the
+ * end of each, so the trips started are counted against those planned. The
+ * vehicle itself stays parked on its last link and never leaves traffic.
  */
 public final class FrameSampler
-		implements RailsimTrainStateEventHandler, VehicleLeavesTrafficEventHandler, VehicleAbortsEventHandler {
+		implements RailsimTrainStateEventHandler, TransitDriverStartsEventHandler, PersonArrivalEventHandler,
+		VehicleAbortsEventHandler {
 
 	private static final String CIRCULATION_INFIX = "_circ_";
 
 	private final double interval;
+	private final Map<String, Integer> plannedTrips;
 	private final Consumer<Frame> sink;
 	private final Map<String, TrainState> latest = new LinkedHashMap<>();
+	private final Map<String, String> vehicleOfDriver = new HashMap<>();
+	private final Map<String, Integer> startedTrips = new HashMap<>();
 	private double nextFrameTime;
 	private int arrived;
 	private int aborted;
 
 	/**
-	 * @param interval simulated seconds between frames
-	 * @param sink receives each frame on the simulation thread
+	 * @param interval     simulated seconds between frames
+	 * @param plannedTrips departures of the timetable per vehicle id
+	 * @param sink         receives each frame on the simulation thread
 	 */
-	public FrameSampler(double interval, Consumer<Frame> sink) {
+	public FrameSampler(double interval, Map<String, Integer> plannedTrips, Consumer<Frame> sink) {
 		this.interval = interval;
+		this.plannedTrips = Map.copyOf(plannedTrips);
 		this.sink = sink;
 	}
 
@@ -50,8 +64,19 @@ public final class FrameSampler
 	}
 
 	@Override
-	public void handleEvent(VehicleLeavesTrafficEvent event) {
-		if (latest.remove(event.getVehicleId().toString()) != null) {
+	public void handleEvent(TransitDriverStartsEvent event) {
+		String vehicle = event.getVehicleId().toString();
+		vehicleOfDriver.put(event.getDriverId().toString(), vehicle);
+		startedTrips.merge(vehicle, 1, Integer::sum);
+	}
+
+	@Override
+	public void handleEvent(PersonArrivalEvent event) {
+		String vehicle = vehicleOfDriver.get(event.getPersonId().toString());
+		if (vehicle == null || !startedTrips.get(vehicle).equals(plannedTrips.get(vehicle))) {
+			return;
+		}
+		if (latest.remove(vehicle) != null) {
 			arrived++;
 		}
 	}
@@ -77,7 +102,7 @@ public final class FrameSampler
 		return latest.size();
 	}
 
-	/** Trains that completed their circulation and left the network. */
+	/** Trains that completed their circulation. */
 	public int arrivedTrains() {
 		return arrived;
 	}

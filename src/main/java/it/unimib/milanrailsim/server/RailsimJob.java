@@ -36,7 +36,9 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * One run end to end: timetable of the requested day, railsim simulation
@@ -86,14 +88,14 @@ public final class RailsimJob implements SimulationServer.Job {
 
 		out.send(Message.progress(0, 0, "Genero l'orario"));
 		Path scenarioDir = inputs.runDir().resolve("scenario");
-		generateTimetable(spec, scenarioDir);
+		TransitSchedule timetable = generateTimetable(spec, scenarioDir);
 
 		out.send(Message.progress(0, 0, "Simulazione"));
 		Path output = inputs.runDir().resolve("output");
 		FrameSampler sampler;
 		double endTime;
 		try (FrameRecorder recorder = new FrameRecorder(inputs.runDir().resolve(FrameRecorder.FILE_NAME))) {
-			sampler = new FrameSampler(FRAME_INTERVAL_S, frame -> {
+			sampler = new FrameSampler(FRAME_INTERVAL_S, tripsPerVehicle(timetable), frame -> {
 				recorder.record(frame);
 				out.send(Message.frame(frame));
 			});
@@ -108,7 +110,19 @@ public final class RailsimJob implements SimulationServer.Job {
 			new Summary(sampler.arrivedTrains(), sampler.abortedTrains(), sampler.activeTrains(), endTime)));
 	}
 
-	private void generateTimetable(ScenarioSpec spec, Path scenarioDir) {
+	private static Map<String, Integer> tripsPerVehicle(TransitSchedule timetable) {
+		Map<String, Integer> trips = new HashMap<>();
+		for (TransitLine line : timetable.getTransitLines().values()) {
+			for (TransitRoute route : line.getRoutes().values()) {
+				for (Departure departure : route.getDepartures().values()) {
+					trips.merge(departure.getVehicleId().toString(), 1, Integer::sum);
+				}
+			}
+		}
+		return trips;
+	}
+
+	private TransitSchedule generateTimetable(ScenarioSpec spec, Path scenarioDir) {
 		FleetConfig fleet = Files.exists(inputs.fleetFile()) ? FleetConfig.read(inputs.fleetFile()) : FleetConfig.defaults();
 		LineAssignments assignments = Files.exists(inputs.assignmentsFile())
 			? LineAssignments.read(inputs.assignmentsFile()) : LineAssignments.defaults();
@@ -120,7 +134,7 @@ public final class RailsimJob implements SimulationServer.Job {
 		List<MicroNode> microNodes = hasNodes ? MicroNode.readAll(inputs.microNodesDir()) : List.of();
 		Path sidingsFile = hasNodes ? inputs.microNodesDir().resolve(CreateTransitScheduleFromFeed.SIDINGS_FILE) : null;
 		Sidings sidings = sidingsFile != null && Files.exists(sidingsFile) ? Sidings.read(sidingsFile) : Sidings.none();
-		new SchedulePipeline(GtfsFeed.load(inputs.gtfsDir()), inputs.engineNetwork(), fleet,
+		return new SchedulePipeline(GtfsFeed.load(inputs.gtfsDir()), inputs.engineNetwork(), fleet,
 			new RouteVehicleAssignment(assignments), tracks, microNodes, sidings).generate(spec.serviceDate(), start, end, scenarioDir);
 	}
 

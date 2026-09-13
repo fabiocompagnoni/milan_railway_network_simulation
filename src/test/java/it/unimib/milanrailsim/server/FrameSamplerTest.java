@@ -4,22 +4,38 @@ import ch.sbb.matsim.contrib.railsim.events.RailsimTrainStateEvent;
 import it.unimib.milanrailsim.server.Protocol.Frame;
 import org.junit.jupiter.api.Test;
 import org.matsim.api.core.v01.Id;
-import org.matsim.api.core.v01.events.VehicleLeavesTrafficEvent;
+import org.matsim.api.core.v01.events.PersonArrivalEvent;
+import org.matsim.api.core.v01.events.TransitDriverStartsEvent;
+import org.matsim.api.core.v01.events.VehicleAbortsEvent;
+import org.matsim.api.core.v01.population.Person;
+import org.matsim.pt.transitSchedule.api.Departure;
+import org.matsim.pt.transitSchedule.api.TransitLine;
+import org.matsim.pt.transitSchedule.api.TransitRoute;
 import org.matsim.vehicles.Vehicle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class FrameSamplerTest {
 
 	private final List<Frame> frames = new ArrayList<>();
-	private final FrameSampler sampler = new FrameSampler(5, frames::add);
+	private final FrameSampler sampler = new FrameSampler(5, Map.of("S1_circ_1", 2, "RE4_circ_2", 1), frames::add);
 
 	private static RailsimTrainStateEvent state(double time, String vehicle, String link, double position, double speed) {
 		return new RailsimTrainStateEvent(time, time, Id.create(vehicle, Vehicle.class), Id.createLinkId(link),
 			position, Id.createLinkId(link), Math.max(0, position - 100), speed, 0, speed, 30);
+	}
+
+	private static TransitDriverStartsEvent tripStarts(double time, String vehicle, String trip) {
+		return new TransitDriverStartsEvent(time, Id.create("pt_" + vehicle, Person.class), Id.create(vehicle, Vehicle.class),
+			Id.create("S1", TransitLine.class), Id.create("S1_1", TransitRoute.class), Id.create(trip, Departure.class));
+	}
+
+	private static PersonArrivalEvent driverArrives(double time, String vehicle) {
+		return new PersonArrivalEvent(time, Id.create("pt_" + vehicle, Person.class), Id.createLinkId("A_B"), "rail");
 	}
 
 	@Test
@@ -49,13 +65,18 @@ class FrameSamplerTest {
 	}
 
 	@Test
-	void trainsLeavingTrafficDropOut() {
+	void trainsDropOutAfterTheLastTripOfTheirCirculation() {
+		sampler.handleEvent(tripStarts(0, "S1_circ_1", "d1"));
 		sampler.handleEvent(state(0, "S1_circ_1", "A_B", 10, 10));
-		sampler.handleEvent(new VehicleLeavesTrafficEvent(3, Id.createPersonId("d"), Id.createLinkId("A_B"),
-			Id.create("S1_circ_1", Vehicle.class), "rail", 1.0));
+		sampler.handleEvent(driverArrives(3, "S1_circ_1"));
 		sampler.onSimStep(3);
+		assertEquals(1, frames.getFirst().trains().size(), "one trip left: the train waits on its platform");
 
-		assertTrue(frames.getFirst().trains().isEmpty());
+		sampler.handleEvent(tripStarts(4, "S1_circ_1", "d2"));
+		sampler.handleEvent(driverArrives(8, "S1_circ_1"));
+		sampler.onSimStep(8);
+
+		assertTrue(frames.get(1).trains().isEmpty());
 		assertEquals(0, sampler.activeTrains());
 		assertEquals(1, sampler.arrivedTrains());
 		assertEquals(0, sampler.abortedTrains());
@@ -65,8 +86,7 @@ class FrameSamplerTest {
 	void abortedTrainsAreCountedApartFromArrivals() {
 		sampler.handleEvent(state(0, "S1_circ_1", "A_B", 10, 10));
 		sampler.handleEvent(state(0, "S1_circ_2", "A_B", 10, 10));
-		sampler.handleEvent(new org.matsim.api.core.v01.events.VehicleAbortsEvent(3, Id.create("S1_circ_1", Vehicle.class),
-			Id.createLinkId("A_B")));
+		sampler.handleEvent(new VehicleAbortsEvent(3, Id.create("S1_circ_1", Vehicle.class), Id.createLinkId("A_B")));
 
 		assertEquals(1, sampler.abortedTrains());
 		assertEquals(0, sampler.arrivedTrains());
