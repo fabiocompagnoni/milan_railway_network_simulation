@@ -1,0 +1,65 @@
+{
+	"node": "rogoredo",
+	"title": "Milano Rogoredo",
+	"status": "bozza rivista con i rilievi del 2026-09-13",
+	"detailLevel": "gruppi di binari per funzione: stazione FS con traffico misto (alta velocita', Trenitalia) di cui non abbiamo gli orari; binari passanti non fissi per linea",
+	"sources": [
+		"rilievo diretto 2026-09-13: 1tr-5tr tronchi di capolinea; 1-8 di transito; 1-2 Passante; 3-4 verso Genova; 5-6 verso Bologna; 7-8 alta velocita'; i binari non sono fissi per linea",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-13: S13 244, S1 199, RE13 94, RE11 70, S2 64, S19 62, S12 60, R38 61, R31 50, R34 40, S9 16, RE8 5 corse/giorno",
+		"rete meso: vicini S01492 Forlanini, S01624 S.Donato, S01632 Scalo Romana, S01633 Porta Vittoria, S01701 Lambrate, S01801 Locate Triulzi, S01825 Lodi, S01827 Casalpusterlengo, S01860 Pavia"
+	],
+
+	"stations": [
+		{
+			"id": "S01820",
+			"name": "Milano Rogoredo",
+			"kind": "mixed",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "rogoredo_terminal", "kind": "terminal", "capacity": 5, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01633", "meso:S01492", "meso:S01701", "meso:S01632"], "south": ["meso:S01624", "meso:S01825", "meso:S01827", "meso:S01801", "meso:S01860"]},
+					"notes": "1tr-5tr: corse che si attestano a Rogoredo; condivisi con altri operatori"},
+				{"id": "rogoredo_passante", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
+					"connections": {"north": ["meso:S01633"], "south": ["meso:S01624", "meso:S01825", "meso:S01827", "meso:S01801", "meso:S01860", "meso:S01632"]},
+					"notes": "Passante: S1, S2, S12, S13, S19; numero per verso dalla posizione in OSM"},
+				{"id": "rogoredo_genova", "kind": "through", "tracks": [{"ref": "3", "direction": "north"}, {"ref": "4", "direction": "south"}],
+					"connections": {"north": ["meso:S01492", "meso:S01701", "meso:S01632"], "south": ["meso:S01801", "meso:S01860"]},
+					"notes": "linea per Pavia/Genova: R31, R34, RE13"},
+				{"id": "rogoredo_bologna", "kind": "through", "tracks": [{"ref": "5", "direction": "north"}, {"ref": "6", "direction": "south"}],
+					"connections": {"north": ["meso:S01492", "meso:S01701"], "south": ["meso:S01624", "meso:S01825", "meso:S01827"]},
+					"notes": "linea per Lodi/Piacenza/Bologna: R38, RE11, RE8"}
+			],
+			"throats": [
+				{"id": "rogoredo_throat_north", "side": "north", "resource": "rogoredo_throat_north", "lengthM": null, "speedKmh": null, "switches": null,
+					"groups": ["rogoredo_terminal", "rogoredo_passante", "rogoredo_genova", "rogoredo_bologna"], "notes": "da rilevare"},
+				{"id": "rogoredo_throat_south", "side": "south", "resource": "rogoredo_throat_south", "lengthM": null, "speedKmh": null, "switches": null,
+					"groups": ["rogoredo_terminal", "rogoredo_passante", "rogoredo_genova", "rogoredo_bologna"], "notes": "diramazione Genova (SW) / Bologna (SE); da rilevare"}
+			],
+			"sidings": {"tracks": null, "note": "da rilevare; a sud grande scalo merci"},
+			"notes": "binari 7-8 alta velocita': nessun treno Trenord, esclusi dalla simulazione. I binari passanti non sono fissi per linea: una corsa puo' usare qualsiasi binario compatibile con provenienza e destinazione"
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"S1": {"bundle": null, "stations": {"S01820": ["rogoredo_passante", "rogoredo_bologna"]}, "notes": "dal Passante verso Lodi"},
+		"S13": {"bundle": null, "stations": {"S01820": ["rogoredo_passante", "rogoredo_genova"]}, "notes": "dal Passante verso Pavia"},
+		"S2": {"bundle": null, "stations": {"S01820": ["rogoredo_passante"]}},
+		"S12": {"bundle": null, "stations": {"S01820": ["rogoredo_passante", "rogoredo_bologna"]}},
+		"S19": {"bundle": null, "stations": {"S01820": ["rogoredo_passante", "rogoredo_genova"]}},
+		"S9": {"bundle": null, "stations": {"S01820": ["rogoredo_terminal"]}},
+		"R31": {"bundle": null, "stations": {"S01820": ["rogoredo_genova"]}},
+		"R34": {"bundle": null, "stations": {"S01820": ["rogoredo_genova"]}},
+		"RE13": {"bundle": null, "stations": {"S01820": ["rogoredo_genova"]}},
+		"R38": {"bundle": null, "stations": {"S01820": ["rogoredo_bologna"]}},
+		"RE11": {"bundle": null, "stations": {"S01820": ["rogoredo_bologna"]}},
+		"RE8": {"bundle": null, "stations": {"S01820": ["rogoredo_bologna"]}},
+		"*terminal": {"bundle": null, "stations": {"S01820": ["rogoredo_terminal"]}, "notes": "ogni corsa che inizia o termina a Rogoredo"}
+	},
+
+	"openQuestions": [
+		"Quota dei tronchi occupata da altri operatori",
+		"Ricovero per i suburbani e lunghezza banchine"
+	]
+}

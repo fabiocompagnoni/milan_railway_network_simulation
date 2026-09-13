@@ -1,0 +1,17 @@
+{
+	"title": "Binari di ricovero e deposito usati nella simulazione",
+	"status": "bozza",
+	"rule": "un treno che termina l'ultima corsa in una stazione con ricovero esce dalla rete; una sosta in banchina piu' lunga della soglia e' un artefatto della turnazione e viene modellata come uscita e nuovo ingresso dal ricovero prima della partenza. Di giorno i treni sono in uso continuo: il ricovero serve di notte (rilievo 2026-09-13)",
+	"longLayoverThresholdMin": 60,
+	"reentryBeforeDepartureMin": 10,
+	"thresholdSource": "stime provvisorie, da confermare",
+	"locations": [
+		{"station": "S01066", "name": "Milano Cadorna", "tracks": 8, "kind": "ricovero esterno alla stazione", "source": "rilievo 2026-09-13"},
+		{"station": "S01700", "name": "Milano Centrale", "tracks": null, "kind": "deposito, coperto e scoperto, molti binari, lunghe permanenze, condiviso con altri operatori", "source": "rilievo 2026-09-13", "note": "capacita' trattata come illimitata nella simulazione"},
+		{"station": "S01326", "name": "Milano Greco Pirelli", "tracks": null, "kind": "deposito, molti binari, lunghe permanenze, condiviso con altri operatori", "source": "rilievo 2026-09-13", "note": "capacita' trattata come illimitata nella simulazione"}
+	],
+	"openQuestions": [
+		"Garibaldi, Saronno, Rogoredo, Rho: esiste un ricovero usato dai suburbani?",
+		"Confermare soglia 60 min e rientro 10 min"
+	]
+}

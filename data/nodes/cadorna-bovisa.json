@@ -1,0 +1,156 @@
+{
+	"node": "cadorna-bovisa",
+	"title": "Nodo Cadorna – Domodossola – Bovisa Politecnico",
+	"status": "rivisto con i rilievi del 2026-09-13; gola di Cadorna da verificare",
+	"detailLevel": "fine: binari nominati, fasci separati, gole",
+	"sources": [
+		"docs/network/infrastruttura-nodo-milano.md (Bovisa, Cadorna, trunk FNM, regole di circolazione; rilievo 2026-08-05)",
+		"docs/network/misure/trunk-cadorna-saronno.md (OSM 2026-07-30: lunghezze e maxspeed per binario, cluster di scambi, way per binario)",
+		"rilievo diretto 2026-09-13: binari di Bovisa per gruppo e direzione, uso dei binari di Cadorna e Domodossola, Malpensa Express, RE51, R16, S3 su 5-6, ricovero di Cadorna"
+	],
+
+	"stations": [
+		{
+			"id": "S01066",
+			"name": "Milano Cadorna",
+			"kind": "terminal",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "cadorna_mxp", "kind": "terminal", "tracks": [{"ref": "1", "direction": null}],
+					"connections": {"north": ["segment:S01066_S01067:f1"]}, "notes": "fisso Malpensa Express"},
+				{"id": "cadorna_saronno", "kind": "terminal",
+					"tracks": [{"ref": "2", "direction": null}, {"ref": "3", "direction": null}, {"ref": "4", "direction": null}, {"ref": "5", "direction": null}],
+					"connections": {"north": ["segment:S01066_S01067:f1"]}, "notes": "ramo Saronno"},
+				{"id": "cadorna_asso", "kind": "terminal", "tracks": [{"ref": "6", "direction": null}, {"ref": "7", "direction": null}],
+					"connections": {"north": ["segment:S01066_S01067:f2"]}, "notes": "solo ramo Asso"},
+				{"id": "cadorna_shared", "kind": "terminal", "tracks": [{"ref": "8", "direction": null}, {"ref": "9", "direction": null}],
+					"connections": {"north": ["segment:S01066_S01067:f1", "segment:S01066_S01067:f2"]},
+					"notes": "variabili: Asso, S4 quasi sempre sul 9, Como/Varese"},
+				{"id": "cadorna_s3", "kind": "terminal", "tracks": [{"ref": "10", "direction": null}],
+					"connections": {"north": ["segment:S01066_S01067:f1", "segment:S01066_S01067:f2"]},
+					"notes": "quasi sempre S3 per Saronno"}
+			],
+			"throats": [
+				{"id": "cadorna_throat_f1", "side": "north", "resource": "cadorna_throat_f1", "lengthM": 650, "speedKmh": 30, "switches": 28,
+					"groups": ["cadorna_mxp", "cadorna_saronno", "cadorna_shared", "cadorna_s3"],
+					"notes": "OSM: 628-672 m a 30 km/h sui 10 binari misurati; 28 scambi fra +305 e +532 m; un attraversamento da 8-10 verso f1 occupa questa risorsa"},
+				{"id": "cadorna_throat_f2", "side": "north", "resource": "cadorna_throat_f2", "lengthM": 650, "speedKmh": 30, "switches": 28,
+					"groups": ["cadorna_asso", "cadorna_shared", "cadorna_s3"]}
+			],
+			"sidings": {"tracks": 8, "note": "binari di ricovero esterni alla stazione; regola in sidings.json"},
+			"notes": "rilievo 2026-09-13: 1 fisso MXP; 2-5 Saronno; 6-7 Asso; 8-9 variabili; 10 quasi sempre S3. Il documento del 2026-08-05 dava 1-5 sul fascio f1 e 6-10 sul fascio f2: i binari 8-10 raggiungono entrambi i fasci"
+		},
+		{
+			"id": "S01067",
+			"name": "Milano Domodossola",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "domodossola_saronno", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
+					"connections": {"south": ["segment:S01066_S01067:f1"], "north": ["segment:S01067_S01642:f1"]},
+					"notes": "ramo Saronno (fascio f1); 2 verso Milano"},
+				{"id": "domodossola_asso", "kind": "through", "tracks": [{"ref": "3", "direction": "north"}, {"ref": "4", "direction": "south"}],
+					"connections": {"south": ["segment:S01066_S01067:f2"], "north": ["segment:S01067_S01642:f2"]},
+					"notes": "ramo Asso/Seveso (fascio f2); 4 verso Milano"}
+			],
+			"throats": [],
+			"notes": "rilievo 2026-09-13; nessuno scambio entro 800 m secondo OSM (da confermare)"
+		},
+		{
+			"id": "S01642",
+			"name": "Milano Bovisa Politecnico",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "bovisa_passante_saronno", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
+					"connections": {"south": ["meso:S01643", "meso:S01645"], "north": ["meso:S01069", "meso:S01933"]},
+					"notes": "Passante da e verso Garibaldi, ramo Saronno; anche RE51 e Malpensa Express per Centrale"},
+				{"id": "bovisa_cadorna_saronno", "kind": "through", "tracks": [{"ref": "3", "direction": "north"}, {"ref": "4", "direction": "south"}],
+					"connections": {"south": ["segment:S01067_S01642:f1"], "north": ["meso:S01933", "meso:S01071", "meso:S01069"]},
+					"notes": "3 verso Saronno, 4 verso Cadorna; regionali e Malpensa Express da Cadorna"},
+				{"id": "bovisa_asso", "kind": "through", "tracks": [{"ref": "5", "direction": "north"}, {"ref": "6", "direction": "south"}],
+					"connections": {"south": ["segment:S01067_S01642:f2"], "north": ["meso:S01078", "meso:S01071", "meso:S01933"]},
+					"notes": "verso Asso; riserva per il ramo Saronno (S3 osservata su 5-6)"},
+				{"id": "bovisa_passante_asso", "kind": "through", "tracks": [{"ref": "7", "direction": "north"}, {"ref": "8", "direction": "south"}],
+					"connections": {"south": ["meso:S01643"], "north": ["meso:S01078"]},
+					"notes": "Passante da e verso Lancetti, ramo Asso (interpretazione da confermare)"}
+			],
+			"throats": [
+				{"id": "bovisa_throat_south", "side": "south", "resource": "bovisa_throat_south", "lengthM": null, "speedKmh": null, "switches": 16,
+					"groups": ["bovisa_passante_saronno", "bovisa_cadorna_saronno", "bovisa_asso", "bovisa_passante_asso"],
+					"notes": "due cluster di scambi verso Domodossola: -787..-591 m e -475..-272 m"},
+				{"id": "bovisa_throat_north", "side": "north", "resource": "bovisa_throat_north", "lengthM": null, "speedKmh": null, "switches": 24,
+					"groups": ["bovisa_passante_saronno", "bovisa_cadorna_saronno", "bovisa_asso", "bovisa_passante_asso"],
+					"notes": "cluster +140..+772 m verso Saronno/Asso, dove 5-6 possono andare su entrambi i rami"}
+			],
+			"notes": "rilievo 2026-09-13; i binari lenti/veloci da Saronno arrivano su 1-2, 3-4 o 5-6 a seconda della corsa"
+		}
+	],
+
+	"segments": [
+		{
+			"from": "S01066", "to": "S01067",
+			"bundles": {
+				"f1": {
+					"north": {"wayIds": [], "lengthM": 1581},
+					"south": {"wayIds": [], "lengthM": 1626},
+					"speedProfile": [{"kmh": 30, "lengthM": 650}, {"kmh": 90, "lengthM": 953}],
+					"use": "da Cadorna 1-5 (e 8-10) verso Domodossola 1-2"
+				},
+				"f2": {
+					"north": {"wayIds": [], "lengthM": 1581},
+					"south": {"wayIds": [], "lengthM": 1626},
+					"speedProfile": [{"kmh": 30, "lengthM": 650}, {"kmh": 90, "lengthM": 953}],
+					"use": "da Cadorna 6-10 verso Domodossola 3-4"
+				}
+			},
+			"notes": "OSM: 10 percorsi da 1581 a 1626 m; l'attribuzione way <-> binario e' nell'appendice del documento del tronco e va copiata in wayIds (min/max usati come provvisori)"
+		},
+		{
+			"from": "S01067", "to": "S01642",
+			"bundles": {
+				"f1": {
+					"north": {"wayIds": [], "lengthM": 2386},
+					"south": {"wayIds": [], "lengthM": 2452},
+					"speedProfile": [{"kmh": 90, "lengthM": 1545}, {"kmh": 60, "lengthM": 186}, {"kmh": 90, "lengthM": 210}, {"kmh": 60, "lengthM": 49}, {"kmh": 90, "lengthM": 331}],
+					"use": "Domodossola 1-2 -> Bovisa 3-4"
+				},
+				"f2": {
+					"north": {"wayIds": [], "lengthM": 2446},
+					"south": {"wayIds": [], "lengthM": 2538},
+					"speedProfile": [{"kmh": 90, "lengthM": 1545}, {"kmh": 60, "lengthM": 186}, {"kmh": 90, "lengthM": 210}, {"kmh": 60, "lengthM": 49}, {"kmh": 90, "lengthM": 331}],
+					"use": "Domodossola 3-4 -> Bovisa 5-6"
+				}
+			},
+			"notes": "OSM: 10 percorsi da 2386 a 2538 m; profilo del binario piu' corto, con tratti non taggati (67-74 m) contati a 60 km/h; wayIds da completare"
+		}
+	],
+
+	"lines": {
+		"RE54": {"bundle": "f1", "stations": {"S01066": ["cadorna_mxp"], "S01642": ["bovisa_cadorna_saronno"]},
+			"notes": "Malpensa Express: Cadorna 1 fisso; Bovisa 3-4 da/verso Cadorna, 1-2 nella variante per Centrale"},
+		"RE1": {"bundle": "f1", "stations": {"S01066": ["cadorna_saronno", "cadorna_shared"], "S01642": ["bovisa_cadorna_saronno"]}, "notes": "Cadorna-Varese/Laveno"},
+		"RE7": {"bundle": "f1", "stations": {"S01066": ["cadorna_saronno", "cadorna_shared"], "S01642": ["bovisa_cadorna_saronno"]}, "notes": "Cadorna-Como Lago"},
+		"R17": {"bundle": "f1", "stations": {"S01066": ["cadorna_saronno", "cadorna_shared"], "S01642": ["bovisa_cadorna_saronno"]}, "notes": "Cadorna-Como Lago, come RE7"},
+		"R22": {"bundle": "f1", "stations": {"S01066": ["cadorna_saronno", "cadorna_shared"], "S01642": ["bovisa_cadorna_saronno"]}, "notes": "Cadorna-Varese"},
+		"R27": {"bundle": "f1", "stations": {"S01066": ["cadorna_saronno", "cadorna_shared"], "S01642": ["bovisa_cadorna_saronno"]}, "notes": "Cadorna-Novara"},
+		"S3": {"bundle": "f1", "stations": {"S01066": ["cadorna_s3", "cadorna_saronno", "cadorna_shared"], "S01067": ["domodossola_saronno"], "S01642": ["bovisa_cadorna_saronno", "bovisa_asso"]},
+			"notes": "Cadorna 10 quasi sempre; Bovisa 5-6 osservata come riserva"},
+		"S4": {"bundle": "f2", "stations": {"S01066": ["cadorna_shared", "cadorna_asso"], "S01067": ["domodossola_asso"], "S01642": ["bovisa_asso"]},
+			"notes": "Cadorna 9 quasi sempre, poi 6-8"},
+		"R16": {"bundle": "f2", "stations": {"S01066": ["cadorna_shared", "cadorna_asso"], "S01642": ["bovisa_asso"]}, "notes": "Cadorna-Asso, stessi binari di S4"},
+		"RE51": {"bundle": null, "stations": {"S01642": ["bovisa_passante_saronno"]}, "notes": "Malpensa via Garibaldi: binari veloci da Saronno, a Bovisa 1-2 verso Garibaldi"},
+		"S1": {"bundle": null, "stations": {"S01642": ["bovisa_passante_saronno"]}},
+		"S13": {"bundle": null, "stations": {"S01642": ["bovisa_passante_saronno"]}},
+		"S2": {"bundle": null, "stations": {"S01642": ["bovisa_passante_asso"]}},
+		"S12": {"bundle": null, "stations": {"S01642": ["bovisa_passante_asso"]}}
+	},
+
+	"openQuestions": [
+		"Gola di Cadorna: quali binari di stazione raggiungono quale binario di corsa (oggi: 8-10 verso entrambi i fasci, con l'attraversamento che occupa solo la risorsa del fascio di destinazione)",
+		"Bovisa 7-8: S2 e S12 da e verso Lancetti, 1-2 per S1, S13 e RE51 (interpretazione da confermare)",
+		"wayIds per binario nei due segmenti: copiare dall'appendice del documento del tronco",
+		"Lunghezza delle banchine a Cadorna, Domodossola, Bovisa (null: 200 m provvisori)",
+		"Domande 1-6 del documento del tronco (fasci <-> velocita', binari a 60 km/h, tratto non taggato, scambi, lunghezze, gola a 30 km/h)"
+	]
+}

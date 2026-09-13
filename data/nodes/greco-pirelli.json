@@ -1,0 +1,61 @@
+{
+	"node": "greco-pirelli",
+	"title": "Milano Greco Pirelli",
+	"status": "bozza rivista con i rilievi del 2026-09-13",
+	"detailLevel": "gruppi di binari per provenienza a sud; a nord 4 binari condivisi fino a Monza",
+	"sources": [
+		"rilievo diretto 2026-09-13: 11 binari; a sud 1-2 verso Garibaldi (ferrovia Milano-Lecco), 2 verso Centrale, 2 verso la cintura Greco-Rogoredo, 2 solo merci verso Centrale; a nord tutti uguali su 4 binari paralleli fino a Monza dove si dividono Lecco / Chiasso",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-13: S11 153, S9 94, S8 77, S7 71, R38 57, R14 47, R4 32, RE13 29, R13 25, RE80 2, RE8 1 corse/giorno",
+		"docs/network/infrastruttura-nodo-milano.md: snodo NE, molto saturo, S7 diesel fino a Monza",
+		"rete meso: vicini S01325 Sesto S.Giovanni, S01645 Garibaldi, S01700 Centrale, S01701 Lambrate"
+	],
+
+	"stations": [
+		{
+			"id": "S01326",
+			"name": "Milano Greco Pirelli",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "greco_garibaldi", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
+					"connections": {"south": ["meso:S01645"], "north": ["meso:S01325"]},
+					"notes": "da/verso Porta Garibaldi superficie: S7, S8, S11, R14, R13 (provenienze GTFS, da confermare)"},
+				{"id": "greco_centrale", "kind": "through", "capacity": 2, "otherOperatorsShare": 0,
+					"connections": {"south": ["meso:S01700"], "north": ["meso:S01325"]},
+					"notes": "da/verso Milano Centrale: RE80, R4, RE13, RE8, Trenitalia e lunga percorrenza; numeri dei binari da rilevare"},
+				{"id": "greco_cintura", "kind": "through", "capacity": 2, "otherOperatorsShare": 0,
+					"connections": {"south": ["meso:S01701"], "north": ["meso:S01325"]},
+					"notes": "cintura Greco - Lambrate - Rogoredo: S9, R38; numeri dei binari da rilevare"}
+			],
+			"throats": [
+				{"id": "greco_throat_north", "side": "north", "resource": "greco_throat_north", "lengthM": null, "speedKmh": null, "switches": null,
+					"groups": ["greco_garibaldi", "greco_centrale", "greco_cintura"],
+					"notes": "confluenza sui 4 binari paralleli verso Monza; da rilevare"}
+			],
+			"sidings": {"tracks": null, "note": "deposito grande, condiviso con altri operatori; regola in sidings.json"},
+			"notes": "2 binari solo merci verso Centrale e 3 binari residui con funzione da confermare: esclusi dalla simulazione. Tratta Greco-Sesto: 4 binari paralleli condivisi da tutto il traffico, resta meso (tracksTotal 4)"
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"S7": {"bundle": null, "stations": {"S01326": ["greco_garibaldi"]}},
+		"S8": {"bundle": null, "stations": {"S01326": ["greco_garibaldi"]}},
+		"S11": {"bundle": null, "stations": {"S01326": ["greco_garibaldi"]}},
+		"R14": {"bundle": null, "stations": {"S01326": ["greco_garibaldi"]}},
+		"R13": {"bundle": null, "stations": {"S01326": ["greco_garibaldi"]}},
+		"RE80": {"bundle": null, "stations": {"S01326": ["greco_centrale"]}},
+		"R4": {"bundle": null, "stations": {"S01326": ["greco_centrale"]}},
+		"RE13": {"bundle": null, "stations": {"S01326": ["greco_centrale"]}},
+		"RE8": {"bundle": null, "stations": {"S01326": ["greco_centrale"]}},
+		"S9": {"bundle": null, "stations": {"S01326": ["greco_cintura"]}},
+		"R38": {"bundle": null, "stations": {"S01326": ["greco_cintura"]}}
+	},
+
+	"openQuestions": [
+		"Numeri dei binari dei gruppi Centrale, cintura e merci, e funzione dei 3 residui",
+		"Quota altri operatori sui binari da Centrale",
+		"Lunghezza banchine"
+	]
+}
