@@ -1,39 +1,29 @@
 package it.unimib.milanrailsim.schedule;
 
+import it.unimib.milanrailsim.network.FleetConfig;
 import it.unimib.milanrailsim.network.GtfsFeed;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.matsim.api.core.v01.network.Network;
-import org.matsim.core.network.NetworkUtils;
-import org.matsim.core.network.io.NetworkWriter;
-import org.matsim.pt.transitSchedule.api.TransitScheduleWriter;
-import org.matsim.vehicles.MatsimVehicleWriter;
-import org.matsim.vehicles.Vehicles;
+import it.unimib.milanrailsim.network.StationTracks;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 
 /**
- * Generates the transit schedule artifacts for a service date: the schedule,
- * one vehicle per departure, and the network enriched with station links.
+ * Generates the transit schedule artifacts for a service date with the default
+ * fleet and line assignments: the schedule, one vehicle per circulation, and
+ * the network enriched with station links.
  * <p>
  * Usage: {@code mvn exec:java -Dexec.mainClass=it.unimib.milanrailsim.schedule.CreateTransitScheduleFromFeed}
  * with optional args {@code [gtfsDir] [networkFile] [serviceDate] [outputDir]}.
  */
 public final class CreateTransitScheduleFromFeed {
 
-	private static final Logger log = LogManager.getLogger(CreateTransitScheduleFromFeed.class);
-
 	private static final String DEFAULT_GTFS_DIR = "orari_trenord";
 	private static final String DEFAULT_NETWORK = "scenarios/milan/network.xml";
 	private static final String DEFAULT_SERVICE_DATE = "2026-09-16";
 	private static final String DEFAULT_OUTPUT_DIR = "scenarios/milan";
-
-	/** Terminal turnaround: crews change ends and rotate (domain estimate, Fabio). */
-	private static final int TURNAROUND_SECONDS = 15 * 60;
+	/** Local survey of terminal platform tracks; the generated network carries its values. */
+	public static final Path STATION_TRACKS = Path.of("docs", "network", "misure", "capolinea-binari.csv");
 
 	private CreateTransitScheduleFromFeed() {
 	}
@@ -47,34 +37,8 @@ public final class CreateTransitScheduleFromFeed {
 	}
 
 	static void run(Path gtfsDir, Path networkFile, LocalDate serviceDate, Path outputDir) {
-		Network network = NetworkUtils.readNetwork(networkFile.toString());
-		GtfsFeed feed = GtfsFeed.load(gtfsDir);
-		RouteVehicleAssignment assignment = RouteVehicleAssignment.defaults();
-		TransitScheduleBuilder.Result result = new TransitScheduleBuilder(
-			feed, network, serviceDate, assignment).build();
-		Vehicles circulations = VehicleCirculations.apply(result.schedule(), result.vehicles(),
-			TURNAROUND_SECONDS, assignment);
-		SingleTrackBlocks.apply(network);
-		TerminalCapacities.apply(result.schedule(), network);
-
-		try {
-			Files.createDirectories(outputDir);
-		} catch (IOException e) {
-			throw new UncheckedIOException("Cannot create output directory " + outputDir, e);
-		}
-		new TransitScheduleWriter(result.schedule())
-			.writeFile(outputDir.resolve("transitSchedule.xml").toString());
-		new MatsimVehicleWriter(circulations)
-			.writeFile(outputDir.resolve("transitVehicles.xml").toString());
-		new NetworkWriter(network).write(outputDir.resolve("network-with-stations.xml").toString());
-
-		int routes = result.schedule().getTransitLines().values().stream()
-			.mapToInt(line -> line.getRoutes().size()).sum();
-		int departures = result.schedule().getTransitLines().values().stream()
-			.flatMap(line -> line.getRoutes().values().stream())
-			.mapToInt(route -> route.getDepartures().size()).sum();
-		log.info("Service date {}: {} lines, {} routes, {} departures, {} vehicles written to {}",
-			serviceDate, result.schedule().getTransitLines().size(), routes, departures,
-			circulations.getVehicles().size(), outputDir);
+		StationTracks tracks = Files.exists(STATION_TRACKS) ? StationTracks.read(STATION_TRACKS) : StationTracks.empty();
+		new SchedulePipeline(GtfsFeed.load(gtfsDir), networkFile, FleetConfig.defaults(), RouteVehicleAssignment.defaults(), tracks)
+			.generate(serviceDate, Integer.MIN_VALUE, Integer.MAX_VALUE, outputDir);
 	}
 }

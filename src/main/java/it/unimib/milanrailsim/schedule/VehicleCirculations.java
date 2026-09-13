@@ -1,6 +1,5 @@
 package it.unimib.milanrailsim.schedule;
 
-import it.unimib.milanrailsim.network.RailVehicleTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.matsim.api.core.v01.Id;
@@ -46,7 +45,7 @@ public final class VehicleCirculations {
 	public static Vehicles apply(TransitSchedule schedule, Vehicles tripVehicles,
 			int turnaroundSeconds, RouteVehicleAssignment assignment) {
 		Vehicles circulated = VehicleUtils.createVehiclesContainer();
-		RailVehicleTypes.all().forEach(circulated::addVehicleType);
+		tripVehicles.getVehicleTypes().values().forEach(circulated::addVehicleType);
 
 		int totalCirculations = 0;
 		for (TransitLine line : schedule.getTransitLines().values()) {

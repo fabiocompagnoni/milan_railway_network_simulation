@@ -2,6 +2,7 @@ package it.unimib.milanrailsim.schedule;
 
 import it.unimib.milanrailsim.network.GtfsFeed;
 import it.unimib.milanrailsim.network.RailVehicleTypes;
+import it.unimib.milanrailsim.network.StationTracks;
 import it.unimib.milanrailsim.network.ServiceCalendar;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,6 +52,10 @@ public final class TransitScheduleBuilder {
 	private final Network network;
 	private final LocalDate serviceDate;
 	private final RouteVehicleAssignment assignment;
+	private final List<VehicleType> vehicleTypes;
+	private int windowStartSeconds = Integer.MIN_VALUE;
+	private int windowEndSeconds = Integer.MAX_VALUE;
+	private StationTracks stationTracks = StationTracks.empty();
 
 	private final TransitScheduleFactory factory = new TransitScheduleFactoryImpl();
 	private final Map<String, TransitStopFacility> stopFacilities = new HashMap<>();
@@ -59,19 +64,38 @@ public final class TransitScheduleBuilder {
 
 	public TransitScheduleBuilder(GtfsFeed feed, Network network, LocalDate serviceDate,
 			RouteVehicleAssignment assignment) {
+		this(feed, network, serviceDate, assignment, RailVehicleTypes.all());
+	}
+
+	public TransitScheduleBuilder(GtfsFeed feed, Network network, LocalDate serviceDate,
+			RouteVehicleAssignment assignment, List<VehicleType> vehicleTypes) {
 		this.feed = feed;
 		this.network = network;
 		this.serviceDate = serviceDate;
 		this.assignment = assignment;
+		this.vehicleTypes = vehicleTypes;
+	}
+
+	/** Platform counts that size the station loop links. */
+	public TransitScheduleBuilder withStationTracks(StationTracks tracks) {
+		this.stationTracks = tracks;
+		return this;
+	}
+
+	/** Keeps only trips whose first departure falls within the window, in seconds since midnight. */
+	public TransitScheduleBuilder withWindow(int startSeconds, int endSeconds) {
+		this.windowStartSeconds = startSeconds;
+		this.windowEndSeconds = endSeconds;
+		return this;
 	}
 
 	public Result build() {
-		StationStopLinks.addStopLinks(network);
+		StationStopLinks.addStopLinks(network, stationTracks);
 		MesoRouter router = new MesoRouter(network);
 
 		TransitSchedule schedule = factory.createTransitSchedule();
 		Vehicles vehicles = VehicleUtils.createVehiclesContainer();
-		RailVehicleTypes.all().forEach(vehicles::addVehicleType);
+		vehicleTypes.forEach(vehicles::addVehicleType);
 
 		Set<String> activeServiceIds = ServiceCalendar.activeServiceIds(feed.calendarDateRows(), serviceDate);
 		Map<String, List<GtfsFeed.Trip>> includedTripsByRoute = includedTripsByRoute(activeServiceIds);
@@ -86,6 +110,7 @@ public final class TransitScheduleBuilder {
 	private Map<String, List<GtfsFeed.Trip>> includedTripsByRoute(Set<String> activeServiceIds) {
 		Map<String, List<GtfsFeed.Trip>> tripsByRoute = new LinkedHashMap<>();
 		Map<String, Integer> excludedCounts = new HashMap<>();
+		Map<String, Integer> offNetworkCounts = new HashMap<>();
 		for (GtfsFeed.Trip trip : feed.tripsById().values()) {
 			if (!activeServiceIds.contains(trip.serviceId())) {
 				continue;
@@ -102,10 +127,20 @@ public final class TransitScheduleBuilder {
 			if (stopTimes == null || stopTimes.isEmpty()) {
 				throw new IllegalArgumentException("Trip without stop times: " + trip.id());
 			}
+			int firstDeparture = stopTimes.getFirst().departureSeconds();
+			if (firstDeparture < windowStartSeconds || firstDeparture > windowEndSeconds) {
+				continue;
+			}
+			if (stopTimes.stream().anyMatch(stopTime -> !network.getNodes().containsKey(Id.createNodeId(stopTime.stopId())))) {
+				offNetworkCounts.merge(route.shortName(), 1, Integer::sum);
+				continue;
+			}
 			tripsByRoute.computeIfAbsent(route.shortName(), key -> new ArrayList<>()).add(trip);
 		}
 		excludedCounts.forEach((routeShortName, count) ->
 			LOG.info("Excluded route {}: {} trips skipped", routeShortName, count));
+		offNetworkCounts.forEach((routeShortName, count) ->
+			LOG.warn("Route {}: {} trips skipped, they call at stations outside the modelled network", routeShortName, count));
 		tripsByRoute.forEach((routeShortName, trips) ->
 			LOG.info("Included route {}: {} trips", routeShortName, trips.size()));
 		return tripsByRoute;

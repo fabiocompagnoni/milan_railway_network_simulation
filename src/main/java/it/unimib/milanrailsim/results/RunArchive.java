@@ -25,7 +25,11 @@ public final class RunArchive {
 	}
 
 	public static RunArchive create(Path baseDir, String scenario) {
-		Path runDir = baseDir.resolve(LocalDateTime.now().format(RUN_STAMP) + "-" + scenario);
+		return at(baseDir.resolve(LocalDateTime.now().format(RUN_STAMP) + "-" + scenario));
+	}
+
+	/** Archives into an existing run folder, e.g. one the application launched the run from. */
+	public static RunArchive at(Path runDir) {
 		try {
 			Files.createDirectories(runDir.resolve("charts"));
 			Files.createDirectories(runDir.resolve("raw"));

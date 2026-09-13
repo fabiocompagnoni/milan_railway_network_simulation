@@ -3,6 +3,8 @@ package it.unimib.milanrailsim.schedule;
 import it.unimib.milanrailsim.network.GtfsFeed;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.matsim.core.network.NetworkUtils;
+import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
@@ -75,5 +77,42 @@ class TransitScheduleBuilderTest {
 		assertNotNull(result.vehicles().getVehicles().get(Id.createVehicleId("T1")));
 		assertNotNull(result.vehicles().getVehicles().get(Id.createVehicleId("TN")));
 		assertEquals(8, result.vehicles().getVehicleTypes().size());
+	}
+
+	@Test
+	void timeWindowKeepsTripsByFirstDeparture() {
+		// TN departs at 24:01 and falls outside 07:00–09:00; T1 at 08:01 stays
+		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-minimal"));
+		TransitScheduleBuilder.Result result = new TransitScheduleBuilder(feed, network, DATE,
+			RouteVehicleAssignment.defaults()).withWindow(7 * 3600, 9 * 3600).build();
+
+		int departures = result.schedule().getTransitLines().values().stream()
+			.flatMap(line -> line.getRoutes().values().stream())
+			.mapToInt(route -> route.getDepartures().size()).sum();
+		assertEquals(1, departures);
+	}
+
+	@Test
+	void tripsCallingOutsideTheNetworkAreSkipped() {
+		// a network without S3: T1 (S1-S2-S3) is dropped, TN (S1-S2) survives
+		Network twoStations = NetworkUtils.createNetwork();
+		for (String station : List.of("S1", "S2")) {
+			twoStations.addNode(twoStations.getFactory().createNode(Id.createNodeId(station), new Coord(0, 0)));
+		}
+		Link link = twoStations.getFactory().createLink(Id.createLinkId("S1_S2"),
+			twoStations.getNodes().get(Id.createNodeId("S1")), twoStations.getNodes().get(Id.createNodeId("S2")));
+		link.setLength(1000);
+		link.setFreespeed(20);
+		link.setAllowedModes(java.util.Set.of("rail"));
+		twoStations.addLink(link);
+		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-minimal"));
+
+		TransitScheduleBuilder.Result result = new TransitScheduleBuilder(feed, twoStations, DATE,
+			RouteVehicleAssignment.defaults()).build();
+
+		int departures = result.schedule().getTransitLines().values().stream()
+			.flatMap(line -> line.getRoutes().values().stream())
+			.mapToInt(route -> route.getDepartures().size()).sum();
+		assertEquals(1, departures);
 	}
 }

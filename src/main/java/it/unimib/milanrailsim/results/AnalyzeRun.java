@@ -60,6 +60,12 @@ public final class AnalyzeRun {
 
 	static Path run(Path runOutputDir, String scenario, Path runsBaseDir, Path costsFile,
 			String spaceTimeLine) {
+		return analyze(runOutputDir, RunArchive.create(runsBaseDir, scenario), scenario, costsFile, spaceTimeLine);
+	}
+
+	/** Runs the analysis of a finished simulation and fills {@code archive}; returns its folder. */
+	public static Path analyze(Path runOutputDir, RunArchive archive, String scenario, Path costsFile,
+			String spaceTimeLine) {
 		Scenario matsim = ScenarioUtils.createScenario(ConfigUtils.createConfig());
 		new TransitScheduleReader(matsim)
 			.readFile(locate(runOutputDir, "*.output_transitSchedule.xml*").toString());
@@ -79,7 +85,6 @@ public final class AnalyzeRun {
 		CostModel.Breakdown costs = new CostModel(matsim.getTransitSchedule(), vehicles, network,
 			CostParameters.load(costsFile)).compute();
 
-		RunArchive archive = RunArchive.create(runsBaseDir, scenario);
 		archive.writeLines("punctuality.csv", punctualityCsv(visits));
 		archive.writeLines("punctuality_by_line.csv", byLineCsv(visits));
 		archive.writeJson("costs.json", costsJson(costs));
