@@ -2,7 +2,6 @@ package it.unimib.milanrailsim.gui.sim;
 
 import it.unimib.milanrailsim.server.Protocol.Frame;
 import it.unimib.milanrailsim.server.Protocol.Message;
-import it.unimib.milanrailsim.server.Protocol.Summary;
 import it.unimib.milanrailsim.server.RailsimJob;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -37,7 +36,6 @@ public final class LiveSession {
 	private final DoubleProperty speed = new SimpleDoubleProperty();
 	private final BooleanProperty finished = new SimpleBooleanProperty();
 	private final StringProperty error = new SimpleStringProperty();
-	private final ObjectProperty<Summary> summary = new SimpleObjectProperty<>();
 	private Frame previousFrame;
 	private long previousArrivalNanos;
 	private long frameArrivalNanos;
@@ -79,7 +77,6 @@ public final class LiveSession {
 			});
 			case Message.DONE -> Platform.runLater(() -> {
 				phase.set("Completata");
-				summary.set(message.summary());
 				finished.set(true);
 			});
 			case Message.ERROR -> Platform.runLater(() -> {
@@ -172,10 +169,5 @@ public final class LiveSession {
 
 	public StringProperty error() {
 		return error;
-	}
-
-	/** How the run ended; set together with {@link #finished()} on a completed run. */
-	public ObjectProperty<Summary> summary() {
-		return summary;
 	}
 }

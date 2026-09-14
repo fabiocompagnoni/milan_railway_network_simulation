@@ -19,6 +19,8 @@ import javafx.scene.control.Tooltip;
 import org.kordamp.ikonli.javafx.FontIcon;
 import javafx.stage.Stage;
 
+import java.nio.file.Path;
+
 /** Desktop application: the simulation is configured, run, watched and replayed from here. */
 public final class MilanRailSimApp extends Application {
 
@@ -33,10 +35,16 @@ public final class MilanRailSimApp extends Application {
 		Theme.loadFonts();
 		ObjectProperty<Theme> theme = model.theme();
 		Navigation navigation = new Navigation();
-		navigation.addView("Simulazione", "mdmz-map", () -> new SimulationView(model, runDir -> {
-			model.selectedRun().set(model.runs().entry(runDir));
-			navigation.show("Risultati");
-		}));
+		navigation.addView("Simulazione", "mdmz-map", () -> new SimulationView(model));
+		model.session().addListener((observable, previous, session) -> {
+			if (session != null) {
+				session.finished().addListener((finishedObservable, was, finished) -> {
+					if (finished && session.error().get() == null) {
+						openResults(navigation, session.runDir());
+					}
+				});
+			}
+		});
 		navigation.addView("Nuova simulazione", "mdal-add_circle_outline", () -> new NewSimulationView(model, spec -> {
 			model.startRun(spec, Protocol.UNTHROTTLED);
 			navigation.show("Simulazione");
@@ -70,6 +78,13 @@ public final class MilanRailSimApp extends Application {
 		stage.setMinHeight(480);
 		stage.setScene(scene);
 		stage.show();
+	}
+
+	/** A run that completed is archived and analyzed: its results are what the user is waiting for. */
+	private void openResults(Navigation navigation, Path runDir) {
+		model.session().set(null);
+		model.selectedRun().set(model.runs().entry(runDir));
+		navigation.show("Risultati");
 	}
 
 }

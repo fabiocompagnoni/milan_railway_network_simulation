@@ -6,9 +6,9 @@ import it.unimib.milanrailsim.gui.map.NetworkMap;
 import it.unimib.milanrailsim.gui.sim.LiveSession;
 import it.unimib.milanrailsim.gui.sim.TrainPositions;
 import it.unimib.milanrailsim.server.Protocol;
-import it.unimib.milanrailsim.server.Protocol.Summary;
 import it.unimib.milanrailsim.server.Protocol.TrainState;
 import javafx.animation.AnimationTimer;
+import javafx.beans.binding.BooleanBinding;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -29,35 +29,33 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.function.Consumer;
 
 /**
  * Full-bleed map of the network. With a live session it shows the trains as
  * the engine moves them, with a control bar (pause, speed, simulated clock)
- * and a drawer holding the line legend and the selected train.
+ * and a drawer holding the line legend and the selected train. Once the
+ * simulated day is over the bar follows the engine through the writing and
+ * analysis phases; the application opens the results when they are ready.
  */
 public final class SimulationView extends BorderPane {
 
 	private static final double[] SPEEDS = { 10, 60, 300, 1000, Protocol.UNTHROTTLED };
 	private static final String[] SPEED_LABELS = { "10×", "60×", "300×", "1000×", "max" };
+	private static final String SIMULATING = "Simulazione";
 
 	private final AppModel model;
-	private final Consumer<Path> onOpenResults;
 	private final StackPane stack = new StackPane();
 	private final Set<String> hiddenLines = new HashSet<>();
 	private MapCanvas map;
 	private NetworkMap network;
 	private AnimationTimer animation;
 
-	/** @param onOpenResults shows the results of the run archived in the given folder */
-	public SimulationView(AppModel model, Consumer<Path> onOpenResults) {
+	public SimulationView(AppModel model) {
 		this.model = model;
-		this.onOpenResults = onOpenResults;
 		setCenter(stack);
 		showLoading();
 		load();
@@ -190,11 +188,17 @@ public final class SimulationView extends BorderPane {
 		});
 		Button stop = new Button("Interrompi");
 		stop.setOnAction(event -> session.stop());
-		HBox controls = controlBar(List.of(pause, speeds, clock, status, stop));
+		ProgressIndicator busy = new ProgressIndicator();
+		busy.setMaxSize(18, 18);
+		HBox controls = controlBar(List.of(pause, speeds, clock, busy, status, stop));
 		controls.getChildren().addAll(zoomButtons());
-		pause.disableProperty().bind(session.finished());
-		speeds.disableProperty().bind(session.finished());
-		stop.disableProperty().bind(session.finished());
+		// after the last simulated second the engine writes and analyzes: nothing left to pace or interrupt
+		BooleanBinding wrappingUp = session.phase().isNotEqualTo(SIMULATING).or(session.finished());
+		pause.disableProperty().bind(wrappingUp);
+		speeds.disableProperty().bind(wrappingUp);
+		stop.disableProperty().bind(wrappingUp);
+		busy.visibleProperty().bind(wrappingUp.and(session.finished().not()));
+		busy.managedProperty().bind(busy.visibleProperty());
 
 		VBox drawer = drawer(session, detail);
 		stack.getChildren().removeIf(node -> node != map);
@@ -225,52 +229,8 @@ public final class SimulationView extends BorderPane {
 		session.finished().addListener((observable, was, finished) -> {
 			if (finished) {
 				animation.stop();
-				if (session.error().get() == null) {
-					showCompleted(session);
-				}
 			}
 		});
-	}
-
-	/** The run is archived: offer its results, or a plain map again. */
-	private void showCompleted(LiveSession session) {
-		Label title = new Label("Simulazione completata");
-		title.getStyleClass().add("section-title");
-		Label text = muted("Il run «" + session.runDir().getFileName() + "» è stato analizzato e archiviato."
-			+ outcome(session.summary().get()));
-		Button results = new Button("Vedi risultati");
-		results.getStyleClass().add("primary");
-		results.setOnAction(event -> {
-			model.session().set(null);
-			onOpenResults.accept(session.runDir());
-		});
-		Button close = new Button("Chiudi");
-		close.setOnAction(event -> model.session().set(null));
-		HBox actions = new HBox(8, close, results);
-		actions.setAlignment(Pos.CENTER_RIGHT);
-		VBox banner = new VBox(10, title, text, actions);
-		banner.getStyleClass().add("banner-done");
-		banner.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-		StackPane.setAlignment(banner, Pos.TOP_CENTER);
-		StackPane.setMargin(banner, new Insets(16, 0, 0, 0));
-		stack.getChildren().add(banner);
-	}
-
-	/** One line on how the day ended: what arrived, what the engine gave up on, what was still out there. */
-	static String outcome(Summary summary) {
-		if (summary == null) {
-			return "";
-		}
-		StringBuilder text = new StringBuilder("\nTreni arrivati: ").append(summary.arrived());
-		if (summary.aborted() > 0) {
-			text.append(" · abortiti: ").append(summary.aborted());
-		}
-		if (summary.stalled() > 0) {
-			text.append(" · ancora in rete alle ").append(clock(summary.endTime())).append(": ").append(summary.stalled());
-		} else {
-			text.append(" · tutti fermi entro le ").append(clock(summary.endTime()));
-		}
-		return text.toString();
 	}
 
 	/** A run that failed deserves more than a line in the control bar. */
@@ -346,7 +306,7 @@ public final class SimulationView extends BorderPane {
 
 	private static String phaseText(LiveSession session) {
 		String phase = session.phase().get();
-		return "Simulazione".equals(phase) ? phase + " · " + session.activeTrains().get() + " treni attivi" : phase;
+		return SIMULATING.equals(phase) ? phase + " · " + session.activeTrains().get() + " treni attivi" : phase;
 	}
 
 	static String clock(double seconds) {
