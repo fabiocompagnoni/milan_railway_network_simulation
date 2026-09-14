@@ -277,12 +277,35 @@ public final class TransitScheduleBuilder {
 		Id<Link> platform = plan.platform(tripId, index)
 			.orElseThrow(() -> new IllegalStateException("No platform planned for trip " + tripId + " at " + stopId));
 		boolean terminating = index == 0 || index == stopTimes.size() - 1;
-		Direction travel = planner.travelAt(stopId, index > 0 ? stopTimes.get(index - 1).stopId() : null,
-			index + 1 < stopTimes.size() ? stopTimes.get(index + 1).stopId() : null).orElse(null);
-		return platformFacility(schedule, new PlatformCall(stopId, line, terminating, travel), platform);
+		Station station = planner.nodeOf(stopId).orElseThrow().station(stopId);
+		return platformFacility(schedule, new PlatformCall(stopId, line, terminating, directionOf(platform, station)), platform);
 	}
 
-	/** One call of a line at a micro station; {@code travel} is null when the direction cannot be told. */
+	/**
+	 * The direction the planned platform link is run in: its own on a
+	 * directional track, the variant's on a two-sided bidirectional track, none
+	 * on a one-sided terminal track. Taken from the link rather than from the
+	 * trip, since a train departing after a reversal stands on the link of its
+	 * arrival direction.
+	 */
+	private static Direction directionOf(Id<Link> platform, Station station) {
+		String id = platform.toString();
+		for (Direction direction : Direction.values()) {
+			if (id.endsWith("." + MicroIds.name(direction))) {
+				return direction;
+			}
+		}
+		for (Group group : station.groups()) {
+			for (Track track : group.effectiveTracks()) {
+				if (MicroIds.trackId(station, group, track).equals(id)) {
+					return track.direction();
+				}
+			}
+		}
+		return null;
+	}
+
+	/** One call of a line at a micro station; {@code travel} is null when the platform has no direction. */
 	private record PlatformCall(String stopId, String line, boolean terminating, Direction travel) {
 
 		String area() {

@@ -138,11 +138,11 @@ class TransitScheduleBuilderTest {
 			chain.stream().map(Id::toString).toList());
 
 		TransitStopFacility first = t1Route.getStops().getFirst().getStopFacility();
-		// the area carries the travel direction: heading north from S1, so only northbound platforms belong to it
-		assertEquals("S1.p1.in|S1|S1|terminal|north", first.getId().toString());
-		assertEquals("S1|S1|terminal|north", first.getStopAreaId().toString());
+		// one-sided terminal tracks have no direction; the area of a through call carries the platform's
+		assertEquals("S1.p1.in|S1|S1|terminal", first.getId().toString());
+		assertEquals("S1|S1|terminal", first.getStopAreaId().toString());
 		assertEquals("S1", first.getName());
-		assertNotNull(result.schedule().getFacilities().get(Id.create("S1.p2.in|S1|S1|terminal|north", TransitStopFacility.class)),
+		assertNotNull(result.schedule().getFacilities().get(Id.create("S1.p2.in|S1|S1|terminal", TransitStopFacility.class)),
 			"every platform of the area is a facility");
 		TransitStopFacility second = t1Route.getStops().get(1).getStopFacility();
 		assertEquals("S2|S1|through|north", second.getStopAreaId().toString());
