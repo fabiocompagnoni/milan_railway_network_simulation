@@ -23,7 +23,7 @@ public final class RailsimSetup {
 			protected void configureQSim() {
 				bind(RailResourceManagerImpl.class).in(Singleton.class);
 				bind(RailResourceManager.class).to(StationTrackResources.class).asEagerSingleton();
-				bind(DeadlockAvoidance.class).to(ThroatAwareDeadlockAvoidance.class).asEagerSingleton();
+				bind(DeadlockAvoidance.class).to(SingleTrackDeadlockAvoidance.class).asEagerSingleton();
 			}
 		});
 	}

@@ -18,9 +18,9 @@ import org.matsim.core.network.NetworkUtils;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-class ThroatAwareDeadlockAvoidanceTest {
+class SingleTrackDeadlockAvoidanceTest {
 
 	private record StubResource(Id<RailResource> id, List<RailLink> links) implements RailResource {
 		@Override
@@ -91,18 +91,27 @@ class ThroatAwareDeadlockAvoidanceTest {
 	}
 
 	@Test
-	void hidesResourcesWhoseLinksBelongToAThroat() {
+	void keepsOnlyResourcesHoldingBothDirectionsOfALink() {
 		Network network = NetworkUtils.createNetwork();
 		Node a = NetworkUtils.createAndAddNode(network, Id.createNodeId("a"), new Coord(0, 0));
 		Node b = NetworkUtils.createAndAddNode(network, Id.createNodeId("b"), new Coord(100, 0));
-		Link section = NetworkUtils.createAndAddLink(network, Id.createLinkId("section"), a, b, 100, 10, 1, 1);
-		Link approach = NetworkUtils.createAndAddLink(network, Id.createLinkId("approach"), b, a, 100, 10, 1, 1);
-		approach.getAttributes().putAttribute(ThroatAwareDeadlockAvoidance.THROAT_ATTRIBUTE, "north");
-		RailResource singleTrack = new StubResource(Id.create("section", RailResource.class), List.of(new RailLink(section, null)));
-		RailResource throat = new StubResource(Id.create("throat", RailResource.class), List.of(new RailLink(approach, null)));
+		Node c = NetworkUtils.createAndAddNode(network, Id.createNodeId("c"), new Coord(200, 0));
+		Link there = NetworkUtils.createAndAddLink(network, Id.createLinkId("a_b"), a, b, 100, 10, 1, 1);
+		Link back = NetworkUtils.createAndAddLink(network, Id.createLinkId("b_a"), b, a, 100, 10, 1, 1);
+		Link oneWay = NetworkUtils.createAndAddLink(network, Id.createLinkId("b_c"), b, c, 100, 10, 1, 1);
+		Link approach = NetworkUtils.createAndAddLink(network, Id.createLinkId("c_a"), c, a, 100, 10, 1, 1);
+		RailResource singleTrack = new StubResource(Id.create("block", RailResource.class),
+			List.of(new RailLink(there, back), new RailLink(back, there)));
+		RailResource section = new StubResource(Id.create("b_c", RailResource.class), List.of(new RailLink(oneWay, null)));
+		RailResource throat = new StubResource(Id.create("throat", RailResource.class),
+			List.of(new RailLink(approach, null), new RailLink(oneWay, null)));
 
-		RailResourceManager view = ThroatAwareDeadlockAvoidance.withoutThroats(new StubManager(List.of(singleTrack, throat)), network);
+		RailResourceManager view = SingleTrackDeadlockAvoidance.twoWayOnly(
+			new StubManager(List.of(singleTrack, section, throat)), network);
 
 		assertEquals(List.of(singleTrack), List.copyOf(view.getResources()));
+		assertTrue(SingleTrackDeadlockAvoidance.isTwoWay(singleTrack, network));
+		assertFalse(SingleTrackDeadlockAvoidance.isTwoWay(section, network));
+		assertFalse(SingleTrackDeadlockAvoidance.isTwoWay(throat, network));
 	}
 }
