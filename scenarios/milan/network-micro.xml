@@ -8411,6 +8411,22 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">4</attribute>
 			</attributes>
 		</link>
+		<link id="S01326.greco_centrale.1.a.turn" from="S01326.greco_centrale.1.a.out" to="S01326.greco_centrale.1.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">greco-pirelli</attribute>
+				<attribute name="microStation" class="java.lang.String">S01326</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01326.greco_centrale.1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01326.greco_centrale.1.b.turn" from="S01326.greco_centrale.1.b.out" to="S01326.greco_centrale.1.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">greco-pirelli</attribute>
+				<attribute name="microStation" class="java.lang.String">S01326</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01326.greco_centrale.1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01326.greco_centrale.1.north" from="S01326.greco_centrale.1.a.in" to="S01326.greco_centrale.1.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -8473,6 +8489,22 @@
 				<attribute name="microStation" class="java.lang.String">S01326</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+			</attributes>
+		</link>
+		<link id="S01326.greco_centrale.2.a.turn" from="S01326.greco_centrale.2.a.out" to="S01326.greco_centrale.2.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">greco-pirelli</attribute>
+				<attribute name="microStation" class="java.lang.String">S01326</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01326.greco_centrale.2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01326.greco_centrale.2.b.turn" from="S01326.greco_centrale.2.b.out" to="S01326.greco_centrale.2.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">greco-pirelli</attribute>
+				<attribute name="microStation" class="java.lang.String">S01326</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01326.greco_centrale.2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01326.greco_centrale.2.north" from="S01326.greco_centrale.2.a.in" to="S01326.greco_centrale.2.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -8539,6 +8571,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 			</attributes>
 		</link>
+		<link id="S01326.greco_cintura.1.a.turn" from="S01326.greco_cintura.1.a.out" to="S01326.greco_cintura.1.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">greco-pirelli</attribute>
+				<attribute name="microStation" class="java.lang.String">S01326</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01326.greco_cintura.1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01326.greco_cintura.1.b.turn" from="S01326.greco_cintura.1.b.out" to="S01326.greco_cintura.1.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">greco-pirelli</attribute>
+				<attribute name="microStation" class="java.lang.String">S01326</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01326.greco_cintura.1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01326.greco_cintura.1.north" from="S01326.greco_cintura.1.a.in" to="S01326.greco_cintura.1.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -8601,6 +8649,22 @@
 				<attribute name="microStation" class="java.lang.String">S01326</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+			</attributes>
+		</link>
+		<link id="S01326.greco_cintura.2.a.turn" from="S01326.greco_cintura.2.a.out" to="S01326.greco_cintura.2.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">greco-pirelli</attribute>
+				<attribute name="microStation" class="java.lang.String">S01326</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01326.greco_cintura.2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01326.greco_cintura.2.b.turn" from="S01326.greco_cintura.2.b.out" to="S01326.greco_cintura.2.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">greco-pirelli</attribute>
+				<attribute name="microStation" class="java.lang.String">S01326</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01326.greco_cintura.2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01326.greco_cintura.2.north" from="S01326.greco_cintura.2.a.in" to="S01326.greco_cintura.2.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -12957,6 +13021,22 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
+		<link id="S01645.garibaldi_terminal.1.a.turn" from="S01645.garibaldi_terminal.1.a.out" to="S01645.garibaldi_terminal.1.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.1.b.turn" from="S01645.garibaldi_terminal.1.b.out" to="S01645.garibaldi_terminal.1.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01645.garibaldi_terminal.1.north" from="S01645.garibaldi_terminal.1.a.in" to="S01645.garibaldi_terminal.1.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -13111,6 +13191,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">garibaldi_throat_east</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.10.a.turn" from="S01645.garibaldi_terminal.10.a.out" to="S01645.garibaldi_terminal.10.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.10</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.10.b.turn" from="S01645.garibaldi_terminal.10.b.out" to="S01645.garibaldi_terminal.10.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.10</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01645.garibaldi_terminal.10.north" from="S01645.garibaldi_terminal.10.a.in" to="S01645.garibaldi_terminal.10.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -13269,6 +13365,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 			</attributes>
 		</link>
+		<link id="S01645.garibaldi_terminal.11.a.turn" from="S01645.garibaldi_terminal.11.a.out" to="S01645.garibaldi_terminal.11.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.11</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.11.b.turn" from="S01645.garibaldi_terminal.11.b.out" to="S01645.garibaldi_terminal.11.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.11</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01645.garibaldi_terminal.11.north" from="S01645.garibaldi_terminal.11.a.in" to="S01645.garibaldi_terminal.11.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -13423,6 +13535,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">garibaldi_throat_east</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.12.a.turn" from="S01645.garibaldi_terminal.12.a.out" to="S01645.garibaldi_terminal.12.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.12</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.12.b.turn" from="S01645.garibaldi_terminal.12.b.out" to="S01645.garibaldi_terminal.12.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.12</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01645.garibaldi_terminal.12.north" from="S01645.garibaldi_terminal.12.a.in" to="S01645.garibaldi_terminal.12.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -13581,6 +13709,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 			</attributes>
 		</link>
+		<link id="S01645.garibaldi_terminal.2.a.turn" from="S01645.garibaldi_terminal.2.a.out" to="S01645.garibaldi_terminal.2.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.2.b.turn" from="S01645.garibaldi_terminal.2.b.out" to="S01645.garibaldi_terminal.2.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01645.garibaldi_terminal.2.north" from="S01645.garibaldi_terminal.2.a.in" to="S01645.garibaldi_terminal.2.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -13735,6 +13879,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">garibaldi_throat_east</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.3.a.turn" from="S01645.garibaldi_terminal.3.a.out" to="S01645.garibaldi_terminal.3.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.3</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.3.b.turn" from="S01645.garibaldi_terminal.3.b.out" to="S01645.garibaldi_terminal.3.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.3</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01645.garibaldi_terminal.3.north" from="S01645.garibaldi_terminal.3.a.in" to="S01645.garibaldi_terminal.3.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -13893,6 +14053,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 			</attributes>
 		</link>
+		<link id="S01645.garibaldi_terminal.4.a.turn" from="S01645.garibaldi_terminal.4.a.out" to="S01645.garibaldi_terminal.4.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.4</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.4.b.turn" from="S01645.garibaldi_terminal.4.b.out" to="S01645.garibaldi_terminal.4.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.4</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01645.garibaldi_terminal.4.north" from="S01645.garibaldi_terminal.4.a.in" to="S01645.garibaldi_terminal.4.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -14047,6 +14223,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">garibaldi_throat_east</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.5.a.turn" from="S01645.garibaldi_terminal.5.a.out" to="S01645.garibaldi_terminal.5.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.5</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.5.b.turn" from="S01645.garibaldi_terminal.5.b.out" to="S01645.garibaldi_terminal.5.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.5</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01645.garibaldi_terminal.5.north" from="S01645.garibaldi_terminal.5.a.in" to="S01645.garibaldi_terminal.5.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -14205,6 +14397,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 			</attributes>
 		</link>
+		<link id="S01645.garibaldi_terminal.6.a.turn" from="S01645.garibaldi_terminal.6.a.out" to="S01645.garibaldi_terminal.6.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.6</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.6.b.turn" from="S01645.garibaldi_terminal.6.b.out" to="S01645.garibaldi_terminal.6.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.6</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01645.garibaldi_terminal.6.north" from="S01645.garibaldi_terminal.6.a.in" to="S01645.garibaldi_terminal.6.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -14359,6 +14567,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">garibaldi_throat_east</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.7.a.turn" from="S01645.garibaldi_terminal.7.a.out" to="S01645.garibaldi_terminal.7.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.7</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.7.b.turn" from="S01645.garibaldi_terminal.7.b.out" to="S01645.garibaldi_terminal.7.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.7</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01645.garibaldi_terminal.7.north" from="S01645.garibaldi_terminal.7.a.in" to="S01645.garibaldi_terminal.7.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -14517,6 +14741,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 			</attributes>
 		</link>
+		<link id="S01645.garibaldi_terminal.8.a.turn" from="S01645.garibaldi_terminal.8.a.out" to="S01645.garibaldi_terminal.8.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.8</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.8.b.turn" from="S01645.garibaldi_terminal.8.b.out" to="S01645.garibaldi_terminal.8.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.8</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01645.garibaldi_terminal.8.north" from="S01645.garibaldi_terminal.8.a.in" to="S01645.garibaldi_terminal.8.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -14671,6 +14911,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">garibaldi_throat_east</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.9.a.turn" from="S01645.garibaldi_terminal.9.a.out" to="S01645.garibaldi_terminal.9.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.9</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_terminal.9.b.turn" from="S01645.garibaldi_terminal.9.b.out" to="S01645.garibaldi_terminal.9.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_terminal.9</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01645.garibaldi_terminal.9.north" from="S01645.garibaldi_terminal.9.a.in" to="S01645.garibaldi_terminal.9.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -14829,6 +15085,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 			</attributes>
 		</link>
+		<link id="S01645.garibaldi_through.1.a.turn" from="S01645.garibaldi_through.1.a.out" to="S01645.garibaldi_through.1.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_through.1.b.turn" from="S01645.garibaldi_through.1.b.out" to="S01645.garibaldi_through.1.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01645.garibaldi_through.1.north" from="S01645.garibaldi_through.1.a.in" to="S01645.garibaldi_through.1.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -14983,6 +15255,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">garibaldi_throat_east</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_through.2.a.turn" from="S01645.garibaldi_through.2.a.out" to="S01645.garibaldi_through.2.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_through.2.b.turn" from="S01645.garibaldi_through.2.b.out" to="S01645.garibaldi_through.2.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01645.garibaldi_through.2.north" from="S01645.garibaldi_through.2.a.in" to="S01645.garibaldi_through.2.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -15141,6 +15429,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 			</attributes>
 		</link>
+		<link id="S01645.garibaldi_through.3.a.turn" from="S01645.garibaldi_through.3.a.out" to="S01645.garibaldi_through.3.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.3</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_through.3.b.turn" from="S01645.garibaldi_through.3.b.out" to="S01645.garibaldi_through.3.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.3</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01645.garibaldi_through.3.north" from="S01645.garibaldi_through.3.a.in" to="S01645.garibaldi_through.3.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -15295,6 +15599,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">garibaldi_throat_east</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_through.4.a.turn" from="S01645.garibaldi_through.4.a.out" to="S01645.garibaldi_through.4.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.4</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_through.4.b.turn" from="S01645.garibaldi_through.4.b.out" to="S01645.garibaldi_through.4.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.4</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01645.garibaldi_through.4.north" from="S01645.garibaldi_through.4.a.in" to="S01645.garibaldi_through.4.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -15453,6 +15773,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 			</attributes>
 		</link>
+		<link id="S01645.garibaldi_through.5.a.turn" from="S01645.garibaldi_through.5.a.out" to="S01645.garibaldi_through.5.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.5</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_through.5.b.turn" from="S01645.garibaldi_through.5.b.out" to="S01645.garibaldi_through.5.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.5</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01645.garibaldi_through.5.north" from="S01645.garibaldi_through.5.a.in" to="S01645.garibaldi_through.5.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -15607,6 +15943,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">garibaldi_throat_east</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_through.6.a.turn" from="S01645.garibaldi_through.6.a.out" to="S01645.garibaldi_through.6.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.6</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_through.6.b.turn" from="S01645.garibaldi_through.6.b.out" to="S01645.garibaldi_through.6.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.6</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01645.garibaldi_through.6.north" from="S01645.garibaldi_through.6.a.in" to="S01645.garibaldi_through.6.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -15765,6 +16117,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 			</attributes>
 		</link>
+		<link id="S01645.garibaldi_through.7.a.turn" from="S01645.garibaldi_through.7.a.out" to="S01645.garibaldi_through.7.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.7</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_through.7.b.turn" from="S01645.garibaldi_through.7.b.out" to="S01645.garibaldi_through.7.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.7</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01645.garibaldi_through.7.north" from="S01645.garibaldi_through.7.a.in" to="S01645.garibaldi_through.7.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -15919,6 +16287,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">garibaldi_throat_east</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_through.8.a.turn" from="S01645.garibaldi_through.8.a.out" to="S01645.garibaldi_through.8.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.8</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01645.garibaldi_through.8.b.turn" from="S01645.garibaldi_through.8.b.out" to="S01645.garibaldi_through.8.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
+				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01645.garibaldi_through.8</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01645.garibaldi_through.8.north" from="S01645.garibaldi_through.8.a.in" to="S01645.garibaldi_through.8.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -16373,6 +16757,22 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">4</attribute>
 			</attributes>
 		</link>
+		<link id="S01701.lambrate_centrale_altri.1.a.turn" from="S01701.lambrate_centrale_altri.1.a.out" to="S01701.lambrate_centrale_altri.1.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
+				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01701.lambrate_centrale_altri.1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01701.lambrate_centrale_altri.1.b.turn" from="S01701.lambrate_centrale_altri.1.b.out" to="S01701.lambrate_centrale_altri.1.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
+				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01701.lambrate_centrale_altri.1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01701.lambrate_centrale_altri.1.north" from="S01701.lambrate_centrale_altri.1.a.in" to="S01701.lambrate_centrale_altri.1.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -16571,6 +16971,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">lambrate_throat_south</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">4</attribute>
+			</attributes>
+		</link>
+		<link id="S01701.lambrate_centrale_altri.2.a.turn" from="S01701.lambrate_centrale_altri.2.a.out" to="S01701.lambrate_centrale_altri.2.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
+				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01701.lambrate_centrale_altri.2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01701.lambrate_centrale_altri.2.b.turn" from="S01701.lambrate_centrale_altri.2.b.out" to="S01701.lambrate_centrale_altri.2.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
+				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01701.lambrate_centrale_altri.2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01701.lambrate_centrale_altri.2.north" from="S01701.lambrate_centrale_altri.2.a.in" to="S01701.lambrate_centrale_altri.2.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -16773,6 +17189,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">4</attribute>
 			</attributes>
 		</link>
+		<link id="S01701.lambrate_centrale_altri.3.a.turn" from="S01701.lambrate_centrale_altri.3.a.out" to="S01701.lambrate_centrale_altri.3.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
+				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01701.lambrate_centrale_altri.3</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01701.lambrate_centrale_altri.3.b.turn" from="S01701.lambrate_centrale_altri.3.b.out" to="S01701.lambrate_centrale_altri.3.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
+				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01701.lambrate_centrale_altri.3</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01701.lambrate_centrale_altri.3.north" from="S01701.lambrate_centrale_altri.3.a.in" to="S01701.lambrate_centrale_altri.3.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -16971,6 +17403,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">lambrate_throat_south</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">4</attribute>
+			</attributes>
+		</link>
+		<link id="S01701.lambrate_centrale_altri.4.a.turn" from="S01701.lambrate_centrale_altri.4.a.out" to="S01701.lambrate_centrale_altri.4.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
+				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01701.lambrate_centrale_altri.4</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01701.lambrate_centrale_altri.4.b.turn" from="S01701.lambrate_centrale_altri.4.b.out" to="S01701.lambrate_centrale_altri.4.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
+				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01701.lambrate_centrale_altri.4</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01701.lambrate_centrale_altri.4.north" from="S01701.lambrate_centrale_altri.4.a.in" to="S01701.lambrate_centrale_altri.4.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -17173,6 +17621,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">4</attribute>
 			</attributes>
 		</link>
+		<link id="S01701.lambrate_centrale_altri.5.a.turn" from="S01701.lambrate_centrale_altri.5.a.out" to="S01701.lambrate_centrale_altri.5.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
+				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01701.lambrate_centrale_altri.5</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01701.lambrate_centrale_altri.5.b.turn" from="S01701.lambrate_centrale_altri.5.b.out" to="S01701.lambrate_centrale_altri.5.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
+				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01701.lambrate_centrale_altri.5</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01701.lambrate_centrale_altri.5.north" from="S01701.lambrate_centrale_altri.5.a.in" to="S01701.lambrate_centrale_altri.5.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -17371,6 +17835,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">lambrate_throat_south</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">4</attribute>
+			</attributes>
+		</link>
+		<link id="S01701.lambrate_centrale_altri.6.a.turn" from="S01701.lambrate_centrale_altri.6.a.out" to="S01701.lambrate_centrale_altri.6.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
+				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01701.lambrate_centrale_altri.6</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01701.lambrate_centrale_altri.6.b.turn" from="S01701.lambrate_centrale_altri.6.b.out" to="S01701.lambrate_centrale_altri.6.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
+				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01701.lambrate_centrale_altri.6</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01701.lambrate_centrale_altri.6.north" from="S01701.lambrate_centrale_altri.6.a.in" to="S01701.lambrate_centrale_altri.6.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -20789,6 +21269,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">5</attribute>
 			</attributes>
 		</link>
+		<link id="S01820.rogoredo_terminal.1.a.turn" from="S01820.rogoredo_terminal.1.a.out" to="S01820.rogoredo_terminal.1.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01820</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01820.rogoredo_terminal.1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01820.rogoredo_terminal.1.b.turn" from="S01820.rogoredo_terminal.1.b.out" to="S01820.rogoredo_terminal.1.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01820</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01820.rogoredo_terminal.1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01820.rogoredo_terminal.1.north" from="S01820.rogoredo_terminal.1.a.in" to="S01820.rogoredo_terminal.1.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -21009,6 +21505,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">rogoredo_throat_south</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">5</attribute>
+			</attributes>
+		</link>
+		<link id="S01820.rogoredo_terminal.2.a.turn" from="S01820.rogoredo_terminal.2.a.out" to="S01820.rogoredo_terminal.2.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01820</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01820.rogoredo_terminal.2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01820.rogoredo_terminal.2.b.turn" from="S01820.rogoredo_terminal.2.b.out" to="S01820.rogoredo_terminal.2.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01820</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01820.rogoredo_terminal.2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01820.rogoredo_terminal.2.north" from="S01820.rogoredo_terminal.2.a.in" to="S01820.rogoredo_terminal.2.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -21233,6 +21745,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">5</attribute>
 			</attributes>
 		</link>
+		<link id="S01820.rogoredo_terminal.3.a.turn" from="S01820.rogoredo_terminal.3.a.out" to="S01820.rogoredo_terminal.3.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01820</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01820.rogoredo_terminal.3</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01820.rogoredo_terminal.3.b.turn" from="S01820.rogoredo_terminal.3.b.out" to="S01820.rogoredo_terminal.3.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01820</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01820.rogoredo_terminal.3</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01820.rogoredo_terminal.3.north" from="S01820.rogoredo_terminal.3.a.in" to="S01820.rogoredo_terminal.3.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -21455,6 +21983,22 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">5</attribute>
 			</attributes>
 		</link>
+		<link id="S01820.rogoredo_terminal.4.a.turn" from="S01820.rogoredo_terminal.4.a.out" to="S01820.rogoredo_terminal.4.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01820</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01820.rogoredo_terminal.4</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01820.rogoredo_terminal.4.b.turn" from="S01820.rogoredo_terminal.4.b.out" to="S01820.rogoredo_terminal.4.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01820</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01820.rogoredo_terminal.4</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
 		<link id="S01820.rogoredo_terminal.4.north" from="S01820.rogoredo_terminal.4.a.in" to="S01820.rogoredo_terminal.4.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -21675,6 +22219,22 @@
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">rogoredo_throat_south</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">5</attribute>
+			</attributes>
+		</link>
+		<link id="S01820.rogoredo_terminal.5.a.turn" from="S01820.rogoredo_terminal.5.a.out" to="S01820.rogoredo_terminal.5.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01820</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01820.rogoredo_terminal.5</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01820.rogoredo_terminal.5.b.turn" from="S01820.rogoredo_terminal.5.b.out" to="S01820.rogoredo_terminal.5.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01820</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01820.rogoredo_terminal.5</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01820.rogoredo_terminal.5.north" from="S01820.rogoredo_terminal.5.a.in" to="S01820.rogoredo_terminal.5.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
