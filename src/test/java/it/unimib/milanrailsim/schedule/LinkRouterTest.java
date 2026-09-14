@@ -66,6 +66,24 @@ class LinkRouterTest {
 	}
 
 	@Test
+	void doesNotBounceBetweenTheTwoDirectionsOfASectionAtAStation() {
+		// S_M leaves a detailed station from its exit node, M_S returns to its entry node: distinct nodes,
+		// yet the same section, so M_S right after S_M would be a reversal on the open line
+		for (String n : List.of("P", "Sout", "Sin", "M", "Y")) {
+			network.addNode(network.getFactory().createNode(Id.createNodeId(n), new Coord(0, 0)));
+		}
+		addLink("P_S", "P", "Sout", 500);
+		addLink("S_M", "Sout", "M", 3000);
+		addLink("M_S", "M", "Sin", 3000);
+		addLink("M_Y", "M", "Y", 1000);
+		addLink("stop_Y", "Y", "Y", 200);
+		LinkRouter router = new LinkRouter(network);
+
+		assertEquals(ids("S_M", "M_Y", "stop_Y"), router.path(Id.createLinkId("P_S"), Id.createLinkId("stop_Y")));
+		assertThrows(IllegalArgumentException.class, () -> router.path(Id.createLinkId("P_S"), Id.createLinkId("M_S")));
+	}
+
+	@Test
 	void reversesOnlyAsTheFirstMoveOutOfATerminalPlatform() {
 		LinkRouter router = new LinkRouter(network);
 

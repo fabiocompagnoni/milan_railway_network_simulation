@@ -108,8 +108,18 @@ public final class LinkRouter {
 		return result;
 	}
 
+	/**
+	 * The two directions of a section: the same two nodes swapped, or the two
+	 * mesoscopic links {@code A_B} and {@code B_A} between the same stations,
+	 * whose ends at a detailed station sit on separate entry and exit nodes.
+	 */
 	private static boolean isOpposite(Link link, Link next) {
-		return next.getToNode().equals(link.getFromNode()) && next.getFromNode().equals(link.getToNode());
+		if (next.getToNode().equals(link.getFromNode()) && next.getFromNode().equals(link.getToNode())) {
+			return true;
+		}
+		String[] stations = link.getId().toString().split("_");
+		return stations.length == 2 && !link.getId().toString().contains(".")
+			&& next.getId().toString().equals(stations[1] + "_" + stations[0]);
 	}
 
 	private static boolean isLoop(Link link) {
