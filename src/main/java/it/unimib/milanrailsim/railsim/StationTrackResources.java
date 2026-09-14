@@ -112,8 +112,25 @@ public final class StationTrackResources implements RailResourceManager {
 	@Override
 	public boolean checkReroute(double time, RailLink start, RailLink end, List<RailLink> subRoute,
 			List<RailLink> detour, TrainPosition position) {
-		return tailOnRoute(position) && !loopLinks.contains(position.getHeadLink())
+		return tailOnRoute(position) && !loopLinks.contains(position.getHeadLink()) && keepsLaterStops(subRoute, position)
 			&& delegate.checkReroute(time, start, end, subRoute, detour, position);
+	}
+
+	/**
+	 * railsim remaps only the train's next stop onto a detour. A detour decided
+	 * while the train is still heading for the stop before, covering the
+	 * platform of the one after, silently drops that later stop from the route
+	 * and the train runs through the station. Such detours are refused; the
+	 * planned platform is waited for instead.
+	 */
+	static boolean keepsLaterStops(List<RailLink> subRoute, TrainPosition position) {
+		Id<Link> nextStopLink = position.getNextStop() == null ? null : position.getNextStop().getLinkId();
+		for (RailLink link : subRoute) {
+			if (position.isStop(link.getLinkId()) && !link.getLinkId().equals(nextStopLink)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	static boolean tailOnRoute(TrainPosition position) {

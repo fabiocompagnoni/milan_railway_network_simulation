@@ -87,8 +87,14 @@ class StationTrackResourcesTest {
 		return network;
 	}
 
-	/** A train whose tail sits on the given link, with the given route ahead. */
+	/** A train whose head and tail sit on the given links, with the given route ahead. */
 	private static TrainPosition train(Network network, String headLink, String tailLink, String... route) {
+		return train(network, headLink, tailLink, null, java.util.Set.of(), route);
+	}
+
+	/** @param stops route links the train stops on; {@code nextStopLink} is the one it stops on next */
+	private static TrainPosition train(Network network, String headLink, String tailLink, String nextStopLink,
+			java.util.Set<String> stops, String... route) {
 		return new TrainPosition() {
 			@Override
 			public MobsimDriverAgent getDriver() {
@@ -157,12 +163,19 @@ class StationTrackResourcesTest {
 
 			@Override
 			public boolean isStop(Id<Link> link) {
-				return false;
+				return stops.contains(link.toString());
 			}
 
 			@Override
 			public org.matsim.pt.transitSchedule.api.TransitStopFacility getNextStop() {
-				return null;
+				if (nextStopLink == null) {
+					return null;
+				}
+				org.matsim.pt.transitSchedule.api.TransitStopFacility facility = new org.matsim.pt.transitSchedule.TransitScheduleFactoryImpl()
+					.createTransitStopFacility(Id.create(nextStopLink, org.matsim.pt.transitSchedule.api.TransitStopFacility.class),
+						new Coord(0, 0), false);
+				facility.setLinkId(Id.createLinkId(nextStopLink));
+				return facility;
 			}
 		};
 	}
@@ -175,6 +188,21 @@ class StationTrackResourcesTest {
 		assertFalse(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "C_D", "A_B", "C_D", "stop_A")),
 			"the tail is still on the previous route");
 		assertTrue(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "C_D", "C_D", "C_D", "stop_A")));
+	}
+
+	@Test
+	void noDetourThatWouldDropAStopBeyondTheNextOne() {
+		Network network = network();
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network);
+		RailLink section = new RailLink(network.getLinks().get(Id.createLinkId("C_D")), null);
+		RailLink stop = new RailLink(network.getLinks().get(Id.createLinkId("stop_A")), null);
+
+		assertFalse(resources.checkReroute(0, null, null, List.of(section, stop), List.of(),
+			train(network, "C_D", "C_D", "A_B", java.util.Set.of("A_B", "stop_A"), "C_D", "A_B", "stop_A")),
+			"the detour covers stop_A while the train still heads for A_B");
+		assertTrue(resources.checkReroute(0, null, null, List.of(section, stop), List.of(),
+			train(network, "C_D", "C_D", "stop_A", java.util.Set.of("stop_A"), "C_D", "stop_A")),
+			"a detour around the next stop itself is fine: railsim remaps it");
 	}
 
 	@Test
