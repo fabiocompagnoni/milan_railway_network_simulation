@@ -24,12 +24,16 @@ class PunctualityAnalysisTest {
 
 	/** Line S1, one route A -> B: A dep +60, B arr +300 dep +360. */
 	private TransitSchedule schedule() {
+		return schedule("A", "B");
+	}
+
+	private TransitSchedule schedule(String firstStop, String lastStop) {
 		TransitScheduleFactory factory = new TransitScheduleFactoryImpl();
 		TransitSchedule schedule = factory.createTransitSchedule();
 		TransitStopFacility a = factory.createTransitStopFacility(
-			Id.create("A", TransitStopFacility.class), new Coord(0, 0), false);
+			Id.create(firstStop, TransitStopFacility.class), new Coord(0, 0), false);
 		TransitStopFacility b = factory.createTransitStopFacility(
-			Id.create("B", TransitStopFacility.class), new Coord(1000, 0), false);
+			Id.create(lastStop, TransitStopFacility.class), new Coord(1000, 0), false);
 		schedule.addStopFacility(a);
 		schedule.addStopFacility(b);
 
@@ -93,6 +97,19 @@ class PunctualityAnalysisTest {
 
 		analysis.handleEvent(arrival("V1", DEPARTURE_TIME + 400, "B"));
 		assertTrue(analysis.unfinished().isEmpty(), "reaching the terminus completes the plan");
+	}
+
+	@Test
+	void anotherPlatformOfThePlannedStationIsThePlannedStop() {
+		PunctualityAnalysis analysis = new PunctualityAnalysis(schedule("A.p1|A|S1|through", "B"));
+
+		analysis.handleEvent(arrival("V1", DEPARTURE_TIME + 10, "A.p2|A|S1|through"));
+		analysis.handleEvent(departure("V1", DEPARTURE_TIME + 70, "A.p2|A|S1|through"));
+
+		assertEquals(0, analysis.anomalyCount());
+		assertEquals(1, analysis.visits().size());
+		assertEquals("A.p2|A|S1|through", analysis.visits().getFirst().stop(), "the platform actually used");
+		assertEquals(10, analysis.visits().getFirst().arrivalDelaySeconds());
 	}
 
 	@Test

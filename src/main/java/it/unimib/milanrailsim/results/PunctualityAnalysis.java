@@ -92,14 +92,23 @@ public final class PunctualityAnalysis
 			return;
 		}
 		PlannedStop next = plan.peek();
-		if (next == null || !next.stop().equals(event.getFacilityId().toString())) {
+		if (next == null || !sameStation(next.stop(), event.getFacilityId().toString())) {
 			anomaly("unexpected stop " + event.getFacilityId() + " for vehicle " + event.getVehicleId());
 			return;
 		}
 		plan.poll();
 		openVisits.put(event.getVehicleId(), new StopVisit(event.getVehicleId().toString(),
-			next.line(), next.route(), next.stop(),
+			next.line(), next.route(), event.getFacilityId().toString(),
 			next.plannedArrival(), event.getTime(), next.plannedDeparture(), Double.NaN));
+	}
+
+	/**
+	 * The planned facility is one platform of a station; railsim may divert the
+	 * train to another platform of the same stop area, which is still the
+	 * planned stop.
+	 */
+	private static boolean sameStation(String plannedFacility, String actualFacility) {
+		return StopFacilities.stationOf(plannedFacility).equals(StopFacilities.stationOf(actualFacility));
 	}
 
 	@Override

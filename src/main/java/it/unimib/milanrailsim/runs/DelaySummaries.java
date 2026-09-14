@@ -1,5 +1,6 @@
 package it.unimib.milanrailsim.runs;
 
+import it.unimib.milanrailsim.results.StopFacilities;
 import it.unimib.milanrailsim.runs.RunResults.VisitRow;
 
 import java.util.ArrayList;
@@ -61,17 +62,9 @@ public final class DelaySummaries {
 		return List.copyOf(rows);
 	}
 
-	/**
-	 * The station a stop facility belongs to: micro platforms are named
-	 * {@code <track>|<station>|<line>|<kind>}, mesoscopic stops by the station id.
-	 */
+	/** The station a stop facility belongs to. */
 	public static String stationOf(String facilityId) {
-		int separator = facilityId.indexOf('|');
-		if (separator < 0) {
-			return facilityId;
-		}
-		int end = facilityId.indexOf('|', separator + 1);
-		return facilityId.substring(separator + 1, end < 0 ? facilityId.length() : end);
+		return StopFacilities.stationOf(facilityId);
 	}
 
 	private static double mean(List<Double> values) {
