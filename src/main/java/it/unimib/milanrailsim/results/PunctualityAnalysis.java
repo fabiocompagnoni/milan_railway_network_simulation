@@ -93,13 +93,43 @@ public final class PunctualityAnalysis
 		}
 		PlannedStop next = plan.peek();
 		if (next == null || !sameStation(next.stop(), event.getFacilityId().toString())) {
-			anomaly("unexpected stop " + event.getFacilityId() + " for vehicle " + event.getVehicleId());
-			return;
+			int skipped = skipTo(plan, event.getFacilityId().toString());
+			if (skipped < 0) {
+				anomaly("unexpected stop " + event.getFacilityId() + " for vehicle " + event.getVehicleId());
+				return;
+			}
+			anomaly(skipped + " planned stops missed before " + event.getFacilityId() + " by vehicle " + event.getVehicleId());
+			next = plan.peek();
 		}
 		plan.poll();
 		openVisits.put(event.getVehicleId(), new StopVisit(event.getVehicleId().toString(),
 			next.line(), next.route(), event.getFacilityId().toString(),
 			next.plannedArrival(), event.getTime(), next.plannedDeparture(), Double.NaN));
+	}
+
+	/**
+	 * Advances the plan to its next call at the given station, within the
+	 * current trip, dropping the calls in between: a train that ran through a
+	 * station keeps its plan aligned at the next one it does stop at.
+	 *
+	 * @return how many calls were dropped, or -1 when the station is not ahead in this trip
+	 */
+	private static int skipTo(Deque<PlannedStop> plan, String facilityId) {
+		String route = plan.isEmpty() ? null : plan.peek().route();
+		int skipped = 0;
+		for (PlannedStop candidate : plan) {
+			if (!candidate.route().equals(route)) {
+				return -1;
+			}
+			if (sameStation(candidate.stop(), facilityId)) {
+				for (int i = 0; i < skipped; i++) {
+					plan.poll();
+				}
+				return skipped;
+			}
+			skipped++;
+		}
+		return -1;
 	}
 
 	/**

@@ -123,6 +123,20 @@ class PunctualityAnalysisTest {
 	}
 
 	@Test
+	void aMissedStopIsCountedAndThePlanRealignsAtTheNextOne() {
+		PunctualityAnalysis analysis = new PunctualityAnalysis(schedule());
+
+		analysis.handleEvent(arrival("V1", DEPARTURE_TIME + 400, "B"));
+		analysis.handleEvent(departure("V1", DEPARTURE_TIME + 450, "B"));
+
+		assertEquals(1, analysis.anomalyCount(), "A was run through");
+		assertEquals(1, analysis.visits().size());
+		assertEquals("B", analysis.visits().getFirst().stop());
+		assertEquals(100, analysis.visits().getFirst().arrivalDelaySeconds());
+		assertTrue(analysis.unfinished().isEmpty());
+	}
+
+	@Test
 	void unexpectedStopIsCountedAndAnalysisContinues() {
 		PunctualityAnalysis analysis = new PunctualityAnalysis(schedule());
 
