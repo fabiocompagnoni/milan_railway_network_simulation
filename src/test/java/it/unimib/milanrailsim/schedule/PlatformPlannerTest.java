@@ -33,13 +33,16 @@ class PlatformPlannerTest {
 				{"id": "B", "name": "B", "kind": "through", "platformLengthM": null,
 					"groups": [
 						{"id": "b_f1", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
-							"connections": {"south": ["segment:A_B:f1"], "north": ["meso:C"]}}
+							"connections": {"south": ["segment:A_B:f1"], "north": ["meso:C"]}},
+						{"id": "b_x", "kind": "through", "tracks": [{"ref": "3", "direction": "north"}],
+							"connections": {"south": ["segment:A_B:f1"], "north": ["meso:X"]}}
 					], "throats": []}
 			],
 			"segments": [{"from": "A", "to": "B", "bundles": {"f1": {
 				"north": {"wayIds": [], "lengthM": 1500}, "south": {"wayIds": [], "lengthM": 1500}, "speedProfile": []}}}],
 			"lines": {
-				"S1": {"bundle": "f1", "stations": {"A": ["a_main", "a_spare"], "B": ["b_f1"]}}
+				"S1": {"bundle": "f1", "stations": {"A": ["a_main", "a_spare"], "B": ["b_f1"]}},
+				"S2": {"bundle": "f1", "stations": {"A": ["a_main"], "B": ["b_x", "b_f1"]}}
 			}
 		}
 		""";
@@ -54,12 +57,24 @@ class PlatformPlannerTest {
 	}
 
 	private static TripCalls trip(String id, int departureMinutes, String... stops) {
+		return trip(id, "S1", departureMinutes, stops);
+	}
+
+	private static TripCalls trip(String id, String line, int departureMinutes, String... stops) {
 		List<Call> calls = new java.util.ArrayList<>();
 		for (int i = 0; i < stops.length; i++) {
 			int time = (departureMinutes + 10 * i) * 60;
 			calls.add(new Call(stops[i], time, i == 0 ? time : time + 60));
 		}
-		return new TripCalls(id, "S1", calls);
+		return new TripCalls(id, line, calls);
+	}
+
+	@Test
+	void aGroupNotConnectedToTheTripsNeighboursIsSkipped() {
+		// S2 prefers b_x at B, but b_x leads to X, not to C where the trip goes next
+		Plan plan = planner.plan(List.of(List.of(trip("t1", "S2", 8 * 60, "A", "B", "C"))));
+
+		assertEquals(Id.createLinkId("B.p1"), plan.platform("t1", 1).orElseThrow());
 	}
 
 	@Test

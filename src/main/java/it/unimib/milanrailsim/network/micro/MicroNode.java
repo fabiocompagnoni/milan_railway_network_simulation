@@ -167,6 +167,21 @@ public record MicroNode(String id, String title, List<Station> stations, List<Se
 	 * neighbour or segment end, or a station of this node reached through the
 	 * chain of segments (sections run from south to north).
 	 */
+	/** Whether trains can run between the group and {@code otherStopId} through the given side of the station. */
+	public static boolean connects(Group group, Direction side, String stationId, String otherStopId) {
+		for (Connection connection : group.connections().getOrDefault(side, List.of())) {
+			if (connection.kind() == ConnectionKind.MESO && connection.target().equals(otherStopId)) {
+				return true;
+			}
+			if (connection.kind() == ConnectionKind.SEGMENT
+					&& (connection.target().equals(stationId + "_" + otherStopId)
+						|| connection.target().equals(otherStopId + "_" + stationId))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public Optional<Direction> sideOf(String stationId, String otherStopId) {
 		Station station = station(stationId);
 		for (Group group : station.groups()) {

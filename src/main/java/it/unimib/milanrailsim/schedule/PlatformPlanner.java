@@ -164,8 +164,23 @@ public final class PlatformPlanner {
 			preferred = unassignedFallback(node, station, trip.line());
 		}
 		Direction travel = travelAt(trip, callIndex).orElse(null);
+		List<String> reachable = preferred.stream()
+			.filter(groupId -> reaches(node, station.group(groupId), trip, callIndex))
+			.toList();
+		if (reachable.isEmpty()) {
+			reachable = station.groups().stream().map(Group::id)
+				.filter(groupId -> reaches(node, station.group(groupId), trip, callIndex))
+				.toList();
+			if (warnedFallbacks.add(trip.line() + "@" + station.id() + "@reach")) {
+				LOG.warn("No preferred group of line {} at {} connects to the trip's neighbours: using {}", trip.line(),
+					station.id(), reachable.isEmpty() ? preferred : reachable);
+			}
+			if (reachable.isEmpty()) {
+				reachable = preferred;
+			}
+		}
 		Candidate fallback = null;
-		for (String groupId : preferred) {
+		for (String groupId : reachable) {
 			Group group = station.group(groupId);
 			List<Candidate> candidates = new ArrayList<>();
 			for (Track track : group.effectiveTracks()) {
@@ -193,6 +208,32 @@ public final class PlatformPlanner {
 			}
 		}
 		return Optional.ofNullable(fallback);
+	}
+
+	/**
+	 * Whether the group's connections lead to the stop the trip comes from and
+	 * to the stop it goes to next, on the sides those stops lie. A group that
+	 * fails this would force the route to leave the station and bounce back.
+	 * A neighbour the node does not know leaves the side undecided and is not
+	 * held against the group.
+	 */
+	private static boolean reaches(MicroNode node, Group group, TripCalls trip, int callIndex) {
+		String stopId = trip.calls().get(callIndex).stopId();
+		if (callIndex > 0) {
+			String previous = trip.calls().get(callIndex - 1).stopId();
+			Optional<Direction> side = node.sideOf(stopId, previous);
+			if (side.isPresent() && !MicroNode.connects(group, side.get(), stopId, previous)) {
+				return false;
+			}
+		}
+		if (callIndex + 1 < trip.calls().size()) {
+			String next = trip.calls().get(callIndex + 1).stopId();
+			Optional<Direction> side = node.sideOf(stopId, next);
+			if (side.isPresent() && !MicroNode.connects(group, side.get(), stopId, next)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
