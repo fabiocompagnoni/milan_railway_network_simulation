@@ -34,6 +34,7 @@ public final class StationTrackResources implements RailResourceManager {
 
 	private final RailResourceManager delegate;
 	private final Set<Id<Link>> anyTrackLinks;
+	private final Set<Id<Link>> loopLinks;
 
 	@Inject
 	public StationTrackResources(RailResourceManagerImpl delegate, QSim qsim) {
@@ -44,6 +45,10 @@ public final class StationTrackResources implements RailResourceManager {
 		this.delegate = delegate;
 		this.anyTrackLinks = network.getLinks().values().stream()
 			.filter(link -> link.getAttributes().getAttribute("stationLink") != null || ownsItsResource(link))
+			.map(Link::getId)
+			.collect(Collectors.toUnmodifiableSet());
+		this.loopLinks = network.getLinks().values().stream()
+			.filter(link -> link.getFromNode().equals(link.getToNode()))
 			.map(Link::getId)
 			.collect(Collectors.toUnmodifiableSet());
 	}
@@ -98,12 +103,17 @@ public final class StationTrackResources implements RailResourceManager {
 	 * the tail to finish. A train that departs from a platform with its tail
 	 * still on the approach link has its tail on that previous route; a second
 	 * detour before the tail catches up would drop it and railsim could no
-	 * longer place the tail. Such trains keep their planned route.
+	 * longer place the tail. Nor is a train standing on a station loop given a
+	 * detour: leaving a loop it may be reversing, and railsim rebuilds head and
+	 * tail from the route at that moment, which a detour swapped in at the same
+	 * moment corrupts. Both keep their planned route; the next section offers
+	 * the detour again.
 	 */
 	@Override
 	public boolean checkReroute(double time, RailLink start, RailLink end, List<RailLink> subRoute,
 			List<RailLink> detour, TrainPosition position) {
-		return tailOnRoute(position) && delegate.checkReroute(time, start, end, subRoute, detour, position);
+		return tailOnRoute(position) && !loopLinks.contains(position.getHeadLink())
+			&& delegate.checkReroute(time, start, end, subRoute, detour, position);
 	}
 
 	static boolean tailOnRoute(TrainPosition position) {

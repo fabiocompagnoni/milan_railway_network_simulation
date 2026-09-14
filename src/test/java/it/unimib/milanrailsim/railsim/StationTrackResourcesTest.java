@@ -88,7 +88,7 @@ class StationTrackResourcesTest {
 	}
 
 	/** A train whose tail sits on the given link, with the given route ahead. */
-	private static TrainPosition train(Network network, String tailLink, String... route) {
+	private static TrainPosition train(Network network, String headLink, String tailLink, String... route) {
 		return new TrainPosition() {
 			@Override
 			public MobsimDriverAgent getDriver() {
@@ -107,7 +107,7 @@ class StationTrackResourcesTest {
 
 			@Override
 			public Id<Link> getHeadLink() {
-				return null;
+				return Id.createLinkId(headLink);
 			}
 
 			@Override
@@ -172,9 +172,17 @@ class StationTrackResourcesTest {
 		Network network = network();
 		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network);
 
-		assertFalse(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "A_B", "C_D", "stop_A")),
+		assertFalse(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "C_D", "A_B", "C_D", "stop_A")),
 			"the tail is still on the previous route");
-		assertTrue(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "C_D", "C_D", "stop_A")));
+		assertTrue(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "C_D", "C_D", "C_D", "stop_A")));
+	}
+
+	@Test
+	void noDetourWhileStandingOnAStationLoop() {
+		Network network = network();
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network);
+
+		assertFalse(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "stop_A", "stop_A", "stop_A", "C_D")));
 	}
 
 	@Test
