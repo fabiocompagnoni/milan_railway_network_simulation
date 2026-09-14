@@ -87,6 +87,96 @@ class StationTrackResourcesTest {
 		return network;
 	}
 
+	/** A train whose tail sits on the given link, with the given route ahead. */
+	private static TrainPosition train(Network network, String tailLink, String... route) {
+		return new TrainPosition() {
+			@Override
+			public MobsimDriverAgent getDriver() {
+				return null;
+			}
+
+			@Override
+			public ch.sbb.matsim.contrib.railsim.qsimengine.RailsimTransitDriverAgent getPt() {
+				return null;
+			}
+
+			@Override
+			public ch.sbb.matsim.contrib.railsim.qsimengine.TrainInfo getTrain() {
+				return null;
+			}
+
+			@Override
+			public Id<Link> getHeadLink() {
+				return null;
+			}
+
+			@Override
+			public Id<Link> getTailLink() {
+				return Id.createLinkId(tailLink);
+			}
+
+			@Override
+			public double getHeadPosition() {
+				return 0;
+			}
+
+			@Override
+			public double getTailPosition() {
+				return 0;
+			}
+
+			@Override
+			public double getDelay() {
+				return 0;
+			}
+
+			@Override
+			public int getRouteIndex() {
+				return 0;
+			}
+
+			@Override
+			public int getRouteSize() {
+				return route.length;
+			}
+
+			@Override
+			public RailLink getRoute(int idx) {
+				return new RailLink(network.getLinks().get(Id.createLinkId(route[idx])), null);
+			}
+
+			@Override
+			public List<RailLink> getRoute(int from, int to) {
+				return List.of();
+			}
+
+			@Override
+			public List<RailLink> getRouteUntilNextStop() {
+				return List.of();
+			}
+
+			@Override
+			public boolean isStop(Id<Link> link) {
+				return false;
+			}
+
+			@Override
+			public org.matsim.pt.transitSchedule.api.TransitStopFacility getNextStop() {
+				return null;
+			}
+		};
+	}
+
+	@Test
+	void detoursWaitUntilTheTailIsOnTheCurrentRoute() {
+		Network network = network();
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network);
+
+		assertFalse(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "A_B", "C_D", "stop_A")),
+			"the tail is still on the previous route");
+		assertTrue(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "C_D", "C_D", "stop_A")));
+	}
+
 	@Test
 	void oneWayLinksAskForAnyFreeTrack() {
 		RecordingManager delegate = new RecordingManager();

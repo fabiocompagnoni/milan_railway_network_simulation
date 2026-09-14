@@ -93,9 +93,29 @@ public final class StationTrackResources implements RailResourceManager {
 		delegate.releaseLink(time, link, driver);
 	}
 
+	/**
+	 * A detour replaces the train's route and keeps only the previous one for
+	 * the tail to finish. A train that departs from a platform with its tail
+	 * still on the approach link has its tail on that previous route; a second
+	 * detour before the tail catches up would drop it and railsim could no
+	 * longer place the tail. Such trains keep their planned route.
+	 */
 	@Override
 	public boolean checkReroute(double time, RailLink start, RailLink end, List<RailLink> subRoute,
 			List<RailLink> detour, TrainPosition position) {
-		return delegate.checkReroute(time, start, end, subRoute, detour, position);
+		return tailOnRoute(position) && delegate.checkReroute(time, start, end, subRoute, detour, position);
+	}
+
+	static boolean tailOnRoute(TrainPosition position) {
+		Id<Link> tail = position.getTailLink();
+		if (tail == null) {
+			return true;
+		}
+		for (int i = 0; i < position.getRouteSize(); i++) {
+			if (position.getRoute(i).getLinkId().equals(tail)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
