@@ -183,7 +183,7 @@ class StationTrackResourcesTest {
 	@Test
 	void detoursWaitUntilTheTailIsOnTheCurrentRoute() {
 		Network network = network();
-		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network);
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of());
 
 		assertFalse(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "C_D", "A_B", "C_D", "stop_A")),
 			"the tail is still on the previous route");
@@ -193,22 +193,38 @@ class StationTrackResourcesTest {
 	@Test
 	void noDetourThatWouldDropAStopBeyondTheNextOne() {
 		Network network = network();
-		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network);
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of());
 		RailLink section = new RailLink(network.getLinks().get(Id.createLinkId("C_D")), null);
 		RailLink stop = new RailLink(network.getLinks().get(Id.createLinkId("stop_A")), null);
 
 		assertFalse(resources.checkReroute(0, null, null, List.of(section, stop), List.of(),
 			train(network, "C_D", "C_D", "A_B", java.util.Set.of("A_B", "stop_A"), "C_D", "A_B", "stop_A")),
 			"the detour covers stop_A while the train still heads for A_B");
-		assertTrue(resources.checkReroute(0, null, null, List.of(section, stop), List.of(),
+		assertTrue(resources.checkReroute(0, null, null, List.of(section), List.of(),
 			train(network, "C_D", "C_D", "stop_A", java.util.Set.of("stop_A"), "C_D", "stop_A")),
-			"a detour around the next stop itself is fine: railsim remaps it");
+			"a detour that touches no stop is fine");
+	}
+
+	@Test
+	void aDetourAroundTheNextStopMustReachAPlatformOfItsArea() {
+		Network network = network();
+		Id<org.matsim.pt.transitSchedule.api.TransitStopArea> area = Id.create("A", org.matsim.pt.transitSchedule.api.TransitStopArea.class);
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network,
+			java.util.Map.of(Id.createLinkId("stop_A"), area, Id.createLinkId("A_B"), area));
+		RailLink stop = new RailLink(network.getLinks().get(Id.createLinkId("stop_A")), null);
+		RailLink other = new RailLink(network.getLinks().get(Id.createLinkId("A_B")), null);
+		RailLink elsewhere = new RailLink(network.getLinks().get(Id.createLinkId("C_D")), null);
+		TrainPosition train = train(network, "C_D", "C_D", "stop_A", java.util.Set.of("stop_A"), "C_D", "stop_A");
+
+		assertTrue(resources.checkReroute(0, null, null, List.of(stop), List.of(other), train), "railsim can remap the stop");
+		assertFalse(resources.checkReroute(0, null, null, List.of(stop), List.of(elsewhere), train),
+			"no platform of the stop's area on the detour: the stop would be skipped");
 	}
 
 	@Test
 	void noDetourWhileStandingOnAStationLoop() {
 		Network network = network();
-		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network);
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of());
 
 		assertFalse(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "stop_A", "stop_A", "stop_A", "C_D")));
 	}
@@ -216,7 +232,7 @@ class StationTrackResourcesTest {
 	@Test
 	void oneWayLinksAskForAnyFreeTrack() {
 		RecordingManager delegate = new RecordingManager();
-		StationTrackResources resources = new StationTrackResources(delegate, network());
+		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of());
 
 		resources.hasCapacity(0, Id.createLinkId("C_D"), RailResourceManager.ANY_TRACK_NON_BLOCKING, null);
 
@@ -226,7 +242,7 @@ class StationTrackResourcesTest {
 	@Test
 	void stationLinksAskForAnyFreeTrack() {
 		RecordingManager delegate = new RecordingManager();
-		StationTrackResources resources = new StationTrackResources(delegate, network());
+		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of());
 
 		resources.hasCapacity(0, Id.createLinkId("stop_A"), RailResourceManager.ANY_TRACK_NON_BLOCKING, null);
 
@@ -236,7 +252,7 @@ class StationTrackResourcesTest {
 	@Test
 	void singleTrackSectionsKeepTheNonBlockingRule() {
 		RecordingManager delegate = new RecordingManager();
-		StationTrackResources resources = new StationTrackResources(delegate, network());
+		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of());
 
 		resources.hasCapacity(0, Id.createLinkId("A_B"), RailResourceManager.ANY_TRACK_NON_BLOCKING, null);
 

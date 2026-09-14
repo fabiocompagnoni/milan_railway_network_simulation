@@ -11,9 +11,14 @@ import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.core.mobsim.framework.MobsimDriverAgent;
 import org.matsim.core.mobsim.qsim.QSim;
+import org.matsim.pt.transitSchedule.api.TransitSchedule;
+import org.matsim.pt.transitSchedule.api.TransitStopArea;
+import org.matsim.pt.transitSchedule.api.TransitStopFacility;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,14 +40,17 @@ public final class StationTrackResources implements RailResourceManager {
 	private final RailResourceManager delegate;
 	private final Set<Id<Link>> anyTrackLinks;
 	private final Set<Id<Link>> loopLinks;
+	private final Map<Id<Link>, Id<TransitStopArea>> areaOfLink;
 
 	@Inject
 	public StationTrackResources(RailResourceManagerImpl delegate, QSim qsim) {
-		this(delegate, qsim.getScenario().getNetwork());
+		this(delegate, qsim.getScenario().getNetwork(), stopAreas(qsim.getScenario().getTransitSchedule()));
 	}
 
-	StationTrackResources(RailResourceManager delegate, Network network) {
+	/** @param areaOfLink the stop area each platform link belongs to, for the links that have one */
+	StationTrackResources(RailResourceManager delegate, Network network, Map<Id<Link>, Id<TransitStopArea>> areaOfLink) {
 		this.delegate = delegate;
+		this.areaOfLink = Map.copyOf(areaOfLink);
 		this.anyTrackLinks = network.getLinks().values().stream()
 			.filter(link -> link.getAttributes().getAttribute("stationLink") != null || ownsItsResource(link))
 			.map(Link::getId)
@@ -51,6 +59,16 @@ public final class StationTrackResources implements RailResourceManager {
 			.filter(link -> link.getFromNode().equals(link.getToNode()))
 			.map(Link::getId)
 			.collect(Collectors.toUnmodifiableSet());
+	}
+
+	private static Map<Id<Link>, Id<TransitStopArea>> stopAreas(TransitSchedule schedule) {
+		Map<Id<Link>, Id<TransitStopArea>> areas = new HashMap<>();
+		for (TransitStopFacility facility : schedule.getFacilities().values()) {
+			if (facility.getStopAreaId() != null) {
+				areas.put(facility.getLinkId(), facility.getStopAreaId());
+			}
+		}
+		return areas;
 	}
 
 	/** A link without a declared resource, or whose resource carries its own id, is the only link of that resource. */
@@ -112,25 +130,35 @@ public final class StationTrackResources implements RailResourceManager {
 	@Override
 	public boolean checkReroute(double time, RailLink start, RailLink end, List<RailLink> subRoute,
 			List<RailLink> detour, TrainPosition position) {
-		return tailOnRoute(position) && !loopLinks.contains(position.getHeadLink()) && keepsLaterStops(subRoute, position)
+		return tailOnRoute(position) && !loopLinks.contains(position.getHeadLink()) && keepsStops(subRoute, detour, position)
 			&& delegate.checkReroute(time, start, end, subRoute, detour, position);
 	}
 
 	/**
-	 * railsim remaps only the train's next stop onto a detour. A detour decided
-	 * while the train is still heading for the stop before, covering the
-	 * platform of the one after, silently drops that later stop from the route
-	 * and the train runs through the station. Such detours are refused; the
+	 * railsim remaps only the train's next stop onto a detour, and only onto a
+	 * platform of that stop's area. A detour decided while the train still heads
+	 * for the stop before, covering the platform of the one after, would drop
+	 * that later stop from the route; a detour around the next stop that reaches
+	 * no platform of its area would drop the next stop itself. Either way the
+	 * train would run through the station: such detours are refused and the
 	 * planned platform is waited for instead.
 	 */
-	static boolean keepsLaterStops(List<RailLink> subRoute, TrainPosition position) {
+	boolean keepsStops(List<RailLink> subRoute, List<RailLink> detour, TrainPosition position) {
 		Id<Link> nextStopLink = position.getNextStop() == null ? null : position.getNextStop().getLinkId();
+		boolean aroundNextStop = false;
 		for (RailLink link : subRoute) {
-			if (position.isStop(link.getLinkId()) && !link.getLinkId().equals(nextStopLink)) {
-				return false;
+			if (position.isStop(link.getLinkId())) {
+				if (!link.getLinkId().equals(nextStopLink)) {
+					return false;
+				}
+				aroundNextStop = true;
 			}
 		}
-		return true;
+		if (!aroundNextStop) {
+			return true;
+		}
+		Id<TransitStopArea> area = areaOfLink.get(nextStopLink);
+		return area != null && detour.stream().anyMatch(link -> area.equals(areaOfLink.get(link.getLinkId())));
 	}
 
 	static boolean tailOnRoute(TrainPosition position) {
