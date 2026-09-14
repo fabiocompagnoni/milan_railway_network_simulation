@@ -74,16 +74,26 @@ public final class PlatformPlanner {
 
 	/** Travel direction of a trip through a station, from where it comes or, at a first call, where it goes. */
 	public Optional<Direction> travelAt(TripCalls trip, int callIndex) {
-		String stopId = trip.calls().get(callIndex).stopId();
+		return travelAt(trip.calls().get(callIndex).stopId(),
+			callIndex > 0 ? trip.calls().get(callIndex - 1).stopId() : null,
+			callIndex + 1 < trip.calls().size() ? trip.calls().get(callIndex + 1).stopId() : null);
+	}
+
+	/**
+	 * Travel direction through {@code stopId} of a train coming from
+	 * {@code previousStop} or, when it starts there, going to {@code nextStop};
+	 * either may be null. Empty when the station is not a micro node.
+	 */
+	public Optional<Direction> travelAt(String stopId, String previousStop, String nextStop) {
 		MicroNode node = nodeByStation.get(stopId);
 		if (node == null) {
 			return Optional.empty();
 		}
-		if (callIndex > 0) {
-			return node.sideOf(stopId, trip.calls().get(callIndex - 1).stopId()).map(PlatformPlanner::opposite);
+		if (previousStop != null) {
+			return node.sideOf(stopId, previousStop).map(PlatformPlanner::opposite);
 		}
-		if (callIndex + 1 < trip.calls().size()) {
-			return node.sideOf(stopId, trip.calls().get(callIndex + 1).stopId());
+		if (nextStop != null) {
+			return node.sideOf(stopId, nextStop);
 		}
 		return Optional.empty();
 	}

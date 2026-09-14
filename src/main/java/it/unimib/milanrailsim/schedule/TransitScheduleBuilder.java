@@ -6,6 +6,7 @@ import it.unimib.milanrailsim.network.StationTracks;
 import it.unimib.milanrailsim.network.ServiceCalendar;
 import it.unimib.milanrailsim.network.micro.MicroIds;
 import it.unimib.milanrailsim.network.micro.MicroNode;
+import it.unimib.milanrailsim.network.micro.MicroNode.Direction;
 import it.unimib.milanrailsim.network.micro.MicroNode.Group;
 import it.unimib.milanrailsim.network.micro.MicroNode.Station;
 import it.unimib.milanrailsim.network.micro.MicroNode.Track;
@@ -276,40 +277,53 @@ public final class TransitScheduleBuilder {
 		Id<Link> platform = plan.platform(tripId, index)
 			.orElseThrow(() -> new IllegalStateException("No platform planned for trip " + tripId + " at " + stopId));
 		boolean terminating = index == 0 || index == stopTimes.size() - 1;
-		return platformFacility(schedule, stopId, line, terminating, platform);
+		Direction travel = planner.travelAt(stopId, index > 0 ? stopTimes.get(index - 1).stopId() : null,
+			index + 1 < stopTimes.size() ? stopTimes.get(index + 1).stopId() : null).orElse(null);
+		return platformFacility(schedule, new PlatformCall(stopId, line, terminating, travel), platform);
+	}
+
+	/** One call of a line at a micro station; {@code travel} is null when the direction cannot be told. */
+	private record PlatformCall(String stopId, String line, boolean terminating, Direction travel) {
+
+		String area() {
+			return stopId + "|" + line + "|" + (terminating ? "terminal" : "through")
+				+ (travel == null ? "" : "|" + MicroIds.name(travel));
+		}
 	}
 
 	/**
-	 * Every platform link the line may use at the station becomes a facility of
-	 * one stop area, so railsim can remap a diverted train to the platform it
-	 * actually reaches; the call itself refers to the planned platform's facility.
+	 * Every platform the line may use at the station in that travel direction
+	 * becomes a facility of one stop area, so railsim can remap a diverted
+	 * train to the platform it actually reaches; the call itself refers to the
+	 * planned platform's facility. Platforms of the other direction stay out:
+	 * a detour onto one would have to run the platform, turn back and run it
+	 * again, and railsim cannot follow a route that repeats a link.
 	 */
-	private TransitStopFacility platformFacility(TransitSchedule schedule, String stopId, String line,
-			boolean terminating, Id<Link> platform) {
-		MicroNode node = planner.nodeOf(stopId).orElseThrow();
-		Station station = node.station(stopId);
-		List<String> groups = node.preferredGroups(line, stopId, terminating);
+	private TransitStopFacility platformFacility(TransitSchedule schedule, PlatformCall call, Id<Link> platform) {
+		MicroNode node = planner.nodeOf(call.stopId()).orElseThrow();
+		Station station = node.station(call.stopId());
+		List<String> groups = node.preferredGroups(call.line(), call.stopId(), call.terminating());
 		if (groups.isEmpty()) {
 			groups = station.groups().stream().map(Group::id).toList();
 		}
-		String area = stopId + "|" + line + "|" + (terminating ? "terminal" : "through");
+		String area = call.area();
 		for (String groupId : groups) {
 			Group group = station.group(groupId);
 			for (Track track : group.effectiveTracks()) {
-				String trackId = MicroIds.trackId(station, group, track);
-				for (Id<Link> link : platformLinksOf(trackId)) {
-					String facilityId = link + "|" + area;
-					facilities.computeIfAbsent(facilityId, id -> {
-						Node hub = network.getNodes().get(Id.createNodeId(stopId));
-						TransitStopFacility facility = factory.createTransitStopFacility(
-							Id.create(id, TransitStopFacility.class), hub.getCoord(), false);
-						facility.setLinkId(link);
-						facility.setStopAreaId(Id.create(area, TransitStopArea.class));
-						facility.setName(stopId);
-						schedule.addStopFacility(facility);
-						return facility;
-					});
+				if (track.direction() != null && call.travel() != null && track.direction() != call.travel()) {
+					continue;
 				}
+				Id<Link> link = MicroIds.platformLink(MicroIds.trackId(station, group, track), group, track, call.travel());
+				facilities.computeIfAbsent(link + "|" + area, id -> {
+					Node hub = network.getNodes().get(Id.createNodeId(call.stopId()));
+					TransitStopFacility facility = factory.createTransitStopFacility(
+						Id.create(id, TransitStopFacility.class), hub.getCoord(), false);
+					facility.setLinkId(link);
+					facility.setStopAreaId(Id.create(area, TransitStopArea.class));
+					facility.setName(call.stopId());
+					schedule.addStopFacility(facility);
+					return facility;
+				});
 			}
 		}
 		TransitStopFacility planned = facilities.get(platform + "|" + area);
@@ -317,21 +331,6 @@ public final class TransitScheduleBuilder {
 			throw new IllegalStateException("Planned platform " + platform + " is not in area " + area);
 		}
 		return planned;
-	}
-
-	/** The platform links of a track: the track itself, or its two directional variants. */
-	private List<Id<Link>> platformLinksOf(String trackId) {
-		List<Id<Link>> links = new ArrayList<>();
-		for (String suffix : List.of("", ".in", ".north", ".south")) {
-			Id<Link> candidate = Id.createLinkId(trackId + suffix);
-			if (network.getLinks().containsKey(candidate)) {
-				links.add(candidate);
-			}
-		}
-		if (links.isEmpty()) {
-			throw new IllegalStateException("Track " + trackId + " has no platform link in the network");
-		}
-		return links;
 	}
 
 	/**
