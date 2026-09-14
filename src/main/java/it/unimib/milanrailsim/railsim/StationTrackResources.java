@@ -18,18 +18,22 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Lets station links fill every platform track. Railsim keeps one track of a
- * resource free for the opposite direction whenever a train already entered
- * through the same link ({@code ANY_TRACK_NON_BLOCKING}); a station loop is a
- * single link for both directions, so that rule would leave a two-track
- * crossing station able to hold one train, and planned meets deadlock. On
- * links flagged {@code stationLink} any free track is requested instead;
- * sections keep railsim's rule.
+ * Lets one-way links fill every track of their resource. Railsim keeps one
+ * track of a resource free for the opposite direction whenever a train already
+ * entered through the same link ({@code ANY_TRACK_NON_BLOCKING}). That fits a
+ * single-track section shared by both directions, and nothing else here: a
+ * station loop is one link for both directions, so the rule would leave a
+ * two-track crossing station able to hold one train and planned meets would
+ * deadlock; a double-track section is one link per direction, so the rule
+ * would halve it to one train per link. Links flagged {@code stationLink} and
+ * links whose resource is theirs alone ask for any free track instead; a
+ * resource shared with other links, such as a single-track block or a throat,
+ * keeps railsim's rule.
  */
 public final class StationTrackResources implements RailResourceManager {
 
 	private final RailResourceManager delegate;
-	private final Set<Id<Link>> stationLinks;
+	private final Set<Id<Link>> anyTrackLinks;
 
 	@Inject
 	public StationTrackResources(RailResourceManagerImpl delegate, QSim qsim) {
@@ -38,14 +42,20 @@ public final class StationTrackResources implements RailResourceManager {
 
 	StationTrackResources(RailResourceManager delegate, Network network) {
 		this.delegate = delegate;
-		this.stationLinks = network.getLinks().values().stream()
-			.filter(link -> link.getAttributes().getAttribute("stationLink") != null)
+		this.anyTrackLinks = network.getLinks().values().stream()
+			.filter(link -> link.getAttributes().getAttribute("stationLink") != null || ownsItsResource(link))
 			.map(Link::getId)
 			.collect(Collectors.toUnmodifiableSet());
 	}
 
+	/** A link without a declared resource, or whose resource carries its own id, is the only link of that resource. */
+	private static boolean ownsItsResource(Link link) {
+		Object resource = link.getAttributes().getAttribute("railsimResourceId");
+		return resource == null || resource.toString().equals(link.getId().toString());
+	}
+
 	private int trackFor(Id<Link> link, int track) {
-		return track == ANY_TRACK_NON_BLOCKING && stationLinks.contains(link) ? ANY_TRACK : track;
+		return track == ANY_TRACK_NON_BLOCKING && anyTrackLinks.contains(link) ? ANY_TRACK : track;
 	}
 
 	@Override

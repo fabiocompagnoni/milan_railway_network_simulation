@@ -72,12 +72,29 @@ class StationTrackResourcesTest {
 		Node b = network.getFactory().createNode(Id.createNodeId("B"), new Coord(1000, 0));
 		network.addNode(a);
 		network.addNode(b);
+		// A_B and B_A share one single-track resource; C_D is one direction of a double track
 		Link section = network.getFactory().createLink(Id.createLinkId("A_B"), a, b);
+		section.getAttributes().putAttribute("railsimResourceId", "block_A_B");
 		network.addLink(section);
+		Link opposite = network.getFactory().createLink(Id.createLinkId("B_A"), b, a);
+		opposite.getAttributes().putAttribute("railsimResourceId", "block_A_B");
+		network.addLink(opposite);
+		Link oneWay = network.getFactory().createLink(Id.createLinkId("C_D"), a, b);
+		network.addLink(oneWay);
 		Link stop = network.getFactory().createLink(Id.createLinkId("stop_A"), a, a);
 		stop.getAttributes().putAttribute("stationLink", true);
 		network.addLink(stop);
 		return network;
+	}
+
+	@Test
+	void oneWayLinksAskForAnyFreeTrack() {
+		RecordingManager delegate = new RecordingManager();
+		StationTrackResources resources = new StationTrackResources(delegate, network());
+
+		resources.hasCapacity(0, Id.createLinkId("C_D"), RailResourceManager.ANY_TRACK_NON_BLOCKING, null);
+
+		assertEquals(RailResourceManager.ANY_TRACK, delegate.lastTrack);
 	}
 
 	@Test
@@ -91,7 +108,7 @@ class StationTrackResourcesTest {
 	}
 
 	@Test
-	void sectionsKeepTheNonBlockingRule() {
+	void singleTrackSectionsKeepTheNonBlockingRule() {
 		RecordingManager delegate = new RecordingManager();
 		StationTrackResources resources = new StationTrackResources(delegate, network());
 
