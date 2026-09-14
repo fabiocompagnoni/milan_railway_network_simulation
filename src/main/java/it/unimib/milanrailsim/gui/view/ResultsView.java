@@ -1,14 +1,14 @@
 package it.unimib.milanrailsim.gui.view;
 
 import it.unimib.milanrailsim.gui.app.AppModel;
+import it.unimib.milanrailsim.network.GtfsFeed;
 import it.unimib.milanrailsim.runs.RunLibrary.Entry;
 import it.unimib.milanrailsim.runs.RunLibrary;
 import it.unimib.milanrailsim.runs.RunResults.LineRow;
+import it.unimib.milanrailsim.runs.RunResults.UnfinishedRow;
 import it.unimib.milanrailsim.runs.RunResults.VisitRow;
 import it.unimib.milanrailsim.runs.RunResults;
 import it.unimib.milanrailsim.runs.ScenarioSpec;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -28,8 +28,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -45,27 +43,37 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 
 import java.io.File;
-import java.util.Comparator;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.stream.Collectors;
 
-/** Results of one archived run: headline figures, charts, per-line and per-visit tables, costs, export. */
+/**
+ * Results of one archived run: what was simulated and how it ended, headline
+ * figures, charts, delays by line, station and train, every stop visit, costs
+ * and export. A real-timetable run of the same day and window, if archived,
+ * serves as the baseline the headline can be compared with.
+ */
 public final class ResultsView extends BorderPane {
 
 	private static final double ON_TIME_THRESHOLD_S = 300;
+	private static final double SEVERE_THRESHOLD_S = 900;
+	private static final DateTimeFormatter STAMP = DateTimeFormatter.ofPattern("d MMM yyyy HH:mm", Locale.ITALY);
+	private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("HH:mm");
 
 	private final AppModel model;
 	private final Runnable onOpenLibrary;
 	private final StackPane body = new StackPane();
-	private Entry baseline;
-	private RunResults baselineResults;
 	private final ToggleButton compare = new ToggleButton("Confronta con reale");
 	private final HBox headline = new HBox(32);
+	private Entry baseline;
+	private RunResults baselineResults;
 	private Entry entry;
 	private RunResults results;
+	private StopLabels labels;
 
 	public ResultsView(AppModel model, Runnable onOpenLibrary) {
 		this.model = model;
@@ -103,6 +111,8 @@ public final class ResultsView extends BorderPane {
 			protected RunResults call() {
 				baseline = findBaseline(selected);
 				baselineResults = baseline == null ? null : RunResults.load(baseline.dir());
+				labels = new StopLabels(model.feed().join().stopsById().values().stream()
+					.collect(Collectors.toMap(GtfsFeed.Stop::id, GtfsFeed.Stop::name, (first, second) -> first)));
 				return RunResults.load(selected.dir());
 			}
 		};
@@ -141,7 +151,7 @@ public final class ResultsView extends BorderPane {
 	private void show() {
 		Label title = new Label("Run " + entry.name());
 		title.getStyleClass().add("title");
-		Label subtitle = muted(entry.scenarioLabel() + entry.spec().map(spec -> " · " + spec.serviceDate()).orElse(""));
+		Label subtitle = muted(describe(entry));
 		compare.setDisable(baseline == null);
 		compare.setTooltip(new javafx.scene.control.Tooltip(baseline == null
 			? "Nessun run reale con stesso giorno e finestra oraria trovato" : "Confronta con " + baseline.name()));
@@ -157,10 +167,24 @@ public final class ResultsView extends BorderPane {
 		TabPane tabs = new TabPane();
 		tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 		tabs.getTabs().addAll(new Tab("Sintesi", summaryTab()), new Tab("Linee", linesTab()),
-			new Tab("Corse", visitsTab()), new Tab("Costi", costsTab()));
+			new Tab("Stazioni", DelayTabs.stations(results, labels, ON_TIME_THRESHOLD_S)),
+			new Tab("Treni", DelayTabs.trains(results, labels)), new Tab("Corse", visitsTab()),
+			new Tab("Costi", costsTab()));
 		VBox.setVgrow(tabs, Priority.ALWAYS);
 		VBox column = new VBox(16, header, headline, tabs);
 		body.getChildren().setAll(column);
+	}
+
+	/** Scenario, service day, simulated window and when the analysis ran. */
+	static String describe(Entry entry) {
+		StringBuilder text = new StringBuilder(entry.scenarioLabel());
+		entry.spec().ifPresent(spec -> {
+			text.append(" · ").append(spec.serviceDate());
+			text.append(" · ").append(spec.window() == null ? "giornata intera"
+				: TIME.format(spec.window().start()) + "–" + TIME.format(spec.window().end()));
+		});
+		entry.manifest().ifPresent(manifest -> text.append(" · analizzato il ").append(STAMP.format(manifest.created())));
+		return text.toString();
 	}
 
 	private void fillHeadline() {
@@ -171,9 +195,13 @@ public final class ResultsView extends BorderPane {
 			metric("Ritardo medio all'arrivo", RunLibraryView.minutesSeconds(manifest.meanArrivalDelaySeconds()),
 				delta ? RunLibraryView.minutesSeconds(manifest.meanArrivalDelaySeconds() - base.meanArrivalDelaySeconds()) : null,
 				delta && manifest.meanArrivalDelaySeconds() > base.meanArrivalDelaySeconds()),
-			metric("Puntualità (entro 5 min)", results.punctuality(ON_TIME_THRESHOLD_S).map(ResultsView::percent).orElse("—"),
+			metric("Puntualità (entro 5 min)", results.punctuality(ON_TIME_THRESHOLD_S).map(Columns::percent).orElse("—"),
 				delta ? baselineResults.punctuality(ON_TIME_THRESHOLD_S).flatMap(b -> results.punctuality(ON_TIME_THRESHOLD_S)
 					.map(v -> String.format(Locale.ITALY, "%+.1f punti", v - b))).orElse(null) : null, false),
+			metric("Arrivi oltre 15 min", results.punctuality(SEVERE_THRESHOLD_S).map(v -> Columns.percent(100 - v)).orElse("—"),
+				null, results.punctuality(SEVERE_THRESHOLD_S).map(v -> 100 - v > 5).orElse(false)),
+			metric("Treni non arrivati", String.valueOf(manifest.unfinishedTrains()),
+				manifest.unfinishedTrains() > 0 ? "vedi la scheda Treni" : null, manifest.unfinishedTrains() > 0),
 			metric("Costo totale", RunLibraryView.euro(manifest.totalCost()),
 				delta ? String.format(Locale.ITALY, "%+,.0f €", manifest.totalCost() - base.totalCost()) : null,
 				delta && manifest.totalCost() > base.totalCost()),
@@ -200,12 +228,45 @@ public final class ResultsView extends BorderPane {
 		ScrollPane spaceTime = new ScrollPane(chart(RunResults.SPACE_TIME, 1040));
 		spaceTime.getStyleClass().add("plain-scroll");
 		spaceTime.setFitToHeight(true);
-		VBox column = new VBox(16, charts, spaceTime);
+		VBox column = new VBox(16, outcomePanel(), charts, spaceTime);
 		column.setPadding(new Insets(16, 0, 0, 0));
 		ScrollPane scroll = new ScrollPane(column);
 		scroll.setFitToWidth(true);
 		scroll.getStyleClass().add("plain-scroll");
 		return scroll;
+	}
+
+	/** How the simulated day ended, as the engine saw it. */
+	private Node outcomePanel() {
+		Label title = new Label("Esito della simulazione");
+		title.getStyleClass().add("section-title");
+		VBox panel = new VBox(8, title);
+		panel.getStyleClass().add("panel");
+		Optional<RunLibrary.Outcome> outcome = entry.manifest().flatMap(RunLibrary.Manifest::outcome);
+		if (outcome.isEmpty()) {
+			panel.getChildren().add(muted("Questo run è stato analizzato senza registrare l'esito del motore."));
+			return panel;
+		}
+		RunLibrary.Outcome seen = outcome.get();
+		int unfinished = entry.manifest().map(RunLibrary.Manifest::unfinishedTrains).orElse(0);
+		HBox figures = new HBox(32,
+			metric("Treni arrivati a fine turno", String.valueOf(seen.arrived()), null, false),
+			metric("Ancora in rete alla fine", String.valueOf(seen.stalled()),
+				seen.stalled() > 0 ? "fermi o in ritardo alle " + Columns.clock(seen.simulatedEndSeconds()) : null,
+				seen.stalled() > 0),
+			metric("Abbandonati dal motore", String.valueOf(seen.aborted()), null, seen.aborted() > 0),
+			metric("Senza capolinea raggiunto", String.valueOf(unfinished), null, unfinished > 0),
+			metric("Fine della giornata simulata", Columns.clock(seen.simulatedEndSeconds()),
+				"ultimo arrivo previsto più tre ore", false),
+			metric("Tempo di calcolo", duration(seen.wallClockSeconds()), "orario, simulazione e analisi", false));
+		panel.getChildren().add(figures);
+		return panel;
+	}
+
+	static String duration(long seconds) {
+		return seconds >= 3600
+			? String.format(Locale.ROOT, "%dh %02dm", seconds / 3600, (seconds % 3600) / 60)
+			: String.format(Locale.ROOT, "%dm %02ds", seconds / 60, seconds % 60);
 	}
 
 	private Node chart(String name, double width) {
@@ -221,18 +282,26 @@ public final class ResultsView extends BorderPane {
 		if (results.byLine().isEmpty()) {
 			return partial("Dati per linea non disponibili per questo run: l'analisi non li ha prodotti.");
 		}
+		Map<String, List<VisitRow>> visitsByLine = results.visits().orElse(List.of()).stream()
+			.collect(Collectors.groupingBy(VisitRow::line));
+		Map<String, Long> unfinishedByLine = results.unfinished().orElse(List.of()).stream()
+			.collect(Collectors.groupingBy(UnfinishedRow::line, Collectors.counting()));
 		TableView<LineRow> table = new TableView<>(FXCollections.observableArrayList(results.byLine().get()));
 		table.getStyleClass().add("data-table");
-		table.getColumns().add(text("Linea", 90, LineRow::line));
-		table.getColumns().add(number("Fermate osservate", 130, row -> (double) row.observations(), v -> String.valueOf(v.intValue())));
-		table.getColumns().add(number("Ritardo medio", 120, LineRow::meanDelay, RunLibraryView::minutesSeconds));
-		table.getColumns().add(number("Mediana", 100, LineRow::medianDelay, RunLibraryView::minutesSeconds));
-		table.getColumns().add(number("95° percentile", 120, LineRow::p95Delay, RunLibraryView::minutesSeconds));
-		table.getColumns().add(number("Massimo", 100, LineRow::maxDelay, RunLibraryView::minutesSeconds));
+		table.getColumns().add(Columns.text("Linea", 90, LineRow::line));
+		table.getColumns().add(Columns.number("Fermate osservate", 130, row -> (double) row.observations(), Columns::count));
+		table.getColumns().add(Columns.number("Puntualità (5 min)", 130,
+			row -> RunResults.punctuality(visitsByLine.getOrDefault(row.line(), List.of()), ON_TIME_THRESHOLD_S), Columns::percent));
+		table.getColumns().add(Columns.number("Ritardo medio", 120, LineRow::meanDelay, RunLibraryView::minutesSeconds));
+		table.getColumns().add(Columns.number("Mediana", 100, LineRow::medianDelay, RunLibraryView::minutesSeconds));
+		table.getColumns().add(Columns.number("95° percentile", 120, LineRow::p95Delay, RunLibraryView::minutesSeconds));
+		table.getColumns().add(Columns.number("Massimo", 100, LineRow::maxDelay, RunLibraryView::minutesSeconds));
+		table.getColumns().add(Columns.number("Treni non arrivati", 130,
+			row -> (double) unfinishedByLine.getOrDefault(row.line(), 0L), Columns::count));
 		if (baselineResults != null && baselineResults.byLine().isPresent()) {
-			Map<String, LineRow> base = new java.util.HashMap<>();
+			Map<String, LineRow> base = new HashMap<>();
 			baselineResults.byLine().get().forEach(row -> base.put(row.line(), row));
-			table.getColumns().add(number("Δ medio vs reale", 130,
+			table.getColumns().add(Columns.number("Δ medio vs reale", 130,
 				row -> base.containsKey(row.line()) ? row.meanDelay() - base.get(row.line()).meanDelay() : Double.NaN,
 				RunLibraryView::minutesSeconds));
 		}
@@ -255,22 +324,23 @@ public final class ResultsView extends BorderPane {
 			String text = search.getText().trim().toLowerCase(Locale.ROOT);
 			String chosen = line.getValue();
 			filtered.setPredicate(row -> ("Tutte le linee".equals(chosen) || row.line().equals(chosen))
-				&& (text.isEmpty() || row.vehicle().toLowerCase(Locale.ROOT).contains(text) || row.stop().toLowerCase(Locale.ROOT).contains(text)));
+				&& (text.isEmpty() || row.vehicle().toLowerCase(Locale.ROOT).contains(text)
+					|| labels.stop(row.stop()).toLowerCase(Locale.ROOT).contains(text)));
 		};
 		search.textProperty().addListener(observable -> filter.run());
 		line.valueProperty().addListener(observable -> filter.run());
 
 		TableView<VisitRow> table = new TableView<>();
 		table.getStyleClass().add("data-table");
-		table.getColumns().add(text("Treno", 150, VisitRow::vehicle));
-		table.getColumns().add(text("Linea", 70, VisitRow::line));
-		table.getColumns().add(text("Fermata", 100, VisitRow::stop));
-		table.getColumns().add(number("Arrivo previsto", 110, VisitRow::plannedArrival, ResultsView::clock));
-		table.getColumns().add(number("Arrivo effettivo", 110, VisitRow::actualArrival, ResultsView::clock));
-		table.getColumns().add(number("Ritardo arrivo", 110, VisitRow::arrivalDelay, RunLibraryView::minutesSeconds));
-		table.getColumns().add(number("Partenza prevista", 120, VisitRow::plannedDeparture, ResultsView::clock));
-		table.getColumns().add(number("Partenza effettiva", 120, VisitRow::actualDeparture, ResultsView::clock));
-		table.getColumns().add(number("Ritardo partenza", 120, VisitRow::departureDelay, RunLibraryView::minutesSeconds));
+		table.getColumns().add(Columns.text("Treno", 150, VisitRow::vehicle));
+		table.getColumns().add(Columns.text("Linea", 70, VisitRow::line));
+		table.getColumns().add(Columns.text("Fermata", 200, row -> labels.stop(row.stop())));
+		table.getColumns().add(Columns.number("Arrivo previsto", 110, VisitRow::plannedArrival, Columns::clock));
+		table.getColumns().add(Columns.number("Arrivo effettivo", 110, VisitRow::actualArrival, Columns::clock));
+		table.getColumns().add(Columns.number("Ritardo arrivo", 110, VisitRow::arrivalDelay, RunLibraryView::minutesSeconds));
+		table.getColumns().add(Columns.number("Partenza prevista", 120, VisitRow::plannedDeparture, Columns::clock));
+		table.getColumns().add(Columns.number("Partenza effettiva", 120, VisitRow::actualDeparture, Columns::clock));
+		table.getColumns().add(Columns.number("Ritardo partenza", 120, VisitRow::departureDelay, RunLibraryView::minutesSeconds));
 		SortedList<VisitRow> sorted = new SortedList<>(filtered);
 		sorted.comparatorProperty().bind(table.comparatorProperty());
 		table.setItems(sorted);
@@ -310,8 +380,8 @@ public final class ResultsView extends BorderPane {
 			if (visit.arrivalDelay() > ON_TIME_THRESHOLD_S) {
 				delay.getStyleClass().add("finding-blocking");
 			}
-			grid.addRow(row++, new Label(visit.stop()), new Label(clock(visit.plannedArrival())),
-				new Label(clock(visit.actualArrival())), delay);
+			grid.addRow(row++, new Label(labels.stop(visit.stop())), new Label(Columns.clock(visit.plannedArrival())),
+				new Label(Columns.clock(visit.actualArrival())), delay);
 		}
 		ScrollPane scroll = new ScrollPane(grid);
 		scroll.setFitToWidth(true);
@@ -339,7 +409,7 @@ public final class ResultsView extends BorderPane {
 			Label amount = new Label(RunLibraryView.euro(category.getValue()));
 			amount.getStyleClass().add("metric");
 			table.addRow(row++, new Label(categoryLabel(category.getKey())), amount,
-				new Label(costs.total() == 0 ? "—" : percent(100 * category.getValue() / costs.total())));
+				new Label(costs.total() == 0 ? "—" : Columns.percent(100 * category.getValue() / costs.total())));
 		}
 		HBox content = new HBox(32, chart(RunResults.COST_BREAKDOWN, 420), table);
 		content.setAlignment(Pos.TOP_LEFT);
@@ -352,10 +422,10 @@ public final class ResultsView extends BorderPane {
 		Dialog<ButtonType> dialog = new Dialog<>();
 		dialog.setTitle("Salva come…");
 		dialog.setHeaderText("Scegli cosa copiare del run " + entry.name());
-		CheckBox csv = new CheckBox("Tabelle CSV (puntualità)");
+		CheckBox csv = new CheckBox("Tabelle CSV (puntualità, treni non arrivati)");
 		CheckBox json = new CheckBox("Dati JSON (manifest, costi, scenario)");
 		CheckBox png = new CheckBox("Grafici PNG");
-		CheckBox raw = new CheckBox("Output grezzo del motore (raw, pesante)");
+		CheckBox raw = new CheckBox("Output grezzo del motore (orario, eventi, fotogrammi: pesante)");
 		for (CheckBox box : List.of(csv, json, png)) {
 			box.setSelected(true);
 		}
@@ -388,42 +458,6 @@ public final class ResultsView extends BorderPane {
 		VBox box = new VBox(muted(message));
 		box.setPadding(new Insets(16, 0, 0, 0));
 		return box;
-	}
-
-	private static <T> TableColumn<T, String> text(String title, double width, Function<T, String> value) {
-		TableColumn<T, String> column = new TableColumn<>(title);
-		column.setCellValueFactory(cell -> new SimpleStringProperty(value.apply(cell.getValue())));
-		column.setPrefWidth(width);
-		return column;
-	}
-
-	private static <T> TableColumn<T, Double> number(String title, double width, Function<T, Double> value,
-			Function<Double, String> format) {
-		TableColumn<T, Double> column = new TableColumn<>(title);
-		column.setCellValueFactory(cell -> new SimpleObjectProperty<>(value.apply(cell.getValue())));
-		column.setComparator(Comparator.comparingDouble(v -> Double.isNaN(v) ? Double.NEGATIVE_INFINITY : v));
-		column.setCellFactory(col -> new TableCell<>() {
-			@Override
-			protected void updateItem(Double item, boolean empty) {
-				super.updateItem(item, empty);
-				setText(empty ? "" : item == null || Double.isNaN(item) ? "—" : format.apply(item));
-				setAlignment(Pos.CENTER_RIGHT);
-			}
-		});
-		column.setPrefWidth(width);
-		return column;
-	}
-
-	static String clock(double secondsOfDay) {
-		if (Double.isNaN(secondsOfDay)) {
-			return "—";
-		}
-		long total = Math.round(secondsOfDay);
-		return String.format(Locale.ROOT, "%02d:%02d:%02d", total / 3600, (total % 3600) / 60, total % 60);
-	}
-
-	private static String percent(double value) {
-		return Double.isNaN(value) ? "—" : String.format(Locale.ITALY, "%.1f %%", value);
 	}
 
 	private static String categoryLabel(String category) {

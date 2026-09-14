@@ -56,13 +56,16 @@ public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List
 		return Files.isRegularFile(file) ? Optional.of(file) : Optional.empty();
 	}
 
-	/** Share of stop arrivals within {@code thresholdSeconds} of the plan, or empty without visit data. */
+	/** Share of stop arrivals within {@code thresholdSeconds} of the plan, in percent, or empty without visit data. */
 	public Optional<Double> punctuality(double thresholdSeconds) {
-		return visits.map(rows -> {
-			long measured = rows.stream().filter(row -> !Double.isNaN(row.arrivalDelay())).count();
-			long onTime = rows.stream().filter(row -> !Double.isNaN(row.arrivalDelay()) && row.arrivalDelay() <= thresholdSeconds).count();
-			return measured == 0 ? Double.NaN : 100.0 * onTime / measured;
-		});
+		return visits.map(rows -> punctuality(rows, thresholdSeconds));
+	}
+
+	/** Share of the given arrivals within {@code thresholdSeconds} of the plan, in percent; NaN when none was measured. */
+	public static double punctuality(List<VisitRow> rows, double thresholdSeconds) {
+		long measured = rows.stream().filter(row -> !Double.isNaN(row.arrivalDelay())).count();
+		long onTime = rows.stream().filter(row -> !Double.isNaN(row.arrivalDelay()) && row.arrivalDelay() <= thresholdSeconds).count();
+		return measured == 0 ? Double.NaN : 100.0 * onTime / measured;
 	}
 
 	private static <T> Optional<T> optional(Path file, java.util.function.Function<Path, T> reader) {
