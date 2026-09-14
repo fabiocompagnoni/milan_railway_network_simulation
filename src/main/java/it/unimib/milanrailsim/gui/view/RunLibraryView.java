@@ -130,9 +130,12 @@ public final class RunLibraryView extends BorderPane {
 		TableColumn<Entry, Double> anomalies = numeric("Anomalie", 80,
 			entry -> entry.manifest().map(m -> (double) m.anomalies()).orElse(Double.NaN),
 			value -> String.valueOf(value.intValue()));
+		TableColumn<Entry, Double> unfinished = numeric("Non arrivati", 100,
+			entry -> entry.manifest().map(m -> (double) m.unfinishedTrains()).orElse(Double.NaN),
+			value -> String.valueOf(value.intValue()));
 		TableColumn<Entry, String> created = column("Creato", 130,
 			entry -> entry.manifest().map(m -> STAMP.format(m.created())).orElse("—"));
-		table.getColumns().setAll(List.of(name, scenario, day, status, delay, cost, anomalies, created));
+		table.getColumns().setAll(List.of(name, scenario, day, status, delay, cost, unfinished, anomalies, created));
 		table.setRowFactory(view -> {
 			javafx.scene.control.TableRow<Entry> row = new javafx.scene.control.TableRow<>();
 			row.setOnMouseClicked(event -> {
