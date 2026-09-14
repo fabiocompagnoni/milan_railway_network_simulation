@@ -8,6 +8,7 @@ import it.unimib.milanrailsim.network.micro.Sidings;
 import it.unimib.milanrailsim.railsim.RailsimSetup;
 import it.unimib.milanrailsim.results.AnalyzeRun;
 import it.unimib.milanrailsim.results.RunArchive;
+import it.unimib.milanrailsim.results.RunOutcome;
 import it.unimib.milanrailsim.runs.RunLibrary;
 import it.unimib.milanrailsim.runs.ScenarioSpec;
 import it.unimib.milanrailsim.schedule.CreateTransitScheduleFromFeed;
@@ -36,6 +37,8 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +85,7 @@ public final class RailsimJob implements SimulationServer.Job {
 
 	@Override
 	public void run(Pacer pacer, Emitter out) throws Exception {
+		Instant started = Instant.now();
 		Path marker = inputs.runDir().resolve(RunLibrary.PROGRESS_MARKER);
 		touch(marker);
 		ScenarioSpec spec = ScenarioSpec.read(inputs.runDir().resolve("scenario.json"));
@@ -102,12 +106,16 @@ public final class RailsimJob implements SimulationServer.Job {
 			endTime = simulate(scenarioDir, output, sampler, pacer, out, marker);
 		}
 
-		out.send(Message.progress(0, 0, "Analisi"));
-		AnalyzeRun.analyze(output, RunArchive.at(inputs.runDir()), spec.type().name().toLowerCase(),
-			inputs.costsFile(), SPACE_TIME_LINE);
+		Summary summary = new Summary(sampler.arrivedTrains(), sampler.abortedTrains(), sampler.activeTrains(), endTime);
+		RunOutcome outcome = new RunOutcome(summary.arrived(), summary.aborted(), summary.stalled(), endTime,
+			Duration.between(started, Instant.now()));
+		AnalyzeRun.analyze(new AnalyzeRun.Request(output, RunArchive.at(inputs.runDir()),
+			spec.type().name().toLowerCase(), inputs.costsFile(), SPACE_TIME_LINE, outcome, phase -> {
+				out.send(Message.progress(0, 0, phase));
+				touch(marker);
+			}));
 		Files.deleteIfExists(marker);
-		out.send(Message.done(inputs.runDir().toString(),
-			new Summary(sampler.arrivedTrains(), sampler.abortedTrains(), sampler.activeTrains(), endTime)));
+		out.send(Message.done(inputs.runDir().toString(), summary));
 	}
 
 	private static Map<String, Integer> tripsPerVehicle(TransitSchedule timetable) {

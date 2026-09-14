@@ -17,10 +17,15 @@ import java.util.Optional;
  * The analysis files of one archived run, read as they are. Every part is
  * optional: an interrupted run may have produced only some of them.
  */
-public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List<VisitRow>> visits, Optional<Costs> costs) {
+public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List<VisitRow>> visits,
+		Optional<List<UnfinishedRow>> unfinished, Optional<Costs> costs) {
 
 	public record LineRow(String line, int observations, double meanDelay, double medianDelay, double p95Delay,
 			double maxDelay) {
+	}
+
+	/** A train that never reached its last planned stop: where it got to and how many stops were left. */
+	public record UnfinishedRow(String vehicle, String line, String route, String lastStop, int remainingStops) {
 	}
 
 	/** Seconds since midnight for times, NaN where the engine recorded nothing. */
@@ -42,6 +47,7 @@ public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List
 		return new RunResults(dir,
 			optional(dir.resolve("punctuality_by_line.csv"), RunResults::readByLine),
 			optional(dir.resolve("punctuality.csv"), RunResults::readVisits),
+			optional(dir.resolve("unfinished.csv"), RunResults::readUnfinished),
 			optional(dir.resolve("costs.json"), RunResults::readCosts));
 	}
 
@@ -74,6 +80,11 @@ public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List
 			row.get("route"), row.get("stop"), number(row.get("planned_arrival_s")), number(row.get("actual_arrival_s")),
 			number(row.get("arrival_delay_s")), number(row.get("planned_departure_s")),
 			number(row.get("actual_departure_s")), number(row.get("departure_delay_s")))).toList();
+	}
+
+	private static List<UnfinishedRow> readUnfinished(Path csv) {
+		return CsvTable.read(csv).stream().map(row -> new UnfinishedRow(row.get("vehicle"), row.get("line"),
+			row.get("route"), row.get("last_stop"), Integer.parseInt(row.get("remaining_stops")))).toList();
 	}
 
 	private static Costs readCosts(Path json) {

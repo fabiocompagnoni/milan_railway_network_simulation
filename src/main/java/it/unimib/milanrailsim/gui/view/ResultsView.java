@@ -373,7 +373,8 @@ public final class ResultsView extends BorderPane {
 		}
 		int copied = model.runs().export(entry, chosen.toPath(), path -> {
 			String name = path.toString();
-			if (name.startsWith("raw")) {
+			if (name.startsWith("raw") || name.startsWith("output") || name.startsWith("scenario")
+					|| name.startsWith("frames")) {
 				return raw.isSelected();
 			}
 			return name.endsWith(".csv") ? csv.isSelected() : name.endsWith(".json") ? json.isSelected()

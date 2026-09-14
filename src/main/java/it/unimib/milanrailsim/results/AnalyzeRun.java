@@ -27,6 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
@@ -60,12 +61,26 @@ public final class AnalyzeRun {
 
 	static Path run(Path runOutputDir, String scenario, Path runsBaseDir, Path costsFile,
 			String spaceTimeLine) {
-		return analyze(runOutputDir, RunArchive.create(runsBaseDir, scenario), scenario, costsFile, spaceTimeLine);
+		return analyze(new Request(runOutputDir, RunArchive.create(runsBaseDir, scenario), scenario, costsFile,
+			spaceTimeLine, null, log::info));
 	}
 
-	/** Runs the analysis of a finished simulation and fills {@code archive}; returns its folder. */
-	public static Path analyze(Path runOutputDir, RunArchive archive, String scenario, Path costsFile,
-			String spaceTimeLine) {
+	/**
+	 * What to analyze and where to put it.
+	 *
+	 * @param outcome  how the engine saw the run end, or null when analyzing the
+	 *                 outputs of a run this process did not drive
+	 * @param progress told the name of each phase as it starts
+	 */
+	public record Request(Path runOutputDir, RunArchive archive, String scenario, Path costsFile,
+			String spaceTimeLine, RunOutcome outcome, Consumer<String> progress) {
+	}
+
+	/** Runs the analysis of a finished simulation and fills the archive; returns its folder. */
+	public static Path analyze(Request request) {
+		Path runOutputDir = request.runOutputDir();
+		RunArchive archive = request.archive();
+		request.progress().accept("Analisi: lettura dell'orario simulato");
 		Scenario matsim = ScenarioUtils.createScenario(ConfigUtils.createConfig());
 		new TransitScheduleReader(matsim)
 			.readFile(locate(runOutputDir, "*.output_transitSchedule.xml*").toString());
@@ -75,28 +90,34 @@ public final class AnalyzeRun {
 		Network network = NetworkUtils
 			.readNetwork(locate(runOutputDir, "*.output_network.xml*").toString());
 
+		request.progress().accept("Analisi: lettura degli eventi");
 		PunctualityAnalysis punctuality = new PunctualityAnalysis(matsim.getTransitSchedule());
 		EventsManager events = EventsUtils.createEventsManager();
 		events.addHandler(punctuality);
 		new MatsimEventsReader(events)
 			.readFile(locate(runOutputDir.resolve("ITERS/it.0"), "*.events.xml*").toString());
 		List<PunctualityAnalysis.StopVisit> visits = punctuality.visits();
+		List<PunctualityAnalysis.Unfinished> unfinished = punctuality.unfinished();
 
+		request.progress().accept("Analisi: costi");
 		CostModel.Breakdown costs = new CostModel(matsim.getTransitSchedule(), vehicles, network,
-			CostParameters.load(costsFile)).compute();
+			CostParameters.load(request.costsFile())).compute();
 
+		request.progress().accept("Analisi: grafici");
 		archive.writeLines("punctuality.csv", punctualityCsv(visits));
 		archive.writeLines("punctuality_by_line.csv", byLineCsv(visits));
+		archive.writeLines("unfinished.csv", unfinishedCsv(unfinished));
 		archive.writeJson("costs.json", costsJson(costs));
 		RunCharts.delayHistogram(visits, archive.chart("delay_histogram"));
 		RunCharts.delayByHour(visits, archive.chart("delay_by_hour"));
-		RunCharts.spaceTime(trajectories(runOutputDir, spaceTimeLine), archive.chart("space_time"));
+		RunCharts.spaceTime(trajectories(runOutputDir, request.spaceTimeLine()), archive.chart("space_time"));
 		RunCharts.costBreakdown(costs, archive.chart("cost_breakdown"));
-		archive.writeJson("manifest.json", manifest(scenario, runOutputDir, visits,
-			punctuality.anomalyCount(), costs));
-		archive.copyRaw(runOutputDir);
 
-		logSummary(visits, punctuality.anomalyCount(), archive.dir());
+		request.progress().accept("Archiviazione");
+		archive.copyRaw(runOutputDir);
+		archive.writeJson("manifest.json", manifest(request, visits, punctuality.anomalyCount(), unfinished.size(), costs));
+
+		logSummary(visits, punctuality.anomalyCount(), unfinished.size(), archive.dir());
 		return archive.dir();
 	}
 
@@ -137,6 +158,16 @@ public final class AnalyzeRun {
 		return lines;
 	}
 
+	private static List<String> unfinishedCsv(List<PunctualityAnalysis.Unfinished> unfinished) {
+		List<String> lines = new ArrayList<>();
+		lines.add("vehicle,line,route,last_stop,remaining_stops");
+		for (PunctualityAnalysis.Unfinished train : unfinished) {
+			lines.add(String.join(",", train.vehicle(), train.line(), train.route(), train.lastStop(),
+				Integer.toString(train.remainingStops())));
+		}
+		return lines;
+	}
+
 	private static Map<String, Object> costsJson(CostModel.Breakdown costs) {
 		Map<String, Object> json = new LinkedHashMap<>();
 		json.put("currency", costs.currency());
@@ -148,19 +179,28 @@ public final class AnalyzeRun {
 		return json;
 	}
 
-	private static Map<String, Object> manifest(String scenario, Path source,
-			List<PunctualityAnalysis.StopVisit> visits, int anomalies, CostModel.Breakdown costs) {
+	private static Map<String, Object> manifest(Request request, List<PunctualityAnalysis.StopVisit> visits,
+			int anomalies, int unfinished, CostModel.Breakdown costs) {
 		double meanDelay = visits.stream()
 			.mapToDouble(PunctualityAnalysis.StopVisit::arrivalDelaySeconds).average().orElse(0);
 		Map<String, Object> manifest = new LinkedHashMap<>();
-		manifest.put("scenario", scenario);
+		manifest.put("scenario", request.scenario());
 		manifest.put("created", java.time.LocalDateTime.now().toString());
-		manifest.put("sourceOutput", source.toAbsolutePath().toString());
+		manifest.put("sourceOutput", request.runOutputDir().toAbsolutePath().toString());
 		manifest.put("stopVisits", visits.size());
 		manifest.put("anomalies", anomalies);
+		manifest.put("unfinishedTrains", unfinished);
 		manifest.put("meanArrivalDelaySeconds", meanDelay);
 		manifest.put("totalCost", costsJson(costs).get("total"));
 		manifest.put("currency", costs.currency());
+		RunOutcome outcome = request.outcome();
+		if (outcome != null) {
+			manifest.put("trainsArrived", outcome.arrived());
+			manifest.put("trainsAborted", outcome.aborted());
+			manifest.put("trainsStalled", outcome.stalled());
+			manifest.put("simulatedEndSeconds", outcome.simulatedEndSeconds());
+			manifest.put("wallClockSeconds", outcome.wallClock().toSeconds());
+		}
 		return manifest;
 	}
 
@@ -188,9 +228,10 @@ public final class AnalyzeRun {
 		return byTrain;
 	}
 
-	private static void logSummary(List<PunctualityAnalysis.StopVisit> visits, int anomalies,
+	private static void logSummary(List<PunctualityAnalysis.StopVisit> visits, int anomalies, int unfinished,
 			Path archived) {
-		log.info("Archived {} stop visits ({} anomalies) to {}", visits.size(), anomalies, archived);
+		log.info("Archived {} stop visits ({} anomalies, {} trains unfinished) to {}", visits.size(), anomalies,
+			unfinished, archived);
 		visits.stream()
 			.sorted(Comparator.comparingDouble(PunctualityAnalysis.StopVisit::arrivalDelaySeconds)
 				.reversed())

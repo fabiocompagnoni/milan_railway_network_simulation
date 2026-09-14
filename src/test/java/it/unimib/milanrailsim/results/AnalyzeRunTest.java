@@ -46,6 +46,9 @@ class AnalyzeRunTest {
 		String manifest = Files.readString(archived.resolve("manifest.json"));
 		assertTrue(manifest.contains("\"scenario\" : \"test-scenario\""));
 		assertTrue(manifest.contains("\"anomalies\" : 0"));
+		assertTrue(manifest.contains("\"unfinishedTrains\" : 0"));
+		assertFalse(manifest.contains("trainsArrived"), "no outcome without an engine driving the run");
+		assertEquals(1, Files.readAllLines(archived.resolve("unfinished.csv")).size(), "header only");
 
 		List<String> punctuality = Files.readAllLines(archived.resolve("punctuality.csv"));
 		assertEquals(3, punctuality.size()); // header + stops A and B
@@ -57,5 +60,26 @@ class AnalyzeRunTest {
 			assertTrue(Files.size(archived.resolve("charts/" + chart + ".png")) > 1000, chart);
 		}
 		assertTrue(Files.exists(archived.resolve("raw/fake.0.events.xml")));
+	}
+
+	@Test
+	void recordsTheOutcomeAndLeavesOutputsInPlaceWhenTheyAreInsideTheArchive() throws IOException {
+		TestRuns.Fixture fixture = TestRuns.tenKilometreFixture();
+		TestRuns.addTrip(fixture, "t1", "tsr", 8 * 3600);
+		Path runDir = dir.resolve("run");
+		Path output = runDir.resolve("output");
+		TestRuns.writeFakeRun(fixture, output, "fake", EVENTS, TIME_DISTANCE);
+		List<String> phases = new java.util.ArrayList<>();
+
+		AnalyzeRun.analyze(new AnalyzeRun.Request(output, RunArchive.at(runDir), "real", Path.of("config/costs.json"),
+			"S1", new RunOutcome(7, 1, 2, 100_000, java.time.Duration.ofSeconds(90)), phases::add));
+
+		String manifest = Files.readString(runDir.resolve("manifest.json"));
+		assertTrue(manifest.contains("\"trainsArrived\" : 7"));
+		assertTrue(manifest.contains("\"trainsStalled\" : 2"));
+		assertTrue(manifest.contains("\"wallClockSeconds\" : 90"));
+		assertFalse(Files.exists(runDir.resolve("raw")), "outputs already live in the run folder");
+		assertTrue(phases.getFirst().startsWith("Analisi"));
+		assertEquals("Archiviazione", phases.getLast());
 	}
 }

@@ -126,6 +126,32 @@ public final class PunctualityAnalysis
 		return List.copyOf(all);
 	}
 
+	/** A vehicle that did not reach every planned stop: where it got to and how many stops were left. */
+	public record Unfinished(String vehicle, String line, String route, String lastStop, int remainingStops) {
+	}
+
+	/**
+	 * Vehicles whose plan was not completed when the events ended, ordered by
+	 * id. Punctuality alone hides them, since a train that never arrives leaves
+	 * no visit to be late.
+	 */
+	public List<Unfinished> unfinished() {
+		Map<String, String> lastStops = new HashMap<>();
+		for (StopVisit visit : visits()) {
+			lastStops.put(visit.vehicle(), visit.stop());
+		}
+		List<Unfinished> result = new ArrayList<>();
+		planByVehicle.forEach((vehicle, plan) -> {
+			if (!plan.isEmpty()) {
+				PlannedStop next = plan.peek();
+				result.add(new Unfinished(vehicle.toString(), next.line(), next.route(),
+					lastStops.getOrDefault(vehicle.toString(), ""), plan.size()));
+			}
+		});
+		result.sort(Comparator.comparing(Unfinished::vehicle));
+		return List.copyOf(result);
+	}
+
 	public int anomalyCount() {
 		return anomalyCount;
 	}

@@ -78,6 +78,24 @@ class PunctualityAnalysisTest {
 	}
 
 	@Test
+	void reportsVehiclesThatNeverCompletedTheirPlan() {
+		PunctualityAnalysis analysis = new PunctualityAnalysis(schedule());
+
+		analysis.handleEvent(arrival("V1", DEPARTURE_TIME + 10, "A"));
+		analysis.handleEvent(departure("V1", DEPARTURE_TIME + 70, "A"));
+
+		List<PunctualityAnalysis.Unfinished> unfinished = analysis.unfinished();
+		assertEquals(1, unfinished.size());
+		assertEquals("V1", unfinished.getFirst().vehicle());
+		assertEquals("S1", unfinished.getFirst().line());
+		assertEquals("A", unfinished.getFirst().lastStop());
+		assertEquals(1, unfinished.getFirst().remainingStops());
+
+		analysis.handleEvent(arrival("V1", DEPARTURE_TIME + 400, "B"));
+		assertTrue(analysis.unfinished().isEmpty(), "reaching the terminus completes the plan");
+	}
+
+	@Test
 	void ignoresAndCountsVehiclesOutsideTheSchedule() {
 		PunctualityAnalysis analysis = new PunctualityAnalysis(schedule());
 

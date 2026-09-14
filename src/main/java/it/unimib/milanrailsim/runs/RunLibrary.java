@@ -49,8 +49,13 @@ public final class RunLibrary {
 	}
 
 	/** The headline figures the analysis writes for a completed run. */
-	public record Manifest(String scenario, LocalDateTime created, int stopVisits, int anomalies,
-			double meanArrivalDelaySeconds, double totalCost, String currency) {
+	/** How the engine saw the run end; absent in manifests written before it was recorded or from the command line. */
+	public record Outcome(int arrived, int aborted, int stalled, double simulatedEndSeconds, long wallClockSeconds) {
+	}
+
+	/** {@code unfinishedTrains} counts vehicles that never reached their last planned stop. */
+	public record Manifest(String scenario, LocalDateTime created, int stopVisits, int anomalies, int unfinishedTrains,
+			double meanArrivalDelaySeconds, double totalCost, String currency, Optional<Outcome> outcome) {
 	}
 
 	/** {@code spec} is empty for runs archived from the command line; {@code manifest} until the analysis ran. */
@@ -168,10 +173,15 @@ public final class RunLibrary {
 	private static Manifest readManifest(Path file) {
 		try {
 			JsonNode root = JSON.readTree(file.toFile());
+			Optional<Outcome> outcome = root.hasNonNull("trainsArrived")
+				? Optional.of(new Outcome(root.path("trainsArrived").asInt(), root.path("trainsAborted").asInt(),
+					root.path("trainsStalled").asInt(), root.path("simulatedEndSeconds").asDouble(),
+					root.path("wallClockSeconds").asLong()))
+				: Optional.empty();
 			return new Manifest(root.path("scenario").asText(), LocalDateTime.parse(root.path("created").asText()),
-				root.path("stopVisits").asInt(), root.path("anomalies").asInt(),
+				root.path("stopVisits").asInt(), root.path("anomalies").asInt(), root.path("unfinishedTrains").asInt(),
 				root.path("meanArrivalDelaySeconds").asDouble(), root.path("totalCost").asDouble(),
-				root.path("currency").asText("EUR"));
+				root.path("currency").asText("EUR"), outcome);
 		} catch (IOException e) {
 			throw new UncheckedIOException("Cannot read " + file, e);
 		}
