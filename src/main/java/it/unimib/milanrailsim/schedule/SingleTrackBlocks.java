@@ -28,13 +28,39 @@ public final class SingleTrackBlocks {
 	public static void apply(Network network) {
 		Set<Node> visited = new HashSet<>();
 		int blocks = 0;
+		int widened = 0;
 		for (Link link : network.getLinks().values()) {
 			Node from = link.getFromNode();
 			if (isSingleTrack(link) && !visited.contains(from) && isBlockBoundary(network, from)) {
+				widened += widenJunction(network, from) ? 1 : 0;
 				blocks += growBlocksFrom(network, from, visited);
 			}
 		}
-		log.info("Merged single-track links into {} block resources", blocks);
+		log.info("Merged single-track links into {} block resources; {} junction stations given a second track", blocks,
+			widened);
+	}
+
+	/**
+	 * A station where single-track lines branch is a block boundary, so trains
+	 * of two blocks meet there; with one stop track that meet deadlocks, one
+	 * train in the station and the other in a block it cannot leave. A real
+	 * junction has a second track, so the stop link gets one (provisional).
+	 */
+	private static boolean widenJunction(Network network, Node node) {
+		Link stop = network.getLinks().get(StationStopLinks.stopLinkId(node.getId()));
+		if (stop == null || ((Number) stop.getAttributes().getAttribute("railsimTrainCapacity")).intValue() >= 2) {
+			return false;
+		}
+		long singleTrackNeighbours = node.getOutLinks().values().stream()
+			.filter(SingleTrackBlocks::isSingleTrack)
+			.map(l -> l.getToNode().getId())
+			.distinct().count();
+		if (singleTrackNeighbours < 3) {
+			return false;
+		}
+		stop.getAttributes().putAttribute("railsimTrainCapacity", 2);
+		stop.getAttributes().putAttribute("dataStatus", "provisional");
+		return true;
 	}
 
 	private static int growBlocksFrom(Network network, Node boundary, Set<Node> visited) {

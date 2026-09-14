@@ -108,6 +108,24 @@ class SingleTrackBlocksTest {
 	}
 
 	@Test
+	void aSingleTrackJunctionStationGetsASecondStopTrack() {
+		for (String[] station : new String[][] { { "J", "1" }, { "F", "2" }, { "G", "2" }, { "H", "2" } }) {
+			addStation(station[0], Integer.parseInt(station[1]));
+		}
+		addPair("J", "F", 1, true);
+		addPair("J", "G", 1, true);
+		addPair("J", "H", 1, true);
+
+		SingleTrackBlocks.apply(network);
+
+		Link junction = network.getLinks().get(Id.createLinkId("stop_J"));
+		assertEquals(2, junction.getAttributes().getAttribute("railsimTrainCapacity"));
+		assertEquals("provisional", junction.getAttributes().getAttribute("dataStatus"));
+		assertEquals(1, network.getLinks().get(Id.createLinkId("stop_D")).getAttributes().getAttribute("railsimTrainCapacity"),
+			"an end of single track with two neighbours is no junction");
+	}
+
+	@Test
 	void doubleTrackWithOneTrainPerDirectionIsNotSingleTrack() {
 		// two tracks give one train per direction, with no shared resource: never a block
 		addStation("P", 2);
