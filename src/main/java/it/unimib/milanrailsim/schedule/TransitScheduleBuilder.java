@@ -336,24 +336,25 @@ public final class TransitScheduleBuilder {
 				if (track.direction() != null && call.travel() != null && track.direction() != call.travel()) {
 					continue;
 				}
-				Id<Link> link = MicroIds.platformLink(MicroIds.trackId(station, group, track), group, track, call.travel());
-				facilities.computeIfAbsent(link + "|" + area, id -> {
-					Node hub = network.getNodes().get(Id.createNodeId(call.stopId()));
-					TransitStopFacility facility = factory.createTransitStopFacility(
-						Id.create(id, TransitStopFacility.class), hub.getCoord(), false);
-					facility.setLinkId(link);
-					facility.setStopAreaId(Id.create(area, TransitStopArea.class));
-					facility.setName(call.stopId());
-					schedule.addStopFacility(facility);
-					return facility;
-				});
+				facility(schedule, MicroIds.platformLink(MicroIds.trackId(station, group, track), group, track, call.travel()),
+					area, call.stopId());
 			}
 		}
-		TransitStopFacility planned = facilities.get(platform + "|" + area);
-		if (planned == null) {
-			throw new IllegalStateException("Planned platform " + platform + " is not in area " + area);
-		}
-		return planned;
+		// the planner may have had to leave the preferred groups for one that connects to the trip's neighbours
+		return facility(schedule, platform, area, call.stopId());
+	}
+
+	private TransitStopFacility facility(TransitSchedule schedule, Id<Link> link, String area, String stopId) {
+		return facilities.computeIfAbsent(link + "|" + area, id -> {
+			Node hub = network.getNodes().get(Id.createNodeId(stopId));
+			TransitStopFacility facility = factory.createTransitStopFacility(
+				Id.create(id, TransitStopFacility.class), hub.getCoord(), false);
+			facility.setLinkId(link);
+			facility.setStopAreaId(Id.create(area, TransitStopArea.class));
+			facility.setName(stopId);
+			schedule.addStopFacility(facility);
+			return facility;
+		});
 	}
 
 	/**
