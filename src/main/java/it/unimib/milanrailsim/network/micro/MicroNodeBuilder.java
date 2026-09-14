@@ -64,6 +64,8 @@ public final class MicroNodeBuilder {
 	static final double MIN_SECTION_LENGTH_M = 100.0;
 	static final double TRACK_SPACING_M = 5.0;
 	static final int MIN_THROAT_CAPACITY = 2;
+	/** Nominal: the reversal happens on the platform, railsim only needs a positive length. */
+	static final double TURNBACK_LENGTH_M = 1.0;
 	private static final double PLATFORM_SPEED_MS = 13.9;
 	private static final double SECTION_SPEED_DEFAULT_MS = 25.0;
 	private static final double JUNCTION_OFFSET_M = 300.0;
@@ -232,10 +234,27 @@ public final class MicroNodeBuilder {
 				exits.put(Direction.SOUTH, addNode(id + ".a.out", a));
 				addPlatformLink(id + ".north", id, entrances.get(Direction.SOUTH), exits.get(Direction.NORTH), length, provisional, node, station, group, track);
 				addPlatformLink(id + ".south", id, entrances.get(Direction.NORTH), exits.get(Direction.SOUTH), length, provisional, node, station, group, track);
+				addTurnback(id + ".a.turn", id, exits.get(Direction.SOUTH), entrances.get(Direction.SOUTH), node, station);
+				addTurnback(id + ".b.turn", id, exits.get(Direction.NORTH), entrances.get(Direction.NORTH), node, station);
 			}
 			result.add(new TrackEnds(id, group, track, entrances, exits));
 		}
 		return result;
+	}
+
+	/**
+	 * Lets a train on a two-sided bidirectional track reverse: from the exit
+	 * node of one end back to its entrance, so the train runs the platform
+	 * again the other way and leaves by the side it came from, as a terminating
+	 * train does on a through track. The link stays on the platform's resource,
+	 * so the track is held throughout.
+	 */
+	private void addTurnback(String linkId, String resource, Node exit, Node entrance, MicroNode node, Station station) {
+		Link link = addLink(linkId, exit, entrance, TURNBACK_LENGTH_M, PLATFORM_SPEED_MS);
+		link.getAttributes().putAttribute("railsimTrainCapacity", 1);
+		link.getAttributes().putAttribute("railsimResourceId", resource);
+		link.getAttributes().putAttribute("microNode", node.id());
+		link.getAttributes().putAttribute("microStation", station.id());
 	}
 
 	private void addPlatformLink(String linkId, String resource, Node from, Node to, double length, boolean provisional,

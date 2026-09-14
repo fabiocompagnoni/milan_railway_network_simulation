@@ -43,6 +43,8 @@ class MicroNodeBuilderTest {
 					"id": "B", "name": "B", "kind": "through", "platformLengthM": 250,
 					"groups": [
 						{"id": "b_f1", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
+							"connections": {"south": ["segment:A_B:f1"], "north": ["meso:C"]}},
+						{"id": "b_bi", "kind": "through", "capacity": 1,
 							"connections": {"south": ["segment:A_B:f1"], "north": ["meso:C"]}}
 					],
 					"throats": []
@@ -194,6 +196,20 @@ class MicroNodeBuilderTest {
 		Node exitNode = link("A_X").getFromNode();
 		assertEquals(Set.of("A_X"), exitNode.getOutLinks().keySet().stream().map(Id::toString).collect(java.util.stream.Collectors.toSet()));
 		assertNotEquals(entryNode, exitNode);
+	}
+
+	@Test
+	void twoSidedBidirectionalTracksCanReverseOnThePlatform() {
+		Link north = link("B.b_bi.1.north");
+		Link south = link("B.b_bi.1.south");
+		Link turn = link("B.b_bi.1.b.turn");
+		assertEquals(north.getToNode(), turn.getFromNode(), "after running north the train reverses at the north end");
+		assertEquals(south.getFromNode(), turn.getToNode(), "and runs the platform back south");
+		assertEquals("B.b_bi.1", turn.getAttributes().getAttribute("railsimResourceId"));
+		assertEquals(1, turn.getAttributes().getAttribute("railsimTrainCapacity"));
+		assertNull(turn.getAttributes().getAttribute("stationLink"), "not a stop");
+		assertEquals("B.b_bi.1.a.out", link("B.b_bi.1.a.turn").getFromNode().getId().toString());
+		assertEquals("B.b_bi.1.a.in", link("B.b_bi.1.a.turn").getToNode().getId().toString());
 	}
 
 	@Test
