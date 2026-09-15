@@ -336,7 +336,9 @@
 		</node>
 		<node id="S01039.p4.b.in" x="506767.2316789069" y="5040923.927172293" >
 		</node>
-		<node id="S01039.sidings" x="506876.5898596008" y="5040915.816172644" >
+		<node id="S01039.sidings.a" x="507008.45043862535" y="5040844.3124126075" >
+		</node>
+		<node id="S01039.sidings.b" x="506744.7292805763" y="5040987.31993268" >
 		</node>
 		<node id="S01039.south.S01640.in" x="507126.0102656427" y="5040746.436536767" >
 		</node>
@@ -487,7 +489,9 @@
 		</node>
 		<node id="S01066.p9.b.out" x="513686.43522632617" y="5035096.285436916" >
 		</node>
-		<node id="S01066.sidings" x="513756.43522632617" y="5034996.285436916" >
+		<node id="S01066.sidings.a" x="513756.43522632617" y="5034846.285436916" >
+		</node>
+		<node id="S01066.sidings.b" x="513756.43522632617" y="5035146.285436916" >
 		</node>
 		<node id="S01066_S01067.f1.north.a" x="513617.26098307746" y="5035375.342447761" >
 		</node>
@@ -539,7 +543,9 @@
 		</node>
 		<node id="S01067.p4.b.in" x="512664.692793839" y="5036486.855545371" >
 		</node>
-		<node id="S01067.sidings" x="512709.692793839" y="5036386.855545371" >
+		<node id="S01067.sidings.a" x="512709.692793839" y="5036236.855545371" >
+		</node>
+		<node id="S01067.sidings.b" x="512709.692793839" y="5036536.855545371" >
 		</node>
 		<node id="S01067.south.S01066_S01067.f1.in" x="512679.692793839" y="5036086.855545371" >
 		</node>
@@ -973,7 +979,9 @@
 		</node>
 		<node id="S01326.p2.b.in" x="516775.5553498932" y="5040037.272929728" >
 		</node>
-		<node id="S01326.sidings" x="516753.61112267314" y="5039933.622310378" >
+		<node id="S01326.sidings.a" x="516675.8089703443" y="5039805.377134667" >
+		</node>
+		<node id="S01326.sidings.b" x="516831.413275002" y="5040061.867486089" >
 		</node>
 		<node id="S01326.south.S01645.in" x="516572.35778287344" y="5039692.692389423" >
 		</node>
@@ -1323,7 +1331,9 @@
 		</node>
 		<node id="S01492.p6.b.out" x="518585.64666234405" y="5034509.125453324" >
 		</node>
-		<node id="S01492.sidings" x="518549.0324292706" y="5034401.031059684" >
+		<node id="S01492.sidings.a" x="518438.3996274562" y="5034299.737510222" >
+		</node>
+		<node id="S01492.sidings.b" x="518659.66523108503" y="5034502.324609146" >
 		</node>
 		<node id="S01492.south.S01632.in" x="518294.00230915437" y="5034235.321561364" >
 		</node>
@@ -1624,7 +1634,9 @@
 		</node>
 		<node id="S01642.p8.b.in" x="512359.5327701253" y="5038861.509440277" >
 		</node>
-		<node id="S01642.sidings" x="512466.9988085123" y="5038809.77888264" >
+		<node id="S01642.sidings.a" x="512544.86296590033" y="5038681.571343883" >
+		</node>
+		<node id="S01642.sidings.b" x="512389.13465112424" y="5038937.986421398" >
 		</node>
 		<node id="S01642.south.S01067_S01642.f1.in" x="512579.99127703597" y="5038527.4090859955" >
 		</node>
@@ -1833,7 +1845,9 @@
 		</node>
 		<node id="S01645.north.sidings.out" x="514451.6683853084" y="5036935.476146185" >
 		</node>
-		<node id="S01645.sidings" x="514708.365149147" y="5036780.132104024" >
+		<node id="S01645.sidings.a" x="514835.3837144468" y="5036700.343106856" >
+		</node>
+		<node id="S01645.sidings.b" x="514581.3465838472" y="5036859.921101193" >
 		</node>
 		<node id="S01645.south.S01326.in" x="514941.125213835" y="5036586.682492274" >
 		</node>
@@ -1873,7 +1887,9 @@
 		</node>
 		<node id="S01647.p2.b.in" x="514602.9513144943" y="5036846.877530437" >
 		</node>
-		<node id="S01647.sidings" x="514690.96000850695" y="5036787.890499843" >
+		<node id="S01647.sidings.a" x="514780.9776922108" y="5036667.903764658" >
+		</node>
+		<node id="S01647.sidings.b" x="514600.9423248031" y="5036907.877235029" >
 		</node>
 		<node id="S01647.south.S01648.in" x="514846.9980288775" y="5036529.913492731" >
 		</node>
@@ -2001,7 +2017,9 @@
 		</node>
 		<node id="S01701.p9.b.out" x="518414.98183421063" y="5036870.373502285" >
 		</node>
-		<node id="S01701.sidings" x="518521.1048023984" y="5036851.991020869" >
+		<node id="S01701.sidings.a" x="518648.8245984608" y="5036773.329380321" >
+		</node>
+		<node id="S01701.sidings.b" x="518393.38500633603" y="5036930.652661418" >
 		</node>
 		<node id="S01701.south.S01492.in" x="518755.56795704365" y="5036660.609127489" >
 		</node>
@@ -2523,7 +2541,9 @@
 		</node>
 		<node id="S01820.rogoredo_terminal.5.b.out" x="518609.49062651483" y="5031237.900145784" >
 		</node>
-		<node id="S01820.sidings" x="518682.930303886" y="5031153.599411579" >
+		<node id="S01820.sidings.a" x="518720.477476208" y="5031008.37472411" >
+		</node>
+		<node id="S01820.sidings.b" x="518645.383131564" y="5031298.824099048" >
 		</node>
 		<node id="S01820.south.S01624.in" x="518728.97971103614" y="5030855.640602175" >
 		</node>
@@ -2915,7 +2935,9 @@
 		</node>
 		<node id="S01933.p7.b" x="502291.1658704595" y="5052439.820079134" >
 		</node>
-		<node id="S01933.sidings" x="502413.1381412361" y="5052444.591364245" >
+		<node id="S01933.sidings.a" x="502539.29133286787" y="5052363.44105777" >
+		</node>
+		<node id="S01933.sidings.b" x="502286.9849496043" y="5052525.74167072" >
 		</node>
 		<node id="S01933.south.S01077.in" x="502649.21446320455" y="5052257.060112967" >
 		</node>
@@ -5278,7 +5300,7 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 			</attributes>
 		</link>
-		<link id="S01039.sidings" from="S01039.sidings" to="S01039.sidings" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01039.sidings" from="S01039.sidings.a" to="S01039.sidings.b" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microNode" class="java.lang.String">rho-fiera</attribute>
@@ -5287,31 +5309,35 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
 			</attributes>
 		</link>
-		<link id="S01039.sidings.north.enter" from="S01039.north.sidings.out" to="S01039.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01039.sidings.north.enter" from="S01039.north.sidings.out" to="S01039.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">rho-fiera</attribute>
 				<attribute name="microStation" class="java.lang.String">S01039</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01039.sidings.north.leave" from="S01039.sidings" to="S01039.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01039.sidings.north.leave" from="S01039.sidings.b" to="S01039.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">rho-fiera</attribute>
 				<attribute name="microStation" class="java.lang.String">S01039</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01039.sidings.south.enter" from="S01039.south.sidings.out" to="S01039.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01039.sidings.south.enter" from="S01039.south.sidings.out" to="S01039.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">rho-fiera</attribute>
 				<attribute name="microStation" class="java.lang.String">S01039</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01039.sidings.south.leave" from="S01039.sidings" to="S01039.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01039.sidings.south.leave" from="S01039.sidings.b" to="S01039.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">rho-fiera</attribute>
 				<attribute name="microStation" class="java.lang.String">S01039</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
@@ -6362,7 +6388,7 @@
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
-		<link id="S01066.sidings" from="S01066.sidings" to="S01066.sidings" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01066.sidings" from="S01066.sidings.a" to="S01066.sidings.b" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
 				<attribute name="microSidings" class="java.lang.Boolean">true</attribute>
@@ -6370,17 +6396,19 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">8</attribute>
 			</attributes>
 		</link>
-		<link id="S01066.sidings.north.enter" from="S01066.north.sidings.out" to="S01066.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01066.sidings.north.enter" from="S01066.north.sidings.out" to="S01066.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
 				<attribute name="microStation" class="java.lang.String">S01066</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01066.sidings.north.leave" from="S01066.sidings" to="S01066.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01066.sidings.north.leave" from="S01066.sidings.b" to="S01066.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
 				<attribute name="microStation" class="java.lang.String">S01066</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
@@ -6672,7 +6700,7 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S01067.sidings" from="S01067.sidings" to="S01067.sidings" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01067.sidings" from="S01067.sidings.a" to="S01067.sidings.b" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
@@ -6681,31 +6709,35 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
 			</attributes>
 		</link>
-		<link id="S01067.sidings.north.enter" from="S01067.north.sidings.out" to="S01067.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01067.sidings.north.enter" from="S01067.north.sidings.out" to="S01067.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
 				<attribute name="microStation" class="java.lang.String">S01067</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01067.sidings.north.leave" from="S01067.sidings" to="S01067.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01067.sidings.north.leave" from="S01067.sidings.b" to="S01067.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
 				<attribute name="microStation" class="java.lang.String">S01067</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01067.sidings.south.enter" from="S01067.south.sidings.out" to="S01067.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01067.sidings.south.enter" from="S01067.south.sidings.out" to="S01067.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
 				<attribute name="microStation" class="java.lang.String">S01067</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01067.sidings.south.leave" from="S01067.sidings" to="S01067.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01067.sidings.south.leave" from="S01067.sidings.b" to="S01067.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
 				<attribute name="microStation" class="java.lang.String">S01067</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
@@ -9541,7 +9573,7 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 			</attributes>
 		</link>
-		<link id="S01326.sidings" from="S01326.sidings" to="S01326.sidings" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01326.sidings" from="S01326.sidings.a" to="S01326.sidings.b" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microNode" class="java.lang.String">greco-pirelli</attribute>
@@ -9550,31 +9582,35 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
 			</attributes>
 		</link>
-		<link id="S01326.sidings.north.enter" from="S01326.north.sidings.out" to="S01326.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01326.sidings.north.enter" from="S01326.north.sidings.out" to="S01326.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">greco-pirelli</attribute>
 				<attribute name="microStation" class="java.lang.String">S01326</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01326.sidings.north.leave" from="S01326.sidings" to="S01326.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01326.sidings.north.leave" from="S01326.sidings.b" to="S01326.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">greco-pirelli</attribute>
 				<attribute name="microStation" class="java.lang.String">S01326</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01326.sidings.south.enter" from="S01326.south.sidings.out" to="S01326.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01326.sidings.south.enter" from="S01326.south.sidings.out" to="S01326.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">greco-pirelli</attribute>
 				<attribute name="microStation" class="java.lang.String">S01326</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01326.sidings.south.leave" from="S01326.sidings" to="S01326.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01326.sidings.south.leave" from="S01326.sidings.b" to="S01326.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">greco-pirelli</attribute>
 				<attribute name="microStation" class="java.lang.String">S01326</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
@@ -11792,7 +11828,7 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 			</attributes>
 		</link>
-		<link id="S01492.sidings" from="S01492.sidings" to="S01492.sidings" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01492.sidings" from="S01492.sidings.a" to="S01492.sidings.b" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microNode" class="java.lang.String">forlanini</attribute>
@@ -11801,31 +11837,35 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
 			</attributes>
 		</link>
-		<link id="S01492.sidings.north.enter" from="S01492.north.sidings.out" to="S01492.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01492.sidings.north.enter" from="S01492.north.sidings.out" to="S01492.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">forlanini</attribute>
 				<attribute name="microStation" class="java.lang.String">S01492</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01492.sidings.north.leave" from="S01492.sidings" to="S01492.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01492.sidings.north.leave" from="S01492.sidings.b" to="S01492.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">forlanini</attribute>
 				<attribute name="microStation" class="java.lang.String">S01492</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01492.sidings.south.enter" from="S01492.south.sidings.out" to="S01492.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01492.sidings.south.enter" from="S01492.south.sidings.out" to="S01492.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">forlanini</attribute>
 				<attribute name="microStation" class="java.lang.String">S01492</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01492.sidings.south.leave" from="S01492.sidings" to="S01492.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01492.sidings.south.leave" from="S01492.sidings.b" to="S01492.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">forlanini</attribute>
 				<attribute name="microStation" class="java.lang.String">S01492</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
@@ -14023,7 +14063,7 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">4</attribute>
 			</attributes>
 		</link>
-		<link id="S01642.sidings" from="S01642.sidings" to="S01642.sidings" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01642.sidings" from="S01642.sidings.a" to="S01642.sidings.b" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
@@ -14032,31 +14072,35 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
 			</attributes>
 		</link>
-		<link id="S01642.sidings.north.enter" from="S01642.north.sidings.out" to="S01642.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01642.sidings.north.enter" from="S01642.north.sidings.out" to="S01642.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
 				<attribute name="microStation" class="java.lang.String">S01642</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01642.sidings.north.leave" from="S01642.sidings" to="S01642.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01642.sidings.north.leave" from="S01642.sidings.b" to="S01642.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
 				<attribute name="microStation" class="java.lang.String">S01642</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01642.sidings.south.enter" from="S01642.south.sidings.out" to="S01642.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01642.sidings.south.enter" from="S01642.south.sidings.out" to="S01642.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
 				<attribute name="microStation" class="java.lang.String">S01642</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01642.sidings.south.leave" from="S01642.sidings" to="S01642.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01642.sidings.south.leave" from="S01642.sidings.b" to="S01642.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
 				<attribute name="microStation" class="java.lang.String">S01642</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
@@ -18490,7 +18534,7 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 			</attributes>
 		</link>
-		<link id="S01645.sidings" from="S01645.sidings" to="S01645.sidings" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01645.sidings" from="S01645.sidings.a" to="S01645.sidings.b" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
@@ -18499,31 +18543,35 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
 			</attributes>
 		</link>
-		<link id="S01645.sidings.north.enter" from="S01645.north.sidings.out" to="S01645.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01645.sidings.north.enter" from="S01645.north.sidings.out" to="S01645.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
 				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01645.sidings.north.leave" from="S01645.sidings" to="S01645.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01645.sidings.north.leave" from="S01645.sidings.b" to="S01645.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
 				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01645.sidings.south.enter" from="S01645.south.sidings.out" to="S01645.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01645.sidings.south.enter" from="S01645.south.sidings.out" to="S01645.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
 				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01645.sidings.south.leave" from="S01645.sidings" to="S01645.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01645.sidings.south.leave" from="S01645.sidings.b" to="S01645.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
 				<attribute name="microStation" class="java.lang.String">S01645</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
@@ -18704,7 +18752,7 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S01647.sidings" from="S01647.sidings" to="S01647.sidings" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01647.sidings" from="S01647.sidings.a" to="S01647.sidings.b" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
@@ -18713,31 +18761,35 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
 			</attributes>
 		</link>
-		<link id="S01647.sidings.north.enter" from="S01647.north.sidings.out" to="S01647.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01647.sidings.north.enter" from="S01647.north.sidings.out" to="S01647.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
 				<attribute name="microStation" class="java.lang.String">S01647</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01647.sidings.north.leave" from="S01647.sidings" to="S01647.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01647.sidings.north.leave" from="S01647.sidings.b" to="S01647.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
 				<attribute name="microStation" class="java.lang.String">S01647</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01647.sidings.south.enter" from="S01647.south.sidings.out" to="S01647.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01647.sidings.south.enter" from="S01647.south.sidings.out" to="S01647.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
 				<attribute name="microStation" class="java.lang.String">S01647</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01647.sidings.south.leave" from="S01647.sidings" to="S01647.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01647.sidings.south.leave" from="S01647.sidings.b" to="S01647.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">garibaldi</attribute>
 				<attribute name="microStation" class="java.lang.String">S01647</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
@@ -20746,7 +20798,7 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">4</attribute>
 			</attributes>
 		</link>
-		<link id="S01701.sidings" from="S01701.sidings" to="S01701.sidings" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01701.sidings" from="S01701.sidings.a" to="S01701.sidings.b" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
@@ -20755,31 +20807,35 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
 			</attributes>
 		</link>
-		<link id="S01701.sidings.north.enter" from="S01701.north.sidings.out" to="S01701.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01701.sidings.north.enter" from="S01701.north.sidings.out" to="S01701.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
 				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01701.sidings.north.leave" from="S01701.sidings" to="S01701.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01701.sidings.north.leave" from="S01701.sidings.b" to="S01701.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
 				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01701.sidings.south.enter" from="S01701.south.sidings.out" to="S01701.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01701.sidings.south.enter" from="S01701.south.sidings.out" to="S01701.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
 				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01701.sidings.south.leave" from="S01701.sidings" to="S01701.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01701.sidings.south.leave" from="S01701.sidings.b" to="S01701.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">lambrate</attribute>
 				<attribute name="microStation" class="java.lang.String">S01701</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
@@ -25339,7 +25395,7 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">5</attribute>
 			</attributes>
 		</link>
-		<link id="S01820.sidings" from="S01820.sidings" to="S01820.sidings" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01820.sidings" from="S01820.sidings.a" to="S01820.sidings.b" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
@@ -25348,31 +25404,35 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
 			</attributes>
 		</link>
-		<link id="S01820.sidings.north.enter" from="S01820.north.sidings.out" to="S01820.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01820.sidings.north.enter" from="S01820.north.sidings.out" to="S01820.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
 				<attribute name="microStation" class="java.lang.String">S01820</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01820.sidings.north.leave" from="S01820.sidings" to="S01820.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01820.sidings.north.leave" from="S01820.sidings.b" to="S01820.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
 				<attribute name="microStation" class="java.lang.String">S01820</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01820.sidings.south.enter" from="S01820.south.sidings.out" to="S01820.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01820.sidings.south.enter" from="S01820.south.sidings.out" to="S01820.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
 				<attribute name="microStation" class="java.lang.String">S01820</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01820.sidings.south.leave" from="S01820.sidings" to="S01820.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01820.sidings.south.leave" from="S01820.sidings.b" to="S01820.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">rogoredo</attribute>
 				<attribute name="microStation" class="java.lang.String">S01820</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
@@ -27928,7 +27988,7 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S01933.sidings" from="S01933.sidings" to="S01933.sidings" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01933.sidings" from="S01933.sidings.a" to="S01933.sidings.b" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microNode" class="java.lang.String">saronno</attribute>
@@ -27937,31 +27997,35 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
 			</attributes>
 		</link>
-		<link id="S01933.sidings.north.enter" from="S01933.north.sidings.out" to="S01933.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01933.sidings.north.enter" from="S01933.north.sidings.out" to="S01933.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">saronno</attribute>
 				<attribute name="microStation" class="java.lang.String">S01933</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01933.sidings.north.leave" from="S01933.sidings" to="S01933.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01933.sidings.north.leave" from="S01933.sidings.b" to="S01933.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">saronno</attribute>
 				<attribute name="microStation" class="java.lang.String">S01933</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01933.sidings.south.enter" from="S01933.south.sidings.out" to="S01933.sidings" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01933.sidings.south.enter" from="S01933.south.sidings.out" to="S01933.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">saronno</attribute>
 				<attribute name="microStation" class="java.lang.String">S01933</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01933.sidings.south.leave" from="S01933.sidings" to="S01933.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01933.sidings.south.leave" from="S01933.sidings.b" to="S01933.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="microNode" class="java.lang.String">saronno</attribute>
 				<attribute name="microStation" class="java.lang.String">S01933</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
