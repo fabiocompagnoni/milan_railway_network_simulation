@@ -1,0 +1,49 @@
+{
+	"node": "cremona",
+	"title": "Cremona",
+	"status": "bozza con ricerca e conferma del 2026-09-15",
+	"detailLevel": "binari nominati: stazione di testa e di transito per le linee da Treviglio, Brescia, Codogno, Pavia e Mantova, tutte a binario unico tranne verso Codogno",
+	"sources": [
+		"Wikipedia, Stazione di Cremona (https://it.wikipedia.org/wiki/Stazione_di_Cremona): 4 binari passanti, di cui 1, 3 e 4 con banchina (il 2 solo transito e ricovero); 4 tronchi, 1 est e 3 est da un lato, 1 ovest e 3 ovest dall'altro; deposito locomotive e scalo merci; confermato da Fabio 2026-09-15",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15: si attestano R6 36, R5 33, R37 7, R39 6, R40 8, RE11 5 corse; transita RE11 21",
+		"rete meso: lato ovest S01914 Cava Tigozzi, S01913 Acquanegra Cremonese, S01912 Ponte d'Adda (Codogno e Pavia); lato est S01905 Olmeneta (Treviglio e Brescia), S01916 Villetta Malagnino e S01919 Piadena (Mantova)"
+	],
+
+	"stations": [
+		{
+			"id": "S01915",
+			"name": "Cremona",
+			"kind": "mixed",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "cremona_passanti", "kind": "through", "tracks": [{"ref": "1", "direction": null}, {"ref": "3", "direction": null}, {"ref": "4", "direction": null}],
+					"connections": {"south": ["meso:S01914", "meso:S01913", "meso:S01912"], "north": ["meso:S01905", "meso:S01916", "meso:S01919"]},
+					"notes": "binari passanti con banchina; south = lato ovest (Codogno, Pavia), north = lato est (Olmeneta, Mantova): lati ipotizzati"},
+				{"id": "cremona_tronchi_est", "kind": "terminal", "tracks": [{"ref": "1est", "direction": null}, {"ref": "3est", "direction": null}],
+					"connections": {"north": ["meso:S01905", "meso:S01916", "meso:S01919"]},
+					"notes": "tronchi est, per le linee che arrivano da Olmeneta e da Mantova (ipotesi)"},
+				{"id": "cremona_tronchi_ovest", "kind": "terminal", "tracks": [{"ref": "1ovest", "direction": null}, {"ref": "3ovest", "direction": null}],
+					"connections": {"south": ["meso:S01914", "meso:S01913", "meso:S01912"]},
+					"notes": "tronchi ovest, per le linee che arrivano da Codogno e da Pavia (ipotesi)"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "deposito locomotive e binario 2 di ricovero: numero di binari da rilevare, valore provvisorio del simulatore"}
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"R5": {"bundle": null, "stations": {"S01915": ["cremona_tronchi_est", "cremona_passanti"]}},
+		"R6": {"bundle": null, "stations": {"S01915": ["cremona_tronchi_est", "cremona_passanti"]}},
+		"R40": {"bundle": null, "stations": {"S01915": ["cremona_tronchi_est", "cremona_passanti"]}},
+		"R37": {"bundle": null, "stations": {"S01915": ["cremona_tronchi_ovest", "cremona_passanti"]}},
+		"R39": {"bundle": null, "stations": {"S01915": ["cremona_tronchi_ovest", "cremona_passanti"]}},
+		"*terminal": {"bundle": null, "stations": {"S01915": ["cremona_passanti", "cremona_tronchi_est", "cremona_tronchi_ovest"]}},
+		"*through": {"bundle": null, "stations": {"S01915": ["cremona_passanti"]}}
+	},
+
+	"openQuestions": [
+		"Da quale lato arrivano le linee da Olmeneta e da Mantova, e su quali tronchi si attestano?"
+	]
+}

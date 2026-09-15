@@ -1,0 +1,60 @@
+{
+	"node": "lodi-codogno",
+	"title": "Lodi e Codogno",
+	"status": "bozza con ricerca e conferma del 2026-09-15",
+	"detailLevel": "binari per stazione: capolinea della S1 a Lodi; Codogno nodo tra la Milano-Bologna e la Pavia-Cremona",
+	"sources": [
+		"Wikipedia, Stazione di Lodi (https://it.wikipedia.org/wiki/Stazione_di_Lodi): 5 binari passanti, nessun tronco, binari di ricovero lato Milano oggi inutilizzati",
+		"rilievo diretto 2026-09-15: la S1 si attesta al binario 5 di Lodi",
+		"Wikipedia, Stazione di Codogno (https://it.wikipedia.org/wiki/Stazione_di_Codogno): 4 binari per il servizio viaggiatori, uno per piccole manovre, un tronco lato Cremona; confermato da Fabio 2026-09-15",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15: Lodi si attesta S1 74, transitano R38 38, RE11 24; Codogno si attestano R37 21, R39 6, transitano R38 36, RE11 25, R37 7",
+		"rete meso: Lodi lato Milano S01820 Rogoredo, S01824 Tavazzano, lato opposto S01826 Secugnago, S01828 Codogno; Codogno lato Milano S01825 Lodi, S01827 Casalpusterlengo, lato opposto S01829 S.Stefano Lodigiano (Piacenza), S01910 Maleo e S01912 Ponte d'Adda (Cremona)"
+	],
+
+	"stations": [
+		{
+			"id": "S01825",
+			"name": "Lodi",
+			"kind": "mixed",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "lodi", "kind": "through", "tracks": [{"ref": "1", "direction": null}, {"ref": "2", "direction": null}, {"ref": "3", "direction": null}, {"ref": "4", "direction": null}, {"ref": "5", "direction": null}],
+					"connections": {"south": ["meso:S01820", "meso:S01824"], "north": ["meso:S01826", "meso:S01828"]},
+					"notes": "5 binari passanti; south = verso Milano"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "binari di ricovero lato Milano oggi inutilizzati: numero da rilevare, valore provvisorio del simulatore"}
+		},
+		{
+			"id": "S01828",
+			"name": "Codogno",
+			"kind": "mixed",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "codogno", "kind": "through", "capacity": 4, "otherOperatorsShare": 0,
+					"connections": {"south": ["meso:S01825", "meso:S01827"], "north": ["meso:S01829", "meso:S01910", "meso:S01912"]},
+					"notes": "4 binari per il servizio viaggiatori; south = verso Milano, north = verso Piacenza e Cremona"},
+				{"id": "codogno_tronco", "kind": "terminal", "capacity": 1, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01910", "meso:S01912"]},
+					"notes": "tronco lato Cremona"}
+			],
+			"throats": [],
+			"sidings": {"tracks": 1, "note": "binario per piccole manovre (Wikipedia)"}
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"S1": {"bundle": null, "stations": {"S01825": ["lodi/5", "lodi"]}},
+		"R39": {"bundle": null, "stations": {"S01828": ["codogno_tronco", "codogno"]}},
+		"R37": {"bundle": null, "stations": {"S01828": ["codogno_tronco", "codogno"]}, "notes": "arriva da Casalpusterlengo, lato opposto al tronco: il tronco e' scartato perche' non raggiungibile e si usano i binari passanti"},
+		"*terminal": {"bundle": null, "stations": {"S01825": ["lodi"], "S01828": ["codogno"]}},
+		"*through": {"bundle": null, "stations": {"S01825": ["lodi"], "S01828": ["codogno"]}}
+	},
+
+	"openQuestions": [
+		"Lodi: binari usati dai regionali R38 e RE11",
+		"Codogno: dove si attestano le R37 che arrivano da Pavia?"
+	]
+}

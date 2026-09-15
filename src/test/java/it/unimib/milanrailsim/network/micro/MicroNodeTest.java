@@ -189,9 +189,11 @@ class MicroNodeTest {
 
 		List<MicroNode> read = MicroNode.readAll(nodes);
 
-		assertEquals(List.of("brescia", "cadorna-bovisa", "centrale", "forlanini", "garibaldi", "greco-pirelli", "iseo", "lambrate", "rho-fiera", "rogoredo", "saronno"),
+		assertEquals(List.of("bergamo", "brescia", "brescia-parma", "cadorna-bovisa", "centrale", "colico-morbegno", "cremona",
+				"forlanini", "garbagnate", "garibaldi", "greco-pirelli", "iseo", "lambrate", "lecco", "lodi-codogno", "melegnano",
+				"milano-mortara", "monza-sesto", "pavia", "pioltello", "rho-fiera", "rogoredo", "saronno", "treviglio"),
 			read.stream().map(MicroNode::id).toList());
-		MicroNode cadorna = read.get(1);
+		MicroNode cadorna = read.get(3);
 		assertEquals(List.of("cadorna_s3", "cadorna_saronno", "cadorna_shared"), cadorna.preferredGroups("S3", "S01066", true));
 		assertEquals(10, cadorna.station("S01066").groups().stream().mapToInt(MicroNode.Group::trackCount).sum());
 	}

@@ -1,0 +1,67 @@
+{
+	"node": "monza-sesto",
+	"title": "Monza e Sesto San Giovanni",
+	"status": "bozza con ricerca e conferma del 2026-09-15",
+	"detailLevel": "gruppi di binari: tratta a 4 binari Milano-Monza con le linee per Chiasso, Lecco e Molteno",
+	"sources": [
+		"Wikipedia, Stazione di Monza (https://it.wikipedia.org/wiki/Stazione_di_Monza): 7 binari, nodo tra Milano-Chiasso e Milano-Lecco, origine della linea per Molteno; ripartizione per linea proposta (coppia Chiasso, coppia Lecco, S7 verso Molteno) confermata da Fabio 2026-09-15",
+		"Wikipedia, Stazione di Sesto San Giovanni (https://it.wikipedia.org/wiki/Stazione_di_Sesto_San_Giovanni): 5 binari sul tratto a 4 binari Milano-Monza",
+		"rilievo diretto 2026-09-15: a Sesto i binari sono per direzione, 1 verso nord, 2 verso sud, 3 verso nord, 4 verso sud, 5 verso nord",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15: a Monza transitano S11 75, S8 74, S9 67, R14 43, RE80 38, RE8 42, S7 36, si attesta S7 4; a Sesto transitano S11 75, S8 74, S9 67, R14 43, S7 36, RE8 5",
+		"rete meso: Monza lato Milano S01325 Sesto, S01700 Centrale (collegamento diretto), lato opposto S01318 Seregno e S01321 Lissone (Chiasso), S01510 Arcore, S01511 Carnate, S01520 Lecco, S01524 Calolziocorte (Lecco), S01480 Monza Sobborghi (Molteno); Sesto lato Milano S01326 Greco Pirelli, S01701 Lambrate, lato opposto S01322 Monza"
+	],
+
+	"stations": [
+		{
+			"id": "S01322",
+			"name": "Monza",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "monza_chiasso", "kind": "through", "capacity": 3, "otherOperatorsShare": 0,
+					"connections": {"south": ["meso:S01325", "meso:S01700"], "north": ["meso:S01318", "meso:S01321"]},
+					"notes": "binari della linea per Chiasso (S9, S11, RE80); numero per linea ipotizzato"},
+				{"id": "monza_lecco", "kind": "through", "capacity": 3, "otherOperatorsShare": 0,
+					"connections": {"south": ["meso:S01325", "meso:S01700"], "north": ["meso:S01510", "meso:S01511", "meso:S01520", "meso:S01524"]},
+					"notes": "binari della linea per Lecco (S8, R14, RE8); numero per linea ipotizzato"},
+				{"id": "monza_molteno", "kind": "through", "capacity": 1, "otherOperatorsShare": 0,
+					"connections": {"south": ["meso:S01325", "meso:S01700"], "north": ["meso:S01480"]},
+					"notes": "binario verso Molteno, a binario unico (S7)"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "non documentato: valore provvisorio del simulatore"}
+		},
+		{
+			"id": "S01325",
+			"name": "Sesto S.Giovanni",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "sesto", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}, {"ref": "3", "direction": "north"}, {"ref": "4", "direction": "south"}, {"ref": "5", "direction": "north"}],
+					"connections": {"south": ["meso:S01326", "meso:S01701"], "north": ["meso:S01322"]},
+					"notes": "binari per direzione (rilievo 2026-09-15); north = verso Monza"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "nessun ricovero noto: valore provvisorio del simulatore"}
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"S9": {"bundle": null, "stations": {"S01322": ["monza_chiasso", "monza_lecco"]}},
+		"S11": {"bundle": null, "stations": {"S01322": ["monza_chiasso", "monza_lecco"]}},
+		"RE80": {"bundle": null, "stations": {"S01322": ["monza_chiasso", "monza_lecco"]}},
+		"S8": {"bundle": null, "stations": {"S01322": ["monza_lecco", "monza_chiasso"]}},
+		"R14": {"bundle": null, "stations": {"S01322": ["monza_lecco", "monza_chiasso"]}},
+		"RE8": {"bundle": null, "stations": {"S01322": ["monza_lecco", "monza_chiasso"]}},
+		"S7": {"bundle": null, "stations": {"S01322": ["monza_molteno", "monza_lecco"]}},
+		"*terminal": {"bundle": null, "stations": {"S01322": ["monza_molteno", "monza_lecco"]}},
+		"*through": {"bundle": null, "stations": {"S01322": ["monza_lecco", "monza_chiasso"], "S01325": ["sesto"]}}
+	},
+
+	"openQuestions": [
+		"Monza: numerazione e verso dei binari per linea",
+		"Sesto: quali linee usano i binari 1-2, 3-4 e 5"
+	]
+}

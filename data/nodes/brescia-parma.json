@@ -1,0 +1,120 @@
+{
+	"node": "brescia-parma",
+	"title": "Linea Brescia-Parma: stazioni di incrocio e Parma",
+	"status": "bozza con ricerca e conferma del 2026-09-15",
+	"detailLevel": "binari per stazione: linea interamente a binario unico dove i treni si incrociano solo nelle stazioni abilitate; senza binari di incrocio modellati due R8 in versi opposti si bloccavano per tutta la giornata (simulazione del 2026-09-15)",
+	"sources": [
+		"Wikipedia, Ferrovia Brescia-Parma (https://it.wikipedia.org/wiki/Ferrovia_Brescia-Parma): binario unico, DCO da Milano Greco Pirelli, blocco conta assi, SCMT; Piadena e Casalmaggiore stazioni di incrocio; Mezzani-Rondani fermata",
+		"Wikipedia, stazioni di Ghedi (3 binari: 1 di corsa e 2 di precedenza da 545 m), Piadena (5 binari passanti), San Giovanni in Croce (2 binari), Casalmaggiore (2 binari viaggiatori), Colorno (2 passanti e un tronco dello scalo), Torrile-San Polo (ACEI dal 2008, numero di binari non indicato), Parma (8 binari, unico tronco l'8 lato Bologna)",
+		"proposte (incroci a Ghedi, Piadena, San Giovanni in Croce, Casalmaggiore, Colorno e Torrile; R8 a Parma sui binari del gruppo nord) confermate da Fabio 2026-09-15",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15: R8 34 corse Brescia-Parma; a Piadena transitano anche RE11 21 e R40 7"
+	],
+
+	"stations": [
+		{
+			"id": "S01841",
+			"name": "Ghedi",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "ghedi", "kind": "through", "capacity": 3, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01840", "meso:S09999"], "south": ["meso:S01842", "meso:S01845"]},
+					"notes": "1 binario di corsa e 2 di precedenza; qui north = verso Brescia, south = verso Parma"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "nessun ricovero usato: valore provvisorio del simulatore"}
+		},
+		{
+			"id": "S01919",
+			"name": "Piadena",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "piadena", "kind": "through", "capacity": 5, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01848", "meso:S01847", "meso:S01915", "meso:S01916", "meso:S01918"], "south": ["meso:S01849", "meso:S01920"]},
+					"notes": "5 binari passanti, nodo tra Brescia-Parma e Cremona-Mantova. I lati sono i due capi dei binari: da un lato Brescia (Canneto, Asola) e Cremona, dall'altro Parma (San Giovanni in Croce) e Mantova (Bozzolo), cosi' R8 e RE11 attraversano la stazione (ipotesi)"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "3 binari merci del polo logistico, non usati dai treni viaggiatori: valore provvisorio del simulatore"}
+		},
+		{
+			"id": "S01849",
+			"name": "S.Giovanni In Croce",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "sangiovanni", "kind": "through", "capacity": 2, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01919"], "south": ["meso:S01850"]},
+					"notes": "2 binari, incrocio"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "nessun ricovero usato: valore provvisorio del simulatore"}
+		},
+		{
+			"id": "S01850",
+			"name": "Casalmaggiore",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "casalmaggiore", "kind": "through", "capacity": 2, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01849"], "south": ["meso:S01851", "meso:S01853"]},
+					"notes": "2 binari viaggiatori, stazione di incrocio"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "scalo merci con 6 tronchi, non usato dai treni viaggiatori: valore provvisorio del simulatore"}
+		},
+		{
+			"id": "S01852",
+			"name": "Colorno",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "colorno", "kind": "through", "capacity": 2, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01851"], "south": ["meso:S01853"]},
+					"notes": "2 binari passanti, incrocio; il tronco dello scalo dismesso non e' modellato"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "nessun ricovero usato: valore provvisorio del simulatore"}
+		},
+		{
+			"id": "S01853",
+			"name": "Torrile S.Polo",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "torrile", "kind": "through", "capacity": 2, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01852", "meso:S01850"], "south": ["meso:S05014"]},
+					"notes": "2 binari di incrocio (ipotesi: la fonte non indica il numero)"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "raccordo per il trasporto di auto, non usato dai treni viaggiatori: valore provvisorio del simulatore"}
+		},
+		{
+			"id": "S05014",
+			"name": "Parma",
+			"kind": "terminal",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "parma_nord", "kind": "terminal", "capacity": 3, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01853"]},
+					"notes": "binari del gruppo nord (5-7) per la R8 da Brescia; nella rete Parma e' collegata solo alla linea per Brescia"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "da rilevare: valore provvisorio del simulatore"}
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"*terminal": {"bundle": null, "stations": {"S05014": ["parma_nord"], "S01919": ["piadena"]}},
+		"*through": {"bundle": null, "stations": {"S01841": ["ghedi"], "S01919": ["piadena"], "S01849": ["sangiovanni"], "S01850": ["casalmaggiore"], "S01852": ["colorno"], "S01853": ["torrile"]}}
+	},
+
+	"openQuestions": [
+		"Torrile San Polo: quanti binari di incrocio?",
+		"San Giovanni in Croce: e' abilitata agli incroci?",
+		"Piadena: da quale capo dei binari arrivano le linee da Brescia, Cremona, Parma e Mantova?",
+		"Parma: su quale binario si attesta la R8?"
+	]
+}

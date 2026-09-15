@@ -1,0 +1,50 @@
+{
+	"node": "lecco",
+	"title": "Lecco",
+	"status": "bozza con ricerca e conferma del 2026-09-15",
+	"detailLevel": "binari nominati con assegnazione per linea e per verso: stazione di diramazione verso Milano (via Monza e via Carnate), Bergamo, Molteno e Sondrio",
+	"sources": [
+		"Wikipedia, Stazione di Lecco (https://it.wikipedia.org/wiki/Stazione_di_Lecco): 5 binari passanti e un tronco per i treni da sud; uso tipico tronco S7, 1 RE8 verso Tirano, 2 R7 da/per Bergamo, 3 S8 da/per Carnate, 4 RE8 verso Milano, 5 R13 da/per Sondrio; confermato da Fabio 2026-09-15",
+		"rilievo diretto 2026-09-15: binari di ricovero, 4 per i treni che arrivano da sud e 15 per quelli che arrivano da nord",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15: si attestano S8 74, S7 36, R7 31, R13 26, R18 7, RE8 6 corse; transitano RE8 36",
+		"rete meso: lato sud S01322 Monza (collegamento diretto), S01522 Lecco Maggianico (Carnate), S01523 Vercurago e S01524 Calolziocorte (Bergamo), S01463 Valmadrera e S01460 Oggiono (Molteno); lato nord S01415 Mandello e S01416 Abbadia (Sondrio)"
+	],
+
+	"stations": [
+		{
+			"id": "S01520",
+			"name": "Lecco",
+			"kind": "mixed",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "lecco", "kind": "through", "tracks": [{"ref": "1", "direction": null}, {"ref": "2", "direction": null}, {"ref": "3", "direction": null}, {"ref": "4", "direction": null}, {"ref": "5", "direction": null}],
+					"connections": {"south": ["meso:S01322", "meso:S01522", "meso:S01523", "meso:S01524", "meso:S01463", "meso:S01460"], "north": ["meso:S01415", "meso:S01416"]},
+					"notes": "5 binari passanti; south = verso Milano, Bergamo e Molteno, north = verso Sondrio"},
+				{"id": "lecco_tronco", "kind": "terminal", "tracks": [{"ref": "tronco", "direction": null}],
+					"connections": {"south": ["meso:S01463", "meso:S01460"]},
+					"notes": "tronco per i treni da sud, usato dalla linea per Molteno"}
+			],
+			"throats": [],
+			"sidings": {"tracks": 19, "note": "4 binari di ricovero lato sud e 15 lato nord (rilievo 2026-09-15); il modello ha un solo ricovero collegato a entrambi i lati, quindi non distingue da che lato si entra"}
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"S7": {"bundle": null, "stations": {"S01520": ["lecco_tronco/tronco", "lecco"]}},
+		"R18": {"bundle": null, "stations": {"S01520": ["lecco_tronco/tronco", "lecco"]}},
+		"R7": {"bundle": null, "stations": {"S01520": ["lecco/2", "lecco"]}},
+		"S8": {"bundle": null, "stations": {"S01520": ["lecco/3", "lecco"]}},
+		"R13": {"bundle": null, "stations": {"S01520": ["lecco/5", "lecco"]}},
+		"RE8": {"bundle": null, "stations": {"S01520": {"from_south": ["lecco/1", "lecco"], "from_north": ["lecco/4", "lecco"]}},
+			"notes": "binario 1 verso Tirano, binario 4 verso Milano"},
+		"*terminal": {"bundle": null, "stations": {"S01520": ["lecco"]}},
+		"*through": {"bundle": null, "stations": {"S01520": ["lecco"]}}
+	},
+
+	"openQuestions": [
+		"Il tronco e' un binario a se' o parte del binario 1?",
+		"Ricoveri separati per lato: servirebbe un ricovero per lato nel modello"
+	]
+}
