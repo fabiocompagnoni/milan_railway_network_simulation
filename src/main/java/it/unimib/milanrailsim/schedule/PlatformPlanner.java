@@ -33,11 +33,26 @@ public final class PlatformPlanner {
 
 	/** Clearance between two trains on the same platform track (domain estimate). */
 	static final int BUFFER_SECONDS = 60;
+	/** How long before departure a train coming from the sidings reaches its platform (domain estimate). */
+	public static final int POSITIONING_SECONDS = 4 * 60;
 
 	public record Call(String stopId, int arrivalSeconds, int departureSeconds) {
 	}
 
-	public record TripCalls(String tripId, String line, List<Call> calls) {
+	/**
+	 * The calls of one trip; {@code fromSidings} and {@code toSidings} say whether
+	 * the train comes onto its first platform from the sidings and leaves its
+	 * last one for them, instead of standing there between trips.
+	 */
+	public record TripCalls(String tripId, String line, List<Call> calls, boolean fromSidings, boolean toSidings) {
+
+		public TripCalls(String tripId, String line, List<Call> calls) {
+			this(tripId, line, calls, false, false);
+		}
+
+		public TripCalls via(boolean fromSidings, boolean toSidings) {
+			return new TripCalls(tripId, line, calls, fromSidings, toSidings);
+		}
 	}
 
 	/** The planned platform of every call at a micro station, by trip and call index. */
@@ -126,7 +141,8 @@ public final class PlatformPlanner {
 				}
 				platforms.put(trip.tripId(), planned);
 				int last = trip.calls().size() - 1;
-				inherited = next != null && next.calls().getFirst().stopId().equals(trip.calls().get(last).stopId())
+				inherited = next != null && !trip.toSidings()
+					&& next.calls().getFirst().stopId().equals(trip.calls().get(last).stopId())
 					? planned.get(last) : null;
 			}
 		}
@@ -137,13 +153,21 @@ public final class PlatformPlanner {
 		return new Plan(platforms, conflicts);
 	}
 
-	/** Occupation of the platform: from arrival (or just before a first departure) to departure, or to the next trip's departure at a terminus. */
+	/**
+	 * Occupation of the platform: from arrival (or the positioning before a first
+	 * departure) to departure, or to the next trip's departure at a terminus
+	 * where the train waits on the platform.
+	 */
 	private double[] window(TripCalls trip, int callIndex, TripCalls next) {
 		Call call = trip.calls().get(callIndex);
 		boolean last = callIndex == trip.calls().size() - 1;
-		double start = callIndex == 0 ? call.departureSeconds() - BUFFER_SECONDS : call.arrivalSeconds();
+		double start = callIndex == 0
+			? call.departureSeconds() - BUFFER_SECONDS - (trip.fromSidings() ? POSITIONING_SECONDS : 0)
+			: call.arrivalSeconds();
 		double end;
-		if (last && next != null && next.calls().getFirst().stopId().equals(call.stopId())) {
+		if (last && trip.toSidings()) {
+			end = call.departureSeconds();
+		} else if (last && next != null && next.calls().getFirst().stopId().equals(call.stopId())) {
 			end = next.calls().getFirst().departureSeconds();
 		} else if (last) {
 			end = call.arrivalSeconds() + turnaroundSeconds;

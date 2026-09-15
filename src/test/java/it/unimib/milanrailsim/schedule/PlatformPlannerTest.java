@@ -70,6 +70,21 @@ class PlatformPlannerTest {
 	}
 
 	@Test
+	void aTrainLeavingForTheSidingsFreesItsPlatformAndDoesNotPassItOn() {
+		// t1 arrives at A at 8:20 and leaves for the sidings; t2 departs A at 11:00 from the sidings
+		TripCalls arriving = trip("t1", 8 * 60, "C", "B", "A").via(false, true);
+		TripCalls departing = trip("t2", 11 * 60, "A", "B", "C").via(true, false);
+		TripCalls between = trip("t3", 8 * 60 + 25, "A", "B", "C");
+
+		Plan plan = planner.plan(List.of(List.of(arriving, departing), List.of(between)));
+
+		assertEquals(Id.createLinkId("A.p1.in"), plan.platform("t1", 2).orElseThrow());
+		assertEquals(Id.createLinkId("A.p1.in"), plan.platform("t3", 0).orElseThrow(),
+			"the platform is free again right after t1 left it");
+		assertEquals(0, plan.conflicts());
+	}
+
+	@Test
 	void aGroupNotConnectedToTheTripsNeighboursIsSkipped() {
 		// S2 prefers b_x at B, but b_x leads to X, not to C where the trip goes next
 		Plan plan = planner.plan(List.of(List.of(trip("t1", "S2", 8 * 60, "A", "B", "C"))));

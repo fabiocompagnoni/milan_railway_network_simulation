@@ -84,6 +84,7 @@ public final class TransitScheduleBuilder {
 	private final Map<String, String> patternToRouteId = new HashMap<>();
 	private final Map<String, Integer> routeCounters = new HashMap<>();
 	private final Map<String, ToDoubleFunction<Link>> lineCosts = new HashMap<>();
+	private final Map<String, TripCalls> movements = new HashMap<>();
 	private PlatformPlanner planner;
 	private PlatformPlanner.Plan plan;
 	private LinkRouter router;
@@ -140,8 +141,9 @@ public final class TransitScheduleBuilder {
 		Set<String> activeServiceIds = ServiceCalendar.activeServiceIds(feed.calendarDateRows(), serviceDate);
 		Map<String, List<GtfsFeed.Trip>> includedTripsByRoute = includedTripsByRoute(activeServiceIds);
 
-		List<List<TripCalls>> chains = chains(includedTripsByRoute);
+		List<List<TripCalls>> chains = viaSidings(chains(includedTripsByRoute));
 		plan = planner.plan(chains);
+		chains.forEach(chain -> chain.forEach(trip -> movements.put(trip.tripId(), trip)));
 
 		for (Map.Entry<String, List<GtfsFeed.Trip>> entry : includedTripsByRoute.entrySet()) {
 			buildLine(entry.getKey(), entry.getValue(), schedule, vehicles);
@@ -204,9 +206,40 @@ public final class TransitScheduleBuilder {
 			journeys.add(new Journey(trip.id(), line, calls.getFirst().stopId(), calls.getLast().stopId(),
 				calls.getFirst().departureSeconds(), calls.getLast().arrivalSeconds()));
 		}));
-		return TripChains.chain(journeys, turnaroundSeconds, maxLayoverSeconds).stream()
+		// a detailed station has sidings: a long layover there is spent in them, not by a new vehicle
+		ToDoubleFunction<String> chainLimit = stop -> planner.isMicro(stop) ? Double.POSITIVE_INFINITY
+			: maxLayoverSeconds.applyAsDouble(stop);
+		return TripChains.chain(journeys, turnaroundSeconds, chainLimit).stream()
 			.map(chain -> chain.stream().map(journey -> callsByTrip.get(journey.tripId())).toList())
 			.toList();
+	}
+
+	/**
+	 * Marks the trips that start from or end in the sidings of a detailed
+	 * station: the first and last of a chain there, and both sides of a layover
+	 * longer than the station allows on a platform.
+	 */
+	private List<List<TripCalls>> viaSidings(List<List<TripCalls>> chains) {
+		List<List<TripCalls>> result = new ArrayList<>();
+		for (List<TripCalls> chain : chains) {
+			List<TripCalls> marked = new ArrayList<>();
+			for (int i = 0; i < chain.size(); i++) {
+				TripCalls trip = chain.get(i);
+				String first = trip.calls().getFirst().stopId();
+				String last = trip.calls().getLast().stopId();
+				boolean from = planner.isMicro(first) && (i == 0 || longLayover(chain.get(i - 1), trip));
+				boolean to = planner.isMicro(last) && (i == chain.size() - 1 || longLayover(trip, chain.get(i + 1)));
+				marked.add(trip.via(from, to));
+			}
+			result.add(List.copyOf(marked));
+		}
+		return List.copyOf(result);
+	}
+
+	private boolean longLayover(TripCalls before, TripCalls after) {
+		String terminus = before.calls().getLast().stopId();
+		double wait = after.calls().getFirst().departureSeconds() - before.calls().getLast().arrivalSeconds();
+		return wait > maxLayoverSeconds.applyAsDouble(terminus);
 	}
 
 	private void buildLine(String routeShortName, List<GtfsFeed.Trip> trips, TransitSchedule schedule, Vehicles vehicles) {
@@ -227,13 +260,16 @@ public final class TransitScheduleBuilder {
 
 	private TransitRoute routeForTrip(String routeShortName, GtfsFeed.Trip trip, TransitSchedule schedule, TransitLine line) {
 		List<GtfsFeed.StopTime> stopTimes = feed.stopTimesByTripId().get(trip.id());
+		TripCalls movement = movements.get(trip.id());
+		int positioning = movement.fromSidings() ? PlatformPlanner.POSITIONING_SECONDS : 0;
 		int firstDeparture = stopTimes.get(0).departureSeconds();
 
 		List<TransitStopFacility> stopFacilities = new ArrayList<>();
 		for (int i = 0; i < stopTimes.size(); i++) {
 			stopFacilities.add(facilityFor(schedule, routeShortName, trip.id(), stopTimes, i));
 		}
-		String pattern = pattern(trip.routeId(), stopTimes, stopFacilities, firstDeparture);
+		String pattern = pattern(trip.routeId(), stopTimes, stopFacilities, firstDeparture)
+			+ (movement.fromSidings() ? "|from-sidings" : "") + (movement.toSidings() ? "|to-sidings" : "");
 		String existingRouteId = patternToRouteId.get(pattern);
 		if (existingRouteId != null) {
 			return line.getRoutes().get(Id.create(existingRouteId, TransitRoute.class));
@@ -244,14 +280,18 @@ public final class TransitScheduleBuilder {
 		for (int i = 0; i < stopTimes.size(); i++) {
 			GtfsFeed.StopTime stopTime = stopTimes.get(i);
 			TransitStopFacility facility = stopFacilities.get(i);
-			if (i == 0) {
+			if (i == 0 && movement.fromSidings()) {
+				Id<Link> sidings = sidingsOf(stopTime.stopId());
+				chain.add(sidings);
+				chain.addAll(router.path(sidings, facility.getLinkId(), routeShortName, lineCost(routeShortName)));
+			} else if (i == 0) {
 				chain.add(facility.getLinkId());
 			} else {
 				chain.addAll(router.path(stopFacilities.get(i - 1).getLinkId(), facility.getLinkId(),
 					routeShortName, lineCost(routeShortName)));
 			}
-			double arrivalOffset = stopTime.arrivalSeconds() - firstDeparture;
-			double departureOffset = stopTime.departureSeconds() - firstDeparture;
+			double arrivalOffset = stopTime.arrivalSeconds() - firstDeparture + positioning;
+			double departureOffset = stopTime.departureSeconds() - firstDeparture + positioning;
 			TransitRouteStop routeStop = factory.createTransitRouteStop(facility, arrivalOffset, departureOffset);
 			// without passengers a driver would skip stops and run early;
 			// holding to the timetable keeps the simulation on the GTFS times
@@ -259,6 +299,10 @@ public final class TransitScheduleBuilder {
 			routeStops.add(routeStop);
 		}
 
+		if (movement.toSidings()) {
+			chain.addAll(router.path(stopFacilities.getLast().getLinkId(), sidingsOf(stopTimes.getLast().stopId()),
+				routeShortName, lineCost(routeShortName)));
+		}
 		NetworkRoute networkRoute = RouteUtils.createNetworkRoute(chain, network);
 		String routeId = routeShortName + "_" + routeCounters.merge(routeShortName, 1, Integer::sum);
 		TransitRoute transitRoute = factory.createTransitRoute(Id.create(routeId, TransitRoute.class),
@@ -389,10 +433,16 @@ public final class TransitScheduleBuilder {
 		});
 	}
 
+	private Id<Link> sidingsOf(String stopId) {
+		return MicroIds.sidings(planner.nodeOf(stopId).orElseThrow().station(stopId));
+	}
+
+	/** A trip from the sidings leaves them early enough to be on its platform at the timetable departure. */
 	private void addDepartureAndVehicle(GtfsFeed.Trip trip, String routeShortName, int departureIndex,
 			TransitRoute transitRoute, Vehicles vehicles) {
+		int positioning = movements.get(trip.id()).fromSidings() ? PlatformPlanner.POSITIONING_SECONDS : 0;
 		Departure departure = factory.createDeparture(Id.create(trip.id(), Departure.class),
-			firstDeparture(trip.id()));
+			firstDeparture(trip.id()) - positioning);
 		Id<Vehicle> vehicleId = Id.create(trip.id(), Vehicle.class);
 		departure.setVehicleId(vehicleId);
 		transitRoute.addDeparture(departure);
