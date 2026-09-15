@@ -1,0 +1,46 @@
+{
+	"node": "iseo",
+	"title": "Iseo",
+	"status": "bozza con il rilievo del 2026-09-15",
+	"detailLevel": "binari nominati con assegnazione per linea e per verso: stazione di incrocio sulla Brescia-Iseo-Edolo, a binario unico e non elettrificata, capolinea della S31; senza binari modellati i treni in incrocio e in attestamento si bloccavano a vicenda (simulazione del 2026-09-15)",
+	"sources": [
+		"rilievo diretto 2026-09-15 dall'app Trenord: binario 1 suburbano S31, che si attesta a Iseo; binario 2 regionali da Brescia verso Edolo; binario 3 regionali da Edolo verso Brescia",
+		"Wikipedia, Stazione di Iseo: quattro binari, tre con banchina (260 m coperti); deposito Trenord con officina e piattaforma girevole vicino alla stazione",
+		"Wikipedia, Ferrovia Brescia-Iseo-Edolo: binario unico, non elettrificata, blocco elettrico conta-assi; trazione a gasolio (ATR 115, ATR 125); treni a idrogeno Coradia Stream H in prova dal 2026-09-15, servizio commerciale previsto nel 2027",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15: S31 33 corse si attestano; R3 20 e RE3 13 corse in transito",
+		"rete meso: lato sud S01787 Provaglio-Timoline e S09999 Brescia (collegamento diretto delle corse senza fermate intermedie); lato nord S01786 Pilzone e S01785 Sulzano"
+	],
+
+	"stations": [
+		{
+			"id": "S01021",
+			"name": "Iseo",
+			"kind": "mixed",
+			"platformLengthM": 260,
+			"groups": [
+				{"id": "iseo", "kind": "through", "tracks": [{"ref": "1", "direction": null}, {"ref": "2", "direction": null}, {"ref": "3", "direction": null}],
+					"connections": {"north": ["meso:S01786", "meso:S01785"], "south": ["meso:S01787", "meso:S09999"]},
+					"notes": "tre binari con banchina, percorribili nei due versi perche' servono per gli incroci; north = verso Edolo, south = verso Brescia. Il quarto binario, senza banchina, non e' modellato"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "deposito Trenord vicino alla stazione: numero di binari e lato da rilevare"}
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"S31": {"bundle": null, "stations": {"S01021": ["iseo/1", "iseo"]}, "notes": "capolinea sul binario 1; gli altri binari solo se il primo e' occupato"},
+		"R3": {"bundle": null, "stations": {"S01021": {"from_south": ["iseo/2", "iseo"], "from_north": ["iseo/3", "iseo"]}},
+			"notes": "binario 2 verso Edolo, binario 3 verso Brescia; in incrocio con binario occupato qualsiasi binario libero"},
+		"RE3": {"bundle": null, "stations": {"S01021": {"from_south": ["iseo/2", "iseo"], "from_north": ["iseo/3", "iseo"]}},
+			"notes": "come R3"},
+		"*terminal": {"bundle": null, "stations": {"S01021": ["iseo/1", "iseo"]}},
+		"*through": {"bundle": null, "stations": {"S01021": {"from_south": ["iseo/2", "iseo"], "from_north": ["iseo/3", "iseo"]}}}
+	},
+
+	"openQuestions": [
+		"Deposito: quanti binari e da che lato (verso Brescia o verso Edolo)?",
+		"Il quarto binario senza banchina e' usato per le precedenze o per la sosta?"
+	]
+}
