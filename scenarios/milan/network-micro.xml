@@ -226,7 +226,60 @@
 		<node id="S01021" x="581810.6518599456" y="5056428.72064779" >
 			<attributes>
 				<attribute name="gtfsStopName" class="java.lang.String">Iseo</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
 			</attributes>
+		</node>
+		<node id="S01021.north.S01785.in" x="582022.9612209096" y="5056640.910975672" >
+		</node>
+		<node id="S01021.north.S01785.out" x="582019.5464592695" y="5056644.56329041" >
+		</node>
+		<node id="S01021.north.S01786.in" x="582029.7907441899" y="5056633.606346197" >
+		</node>
+		<node id="S01021.north.S01786.out" x="582026.3759825497" y="5056637.258660935" >
+		</node>
+		<node id="S01021.north.sidings.in" x="582050.2793140307" y="5056611.692457773" >
+		</node>
+		<node id="S01021.north.sidings.out" x="582046.8645523905" y="5056615.34477251" >
+		</node>
+		<node id="S01021.p1.a.in" x="581715.6916767731" y="5056339.936845146" >
+		</node>
+		<node id="S01021.p1.a.out" x="581715.6916767731" y="5056339.936845146" >
+		</node>
+		<node id="S01021.p1.b.in" x="581905.6120431181" y="5056517.504450433" >
+		</node>
+		<node id="S01021.p1.b.out" x="581905.6120431181" y="5056517.504450433" >
+		</node>
+		<node id="S01021.p2.a.in" x="581712.276915133" y="5056343.589159884" >
+		</node>
+		<node id="S01021.p2.a.out" x="581712.276915133" y="5056343.589159884" >
+		</node>
+		<node id="S01021.p2.b.in" x="581902.197281478" y="5056521.15676517" >
+		</node>
+		<node id="S01021.p2.b.out" x="581902.197281478" y="5056521.15676517" >
+		</node>
+		<node id="S01021.p3.a.in" x="581708.8621534929" y="5056347.241474621" >
+		</node>
+		<node id="S01021.p3.a.out" x="581708.8621534929" y="5056347.241474621" >
+		</node>
+		<node id="S01021.p3.b.in" x="581898.7825198378" y="5056524.809079908" >
+		</node>
+		<node id="S01021.p3.b.out" x="581898.7825198378" y="5056524.809079908" >
+		</node>
+		<node id="S01021.sidings.a" x="581721.5709876643" y="5056304.363910161" >
+		</node>
+		<node id="S01021.sidings.b" x="581940.7098719085" y="5056509.249608569" >
+		</node>
+		<node id="S01021.south.S01787.in" x="581591.5129757014" y="5056223.834949382" >
+		</node>
+		<node id="S01021.south.S01787.out" x="581588.0982140612" y="5056227.487264119" >
+		</node>
+		<node id="S01021.south.S09999.in" x="581584.6834524211" y="5056231.1395788565" >
+		</node>
+		<node id="S01021.south.S09999.out" x="581581.268690781" y="5056234.791893594" >
+		</node>
+		<node id="S01021.south.sidings.in" x="581612.0015455422" y="5056201.921060957" >
+		</node>
+		<node id="S01021.south.sidings.out" x="581608.586783902" y="5056205.573375694" >
 		</node>
 		<node id="S01022" x="514396.14323596883" y="5032257.581505601" >
 			<attributes>
@@ -4523,31 +4576,512 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S01021_S01785" from="S01021" to="S01785" length="5621.7" freespeed="21.444444444444446" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01021.p1.a.turn" from="S01021.p1.a.out" to="S01021.p1.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01021.p1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.b.turn" from="S01021.p1.b.out" to="S01021.p1.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01021.p1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.north" from="S01021.p1.a.in" to="S01021.p1.b.out" length="260.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microGroup" class="java.lang.String">iseo</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="microTrack" class="java.lang.String">1</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01021.p1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.north.S01785.in" from="S01021.north.S01785.in" to="S01021.p1.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.north.S01785.out" from="S01021.p1.b.out" to="S01021.north.S01785.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.north.S01786.in" from="S01021.north.S01786.in" to="S01021.p1.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.north.S01786.out" from="S01021.p1.b.out" to="S01021.north.S01786.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.north.sidings.in" from="S01021.north.sidings.in" to="S01021.p1.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.north.sidings.out" from="S01021.p1.b.out" to="S01021.north.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.south" from="S01021.p1.b.in" to="S01021.p1.a.out" length="260.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microGroup" class="java.lang.String">iseo</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="microTrack" class="java.lang.String">1</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01021.p1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.south.S01787.in" from="S01021.south.S01787.in" to="S01021.p1.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.south.S01787.out" from="S01021.p1.a.out" to="S01021.south.S01787.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.south.S09999.in" from="S01021.south.S09999.in" to="S01021.p1.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.south.S09999.out" from="S01021.p1.a.out" to="S01021.south.S09999.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.south.sidings.in" from="S01021.south.sidings.in" to="S01021.p1.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p1.south.sidings.out" from="S01021.p1.a.out" to="S01021.south.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.a.turn" from="S01021.p2.a.out" to="S01021.p2.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01021.p2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.b.turn" from="S01021.p2.b.out" to="S01021.p2.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01021.p2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.north" from="S01021.p2.a.in" to="S01021.p2.b.out" length="260.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microGroup" class="java.lang.String">iseo</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="microTrack" class="java.lang.String">2</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01021.p2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.north.S01785.in" from="S01021.north.S01785.in" to="S01021.p2.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.north.S01785.out" from="S01021.p2.b.out" to="S01021.north.S01785.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.north.S01786.in" from="S01021.north.S01786.in" to="S01021.p2.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.north.S01786.out" from="S01021.p2.b.out" to="S01021.north.S01786.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.north.sidings.in" from="S01021.north.sidings.in" to="S01021.p2.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.north.sidings.out" from="S01021.p2.b.out" to="S01021.north.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.south" from="S01021.p2.b.in" to="S01021.p2.a.out" length="260.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microGroup" class="java.lang.String">iseo</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="microTrack" class="java.lang.String">2</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01021.p2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.south.S01787.in" from="S01021.south.S01787.in" to="S01021.p2.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.south.S01787.out" from="S01021.p2.a.out" to="S01021.south.S01787.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.south.S09999.in" from="S01021.south.S09999.in" to="S01021.p2.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.south.S09999.out" from="S01021.p2.a.out" to="S01021.south.S09999.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.south.sidings.in" from="S01021.south.sidings.in" to="S01021.p2.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p2.south.sidings.out" from="S01021.p2.a.out" to="S01021.south.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.a.turn" from="S01021.p3.a.out" to="S01021.p3.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01021.p3</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.b.turn" from="S01021.p3.b.out" to="S01021.p3.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01021.p3</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.north" from="S01021.p3.a.in" to="S01021.p3.b.out" length="260.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microGroup" class="java.lang.String">iseo</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="microTrack" class="java.lang.String">3</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01021.p3</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.north.S01785.in" from="S01021.north.S01785.in" to="S01021.p3.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.north.S01785.out" from="S01021.p3.b.out" to="S01021.north.S01785.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.north.S01786.in" from="S01021.north.S01786.in" to="S01021.p3.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.north.S01786.out" from="S01021.p3.b.out" to="S01021.north.S01786.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.north.sidings.in" from="S01021.north.sidings.in" to="S01021.p3.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.north.sidings.out" from="S01021.p3.b.out" to="S01021.north.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.south" from="S01021.p3.b.in" to="S01021.p3.a.out" length="260.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microGroup" class="java.lang.String">iseo</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="microTrack" class="java.lang.String">3</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01021.p3</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.south.S01787.in" from="S01021.south.S01787.in" to="S01021.p3.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.south.S01787.out" from="S01021.p3.a.out" to="S01021.south.S01787.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.south.S09999.in" from="S01021.south.S09999.in" to="S01021.p3.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.south.S09999.out" from="S01021.p3.a.out" to="S01021.south.S09999.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.south.sidings.in" from="S01021.south.sidings.in" to="S01021.p3.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.p3.south.sidings.out" from="S01021.p3.a.out" to="S01021.south.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.sidings" from="S01021.sidings.a" to="S01021.sidings.b" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microSidings" class="java.lang.Boolean">true</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.sidings.north.enter" from="S01021.north.sidings.out" to="S01021.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.sidings.north.leave" from="S01021.sidings.b" to="S01021.north.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.sidings.south.enter" from="S01021.south.sidings.out" to="S01021.sidings.a" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01021.sidings.south.leave" from="S01021.sidings.b" to="S01021.south.sidings.in" length="100.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="microNode" class="java.lang.String">iseo</attribute>
+				<attribute name="microStation" class="java.lang.String">S01021</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01021_S01785" from="S01021.north.S01785.out" to="S01785" length="5621.7" freespeed="21.444444444444446" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">7</attribute>
 				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">360</attribute>
 				<attribute name="gtfsRoutes" class="java.lang.String">R3,RE3</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">63556924 63556942 838264365 984898907</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01021_S01785</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01021_S01786" from="S01021" to="S01786" length="3150.7" freespeed="21.833333333333332" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01021_S01786" from="S01021.north.S01786.out" to="S01786" length="3150.7" freespeed="21.833333333333332" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">10</attribute>
 				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">180</attribute>
 				<attribute name="gtfsRoutes" class="java.lang.String">R3</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">63556924 63556942 838264365</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01021_S01786</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01021_S01787" from="S01021" to="S01787" length="3004.3" freespeed="16.690555555555555" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01021_S01787" from="S01021.south.S01787.out" to="S01787" length="3004.3" freespeed="16.690555555555555" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">18</attribute>
@@ -4555,12 +5089,13 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">R3,S31</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">28422757 28662842 63556920 63611016 125459970 125459971 187058990 427163767 984898904 984898905 984898906</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01021_S01787</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01021_S09999" from="S01021" to="S09999.south.S01021.in" length="31775.4" freespeed="24.07227272727273" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01021_S09999" from="S01021.south.S09999.out" to="S09999.south.S01021.in" length="31775.4" freespeed="24.07227272727273" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">14</attribute>
@@ -4569,6 +5104,7 @@
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">28422757 28662842 58417144 58478896 58478897 62285858 63556920 63556939 63611016 75580133 75580143 75580159 75580173 89477290 94722236 94722253 94722255 94722273 94722276 94795604 94815433 94815434 94815435 94937239 94937241 94961319 107326177 125459970 125459971 177479692 177479694 179161421 179161424 187058990 281601154 281601156 281601157 281601160 288491271 288491273 292489961 292489963 292792370 292792372 349503805 349503808 349503812 349503822 351704545 351704550 389671800 389671806 397350530 397350533 427163767 555418127 555418128 712089279 789237289 803223255 803223256 838263828 838263829 900165601 927791017 927791018 927791033 927791048 970437774 970437775 981332939 984898904 984898905 984898906 1021438072 1021438074 1055343522 1055343523 1134017153 1252634294 1443309744 1443309745 1443310561</attribute>
 				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
@@ -23024,13 +23560,14 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01785_S01021" from="S01785" to="S01021" length="5621.7" freespeed="21.444444444444446" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01785_S01021" from="S01785" to="S01021.north.S01785.in" length="5621.7" freespeed="21.444444444444446" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">7</attribute>
 				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">360</attribute>
 				<attribute name="gtfsRoutes" class="java.lang.String">RE3</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">63556924 63556942 838264365 984898907</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01021_S01785</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
@@ -23061,13 +23598,14 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01786_S01021" from="S01786" to="S01021" length="3150.7" freespeed="21.833333333333332" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01786_S01021" from="S01786" to="S01021.north.S01786.in" length="3150.7" freespeed="21.833333333333332" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">10</attribute>
 				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">180</attribute>
 				<attribute name="gtfsRoutes" class="java.lang.String">R3</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">63556924 63556942 838264365</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01021_S01786</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
@@ -23085,7 +23623,7 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01787_S01021" from="S01787" to="S01021" length="3004.3" freespeed="12.517916666666668" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01787_S01021" from="S01787" to="S01021.south.S01787.in" length="3004.3" freespeed="12.517916666666668" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">20</attribute>
@@ -23093,6 +23631,7 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">R3,S31</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">28422757 28662842 63556920 63611016 125459970 125459971 187058990 427163767 984898904 984898905 984898906</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01021_S01787</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
@@ -32028,7 +32567,7 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S09999_S01021" from="S09999.south.S01021.out" to="S01021" length="31775.4" freespeed="24.07227272727273" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S09999_S01021" from="S09999.south.S01021.out" to="S01021.south.S09999.in" length="31775.4" freespeed="24.07227272727273" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">14</attribute>
@@ -32036,6 +32575,7 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">R3,RE3</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">28422757 28662842 58417144 58478896 58478897 62285858 63556920 63556939 63611016 75580133 75580143 75580159 75580173 89477290 94722236 94722253 94722255 94722273 94722276 94795604 94815433 94815434 94815435 94937239 94937241 94961319 107326177 125459970 125459971 177479692 177479694 179161421 179161424 187058990 281601154 281601156 281601157 281601160 288491271 288491273 292489961 292489963 292792370 292792372 349503805 349503808 349503812 349503822 351704545 351704550 389671800 389671806 397350530 397350533 427163767 555418127 555418128 712089279 789237289 803223255 803223256 838263828 838263829 900165601 927791017 927791018 927791033 927791048 970437774 970437775 981332939 984898904 984898905 984898906 1021438072 1021438074 1055343522 1055343523 1134017153 1252634294 1443309744 1443309745 1443310561</attribute>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
