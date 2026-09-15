@@ -215,19 +215,22 @@ class MicroNodeBuilderTest {
 	@Test
 	void everyStationGetsSidingsReachableFromAndToItsPlatforms() {
 		Link yard = link("A.sidings");
-		assertEquals(yard.getFromNode(), yard.getToNode(), "a loop link");
+		assertEquals("A.sidings.a", yard.getFromNode().getId().toString());
+		assertEquals("A.sidings.b", yard.getToNode().getId().toString());
 		assertEquals(3, yard.getAttributes().getAttribute("railsimTrainCapacity"), "surveyed tracks");
 		assertEquals(Boolean.TRUE, yard.getAttributes().getAttribute("microSidings"));
 		assertNull(yard.getAttributes().getAttribute("dataStatus"));
 		assertEquals(MicroNodeBuilder.DEFAULT_SIDINGS_TRACKS, link("B.sidings").getAttributes().getAttribute("railsimTrainCapacity"));
 		assertEquals("provisional", link("B.sidings").getAttributes().getAttribute("dataStatus"));
 
-		assertEquals("A.sidings", link("A.sidings.north.leave").getFromNode().getId().toString());
+		assertEquals("A.sidings.b", link("A.sidings.north.leave").getFromNode().getId().toString());
 		assertEquals("A.north.sidings.in", link("A.sidings.north.leave").getToNode().getId().toString());
+		assertEquals(Boolean.TRUE, link("A.sidings.north.leave").getAttributes().getAttribute("railsimEntry"));
+		assertEquals(Boolean.TRUE, link("A.sidings.north.enter").getAttributes().getAttribute("railsimExit"));
 		assertEquals("A.north.sidings.in", link("A.p1.north.sidings.in").getFromNode().getId().toString());
 		assertEquals("A.p1.b.in", link("A.p1.north.sidings.in").getToNode().getId().toString());
 		assertEquals("A.north.sidings.out", link("A.p1.north.sidings.out").getToNode().getId().toString());
-		assertEquals("A.sidings", link("A.sidings.north.enter").getToNode().getId().toString());
+		assertEquals("A.sidings.a", link("A.sidings.north.enter").getToNode().getId().toString());
 		assertEquals("a_throat", link("A.p1.north.sidings.in").getAttributes().getAttribute("railsimResourceId"),
 			"sidings movements run through the throat");
 		assertFalse(network.getLinks().containsKey(Id.createLinkId("A.sidings.south.leave")), "A has no south side");

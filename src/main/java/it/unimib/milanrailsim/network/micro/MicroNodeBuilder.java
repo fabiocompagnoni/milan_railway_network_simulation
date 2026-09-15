@@ -155,22 +155,29 @@ public final class MicroNodeBuilder {
 	}
 
 	/**
-	 * The station's sidings: a loop link holding as many trains as it has
-	 * tracks, joined to a junction pair of its own on every side the station
-	 * has connections on, so a train can reach any platform from it and get back.
-	 * Trains start and end their day there and wait out long layovers there,
-	 * instead of holding a platform or appearing on an occupied one.
+	 * The station's sidings: one link holding as many trains as it has tracks,
+	 * entered at one end and left from the other, joined to a junction pair of
+	 * its own on every side the station has connections on, so a train can
+	 * reach any platform from it and get back. Trains start and end their day
+	 * there and wait out long layovers there, instead of holding a platform or
+	 * appearing on an occupied one. Entering and leaving are rerouting exit and
+	 * entry, so railsim may divert a train from the sidings to any free platform
+	 * of its stop area. A train cannot pass from the entering to the leaving
+	 * stub without running the whole link, which the route costs make dear:
+	 * the sidings are not a shortcut for changing platform.
 	 */
 	private void addSidings(MicroNode node, Station station, Frame frame) {
-		Node yard = addNode(MicroIds.sidings(station).toString(), frame.at(0, SIDINGS_OFFSET_M));
+		String id = MicroIds.sidings(station).toString();
+		Node entered = addNode(id + ".a", frame.at(-SIDINGS_LENGTH_M / 2, SIDINGS_OFFSET_M));
+		Node left = addNode(id + ".b", frame.at(SIDINGS_LENGTH_M / 2, SIDINGS_OFFSET_M));
 		Optional<Integer> surveyed = station.sidings().flatMap(MicroNode.Sidings::tracks);
-		Link loop = addLink(MicroIds.sidings(station).toString(), yard, yard, SIDINGS_LENGTH_M, SIDINGS_SPEED_MS);
-		loop.getAttributes().putAttribute("railsimTrainCapacity", surveyed.orElse(DEFAULT_SIDINGS_TRACKS));
-		loop.getAttributes().putAttribute("microNode", node.id());
-		loop.getAttributes().putAttribute("microStation", station.id());
-		loop.getAttributes().putAttribute("microSidings", true);
+		Link yard = addLink(id, entered, left, SIDINGS_LENGTH_M, SIDINGS_SPEED_MS);
+		yard.getAttributes().putAttribute("railsimTrainCapacity", surveyed.orElse(DEFAULT_SIDINGS_TRACKS));
+		yard.getAttributes().putAttribute("microNode", node.id());
+		yard.getAttributes().putAttribute("microStation", station.id());
+		yard.getAttributes().putAttribute("microSidings", true);
 		if (surveyed.isEmpty()) {
-			loop.getAttributes().putAttribute("dataStatus", PROVISIONAL);
+			yard.getAttributes().putAttribute("dataStatus", PROVISIONAL);
 		}
 		for (Direction side : Direction.values()) {
 			if (connectionsOf(station, side).isEmpty()) {
@@ -182,9 +189,12 @@ public final class MicroNodeBuilder {
 				addNode(base + ".in", frame.at(along, SIDINGS_OFFSET_M)),
 				addNode(base + ".out", frame.at(along, SIDINGS_OFFSET_M + JUNCTION_SPACING_M / 2)));
 			junctions.put(base, junction);
-			String prefix = MicroIds.sidings(station) + "." + MicroIds.name(side);
-			for (Link stub : List.of(addLink(prefix + ".leave", yard, junction.in(), STUB_LENGTH_M, SIDINGS_SPEED_MS),
-					addLink(prefix + ".enter", junction.out(), yard, STUB_LENGTH_M, SIDINGS_SPEED_MS))) {
+			String prefix = id + "." + MicroIds.name(side);
+			Link leave = addLink(prefix + ".leave", left, junction.in(), STUB_LENGTH_M, SIDINGS_SPEED_MS);
+			leave.getAttributes().putAttribute("railsimEntry", true);
+			Link enter = addLink(prefix + ".enter", junction.out(), entered, STUB_LENGTH_M, SIDINGS_SPEED_MS);
+			enter.getAttributes().putAttribute("railsimExit", true);
+			for (Link stub : List.of(leave, enter)) {
 				stub.getAttributes().putAttribute("railsimTrainCapacity", 1);
 				stub.getAttributes().putAttribute("microNode", node.id());
 				stub.getAttributes().putAttribute("microStation", station.id());
