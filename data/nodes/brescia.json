@@ -1,0 +1,66 @@
+{
+	"node": "brescia",
+	"title": "Brescia",
+	"status": "bozza con il rilievo del 2026-09-15",
+	"detailLevel": "gruppi di binari per funzione: stazione FS con alta velocita', Trenitalia e merci di cui non abbiamo gli orari; fuori dall'area di studio ma capolinea di 208 corse Trenord al giorno, che senza binari e ricovero modellati saturavano la stazione e bloccavano la rete (simulazione del 2026-09-15)",
+	"sources": [
+		"rilievo diretto 2026-09-15: 16 binari; 1tr, 2tr, 3tr ovest tronchi della Brescia-Iseo-Edolo; 1-2 linea Milano-Venezia (1 da Milano verso Venezia, 2 da Venezia verso Milano); 3-7 si immettono sulla linea principale; 8 e 9 senza banchina; 10-11 alta velocita'; 12 senza banchina; 13 con banchina ma non usato dagli orari; 14-15 linea Brescia-Cremona; 15-16 principalmente di sosta; una decina di binari tronchi di manovra e sosta; a ovest della stazione un deposito di circa 50 binari",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15: corse che si attestano R1 38, R4 33, R5 31, R8 32, R3 20, RE3 13, S31 33; RE6 in transito fra Rovato e Desenzano 34",
+		"rete meso: lato ovest S01716 Ospitaletto, S01714 Rovato, S01713 Chiari, S01538 Palazzolo, S01708 Treviglio (collegamenti diretti delle corse senza fermate intermedie), S01797 Borgo San Giovanni e S01021 Iseo (linea per Iseo), S01900 S.Zeno Folzano e S01841 Ghedi (linee per Cremona e Parma); lato est S02084 Desenzano"
+	],
+
+	"stations": [
+		{
+			"id": "S09999",
+			"name": "Brescia",
+			"kind": "mixed",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "brescia_iseo", "kind": "terminal", "tracks": [{"ref": "1tr", "direction": null}, {"ref": "2tr", "direction": null}, {"ref": "3tr", "direction": null}],
+					"connections": {"south": ["meso:S01797", "meso:S01021"]},
+					"notes": "tronchi ovest della Brescia-Iseo-Edolo, raggiungibili solo da quella linea e riservati alle sue corse"},
+				{"id": "brescia_main", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
+					"connections": {"north": ["meso:S02084"], "south": ["meso:S01716", "meso:S01714", "meso:S01713", "meso:S01538", "meso:S01708"]},
+					"notes": "linea Milano-Venezia: 1 da Milano verso Venezia (north), 2 da Venezia verso Milano (south)"},
+				{"id": "brescia_3_7", "kind": "through", "tracks": [{"ref": "3", "direction": null}, {"ref": "4", "direction": null}, {"ref": "5", "direction": null}, {"ref": "6", "direction": null}, {"ref": "7", "direction": null}],
+					"connections": {"north": ["meso:S02084"], "south": ["meso:S01716", "meso:S01714", "meso:S01713", "meso:S01538", "meso:S01708", "meso:S01900", "meso:S01841"]},
+					"notes": "si immettono sulla linea principale; collegamento anche alle linee per Cremona e Parma ipotizzato (da confermare)"},
+				{"id": "brescia_av", "kind": "through", "tracks": [{"ref": "10", "direction": null}, {"ref": "11", "direction": null}],
+					"connections": {"north": ["meso:S02084"], "south": ["meso:S01716", "meso:S01714", "meso:S01713", "meso:S01538", "meso:S01708"]},
+					"notes": "usati principalmente dall'alta velocita': ultima riserva per Trenord"},
+				{"id": "brescia_cremona", "kind": "terminal", "tracks": [{"ref": "14", "direction": null}, {"ref": "15", "direction": null}],
+					"connections": {"south": ["meso:S01900", "meso:S01841"]},
+					"notes": "linea Brescia-Cremona; collegati solo alle linee per Cremona e Parma (ipotesi da confermare)"}
+			],
+			"throats": [
+				{"id": "brescia_throat_west", "side": "south", "resource": "brescia_throat_west", "lengthM": null, "speedKmh": null, "switches": null,
+					"groups": ["brescia_iseo", "brescia_main", "brescia_3_7", "brescia_av", "brescia_cremona"], "notes": "lato Milano, Iseo, Cremona e Parma; da rilevare"},
+				{"id": "brescia_throat_east", "side": "north", "resource": "brescia_throat_east", "lengthM": null, "speedKmh": null, "switches": null,
+					"groups": ["brescia_main", "brescia_3_7", "brescia_av"], "notes": "lato Venezia; da rilevare"}
+			],
+			"sidings": {"tracks": 63, "note": "circa 50 binari del deposito a ovest, circa 10 tronchi di manovra e sosta, binari 12, 13 e 16 usati per la sosta (rilievo 2026-09-15); il modello collega il ricovero a entrambe le gole, ma nessuna corsa Trenord si attesta arrivando da est"}
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"R3": {"bundle": null, "stations": {"S09999": ["brescia_iseo"]}},
+		"RE3": {"bundle": null, "stations": {"S09999": ["brescia_iseo"]}},
+		"S31": {"bundle": null, "stations": {"S09999": ["brescia_iseo"]}},
+		"R1": {"bundle": null, "stations": {"S09999": ["brescia_3_7", "brescia_av"]}},
+		"R4": {"bundle": null, "stations": {"S09999": ["brescia_3_7", "brescia_av"]}},
+		"R5": {"bundle": null, "stations": {"S09999": ["brescia_cremona", "brescia_3_7"]}},
+		"R8": {"bundle": null, "stations": {"S09999": ["brescia_cremona", "brescia_3_7"]}},
+		"RE6": {"bundle": null, "stations": {"S09999": ["brescia_main", "brescia_3_7"]}, "notes": "transito Milano-Verona: binario 1 o 2 secondo il verso, riserva 3-7"},
+		"*terminal": {"bundle": null, "stations": {"S09999": ["brescia_3_7", "brescia_av"]}, "notes": "corse non elencate che si attestano a Brescia"},
+		"*through": {"bundle": null, "stations": {"S09999": ["brescia_main", "brescia_3_7"]}, "notes": "corse non elencate in transito"}
+	},
+
+	"openQuestions": [
+		"Binari 3-7: raggiungono anche le linee per Cremona e Parma?",
+		"Binari 14-15: raggiungono anche la linea per Milano?",
+		"Gole ovest ed est: lunghezza, velocita' e numero di scambi",
+		"Lunghezza banchine (null: default 200 m provvisorio)"
+	]
+}
