@@ -275,6 +275,8 @@ public final class TransitScheduleBuilder {
 			return line.getRoutes().get(Id.create(existingRouteId, TransitRoute.class));
 		}
 
+		String costKey = routeShortName + "|" + pattern.hashCode();
+		ToDoubleFunction<Link> cost = tripCost(routeShortName, stopFacilities);
 		List<TransitRouteStop> routeStops = new ArrayList<>();
 		List<Id<Link>> chain = new ArrayList<>();
 		for (int i = 0; i < stopTimes.size(); i++) {
@@ -283,12 +285,11 @@ public final class TransitScheduleBuilder {
 			if (i == 0 && movement.fromSidings()) {
 				Id<Link> sidings = sidingsOf(stopTime.stopId());
 				chain.add(sidings);
-				chain.addAll(router.path(sidings, facility.getLinkId(), routeShortName, lineCost(routeShortName)));
+				chain.addAll(router.path(sidings, facility.getLinkId(), costKey, cost));
 			} else if (i == 0) {
 				chain.add(facility.getLinkId());
 			} else {
-				chain.addAll(router.path(stopFacilities.get(i - 1).getLinkId(), facility.getLinkId(),
-					routeShortName, lineCost(routeShortName)));
+				chain.addAll(router.path(stopFacilities.get(i - 1).getLinkId(), facility.getLinkId(), costKey, cost));
 			}
 			double arrivalOffset = stopTime.arrivalSeconds() - firstDeparture + positioning;
 			double departureOffset = stopTime.departureSeconds() - firstDeparture + positioning;
@@ -300,8 +301,11 @@ public final class TransitScheduleBuilder {
 		}
 
 		if (movement.toSidings()) {
-			chain.addAll(router.path(stopFacilities.getLast().getLinkId(), sidingsOf(stopTimes.getLast().stopId()),
-				routeShortName, lineCost(routeShortName)));
+			chain.addAll(router.path(stopFacilities.getLast().getLinkId(), sidingsOf(stopTimes.getLast().stopId()), costKey, cost));
+		}
+		if (new java.util.HashSet<>(chain).size() < chain.size()) {
+			// railsim tracks a train's head and tail by the links of its route and cannot follow a repeated one
+			throw new IllegalStateException("Route of trip " + trip.id() + " (" + routeShortName + ") runs a link twice: " + chain);
 		}
 		NetworkRoute networkRoute = RouteUtils.createNetworkRoute(chain, network);
 		String routeId = routeShortName + "_" + routeCounters.merge(routeShortName, 1, Integer::sum);
@@ -405,6 +409,33 @@ public final class TransitScheduleBuilder {
 	 * Length, with a prohibitive penalty on links of another bundle than the
 	 * line's in a node, and on platforms of groups the line may not pass through.
 	 */
+	/**
+	 * The line's costs, except on the tracks this trip is planned to stand on:
+	 * the planner may have put the train on a group the line does not prefer,
+	 * and reversing there runs the track's other platform link, which must not
+	 * cost more than a detour around the network.
+	 */
+	private ToDoubleFunction<Link> tripCost(String line, List<TransitStopFacility> stopFacilities) {
+		Set<String> ownTracks = new java.util.HashSet<>();
+		for (TransitStopFacility facility : stopFacilities) {
+			ownTracks.add(trackOf(facility.getLinkId()));
+		}
+		ToDoubleFunction<Link> lineCost = lineCost(line);
+		return link -> link.getAttributes().getAttribute("microTrack") != null && ownTracks.contains(trackOf(link.getId()))
+			? link.getLength() : lineCost.applyAsDouble(link);
+	}
+
+	/** The track a platform link belongs to: its id without the {@code .in}, {@code .out}, {@code .north} or {@code .south} variant. */
+	private static String trackOf(Id<Link> platformLink) {
+		String id = platformLink.toString();
+		for (String suffix : List.of(".in", ".out", ".north", ".south")) {
+			if (id.endsWith(suffix)) {
+				return id.substring(0, id.length() - suffix.length());
+			}
+		}
+		return id;
+	}
+
 	private ToDoubleFunction<Link> lineCost(String line) {
 		return lineCosts.computeIfAbsent(line, key -> link -> {
 			double cost = link.getLength();
