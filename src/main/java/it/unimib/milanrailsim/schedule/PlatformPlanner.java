@@ -66,17 +66,48 @@ public final class PlatformPlanner {
 	private record Candidate(Group group, Track track, String trackId) {
 	}
 
+	/**
+	 * Names the declared neighbour of a station that trains run through on
+	 * their way from or to a stop the node does not declare itself.
+	 */
+	public interface NeighbourResolver {
+		Optional<String> neighbourTowards(String stationId, String otherStopId);
+	}
+
+	/** How a trip reaches or leaves a station: through which declared neighbour, on which side. */
+	private record Approach(String neighbour, Direction side) {
+	}
+
 	private final Map<String, MicroNode> nodeByStation = new HashMap<>();
 	private final int turnaroundSeconds;
+	private final NeighbourResolver transit;
 	private final java.util.Set<String> warnedFallbacks = new java.util.HashSet<>();
 
 	public PlatformPlanner(List<MicroNode> nodes, int turnaroundSeconds) {
+		this(nodes, turnaroundSeconds, (station, other) -> Optional.empty());
+	}
+
+	/** @param transit consulted when a node does not declare the stop a trip comes from or goes to */
+	public PlatformPlanner(List<MicroNode> nodes, int turnaroundSeconds, NeighbourResolver transit) {
 		this.turnaroundSeconds = turnaroundSeconds;
+		this.transit = transit;
 		for (MicroNode node : nodes) {
 			for (Station station : node.stations()) {
 				nodeByStation.put(station.id(), node);
 			}
 		}
+	}
+
+	/**
+	 * The neighbour and side through which a trip reaches a station from
+	 * another stop: the stop itself when the node declares it, otherwise the
+	 * declared neighbour the train runs through on the way.
+	 */
+	private Optional<Approach> approach(MicroNode node, String stationId, String otherStopId) {
+		return node.sideOf(stationId, otherStopId)
+			.map(side -> new Approach(otherStopId, side))
+			.or(() -> transit.neighbourTowards(stationId, otherStopId)
+				.flatMap(neighbour -> node.sideOf(stationId, neighbour).map(side -> new Approach(neighbour, side))));
 	}
 
 	public boolean isMicro(String stopId) {
@@ -95,10 +126,11 @@ public final class PlatformPlanner {
 			return Optional.empty();
 		}
 		if (callIndex > 0) {
-			return node.sideOf(stopId, trip.calls().get(callIndex - 1).stopId()).map(PlatformPlanner::opposite);
+			return approach(node, stopId, trip.calls().get(callIndex - 1).stopId()).map(Approach::side)
+				.map(PlatformPlanner::opposite);
 		}
 		if (callIndex + 1 < trip.calls().size()) {
-			return node.sideOf(stopId, trip.calls().get(callIndex + 1).stopId());
+			return approach(node, stopId, trip.calls().get(callIndex + 1).stopId()).map(Approach::side);
 		}
 		return Optional.empty();
 	}
@@ -235,25 +267,23 @@ public final class PlatformPlanner {
 	}
 
 	/**
-	 * Whether the group's connections lead to the stop the trip comes from and
-	 * to the stop it goes to next, on the sides those stops lie. A group that
-	 * fails this would force the route to leave the station and bounce back.
-	 * A neighbour the node does not know leaves the side undecided and is not
+	 * Whether the group's connections lead to the neighbour the trip comes in
+	 * through and to the one it leaves through, on the sides they lie. A group
+	 * that fails this would force the route to leave the station and bounce
+	 * back. A stop no resolver can place leaves the side undecided and is not
 	 * held against the group.
 	 */
-	private static boolean reaches(MicroNode node, Group group, TripCalls trip, int callIndex) {
+	private boolean reaches(MicroNode node, Group group, TripCalls trip, int callIndex) {
 		String stopId = trip.calls().get(callIndex).stopId();
 		if (callIndex > 0) {
-			String previous = trip.calls().get(callIndex - 1).stopId();
-			Optional<Direction> side = node.sideOf(stopId, previous);
-			if (side.isPresent() && !MicroNode.connects(group, side.get(), stopId, previous)) {
+			Optional<Approach> from = approach(node, stopId, trip.calls().get(callIndex - 1).stopId());
+			if (from.isPresent() && !MicroNode.connects(group, from.get().side(), stopId, from.get().neighbour())) {
 				return false;
 			}
 		}
 		if (callIndex + 1 < trip.calls().size()) {
-			String next = trip.calls().get(callIndex + 1).stopId();
-			Optional<Direction> side = node.sideOf(stopId, next);
-			if (side.isPresent() && !MicroNode.connects(group, side.get(), stopId, next)) {
+			Optional<Approach> to = approach(node, stopId, trip.calls().get(callIndex + 1).stopId());
+			if (to.isPresent() && !MicroNode.connects(group, to.get().side(), stopId, to.get().neighbour())) {
 				return false;
 			}
 		}

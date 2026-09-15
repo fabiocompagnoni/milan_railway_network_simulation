@@ -132,7 +132,7 @@ public final class TransitScheduleBuilder {
 	public Result build() {
 		StationStopLinks.addStopLinks(network, stationTracks);
 		router = new LinkRouter(network);
-		planner = new PlatformPlanner(microNodes, turnaroundSeconds);
+		planner = new PlatformPlanner(microNodes, turnaroundSeconds, new RoutedSides(network, router, microNodes));
 
 		TransitSchedule schedule = factory.createTransitSchedule();
 		Vehicles vehicles = VehicleUtils.createVehiclesContainer();
