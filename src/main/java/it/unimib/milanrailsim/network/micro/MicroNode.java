@@ -112,7 +112,47 @@ public record MicroNode(String id, String title, List<Station> stations, List<Se
 		}
 	}
 
-	public record Line(Optional<String> bundle, Map<String, List<String>> stations) {
+	/**
+	 * One place a line prefers at a station: a whole group, or one track of it
+	 * ({@code group/ref} in the file), as the station's platform allocation plan
+	 * assigns trains in practice.
+	 */
+	public record Preference(String group, Optional<String> track) {
+
+		public static Preference parse(String spec) {
+			int slash = spec.indexOf('/');
+			return slash < 0 ? new Preference(spec, Optional.empty())
+				: new Preference(spec.substring(0, slash), Optional.of(spec.substring(slash + 1)));
+		}
+	}
+
+	/**
+	 * A line's preferences at a station, first choice first: one list for any
+	 * arrival side, or a list per side when the plan distinguishes trains by
+	 * where they come from ({@code from_north}, {@code from_south}).
+	 */
+	public record StationPreferences(List<Preference> anySide, Map<Direction, List<Preference>> bySide) {
+
+		/** The preferences for a train arriving from {@code side}; those of any side when it is unknown or not distinguished. */
+		public List<Preference> forSide(Direction side) {
+			if (side != null && bySide.containsKey(side)) {
+				return bySide.get(side);
+			}
+			if (!anySide.isEmpty() || bySide.isEmpty()) {
+				return anySide;
+			}
+			return bySide.values().stream().flatMap(List::stream).distinct().toList();
+		}
+
+		/** Every group named, over all sides, first named first. */
+		public List<String> groups() {
+			List<Preference> all = new ArrayList<>(anySide);
+			bySide.values().forEach(all::addAll);
+			return all.stream().map(Preference::group).distinct().toList();
+		}
+	}
+
+	public record Line(Optional<String> bundle, Map<String, StationPreferences> stations) {
 	}
 
 	public MicroNode(String id, String title, List<Station> stations, List<Segment> segments, Map<String, Line> lines) {
@@ -151,18 +191,32 @@ public record MicroNode(String id, String title, List<Station> stations, List<Se
 	 * trains applies; an empty list means the line is not covered here.
 	 */
 	public List<String> preferredGroups(String lineId, String stationId, boolean terminating) {
+		return preferencesAt(lineId, stationId, terminating).map(StationPreferences::groups).orElse(List.of());
+	}
+
+	/**
+	 * The platforms a line prefers at a station for a train arriving from
+	 * {@code side} (null when unknown), first choice first: single tracks where
+	 * the allocation plan fixes them, whole groups otherwise. Same precedence
+	 * as {@link #preferredGroups}; empty when the line is not covered here.
+	 */
+	public List<Preference> preferences(String lineId, String stationId, boolean terminating, Direction side) {
+		return preferencesAt(lineId, stationId, terminating).map(at -> at.forSide(side)).orElse(List.of());
+	}
+
+	private Optional<StationPreferences> preferencesAt(String lineId, String stationId, boolean terminating) {
 		Line named = lines.get(lineId);
 		if (named != null && named.stations().containsKey(stationId)) {
-			return named.stations().get(stationId);
+			return Optional.of(named.stations().get(stationId));
 		}
 		List<String> rules = terminating ? List.of(TERMINAL_RULE) : THROUGH_RULES;
 		for (String rule : rules) {
 			Line fallback = lines.get(rule);
 			if (fallback != null && fallback.stations().containsKey(stationId)) {
-				return fallback.stations().get(stationId);
+				return Optional.of(fallback.stations().get(stationId));
 			}
 		}
-		return List.of();
+		return Optional.empty();
 	}
 
 	/**
@@ -337,14 +391,32 @@ public record MicroNode(String id, String title, List<Station> stations, List<Se
 	}
 
 	private static Line parseLine(JsonNode node) {
-		Map<String, List<String>> stations = new LinkedHashMap<>();
-		node.path("stations").properties().forEach(entry -> {
-			List<String> groups = new ArrayList<>();
-			entry.getValue().forEach(group -> groups.add(group.asText()));
-			stations.put(entry.getKey(), List.copyOf(groups));
-		});
+		Map<String, StationPreferences> stations = new LinkedHashMap<>();
+		node.path("stations").properties().forEach(entry -> stations.put(entry.getKey(), parsePreferences(entry.getValue())));
 		Optional<String> bundle = node.hasNonNull("bundle") ? Optional.of(node.get("bundle").asText()) : Optional.empty();
 		return new Line(bundle, stations);
+	}
+
+	/** A plain list applies to any arrival side; an object keyed {@code from_north}/{@code from_south} distinguishes them. */
+	private static StationPreferences parsePreferences(JsonNode node) {
+		if (node.isArray()) {
+			return new StationPreferences(parsePreferenceList(node), Map.of());
+		}
+		Map<Direction, List<Preference>> bySide = new EnumMap<>(Direction.class);
+		node.properties().forEach(entry -> {
+			if (!entry.getKey().startsWith("from_")) {
+				throw new IllegalArgumentException("Station preferences must be a list or from_north/from_south lists: " + node);
+			}
+			bySide.put(Direction.valueOf(entry.getKey().substring("from_".length()).toUpperCase(Locale.ROOT)),
+				parsePreferenceList(entry.getValue()));
+		});
+		return new StationPreferences(List.of(), Map.copyOf(bySide));
+	}
+
+	private static List<Preference> parsePreferenceList(JsonNode list) {
+		List<Preference> preferences = new ArrayList<>();
+		list.forEach(spec -> preferences.add(Preference.parse(spec.asText())));
+		return List.copyOf(preferences);
 	}
 
 	private static JsonNode required(JsonNode root, String field, Path file) {
@@ -385,7 +457,19 @@ public record MicroNode(String id, String title, List<Station> stations, List<Se
 			}
 		}
 		node.lines().forEach((lineId, line) -> {
-			line.stations().forEach((stationId, groups) -> groups.forEach(node.station(stationId)::group));
+			line.stations().forEach((stationId, preferences) -> {
+				List<Preference> all = new ArrayList<>(preferences.anySide());
+				preferences.bySide().values().forEach(all::addAll);
+				for (Preference preference : all) {
+					Group group = node.station(stationId).group(preference.group());
+					preference.track().ifPresent(ref -> {
+						if (group.effectiveTracks().stream().noneMatch(track -> track.ref().equals(ref))) {
+							throw new IllegalArgumentException("Line " + lineId + " names track " + ref + " which group "
+								+ group.id() + " of " + stationId + " does not have, in node " + node.id());
+						}
+					});
+				}
+			});
 			line.bundle().ifPresent(bundle -> {
 				if (node.segments().stream().noneMatch(segment -> segment.bundles().containsKey(bundle))) {
 					throw new IllegalArgumentException("Line " + lineId + " uses unknown bundle " + bundle + " in node " + node.id());

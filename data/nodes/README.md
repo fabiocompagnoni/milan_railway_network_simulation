@@ -41,11 +41,34 @@ segments[]
     use
 lines{lineId}
   bundle        fascio usato sulle tratte del nodo (null se la linea non le percorre)
-  stations{stopId: [groupId, ...]}   gruppi ammessi in ordine di preferenza;
-                il binario pianificato è nel primo, gli altri sono la riserva
+  stations{stopId: [preferenza, ...]}   binari ammessi in ordine di preferenza
+                (vedi sotto); il binario pianificato è nella prima, le altre
+                sono la riserva
   notes
 openQuestions[]
 ```
+
+Ogni preferenza è un gruppo intero (`"cadorna_s3"`: i suoi binari sono usati a
+rotazione, come una stazione che distribuisce i treni sui binari liberi del
+fascio) oppure un binario preciso (`"cadorna_s3/8"`: gruppo e `ref` del
+binario, o il numero `1..n` per i gruppi dichiarati solo con `capacity`), come
+nel piano di utilizzo dei binari reale dove una linea ha un binario fisso. Un
+binario fisso occupato al momento del passaggio fa scalare alla preferenza
+successiva e conta come conflitto nel log del pianificatore.
+
+Quando il piano distingue i treni per il lato da cui arrivano, al posto della
+lista si indica un oggetto con una lista per lato:
+
+```
+"S01066": {"from_north": ["bovisa_asso/7", "bovisa_asso"], "from_south": ["bovisa_asso/8"]}
+```
+
+Il lato di arrivo è quello della fermata precedente della corsa (per la prima
+fermata, quello della fermata successiva); se la fermata precedente non è tra i
+vicini dichiarati dal nodo, viene ricavata dal percorso sulla rete (si passa
+comunque da un vicino dichiarato). Se il lato non è determinabile, si usano le
+preferenze di tutti i lati nell'ordine scritto. Un `ref` che il gruppo non ha
+fa fallire la lettura del nodo.
 
 Chiavi di `lines` che iniziano con `*` sono regole per le linee non elencate:
 `*terminal` vale per le corse che iniziano o finiscono nella stazione,

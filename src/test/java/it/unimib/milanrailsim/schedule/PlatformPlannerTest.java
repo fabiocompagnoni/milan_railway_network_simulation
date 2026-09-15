@@ -85,6 +85,41 @@ class PlatformPlannerTest {
 	}
 
 	@Test
+	void aFixedTrackIsTakenWhileFreeAndTheNextPreferenceWhenOccupied(@TempDir Path dir) throws IOException {
+		// S1 is planned on track 2 at A; a second train at the same minute falls back to the spare group
+		Path file = dir.resolve("fixed.json");
+		Files.writeString(file, NODE.replace("\"A\": [\"a_main\", \"a_spare\"]", "\"A\": [\"a_main/2\", \"a_spare\"]"));
+		PlatformPlanner fixed = new PlatformPlanner(List.of(MicroNode.read(file)), 15 * 60);
+
+		Plan plan = fixed.plan(List.of(
+			List.of(trip("t1", 480, "A", "B", "C")),
+			List.of(trip("t2", 490, "A", "B", "C")),
+			List.of(trip("t3", 480, "A", "C"))));
+
+		assertEquals(Id.createLinkId("A.p2.in"), plan.platform("t1", 0).orElseThrow());
+		assertEquals(Id.createLinkId("A.p2.in"), plan.platform("t2", 0).orElseThrow(), "no rotation on a fixed track");
+		assertEquals(Id.createLinkId("A.p3.in"), plan.platform("t3", 0).orElseThrow());
+		assertEquals(0, plan.conflicts());
+	}
+
+	@Test
+	void preferencesMayDependOnTheArrivalSide(@TempDir Path dir) throws IOException {
+		// B has two bidirectional tracks; the plan puts trains from A (south) on track 2 and trains from C
+		// (north) on track 1, the opposite of what the rotation alone would give
+		Path file = dir.resolve("sides.json");
+		Files.writeString(file, NODE
+			.replace("{\"ref\": \"1\", \"direction\": \"north\"}, {\"ref\": \"2\", \"direction\": \"south\"}",
+				"{\"ref\": \"1\", \"direction\": null}, {\"ref\": \"2\", \"direction\": null}")
+			.replace("\"B\": [\"b_f1\"]}}", "\"B\": {\"from_south\": [\"b_f1/2\"], \"from_north\": [\"b_f1/1\"]}}}"));
+		PlatformPlanner sided = new PlatformPlanner(List.of(MicroNode.read(file)), 15 * 60);
+
+		Plan plan = sided.plan(List.of(List.of(trip("north", 480, "A", "B", "C")), List.of(trip("south", 500, "C", "B", "A"))));
+
+		assertEquals(Id.createLinkId("B.p2.north"), plan.platform("north", 1).orElseThrow());
+		assertEquals(Id.createLinkId("B.p1.south"), plan.platform("south", 1).orElseThrow());
+	}
+
+	@Test
 	void aGroupNotConnectedToTheTripsNeighboursIsSkipped() {
 		// S2 prefers b_x at B, but b_x leads to X, not to C where the trip goes next
 		Plan plan = planner.plan(List.of(List.of(trip("t1", "S2", 8 * 60, "A", "B", "C"))));

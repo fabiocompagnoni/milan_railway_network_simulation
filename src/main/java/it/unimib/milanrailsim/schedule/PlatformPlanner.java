@@ -4,6 +4,7 @@ import it.unimib.milanrailsim.network.micro.MicroIds;
 import it.unimib.milanrailsim.network.micro.MicroNode;
 import it.unimib.milanrailsim.network.micro.MicroNode.Direction;
 import it.unimib.milanrailsim.network.micro.MicroNode.Group;
+import it.unimib.milanrailsim.network.micro.MicroNode.Preference;
 import it.unimib.milanrailsim.network.micro.MicroNode.Station;
 import it.unimib.milanrailsim.network.micro.MicroNode.Track;
 import org.apache.logging.log4j.LogManager;
@@ -215,17 +216,20 @@ public final class PlatformPlanner {
 		MicroNode node = nodeByStation.get(call.stopId());
 		Station station = node.station(call.stopId());
 		boolean terminating = callIndex == 0 || callIndex == trip.calls().size() - 1;
-		List<String> preferred = node.preferredGroups(trip.line(), call.stopId(), terminating);
+		List<Preference> preferred = node.preferences(trip.line(), call.stopId(), terminating,
+			arrivalSide(node, trip, callIndex).orElse(null));
 		if (preferred.isEmpty()) {
-			preferred = unassignedFallback(node, station, trip.line());
+			preferred = unassignedFallback(node, station, trip.line()).stream()
+				.map(groupId -> new Preference(groupId, Optional.empty()))
+				.toList();
 		}
-		Direction travel = travelAt(trip, callIndex).orElse(null);
-		List<String> reachable = preferred.stream()
-			.filter(groupId -> reaches(node, station.group(groupId), trip, callIndex))
+		List<Preference> reachable = preferred.stream()
+			.filter(preference -> reaches(node, station.group(preference.group()), trip, callIndex))
 			.toList();
 		if (reachable.isEmpty()) {
-			reachable = station.groups().stream().map(Group::id)
-				.filter(groupId -> reaches(node, station.group(groupId), trip, callIndex))
+			reachable = station.groups().stream()
+				.filter(group -> reaches(node, group, trip, callIndex))
+				.map(group -> new Preference(group.id(), Optional.empty()))
 				.toList();
 			if (warnedFallbacks.add(trip.line() + "@" + station.id() + "@reach")) {
 				LOG.warn("No preferred group of line {} at {} connects to the trip's neighbours: using {}", trip.line(),
@@ -235,24 +239,23 @@ public final class PlatformPlanner {
 				reachable = preferred;
 			}
 		}
+		Direction travel = travelAt(trip, callIndex).orElse(null);
 		Candidate fallback = null;
-		for (String groupId : reachable) {
-			Group group = station.group(groupId);
-			List<Candidate> candidates = new ArrayList<>();
-			for (Track track : group.effectiveTracks()) {
-				if (track.direction() == null || travel == null || track.direction() == travel) {
-					candidates.add(new Candidate(group, track, MicroIds.trackId(station, group, track)));
-				}
-			}
+		for (Preference preference : reachable) {
+			Group group = station.group(preference.group());
+			List<Candidate> candidates = candidates(station, group, preference, travel);
 			if (candidates.isEmpty()) {
 				continue;
 			}
+			// a fixed track is taken as planned; a whole group is shared in rotation so its tracks load evenly
 			String rotationKey = station.id() + "|" + group.id();
-			int start = rotation.getOrDefault(rotationKey, 0);
+			int start = preference.track().isPresent() ? 0 : rotation.getOrDefault(rotationKey, 0);
 			for (int k = 0; k < candidates.size(); k++) {
 				Candidate candidate = candidates.get((start + k) % candidates.size());
 				if (isFree(windowsByTrack, candidate.trackId(), window)) {
-					rotation.put(rotationKey, (start + k + 1) % candidates.size());
+					if (preference.track().isEmpty()) {
+						rotation.put(rotationKey, (start + k + 1) % candidates.size());
+					}
 					return Optional.of(candidate);
 				}
 			}
@@ -264,6 +267,34 @@ public final class PlatformPlanner {
 			}
 		}
 		return Optional.ofNullable(fallback);
+	}
+
+	/**
+	 * The side a train enters the station from: the side of the previous call, or,
+	 * for a first call, the side it will leave through, since the allocation
+	 * plan lists a departing train under the side it serves.
+	 */
+	private Optional<Direction> arrivalSide(MicroNode node, TripCalls trip, int callIndex) {
+		String stopId = trip.calls().get(callIndex).stopId();
+		if (callIndex > 0) {
+			return approach(node, stopId, trip.calls().get(callIndex - 1).stopId()).map(Approach::side);
+		}
+		if (trip.calls().size() > 1) {
+			return approach(node, stopId, trip.calls().get(1).stopId()).map(Approach::side);
+		}
+		return Optional.empty();
+	}
+
+	/** The tracks a preference allows in the trip's travel direction: one named track, or every track of the group. */
+	private static List<Candidate> candidates(Station station, Group group, Preference preference, Direction travel) {
+		List<Candidate> candidates = new ArrayList<>();
+		for (Track track : group.effectiveTracks()) {
+			boolean named = preference.track().map(track.ref()::equals).orElse(true);
+			if (named && (track.direction() == null || travel == null || track.direction() == travel)) {
+				candidates.add(new Candidate(group, track, MicroIds.trackId(station, group, track)));
+			}
+		}
+		return candidates;
 	}
 
 	/**

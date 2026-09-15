@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -81,7 +82,7 @@ class MicroNodeTest {
 		assertEquals(List.of(1L, 2L), segment.bundles().get("f1").north().wayIds());
 		assertEquals(2, segment.bundles().get("f1").speedProfile().size());
 
-		assertEquals(List.of("a_main", "a_shared"), node.line("S1").stations().get("A"));
+		assertEquals(List.of("a_main", "a_shared"), node.line("S1").stations().get("A").groups());
 		assertEquals("f1", node.line("S1").bundle().orElseThrow());
 	}
 
@@ -100,6 +101,31 @@ class MicroNodeTest {
 		assertEquals(List.of("a_main", "a_shared"), node.preferredGroups("S1", "A", true));
 		assertEquals(List.of("a_shared"), node.preferredGroups("R99", "A", true));
 		assertTrue(node.preferredGroups("R99", "A", false).isEmpty());
+	}
+
+	@Test
+	void preferencesMayNameSingleTracksAndDistinguishArrivalSides(@TempDir Path dir) throws IOException {
+		String planned = NODE.replace("\"A\": [\"a_main\", \"a_shared\"], \"B\": [\"b_f1\"]",
+			"\"A\": [\"a_main/2\", \"a_shared\"], \"B\": {\"from_south\": [\"b_f1/1\"], \"from_north\": [\"b_f1\"]}");
+		MicroNode node = MicroNode.read(write(dir, planned));
+
+		List<MicroNode.Preference> atA = node.preferences("S1", "A", true, null);
+		assertEquals(List.of("a_main", "a_shared"), atA.stream().map(MicroNode.Preference::group).toList());
+		assertEquals(Optional.of("2"), atA.getFirst().track());
+		assertTrue(atA.get(1).track().isEmpty());
+		assertEquals(Optional.of("1"), node.preferences("S1", "B", false, MicroNode.Direction.SOUTH).getFirst().track());
+		assertTrue(node.preferences("S1", "B", false, MicroNode.Direction.NORTH).getFirst().track().isEmpty());
+		assertEquals(2, node.preferences("S1", "B", false, null).size(), "unknown side: the sides merged in order");
+		assertEquals(List.of("a_main", "a_shared"), node.preferredGroups("S1", "A", true), "groups stay derivable");
+	}
+
+	@Test
+	void rejectsLineNamingATrackTheGroupDoesNotHave(@TempDir Path dir) throws IOException {
+		String broken = NODE.replace("\"B\": [\"b_f1\"]", "\"B\": [\"b_f1/9\"]");
+
+		IllegalArgumentException error = assertThrows(IllegalArgumentException.class,
+			() -> MicroNode.read(write(dir, broken)));
+		assertTrue(error.getMessage().contains("track 9"));
 	}
 
 	@Test
