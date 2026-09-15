@@ -424,10 +424,17 @@ public final class TransitScheduleBuilder {
 			Object group = link.getAttributes().getAttribute("microGroup");
 			Object station = link.getAttributes().getAttribute("microStation");
 			if (group != null && station != null) {
-				List<String> allowed = node.preferredGroups(line, station.toString(), false);
+				// the groups the line may stand on when passing or when terminating: a train reversing
+				// on its terminal track runs that track's other platform link, which must stay cheap
+				List<String> allowed = new ArrayList<>(node.preferredGroups(line, station.toString(), false));
+				allowed.addAll(node.preferredGroups(line, station.toString(), true));
 				if (!allowed.isEmpty() && !allowed.contains(group.toString())) {
 					cost += OFF_ROUTE_PENALTY_M;
 				}
+			}
+			if (link.getAttributes().getAttribute("microSidings") != null) {
+				// only a trip that starts or ends in the sidings should run them, never one changing platform
+				cost += OFF_ROUTE_PENALTY_M;
 			}
 			return cost;
 		});
