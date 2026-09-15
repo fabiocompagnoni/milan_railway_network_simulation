@@ -63,8 +63,10 @@ lista si indica un oggetto con una lista per lato:
 "S01066": {"from_north": ["bovisa_asso/7", "bovisa_asso"], "from_south": ["bovisa_asso/8"]}
 ```
 
-Il lato di arrivo è quello della fermata precedente della corsa (per la prima
-fermata, quello della fermata successiva); se la fermata precedente non è tra i
+Il lato di arrivo è quello della fermata precedente della corsa. Per la prima
+fermata è il lato opposto a quello della fermata successiva: il piano assegna i
+binari per verso di marcia, e un treno che parte verso nord viaggia come uno
+arrivato da sud. Se la fermata precedente non è tra i
 vicini dichiarati dal nodo, viene ricavata dal percorso sulla rete (si passa
 comunque da un vicino dichiarato). Se il lato non è determinabile, si usano le
 preferenze di tutti i lati nell'ordine scritto. Un `ref` che il gruppo non ha

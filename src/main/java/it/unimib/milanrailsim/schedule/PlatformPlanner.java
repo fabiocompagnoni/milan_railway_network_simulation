@@ -271,8 +271,9 @@ public final class PlatformPlanner {
 
 	/**
 	 * The side a train enters the station from: the side of the previous call, or,
-	 * for a first call, the side it will leave through, since the allocation
-	 * plan lists a departing train under the side it serves.
+	 * for a first call, the side opposite the one it leaves through, since the
+	 * allocation plan gives a track to a direction of travel and a train starting
+	 * here travels as one that came in from the other side.
 	 */
 	private Optional<Direction> arrivalSide(MicroNode node, TripCalls trip, int callIndex) {
 		String stopId = trip.calls().get(callIndex).stopId();
@@ -280,7 +281,7 @@ public final class PlatformPlanner {
 			return approach(node, stopId, trip.calls().get(callIndex - 1).stopId()).map(Approach::side);
 		}
 		if (trip.calls().size() > 1) {
-			return approach(node, stopId, trip.calls().get(1).stopId()).map(Approach::side);
+			return approach(node, stopId, trip.calls().get(1).stopId()).map(Approach::side).map(PlatformPlanner::opposite);
 		}
 		return Optional.empty();
 	}

@@ -113,10 +113,13 @@ class PlatformPlannerTest {
 			.replace("\"B\": [\"b_f1\"]}}", "\"B\": {\"from_south\": [\"b_f1/2\"], \"from_north\": [\"b_f1/1\"]}}}"));
 		PlatformPlanner sided = new PlatformPlanner(List.of(MicroNode.read(file)), 15 * 60);
 
-		Plan plan = sided.plan(List.of(List.of(trip("north", 480, "A", "B", "C")), List.of(trip("south", 500, "C", "B", "A"))));
+		Plan plan = sided.plan(List.of(List.of(trip("north", 480, "A", "B", "C")), List.of(trip("south", 500, "C", "B", "A")),
+			List.of(trip("startsNorth", 600, "B", "C"))));
 
 		assertEquals(Id.createLinkId("B.p2.north"), plan.platform("north", 1).orElseThrow());
 		assertEquals(Id.createLinkId("B.p1.south"), plan.platform("south", 1).orElseThrow());
+		assertEquals(Id.createLinkId("B.p2.north"), plan.platform("startsNorth", 0).orElseThrow(),
+			"a train starting northbound takes the track of trains arriving from the south");
 	}
 
 	@Test
