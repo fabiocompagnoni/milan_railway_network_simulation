@@ -27,7 +27,7 @@ class MicroNodeBuilderTest {
 			"title": "Test node",
 			"stations": [
 				{
-					"id": "A", "name": "A", "kind": "terminal", "platformLengthM": null,
+					"id": "A", "name": "A", "kind": "terminal", "platformLengthM": null, "sidings": {"tracks": 3},
 					"groups": [
 						{"id": "a_main", "kind": "terminal", "tracks": [{"ref": "1", "direction": null, "wayIds": [101]}, {"ref": "2", "direction": null}],
 							"connections": {"north": ["segment:A_B:f1"]}},
@@ -210,6 +210,29 @@ class MicroNodeBuilderTest {
 		assertNull(turn.getAttributes().getAttribute("stationLink"), "not a stop");
 		assertEquals("B.b_bi.1.a.out", link("B.b_bi.1.a.turn").getFromNode().getId().toString());
 		assertEquals("B.b_bi.1.a.in", link("B.b_bi.1.a.turn").getToNode().getId().toString());
+	}
+
+	@Test
+	void everyStationGetsSidingsReachableFromAndToItsPlatforms() {
+		Link yard = link("A.sidings");
+		assertEquals(yard.getFromNode(), yard.getToNode(), "a loop link");
+		assertEquals(3, yard.getAttributes().getAttribute("railsimTrainCapacity"), "surveyed tracks");
+		assertEquals(Boolean.TRUE, yard.getAttributes().getAttribute("microSidings"));
+		assertNull(yard.getAttributes().getAttribute("dataStatus"));
+		assertEquals(MicroNodeBuilder.DEFAULT_SIDINGS_TRACKS, link("B.sidings").getAttributes().getAttribute("railsimTrainCapacity"));
+		assertEquals("provisional", link("B.sidings").getAttributes().getAttribute("dataStatus"));
+
+		assertEquals("A.sidings", link("A.sidings.north.leave").getFromNode().getId().toString());
+		assertEquals("A.north.sidings.in", link("A.sidings.north.leave").getToNode().getId().toString());
+		assertEquals("A.north.sidings.in", link("A.p1.north.sidings.in").getFromNode().getId().toString());
+		assertEquals("A.p1.b.in", link("A.p1.north.sidings.in").getToNode().getId().toString());
+		assertEquals("A.north.sidings.out", link("A.p1.north.sidings.out").getToNode().getId().toString());
+		assertEquals("A.sidings", link("A.sidings.north.enter").getToNode().getId().toString());
+		assertEquals("a_throat", link("A.p1.north.sidings.in").getAttributes().getAttribute("railsimResourceId"),
+			"sidings movements run through the throat");
+		assertFalse(network.getLinks().containsKey(Id.createLinkId("A.sidings.south.leave")), "A has no south side");
+		assertTrue(network.getLinks().containsKey(Id.createLinkId("B.p1.south.sidings.in")));
+		assertTrue(network.getLinks().containsKey(Id.createLinkId("B.p1.north.sidings.out")));
 	}
 
 	@Test

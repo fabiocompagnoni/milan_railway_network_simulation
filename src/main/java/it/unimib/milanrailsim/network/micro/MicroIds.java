@@ -41,6 +41,11 @@ public final class MicroIds {
 		return Id.createLinkId(trackId + "." + name(travel == null ? Direction.NORTH : travel));
 	}
 
+	/** The sidings loop link of a station, where trains start and end their day and wait out long layovers. */
+	public static Id<Link> sidings(Station station) {
+		return Id.createLinkId(station.id() + ".sidings");
+	}
+
 	/** Base id of the junction pair of one connection on one side; {@code .in} and {@code .out} name the two nodes. */
 	public static String junction(Station station, Direction side, String connectionKey) {
 		return station.id() + "." + name(side) + "." + connectionKey;

@@ -34,13 +34,16 @@ public record MicroNode(String id, String title, List<Station> stations, List<Se
 
 	public enum Direction { NORTH, SOUTH }
 
-	public enum ConnectionKind { SEGMENT, MESO }
+	/** {@code SIDINGS} is never declared: the builder adds it to every station for its sidings link. */
+	public enum ConnectionKind { SEGMENT, MESO, SIDINGS }
 
 	private static final String TERMINAL_RULE = "*terminal";
 	private static final List<String> THROUGH_RULES = List.of("*through", "*transit");
 
 	/** Where a group leads on one side: a bundle of a section of this node, or a mesoscopic neighbour station. */
 	public record Connection(ConnectionKind kind, String target, String bundle) {
+
+		public static final Connection SIDINGS = new Connection(ConnectionKind.SIDINGS, "sidings", null);
 	}
 
 	/** A named platform track; {@code direction} is null on bidirectional (terminal) tracks; {@code wayIds} are its OSM ways, if surveyed. */

@@ -64,6 +64,11 @@ public final class MicroNodeBuilder {
 	static final double MIN_SECTION_LENGTH_M = 100.0;
 	static final double TRACK_SPACING_M = 5.0;
 	static final int MIN_THROAT_CAPACITY = 2;
+	/** Sidings tracks assumed where the survey has none: enough never to be the constraint (provisional). */
+	static final int DEFAULT_SIDINGS_TRACKS = 20;
+	static final double SIDINGS_LENGTH_M = 300.0;
+	private static final double SIDINGS_SPEED_MS = 8.0;
+	private static final double SIDINGS_OFFSET_M = -6 * TRACK_SPACING_M;
 	/** Nominal: the reversal happens on the platform, railsim only needs a positive length. */
 	static final double TURNBACK_LENGTH_M = 1.0;
 	private static final double PLATFORM_SPEED_MS = 13.9;
@@ -135,15 +140,56 @@ public final class MicroNodeBuilder {
 			}
 		}
 
+		addSidings(node, station, frame);
 		int trackIndex = 0;
 		for (Group group : station.groups()) {
 			for (TrackEnds ends : platformTracks(node, station, group, frame, trackIndex)) {
 				trackIndex++;
-				group.connections().forEach((side, connections) -> connections.forEach(connection ->
-					addApproachLinks(node, station, group, ends, side, connection)));
+				group.connections().forEach((side, connections) -> {
+					connections.forEach(connection -> addApproachLinks(node, station, group, ends, side, connection));
+					addApproachLinks(node, station, group, ends, side, Connection.SIDINGS);
+				});
 			}
 		}
 		redirectMesoLinks(station);
+	}
+
+	/**
+	 * The station's sidings: a loop link holding as many trains as it has
+	 * tracks, joined to a junction pair of its own on every side the station
+	 * has connections on, so a train can reach any platform from it and get back.
+	 * Trains start and end their day there and wait out long layovers there,
+	 * instead of holding a platform or appearing on an occupied one.
+	 */
+	private void addSidings(MicroNode node, Station station, Frame frame) {
+		Node yard = addNode(MicroIds.sidings(station).toString(), frame.at(0, SIDINGS_OFFSET_M));
+		Optional<Integer> surveyed = station.sidings().flatMap(MicroNode.Sidings::tracks);
+		Link loop = addLink(MicroIds.sidings(station).toString(), yard, yard, SIDINGS_LENGTH_M, SIDINGS_SPEED_MS);
+		loop.getAttributes().putAttribute("railsimTrainCapacity", surveyed.orElse(DEFAULT_SIDINGS_TRACKS));
+		loop.getAttributes().putAttribute("microNode", node.id());
+		loop.getAttributes().putAttribute("microStation", station.id());
+		loop.getAttributes().putAttribute("microSidings", true);
+		if (surveyed.isEmpty()) {
+			loop.getAttributes().putAttribute("dataStatus", PROVISIONAL);
+		}
+		for (Direction side : Direction.values()) {
+			if (connectionsOf(station, side).isEmpty()) {
+				continue;
+			}
+			double along = side == Direction.NORTH ? JUNCTION_OFFSET_M : -JUNCTION_OFFSET_M;
+			String base = MicroIds.junction(station, side, key(Connection.SIDINGS));
+			Junction junction = new Junction(
+				addNode(base + ".in", frame.at(along, SIDINGS_OFFSET_M)),
+				addNode(base + ".out", frame.at(along, SIDINGS_OFFSET_M + JUNCTION_SPACING_M / 2)));
+			junctions.put(base, junction);
+			String prefix = MicroIds.sidings(station) + "." + MicroIds.name(side);
+			for (Link stub : List.of(addLink(prefix + ".leave", yard, junction.in(), STUB_LENGTH_M, SIDINGS_SPEED_MS),
+					addLink(prefix + ".enter", junction.out(), yard, STUB_LENGTH_M, SIDINGS_SPEED_MS))) {
+				stub.getAttributes().putAttribute("railsimTrainCapacity", 1);
+				stub.getAttributes().putAttribute("microNode", node.id());
+				stub.getAttributes().putAttribute("microStation", station.id());
+			}
+		}
 	}
 
 	/** Every distinct connection any group of the station declares on a side, in declaration order. */
@@ -158,9 +204,9 @@ public final class MicroNodeBuilder {
 	}
 
 	static String key(Connection connection) {
-		return connection.kind() == ConnectionKind.MESO
-			? connection.target()
-			: connection.target() + "." + connection.bundle();
+		return connection.kind() == ConnectionKind.SEGMENT
+			? connection.target() + "." + connection.bundle()
+			: connection.target();
 	}
 
 	/**
