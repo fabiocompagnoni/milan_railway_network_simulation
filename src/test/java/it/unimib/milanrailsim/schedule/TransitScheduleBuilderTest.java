@@ -107,7 +107,11 @@ class TransitScheduleBuilderTest {
 						"connections": {"north": ["segment:S1_S2:f1"]}}], "throats": []},
 				{"id": "S2", "name": "S2", "kind": "through", "platformLengthM": null,
 					"groups": [{"id": "s2_f1", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
-						"connections": {"south": ["segment:S1_S2:f1"], "north": ["meso:S3"]}}], "throats": []}
+						"connections": {"south": ["segment:S1_S2:f1"], "north": ["meso:S3"]}},
+						{"id": "s2_passing", "kind": "through", "tracks": [{"ref": "3", "direction": "north"}],
+						"connections": {"south": ["segment:S1_S2:f1"], "north": ["meso:S3"]}},
+						{"id": "s2_branch", "kind": "through", "tracks": [{"ref": "4", "direction": "north"}],
+						"connections": {"south": ["segment:S1_S2:f1"], "north": ["meso:X"]}}], "throats": []}
 			],
 			"segments": [{"from": "S1", "to": "S2", "bundles": {"f1": {
 				"north": {"wayIds": [], "lengthM": 2000}, "south": {"wayIds": [], "lengthM": 2000}, "speedProfile": []}}}],
@@ -153,6 +157,10 @@ class TransitScheduleBuilderTest {
 		assertEquals("S2|S1|through|north", second.getStopAreaId().toString());
 		assertNull(result.schedule().getFacilities().get(Id.create("S2.p2|S2|S1|through|north", TransitStopFacility.class)),
 			"a southbound-only platform is no alternative for a northbound call");
+		assertNotNull(result.schedule().getFacilities().get(Id.create("S2.p3|S2|S1|through|north", TransitStopFacility.class)),
+			"a track of another group connected to both neighbours lets the train be overtaken there");
+		assertNull(result.schedule().getFacilities().get(Id.create("S2.p4|S2|S1|through|north", TransitStopFacility.class)),
+			"a track leading to another line is no alternative");
 		assertEquals("S3", t1Route.getStops().getLast().getStopFacility().getId().toString());
 	}
 

@@ -123,6 +123,14 @@ class PlatformPlannerTest {
 	}
 
 	@Test
+	void groupsConnectingBothNeighboursAreTheAlternativesOfACall() {
+		assertEquals(List.of("b_f1"), planner.groupsConnecting("B", "A", "C"));
+		assertEquals(List.of("b_x"), planner.groupsConnecting("B", "A", "X"));
+		assertEquals(List.of("b_f1", "b_x"), planner.groupsConnecting("B", "A", null), "a trip ending here may use either");
+		assertTrue(planner.groupsConnecting("C", "B", null).isEmpty(), "C is not a detailed station");
+	}
+
+	@Test
 	void aGroupNotConnectedToTheTripsNeighboursIsSkipped() {
 		// S2 prefers b_x at B, but b_x leads to X, not to C where the trip goes next
 		Plan plan = planner.plan(List.of(List.of(trip("t1", "S2", 8 * 60, "A", "B", "C"))));

@@ -131,6 +131,19 @@ Criticità**.
   per linea non sono state rilevate. Le tratte sotto i 2,7 km (Passante,
   Garibaldi–Centrale) restano a un treno per verso.
 
+- **Binario di stazione e sorpassi**: ogni corsa ha il binario abituale del
+  piano di utilizzo (`data/nodes/*.json`, assegnato dal `PlatformPlanner`). Se
+  all'arrivo quel binario è occupato, railsim può deviare il treno su un altro
+  binario della stazione, ma solo fra quelli che il treno può fisicamente usare:
+  i gruppi collegati sia alla stazione da cui arriva sia a quella verso cui
+  riparte, nel suo verso di marcia (`TransitScheduleBuilder.platformFacility`,
+  `PlatformPlanner.groupsConnecting`). È il sorpasso reale: un RE1 supera un
+  R22 in ritardo a Saronno dove il piazzale lo consente (osservazione di Fabio
+  come passeggero), mentre a Bovisa i binari del Passante e quelli per Cadorna
+  portano in direzioni diverse e non si scambiano. Motivo: nella simulazione
+  del 2026-09-18 RE51 e RE54 a Saronno avevano un solo binario ammesso per
+  verso; un treno in sosta oltre l'orario fermava tutti quelli dietro.
+
 - **Circolazione a SINISTRA**: i treni tengono la sinistra (contrario delle
   auto). Determina l'assegnazione binario→direzione in ogni fascio a doppio
   binario.

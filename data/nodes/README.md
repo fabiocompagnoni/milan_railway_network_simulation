@@ -72,6 +72,15 @@ comunque da un vicino dichiarato). Se il lato non è determinabile, si usano le
 preferenze di tutti i lati nell'ordine scritto. Un `ref` che il gruppo non ha
 fa fallire la lettura del nodo.
 
+Le preferenze decidono il binario pianificato. In simulazione, se quel binario
+è occupato all'arrivo, railsim può deviare il treno su qualsiasi binario della
+stazione che sia collegato (`connections`) sia alla stazione precedente sia a
+quella successiva della corsa, nel verso di marcia, anche se appartiene a un
+gruppo non elencato per la linea: è il sorpasso in stazione. Perciò le
+`connections` dei gruppi vanno dichiarate come nel piazzale reale, non come
+uso abituale: un gruppo collegato a una linea che la sua linea non usa mai
+diventa un binario di sorpasso per quella linea.
+
 Chiavi di `lines` che iniziano con `*` sono regole per le linee non elencate:
 `*terminal` vale per le corse che iniziano o finiscono nella stazione,
 `*through` (o `*transit`) per quelle che la attraversano. Una linea elencata

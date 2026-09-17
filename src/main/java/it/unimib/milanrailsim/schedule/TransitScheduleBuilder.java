@@ -326,7 +326,10 @@ public final class TransitScheduleBuilder {
 			.orElseThrow(() -> new IllegalStateException("No platform planned for trip " + tripId + " at " + stopId));
 		boolean terminating = index == 0 || index == stopTimes.size() - 1;
 		Station station = planner.nodeOf(stopId).orElseThrow().station(stopId);
-		return platformFacility(schedule, new PlatformCall(stopId, line, terminating, directionOf(platform, station)), platform);
+		String previous = index > 0 ? stopTimes.get(index - 1).stopId() : null;
+		String next = index + 1 < stopTimes.size() ? stopTimes.get(index + 1).stopId() : null;
+		PlatformCall call = new PlatformCall(stopId, line, terminating, directionOf(platform, station), previous, next);
+		return platformFacility(schedule, call, platform);
 	}
 
 	/**
@@ -353,8 +356,13 @@ public final class TransitScheduleBuilder {
 		return null;
 	}
 
-	/** One call of a line at a micro station; {@code travel} is null when the platform has no direction. */
-	private record PlatformCall(String stopId, String line, boolean terminating, Direction travel) {
+	/**
+	 * One call of a line at a micro station; {@code travel} is null when the
+	 * platform has no direction, the neighbouring stops when the call starts or
+	 * ends the trip.
+	 */
+	private record PlatformCall(String stopId, String line, boolean terminating, Direction travel, String previousStop,
+			String nextStop) {
 
 		String area() {
 			return stopId + "|" + line + "|" + (terminating ? "terminal" : "through")
@@ -363,17 +371,26 @@ public final class TransitScheduleBuilder {
 	}
 
 	/**
-	 * Every platform the line may use at the station in that travel direction
-	 * becomes a facility of one stop area, so railsim can remap a diverted
-	 * train to the platform it actually reaches; the call itself refers to the
-	 * planned platform's facility. Platforms of the other direction stay out:
-	 * a detour onto one would have to run the platform, turn back and run it
-	 * again, and railsim cannot follow a route that repeats a link.
+	 * Every platform the train can physically use at the station in that
+	 * travel direction becomes a facility of one stop area: the line's
+	 * preferred groups and every other group connected to both neighbours the
+	 * trip runs between. So railsim can remap a diverted train to the platform
+	 * it actually reaches, as a dispatcher lets a train pass a delayed one on
+	 * another track where the layout allows it; the call itself refers to the
+	 * planned platform's facility, and groups leading elsewhere (another line's
+	 * tracks at a junction station) stay out. Platforms of the other direction
+	 * stay out too: a detour onto one would have to run the platform, turn back
+	 * and run it again, and railsim cannot follow a route that repeats a link.
 	 */
 	private TransitStopFacility platformFacility(TransitSchedule schedule, PlatformCall call, Id<Link> platform) {
 		MicroNode node = planner.nodeOf(call.stopId()).orElseThrow();
 		Station station = node.station(call.stopId());
-		List<String> groups = node.preferredGroups(call.line(), call.stopId(), call.terminating());
+		List<String> groups = new ArrayList<>(node.preferredGroups(call.line(), call.stopId(), call.terminating()));
+		for (String connected : planner.groupsConnecting(call.stopId(), call.previousStop(), call.nextStop())) {
+			if (!groups.contains(connected)) {
+				groups.add(connected);
+			}
+		}
 		if (groups.isEmpty()) {
 			groups = station.groups().stream().map(Group::id).toList();
 		}

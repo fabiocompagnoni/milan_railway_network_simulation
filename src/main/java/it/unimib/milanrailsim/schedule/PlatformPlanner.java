@@ -307,19 +307,40 @@ public final class PlatformPlanner {
 	 */
 	private boolean reaches(MicroNode node, Group group, TripCalls trip, int callIndex) {
 		String stopId = trip.calls().get(callIndex).stopId();
-		if (callIndex > 0) {
-			Optional<Approach> from = approach(node, stopId, trip.calls().get(callIndex - 1).stopId());
-			if (from.isPresent() && !MicroNode.connects(group, from.get().side(), stopId, from.get().neighbour())) {
-				return false;
+		String previous = callIndex > 0 ? trip.calls().get(callIndex - 1).stopId() : null;
+		String next = callIndex + 1 < trip.calls().size() ? trip.calls().get(callIndex + 1).stopId() : null;
+		return reaches(node, group, stopId, previous, next);
+	}
+
+	private boolean reaches(MicroNode node, Group group, String stopId, String previousStopId, String nextStopId) {
+		for (String other : new String[] { previousStopId, nextStopId }) {
+			if (other == null) {
+				continue;
 			}
-		}
-		if (callIndex + 1 < trip.calls().size()) {
-			Optional<Approach> to = approach(node, stopId, trip.calls().get(callIndex + 1).stopId());
-			if (to.isPresent() && !MicroNode.connects(group, to.get().side(), stopId, to.get().neighbour())) {
+			Optional<Approach> approach = approach(node, stopId, other);
+			if (approach.isPresent() && !MicroNode.connects(group, approach.get().side(), stopId, approach.get().neighbour())) {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * The groups of a station a train calling between {@code previousStopId}
+	 * and {@code nextStopId} (either null at the end of a trip) can physically
+	 * use: those connected to both neighbours. They are the platforms a
+	 * dispatcher may divert the train to when its planned one is taken, as
+	 * when a delayed train is overtaken at a station that allows it.
+	 */
+	public List<String> groupsConnecting(String stopId, String previousStopId, String nextStopId) {
+		MicroNode node = nodeByStation.get(stopId);
+		if (node == null) {
+			return List.of();
+		}
+		return node.station(stopId).groups().stream()
+			.filter(group -> reaches(node, group, stopId, previousStopId, nextStopId))
+			.map(Group::id)
+			.toList();
 	}
 
 	/**
