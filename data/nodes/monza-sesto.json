@@ -22,8 +22,8 @@
 					"connections": {"south": ["meso:S01325", "meso:S01700"], "north": ["meso:S01318", "meso:S01321"]},
 					"notes": "binari della linea per Chiasso (S9, S11, RE80); numero per linea ipotizzato"},
 				{"id": "monza_lecco", "kind": "through", "capacity": 3, "otherOperatorsShare": 0,
-					"connections": {"south": ["meso:S01325", "meso:S01700"], "north": ["meso:S01510", "meso:S01511", "meso:S01520", "meso:S01524"]},
-					"notes": "binari della linea per Lecco (S8, R14, RE8); numero per linea ipotizzato"},
+					"connections": {"south": ["meso:S01325", "meso:S01700"], "north": ["meso:S01510", "meso:S01511", "meso:S01520", "meso:S01524", "meso:S01480"]},
+					"notes": "binari della linea per Lecco (S8, R14, RE8); raggiungono anche il ramo per Molteno, cosi' un S7 in sosta sul binario di Molteno non blocca quello in arrivo (run del 2026-09-17); numero per linea ipotizzato"},
 				{"id": "monza_molteno", "kind": "through", "capacity": 1, "otherOperatorsShare": 0,
 					"connections": {"south": ["meso:S01325", "meso:S01700"], "north": ["meso:S01480"]},
 					"notes": "binario verso Molteno, a binario unico (S7)"}

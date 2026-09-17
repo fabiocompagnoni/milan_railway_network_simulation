@@ -45,9 +45,9 @@
 	"lines": {
 		"S1": {"bundle": null, "stations": {"S01820": ["rogoredo_passante", "rogoredo_bologna"]}, "notes": "dal Passante verso Lodi"},
 		"S13": {"bundle": null, "stations": {"S01820": ["rogoredo_passante", "rogoredo_genova"]}, "notes": "dal Passante verso Pavia"},
-		"S2": {"bundle": null, "stations": {"S01820": ["rogoredo_passante"]}},
+		"S2": {"bundle": null, "stations": {"S01820": ["rogoredo_terminal", "rogoredo_passante"]}, "notes": "si attesta a Rogoredo: sui tronchi, non sui binari di corsa del Passante (nel run del 2026-09-17 le soste sui binari 1-2 accodavano il Passante fino a Villapizzone)"},
 		"S12": {"bundle": null, "stations": {"S01820": ["rogoredo_passante", "rogoredo_bologna"]}},
-		"S19": {"bundle": null, "stations": {"S01820": ["rogoredo_passante", "rogoredo_genova"]}},
+		"S19": {"bundle": null, "stations": {"S01820": ["rogoredo_terminal", "rogoredo_passante", "rogoredo_genova"]}, "notes": "si attesta a Rogoredo: sui tronchi come la S2"},
 		"S9": {"bundle": null, "stations": {"S01820": ["rogoredo_terminal"]}},
 		"R31": {"bundle": null, "stations": {"S01820": ["rogoredo_genova"]}},
 		"R34": {"bundle": null, "stations": {"S01820": ["rogoredo_genova"]}},
