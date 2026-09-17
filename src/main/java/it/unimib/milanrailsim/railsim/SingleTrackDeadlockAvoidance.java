@@ -15,6 +15,7 @@ import org.matsim.core.mobsim.framework.MobsimDriverAgent;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -34,8 +35,16 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance {
 
+	/** Stands for the link a train arrived through when it started its trip in the station. */
+	private static final Id<Link> STARTED_HERE = Id.createLinkId("started-here");
+
 	private final Network network;
 	private final Map<Id<RailResource>, Boolean> twoWay = new ConcurrentHashMap<>();
+	private final Map<Id<RailResource>, Boolean> stationLoop = new ConcurrentHashMap<>();
+	/** Trains holding each two-way resource, so a train already in a block is never refused its next link of it. */
+	private final Map<Id<RailResource>, Set<MobsimDriverAgent>> blockHolders = new ConcurrentHashMap<>();
+	/** Trains holding or committed to each crossing station, with the link each arrives through. */
+	private final Map<Id<RailResource>, Map<MobsimDriverAgent, Id<Link>>> stationOccupants = new ConcurrentHashMap<>();
 
 	@Inject
 	public SingleTrackDeadlockAvoidance(Network network, EventsManager eventsManager) {
@@ -50,7 +59,99 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 
 	@Override
 	public boolean checkLink(double time, RailLink link, TrainPosition position) {
-		return !isTwoWay(link.getResource()) || super.checkLink(time, link, position);
+		return !isTwoWay(link.getResource())
+			|| (super.checkLink(time, link, position) && crossingTrackFree(link, position));
+	}
+
+	@Override
+	public void onReserve(double time, RailResource resource, TrainPosition position) {
+		super.onReserve(time, resource, position);
+		if (isTwoWay(resource)) {
+			blockHolders.computeIfAbsent(resource.getId(), id -> ConcurrentHashMap.newKeySet()).add(position.getDriver());
+		} else if (isStationLoop(resource)) {
+			stationOccupants.computeIfAbsent(resource.getId(), id -> new ConcurrentHashMap<>())
+				.put(position.getDriver(), arrivalLink(position, resource));
+		}
+	}
+
+	@Override
+	public void onRelease(double time, RailResource resource, MobsimDriverAgent driver) {
+		super.onRelease(time, resource, driver);
+		Set<MobsimDriverAgent> holders = blockHolders.get(resource.getId());
+		if (holders != null) {
+			holders.remove(driver);
+		}
+		Map<MobsimDriverAgent, Id<Link>> occupants = stationOccupants.get(resource.getId());
+		if (occupants != null) {
+			occupants.remove(driver);
+		}
+	}
+
+	/**
+	 * The dispatcher's consent to enter a single-track block: the crossing
+	 * station at its far end must have a track for the train, and a further
+	 * free track whenever a train of the same direction is already there or
+	 * heading there, so the opposing train can still get in and the meet can
+	 * happen. Without it two trains of one direction filled the station and
+	 * the opposing one waited in the next block for ever (Villasanta, run of
+	 * 2026-09-18). A train already holding the block keeps going; a block
+	 * ending at a detailed station, whose throat and platforms railsim
+	 * arbitrates, is not held back.
+	 */
+	private boolean crossingTrackFree(RailLink link, TrainPosition position) {
+		RailResource block = link.getResource();
+		if (blockHolders.getOrDefault(block.getId(), Set.of()).contains(position.getDriver())) {
+			return true;
+		}
+		int index = indexOnRoute(position, link);
+		if (index < 0) {
+			return true;
+		}
+		int last = index;
+		while (last + 1 < position.getRouteSize() && position.getRoute(last + 1).getResource() == block) {
+			last++;
+		}
+		if (last + 1 >= position.getRouteSize()) {
+			return true;
+		}
+		RailResource station = position.getRoute(last + 1).getResource();
+		if (station == null || !isStationLoop(station)) {
+			return true;
+		}
+		Map<MobsimDriverAgent, Id<Link>> occupants = stationOccupants.getOrDefault(station.getId(), Map.of());
+		int free = station.getTotalCapacity() - occupants.size();
+		boolean sameDirectionThere = occupants.containsValue(position.getRoute(last).getLinkId());
+		return free >= (sameDirectionThere ? 2 : 1);
+	}
+
+	/** The link the train runs to reach the resource, or {@link #STARTED_HERE} when its trip begins on it. */
+	private static Id<Link> arrivalLink(TrainPosition position, RailResource resource) {
+		for (int i = Math.max(0, position.getRouteIndex() - 1); i < position.getRouteSize(); i++) {
+			if (position.getRoute(i).getResource() == resource) {
+				return i > 0 ? position.getRoute(i - 1).getLinkId() : STARTED_HERE;
+			}
+		}
+		return STARTED_HERE;
+	}
+
+	private static int indexOnRoute(TrainPosition position, RailLink link) {
+		for (int i = Math.max(0, position.getRouteIndex() - 1); i < position.getRouteSize(); i++) {
+			if (position.getRoute(i).getLinkId().equals(link.getLinkId())) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/** A mesoscopic station: one loop link, both directions calling on it. */
+	private boolean isStationLoop(RailResource resource) {
+		return resource != null && stationLoop.computeIfAbsent(resource.getId(), id -> {
+			if (resource.getLinks().size() != 1) {
+				return false;
+			}
+			Link link = network.getLinks().get(resource.getLinks().getFirst().getLinkId());
+			return link != null && link.getFromNode().equals(link.getToNode());
+		});
 	}
 
 	@Override

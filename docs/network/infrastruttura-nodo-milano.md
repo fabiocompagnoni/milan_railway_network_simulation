@@ -115,6 +115,21 @@ Criticità**.
   spaziatura tra stazioni (es. ponti) sono invisibili alla granularità meso,
   trattabili spezzando il link se rilevanti.
 
+- **Binario unico — consenso all'ingresso nel blocco**: oltre alla
+  serializzazione del blocco, un treno entra in una tratta a binario unico solo
+  se la stazione di incrocio all'altro capo ha un binario per lui e, quando lì
+  c'è già (o sta arrivando) un treno del suo stesso verso, un ulteriore binario
+  libero per il treno opposto: così l'incrocio resta possibile. È il consenso
+  che il dirigente movimento dà prima di licenziare un treno sul binario unico.
+  Nel modello: `SingleTrackDeadlockAvoidance.crossingTrackFree`, che tiene il
+  conto dei treni presenti o diretti in ogni stazione meso con il lato da cui
+  arrivano. Motivo: nella simulazione del 2026-09-18 due S7 nello stesso verso
+  riempivano Villasanta (2 binari) e l'S7 opposto, già nel blocco successivo,
+  non poteva più entrare: stallo per tutta la giornata (79 treni su 274
+  bloccati su tratte a binario unico). Limite: la regola vale per le stazioni
+  meso (un anello con più binari); nelle stazioni dettagliate decidono la
+  gola e i binari.
+
 - **Doppio binario — distanziamento a blocco automatico**: una tratta a doppio
   binario non tiene un solo treno per verso ma uno per sezione di blocco. Sulle
   linee RFI e Ferrovienord il blocco automatico (BAcc) ha sezioni da 900 a
