@@ -176,26 +176,34 @@ class MicroNodeBuilderTest {
 
 	@Test
 	void mesoLinksAreRedirectedToTheirJunctionsAndFlaggedEntryOrExit() {
-		Link entry = link("X_A");
+		// the meso link ends at a home signal 200 m before the junction; the stub between is the entry link
+		Link section = link("X_A");
+		assertEquals("X_A.entry.a", section.getToNode().getId().toString());
+		assertNull(section.getAttributes().getAttribute("railsimEntry"));
+		assertEquals(800, section.getLength(), 1e-9);
+		Link entry = link("X_A.entry");
 		assertEquals("A.north.X.in", entry.getToNode().getId().toString());
 		assertEquals(Boolean.TRUE, entry.getAttributes().getAttribute("railsimEntry"));
-		assertEquals(1000, entry.getLength(), 1e-9);
-		Link exit = link("A_X");
+		assertEquals(200, entry.getLength(), 1e-9);
+		assertEquals(section.getAttributes().getAttribute("railsimTrainCapacity"), entry.getAttributes().getAttribute("railsimTrainCapacity"));
+		Link exit = link("A_X.exit");
 		assertEquals("A.north.X.out", exit.getFromNode().getId().toString());
+		assertEquals("A_X.exit.b", link("A_X").getFromNode().getId().toString());
 		assertEquals(Boolean.TRUE, exit.getAttributes().getAttribute("railsimExit"));
-		assertEquals("B.north.C.in", link("C_B").getToNode().getId().toString());
-		assertEquals("B.north.C.out", link("B_C").getFromNode().getId().toString());
+		assertNull(link("A_X").getAttributes().getAttribute("railsimExit"));
+		assertEquals("B.north.C.in", link("C_B.entry").getToNode().getId().toString());
+		assertEquals("B.north.C.out", link("B_C.exit").getFromNode().getId().toString());
 		assertTrue(network.getNodes().get(Id.createNodeId("A")).getInLinks().isEmpty());
 		assertEquals("test", network.getNodes().get(Id.createNodeId("A")).getAttributes().getAttribute("microNode"));
 	}
 
 	@Test
 	void entriesLeadOnlyToConnectedPlatformsAndNeverStraightToAnExit() {
-		Node entryNode = link("X_A").getToNode();
+		Node entryNode = link("X_A.entry").getToNode();
 		assertEquals(Set.of("A.a_shared.1.north.X.in", "A.a_shared.2.north.X.in"),
 			entryNode.getOutLinks().keySet().stream().map(Id::toString).collect(java.util.stream.Collectors.toSet()));
-		Node exitNode = link("A_X").getFromNode();
-		assertEquals(Set.of("A_X"), exitNode.getOutLinks().keySet().stream().map(Id::toString).collect(java.util.stream.Collectors.toSet()));
+		Node exitNode = link("A_X.exit").getFromNode();
+		assertEquals(Set.of("A_X.exit"), exitNode.getOutLinks().keySet().stream().map(Id::toString).collect(java.util.stream.Collectors.toSet()));
 		assertNotEquals(entryNode, exitNode);
 	}
 
@@ -280,7 +288,7 @@ class MicroNodeBuilderTest {
 		assertFalse(milan.getLinks().containsKey(Id.createLinkId("S01066_S01067")));
 		assertEquals("S01642.south.S01067_S01642.f1.in",
 			milan.getLinks().get(Id.createLinkId("S01067_S01642.f1.north.entry")).getToNode().getId().toString());
-		assertEquals(Boolean.TRUE, milan.getLinks().get(Id.createLinkId("S01643_S01642")).getAttributes().getAttribute("railsimEntry"));
+		assertEquals(Boolean.TRUE, milan.getLinks().get(Id.createLinkId("S01643_S01642.entry")).getAttributes().getAttribute("railsimEntry"));
 		assertTrue(milan.getLinks().size() > linksBefore);
 	}
 

@@ -399,18 +399,51 @@ public final class MicroNodeBuilder {
 			Junction junction = junctions.get(MicroIds.junction(station, side, neighbour));
 			Link incoming = network.getLinks().get(Id.createLinkId(neighbour + "_" + station.id()));
 			if (incoming != null) {
-				Link redirected = replaceEnd(incoming, station.id(), junction.in());
-				redirected.getAttributes().putAttribute("railsimEntry", true);
+				Node signal = addNode(incoming.getId() + ".entry.a", junction.in().getCoord());
+				Link redirected = replaceEnd(incoming, station.id(), signal);
+				double stub = stubLength(redirected);
+				redirected.setLength(redirected.getLength() - stub);
+				Link entry = addStub(incoming.getId() + ".entry", signal, junction.in(), stub, redirected);
+				entry.getAttributes().putAttribute("railsimEntry", true);
 			}
 			Link outgoing = network.getLinks().get(Id.createLinkId(station.id() + "_" + neighbour));
 			if (outgoing != null) {
-				Link redirected = replaceEnd(outgoing, station.id(), junction.out());
-				redirected.getAttributes().putAttribute("railsimExit", true);
+				Node signal = addNode(outgoing.getId() + ".exit.b", junction.out().getCoord());
+				Link redirected = replaceEnd(outgoing, station.id(), signal);
+				double stub = stubLength(redirected);
+				redirected.setLength(redirected.getLength() - stub);
+				Link exit = addStub(outgoing.getId() + ".exit", junction.out(), signal, stub, redirected);
+				exit.getAttributes().putAttribute("railsimExit", true);
 			}
 			if (incoming == null && outgoing == null) {
 				LOG.warn("Station {} declares neighbour {} but the meso network has no link between them", station.id(), neighbour);
 			}
 		});
+	}
+
+	/**
+	 * The stretch between the home signal and the station, split off a
+	 * mesoscopic link: railsim decides a detour on the entry link and ends it on
+	 * the exit link, so each must be its own link. A meso link joining two
+	 * detailed stations was entry of one and exit of the other at once, and
+	 * railsim, reading the entry flag first, never found an exit: no train was
+	 * ever diverted between two such stations (run of 2026-09-17 evening). The
+	 * stub keeps the section's resource and capacity, so a single-track block
+	 * runs through it unbroken.
+	 */
+	private Link addStub(String id, Node from, Node to, double length, Link section) {
+		Link stub = addLink(id, from, to, length, section.getFreespeed());
+		for (String attribute : List.of("railsimResourceId", "railsimTrainCapacity", "tracksTotal", "dataStatus")) {
+			Object value = section.getAttributes().getAttribute(attribute);
+			if (value != null) {
+				stub.getAttributes().putAttribute(attribute, value);
+			}
+		}
+		return stub;
+	}
+
+	private static double stubLength(Link section) {
+		return Math.min(STUB_LENGTH_M, section.getLength() / 3);
 	}
 
 	/** Recreates a meso link with the end at {@code stationId} moved to the junction; attributes are kept. */

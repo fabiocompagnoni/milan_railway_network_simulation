@@ -11,6 +11,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Merges consecutive single-track links into one block resource between
@@ -22,6 +24,8 @@ import java.util.Set;
 public final class SingleTrackBlocks {
 
 	private static final Logger log = LogManager.getLogger(SingleTrackBlocks.class);
+	/** A mesoscopic section {@code A_B}, or its entry or exit stub before a detailed station. */
+	private static final Pattern SECTION_ID = Pattern.compile("([^_.]+)_([^_.]+)(\\.entry|\\.exit)?");
 
 	private SingleTrackBlocks() {
 	}
@@ -135,16 +139,42 @@ public final class SingleTrackBlocks {
 	 * {@code A_B}; the node test remains for links that are not named that way.
 	 */
 	private static Link findOpposite(Network network, Link link) {
-		String[] ends = link.getId().toString().split("_");
-		if (ends.length == 2) {
-			Link named = network.getLinks().get(Id.createLinkId(ends[1] + "_" + ends[0]));
-			if (named != null && isSingleTrack(named)) {
-				return named;
+		Matcher named = SECTION_ID.matcher(link.getId().toString());
+		if (named.matches()) {
+			// the entry stub of A_B lies next to B, where the exit stub of B_A begins: they are one piece of track
+			String stub = named.group(3) == null ? "" : named.group(3).equals(".entry") ? ".exit" : ".entry";
+			Link opposite = network.getLinks().get(Id.createLinkId(named.group(2) + "_" + named.group(1) + stub));
+			if (opposite != null && isSingleTrack(opposite)) {
+				return opposite;
 			}
 		}
 		return link.getToNode().getOutLinks().values().stream()
 			.filter(l -> l.getToNode().equals(link.getFromNode()) && isSingleTrack(l))
 			.findFirst().orElse(null);
+	}
+
+	/**
+	 * The home signal before a detailed station splits a section into the
+	 * section proper and its entry or exit stub, which share the section's
+	 * resource: the node between them lies inside one section and bounds no
+	 * block, otherwise the block would end at the signal and an opposing train
+	 * could enter the stub.
+	 */
+	private static boolean insideOneSection(Node node) {
+		Set<Object> resources = new HashSet<>();
+		for (Link link : node.getInLinks().values()) {
+			if (isSingleTrack(link)) {
+				resources.add(link.getAttributes().getAttribute("railsimResourceId"));
+			}
+		}
+		for (Link link : node.getOutLinks().values()) {
+			if (isSingleTrack(link)) {
+				resources.add(link.getAttributes().getAttribute("railsimResourceId"));
+			}
+		}
+		boolean onlySingleTrack = node.getInLinks().values().stream().allMatch(SingleTrackBlocks::isSingleTrack)
+			&& node.getOutLinks().values().stream().allMatch(SingleTrackBlocks::isSingleTrack);
+		return onlySingleTrack && resources.size() == 1;
 	}
 
 	/**
@@ -167,6 +197,9 @@ public final class SingleTrackBlocks {
 		if (stop != null && ((Number) stop.getAttributes()
 				.getAttribute("railsimTrainCapacity")).intValue() >= 2) {
 			return true;
+		}
+		if (stop == null && insideOneSection(node)) {
+			return false;
 		}
 		long singleTrackNeighbours = node.getOutLinks().values().stream()
 			.filter(SingleTrackBlocks::isSingleTrack)

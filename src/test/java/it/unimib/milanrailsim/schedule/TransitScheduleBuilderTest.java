@@ -141,7 +141,7 @@ class TransitScheduleBuilderTest {
 		// the first trip of the day comes out of S1's sidings, in time to be on its platform at the timetable departure
 		assertEquals(List.of("S1.sidings", "S1.sidings.north.leave", "S1.p1.north.sidings.in", "S1.p1.in", "S1.p1.out",
 				"S1.p1.north.S1_S2.f1.out", "S1_S2.f1.north.exit", "S1_S2.f1.north", "S1_S2.f1.north.entry",
-				"S2.p1.south.S1_S2.f1.in", "S2.p1", "S2.p1.north.S3.out", "S2_S3", "stop_S3"),
+				"S2.p1.south.S1_S2.f1.in", "S2.p1", "S2.p1.north.S3.out", "S2_S3.exit", "S2_S3", "stop_S3"),
 			chain.stream().map(Id::toString).toList());
 		Departure departure = t1Route.getDepartures().values().iterator().next();
 		assertEquals(8 * 3600 + 60 - PlatformPlanner.POSITIONING_SECONDS, departure.getDepartureTime());

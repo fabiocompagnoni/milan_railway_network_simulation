@@ -139,6 +139,31 @@ class SingleTrackBlocksTest {
 	}
 
 	@Test
+	void theHomeSignalBeforeADetailedStationDoesNotEndTheBlock() {
+		// M -single- (signal) -stub- N.in : the stub keeps the section's resource, so the block runs through the signal
+		for (String id : List.of("M.north.N.out", "M_N.entry.a", "N.south.M.in", "N.p1")) {
+			network.addNode(network.getFactory().createNode(Id.createNodeId(id), new Coord(0, 0)));
+		}
+		singleTrack("M_N", "M.north.N.out", "M_N.entry.a");
+		singleTrack("M_N.entry", "M_N.entry.a", "N.south.M.in");
+		Link approach = network.getFactory().createLink(Id.createLinkId("N.p1.south.M.in"),
+			network.getNodes().get(Id.createNodeId("N.south.M.in")), network.getNodes().get(Id.createNodeId("N.p1")));
+		approach.setAllowedModes(Set.of("rail"));
+		approach.getAttributes().putAttribute("railsimTrainCapacity", 1);
+		approach.getAttributes().putAttribute("microNode", "mn");
+		network.addLink(approach);
+
+		singleTrack("N_M.exit", "N.south.M.in", "M_N.entry.a");
+		singleTrack("N_M", "M_N.entry.a", "M.north.N.out");
+
+		SingleTrackBlocks.apply(network);
+
+		assertEquals(resource("M_N"), resource("M_N.entry"), "section and entry stub are one block");
+		assertEquals(resource("M_N"), resource("N_M.exit"), "the exit stub of the opposite direction is the same piece of track");
+		assertEquals(resource("M_N"), resource("N_M"));
+	}
+
+	@Test
 	void bothDirectionsBetweenDetailedStationsShareOneBlock() {
 		// between two detailed stations each direction enters and leaves through its own junction
 		// node, so the two links share no node: the opposite must still join the same block
