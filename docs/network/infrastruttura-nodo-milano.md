@@ -115,6 +115,22 @@ Criticità**.
   spaziatura tra stazioni (es. ponti) sono invisibili alla granularità meso,
   trattabili spezzando il link se rilevanti.
 
+- **Doppio binario — distanziamento a blocco automatico**: una tratta a doppio
+  binario non tiene un solo treno per verso ma uno per sezione di blocco. Sulle
+  linee RFI e Ferrovienord il blocco automatico (BAcc) ha sezioni da 900 a
+  1350 m e ammette il treno seguente appena la sezione dietro al primo è libera
+  (fonti: Wikipedia, "Blocco elettrico automatico a correnti codificate";
+  Ferrovienord, "Istruzione per l'esercizio con sistema di blocco elettrico
+  automatico", ed. 2019). Nel modello (`MesoNetworkEnricher`): capacità per
+  verso = binari per verso × ⌊lunghezza / 2,7 km⌋, minimo 1, cioè un treno
+  ogni due sezioni da 1350 m (quella occupata e quella di distanziamento).
+  Motivo: con un treno per verso, tratte da 30–50 km (Treviglio–Brescia,
+  Monza–Lecco) fermavano in stazione il secondo treno, che occupava il binario
+  e accodava tutta la linea (simulazione del 2026-09-18: 112 treni su 274
+  bloccati per questo). Valore provvisorio: le lunghezze reali delle sezioni
+  per linea non sono state rilevate. Le tratte sotto i 2,7 km (Passante,
+  Garibaldi–Centrale) restano a un treno per verso.
+
 - **Circolazione a SINISTRA**: i treni tengono la sinistra (contrario delle
   auto). Determina l'assegnazione binario→direzione in ogni fascio a doppio
   binario.

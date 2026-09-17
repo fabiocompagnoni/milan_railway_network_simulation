@@ -82,6 +82,18 @@ final class MesoNetworkEnricher {
 		return fullyMeasured;
 	}
 
+	/**
+	 * A double-track section holds one train per block section and direction,
+	 * not one train per direction: automatic block (BAcc, sections of 900 to
+	 * 1350 m on RFI and Ferrovienord lines) admits a following train as soon
+	 * as the section behind the first is clear. One train every two sections
+	 * of 1350 m, the section it occupies and the one keeping it apart from the
+	 * train ahead, gives {@code length / 2700 m} trains per track, at least
+	 * one. With one train per direction, sections of 30 to 50 km were queueing
+	 * the whole line behind a single train (run of 2026-09-18).
+	 */
+	static final double BLOCK_SPACING_M = 2700.0;
+
 	private void applyCapacity(Link link, int tracksTotal) {
 		link.getAttributes().putAttribute("tracksTotal", tracksTotal);
 		if (tracksTotal == 1) {
@@ -89,12 +101,16 @@ final class MesoNetworkEnricher {
 			link.getAttributes().putAttribute("railsimResourceId", sharedResourceId(link));
 			return;
 		}
-		int perDirection = tracksTotal / 2;
+		int tracksPerDirection = tracksTotal / 2;
 		if (tracksTotal % 2 != 0) {
 			log.warn("Link {}: odd track total {} — using {} per direction, extra track ignored",
-				link.getId(), tracksTotal, perDirection);
+				link.getId(), tracksTotal, tracksPerDirection);
 		}
-		link.getAttributes().putAttribute("railsimTrainCapacity", perDirection);
+		link.getAttributes().putAttribute("railsimTrainCapacity", tracksPerDirection * blockSections(link.getLength()));
+	}
+
+	static int blockSections(double lengthM) {
+		return Math.max(1, (int) Math.floor(lengthM / BLOCK_SPACING_M));
 	}
 
 	/** Same id for both directions of a station pair: sorted node ids. */

@@ -51,6 +51,17 @@ class MesoNetworkEnricherTest {
 	}
 
 	@Test
+	void doubleTrackHoldsOneTrainPerBlockSectionAndDirection() {
+		// 8.3 km of double track: three spacings of 2.7 km per direction; a short section still holds one
+		new MesoNetworkEnricher(Map.of(
+			"S1_S2", measure(Optional.of(2), Optional.of(8300.0), Optional.of(110.0)),
+			"S2_S1", measure(Optional.of(2), Optional.of(1500.0), Optional.of(110.0)))).enrich(network);
+
+		assertEquals(3, link("S1_S2").getAttributes().getAttribute("railsimTrainCapacity"));
+		assertEquals(1, link("S2_S1").getAttributes().getAttribute("railsimTrainCapacity"));
+	}
+
+	@Test
 	void quadrupleTrackBecomesCapacityTwoPerDirection() {
 		// the measures CSV carries one row per DIRECTED link: both directions present
 		new MesoNetworkEnricher(Map.of(
