@@ -229,7 +229,7 @@ S01486,Carate-Calo',S7,intermedia,2,0,2,0,1,1,no,https://it.wikipedia.org/wiki/S
 S01490,Cassago-Nibionno-Bulciago,S7,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Cassago-Nibionno-Bulciago,,fermata dal 1987
 S01491,Costa Masnaga,S7,intermedia,2,0,4,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Costa_Masnaga,,"stazione passante, 2 binari"
 S01484,Macherio-Canonica,S7,intermedia,2,0,3,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Macherio-Canonica,,fermata dal 1987
-S01480,Monza Sobborghi,S7,fine doppio binario,1,1,4,0,1/2,3,?,https://it.wikipedia.org/wiki/Stazione_di_Monza_Sobborghi,,"fermata, 1 binario per la S7 piu' 2 di corsa"
+S01480,Monza Sobborghi,S7,fine doppio binario,1,1,4,0,1/2,1,no,https://it.wikipedia.org/wiki/Stazione_di_Monza_Sobborghi,1,"fermata: un solo binario per la S7; i due binari di corsa della linea per Lecco non toccano la stazione"
 S01489,Renate-Veduggio,S7,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Renate-Veduggio,,fermata dal 1987
 S01485,Triuggio-Ponte Albiate,S7,intermedia,2,0,5,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Triuggio-Ponte_Albiate,,"stazione passante, 2 binari"
 S01487,Villa Raverio,S7,intermedia,2,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Villa_Raverio,,fermata dal 1987
