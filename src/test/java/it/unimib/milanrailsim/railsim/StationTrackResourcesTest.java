@@ -209,14 +209,18 @@ class StationTrackResourcesTest {
 	void aDetourAroundTheNextStopMustReachAPlatformOfItsArea() {
 		Network network = network();
 		Id<org.matsim.pt.transitSchedule.api.TransitStopArea> area = Id.create("A", org.matsim.pt.transitSchedule.api.TransitStopArea.class);
+		Id<org.matsim.pt.transitSchedule.api.TransitStopArea> otherLine = Id.create("A|other", org.matsim.pt.transitSchedule.api.TransitStopArea.class);
+		// A_B is a platform shared by two lines, so it carries both areas
 		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network,
-			java.util.Map.of(Id.createLinkId("stop_A"), area, Id.createLinkId("A_B"), area));
+			java.util.Map.of(Id.createLinkId("stop_A"), java.util.Set.of(area), Id.createLinkId("A_B"), java.util.Set.of(otherLine, area),
+				Id.createLinkId("C_D"), java.util.Set.of(otherLine)));
 		RailLink stop = new RailLink(network.getLinks().get(Id.createLinkId("stop_A")), null);
 		RailLink other = new RailLink(network.getLinks().get(Id.createLinkId("A_B")), null);
 		RailLink elsewhere = new RailLink(network.getLinks().get(Id.createLinkId("C_D")), null);
 		TrainPosition train = train(network, "C_D", "C_D", "stop_A", java.util.Set.of("stop_A"), "C_D", "stop_A");
 
-		assertTrue(resources.checkReroute(0, null, null, List.of(stop), List.of(other), train), "railsim can remap the stop");
+		assertTrue(resources.checkReroute(0, null, null, List.of(stop), List.of(other), train),
+			"railsim can remap the stop: the shared platform belongs to the stop's area too");
 		assertFalse(resources.checkReroute(0, null, null, List.of(stop), List.of(elsewhere), train),
 			"no platform of the stop's area on the detour: the stop would be skipped");
 	}

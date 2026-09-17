@@ -17,6 +17,7 @@ import org.matsim.pt.transitSchedule.api.TransitStopFacility;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,17 +41,17 @@ public final class StationTrackResources implements RailResourceManager {
 	private final RailResourceManager delegate;
 	private final Set<Id<Link>> anyTrackLinks;
 	private final Set<Id<Link>> loopLinks;
-	private final Map<Id<Link>, Id<TransitStopArea>> areaOfLink;
+	private final Map<Id<Link>, Set<Id<TransitStopArea>>> areasOfLink;
 
 	@Inject
 	public StationTrackResources(RailResourceManagerImpl delegate, QSim qsim) {
 		this(delegate, qsim.getScenario().getNetwork(), stopAreas(qsim.getScenario().getTransitSchedule()));
 	}
 
-	/** @param areaOfLink the stop area each platform link belongs to, for the links that have one */
-	StationTrackResources(RailResourceManager delegate, Network network, Map<Id<Link>, Id<TransitStopArea>> areaOfLink) {
+	/** @param areasOfLink the stop areas each platform link belongs to, for the links that have any */
+	StationTrackResources(RailResourceManager delegate, Network network, Map<Id<Link>, Set<Id<TransitStopArea>>> areasOfLink) {
 		this.delegate = delegate;
-		this.areaOfLink = Map.copyOf(areaOfLink);
+		this.areasOfLink = Map.copyOf(areasOfLink);
 		this.anyTrackLinks = network.getLinks().values().stream()
 			.filter(link -> link.getAttributes().getAttribute("stationLink") != null || ownsItsResource(link))
 			.map(Link::getId)
@@ -61,11 +62,12 @@ public final class StationTrackResources implements RailResourceManager {
 			.collect(Collectors.toUnmodifiableSet());
 	}
 
-	private static Map<Id<Link>, Id<TransitStopArea>> stopAreas(TransitSchedule schedule) {
-		Map<Id<Link>, Id<TransitStopArea>> areas = new HashMap<>();
+	/** A platform serves every line calling there, so one link belongs to as many areas as lines and directions use it. */
+	private static Map<Id<Link>, Set<Id<TransitStopArea>>> stopAreas(TransitSchedule schedule) {
+		Map<Id<Link>, Set<Id<TransitStopArea>>> areas = new HashMap<>();
 		for (TransitStopFacility facility : schedule.getFacilities().values()) {
 			if (facility.getStopAreaId() != null) {
-				areas.put(facility.getLinkId(), facility.getStopAreaId());
+				areas.computeIfAbsent(facility.getLinkId(), link -> new HashSet<>()).add(facility.getStopAreaId());
 			}
 		}
 		return areas;
@@ -157,8 +159,10 @@ public final class StationTrackResources implements RailResourceManager {
 		if (!aroundNextStop) {
 			return true;
 		}
-		Id<TransitStopArea> area = areaOfLink.get(nextStopLink);
-		return area != null && detour.stream().anyMatch(link -> area.equals(areaOfLink.get(link.getLinkId())));
+		Id<TransitStopArea> area = position.getNextStop().getStopAreaId();
+		Set<Id<TransitStopArea>> areas = area != null ? Set.of(area) : areasOfLink.getOrDefault(nextStopLink, Set.of());
+		return detour.stream()
+			.anyMatch(link -> areasOfLink.getOrDefault(link.getLinkId(), Set.of()).stream().anyMatch(areas::contains));
 	}
 
 	static boolean tailOnRoute(TrainPosition position) {
