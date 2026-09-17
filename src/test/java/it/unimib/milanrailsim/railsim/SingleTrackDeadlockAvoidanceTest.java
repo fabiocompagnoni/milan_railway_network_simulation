@@ -225,6 +225,12 @@ class SingleTrackDeadlockAvoidanceTest {
 
 		avoidance.onRelease(4, stationS, first.getDriver());
 		assertTrue(avoidance.checkLink(5, east1, second), "once the first train left, the second may follow");
+
+		// a train holding the block towards S already counts at S: a train out of S's yard may not take the last track
+		avoidance.onReserve(6, blockWS, second);
+		TrainPosition fromYard = train(atS, east2, atE);
+		assertFalse(avoidance.checkLink(7, atS, fromYard), "the committed train needs that track; the yard train is no meet partner");
+		assertTrue(avoidance.checkLinks(7, List.of(west2, atS), opposing), "a whole segment is checked link by link");
 	}
 
 	@Test

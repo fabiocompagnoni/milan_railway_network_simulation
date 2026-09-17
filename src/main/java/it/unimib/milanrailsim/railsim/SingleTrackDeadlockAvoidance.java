@@ -91,6 +91,9 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 		super.onReserve(time, resource, position);
 		if (isTwoWay(resource)) {
 			blockHolders.computeIfAbsent(resource.getId(), id -> ConcurrentHashMap.newKeySet()).add(position.getDriver());
+			stationBeyond(position, resource).ifPresent(station -> stationOccupants
+				.computeIfAbsent(station, id -> new ConcurrentHashMap<>())
+				.putIfAbsent(position.getDriver(), passageThrough(position, station)));
 			return;
 		}
 		stationOf(resource).ifPresent(station -> {
@@ -130,30 +133,63 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 		if (blockHolders.getOrDefault(block.getId(), Set.of()).contains(position.getDriver())) {
 			return true;
 		}
-		int index = indexOnRoute(position, link);
-		if (index < 0) {
+		int track = trackBeyond(position, block);
+		if (track < 0) {
 			return true;
+		}
+		String station = stationOf(position.getRoute(track).getResource()).orElseThrow();
+		Passage passage = passageThrough(position, station);
+		
+		if (passage.to().equals(NOWHERE) && trackHolders.getOrDefault(position.getRoute(track).getResource().getId(), Set.of())
+				.stream().anyMatch(holder -> holder != position.getDriver())) {
+			return false;
+		}
+		return roomForTheMeet(station, passage, position);
+	}
+
+	/** The station at the far end of the block on the train's route, if the route reaches one. */
+	private Optional<String> stationBeyond(TrainPosition position, RailResource block) {
+		int track = trackBeyond(position, block);
+		return track < 0 ? Optional.empty() : stationOf(position.getRoute(track).getResource());
+	}
+
+	/**
+	 * Index on the route of the first station track after the block: a stop
+	 * loop, or the platform after the approach links of a detailed station; -1
+	 * when the block is not ahead on the route or no station follows it.
+	 */
+	private int trackBeyond(TrainPosition position, RailResource block) {
+		int index = -1;
+		for (int i = Math.max(0, position.getRouteIndex() - 1); i < position.getRouteSize(); i++) {
+			if (position.getRoute(i).getResource() == block) {
+				index = i;
+				break;
+			}
+		}
+		if (index < 0) {
+			return -1;
 		}
 		int last = index;
 		while (last + 1 < position.getRouteSize() && position.getRoute(last + 1).getResource() == block) {
 			last++;
 		}
-		// the station at the far end: its stop loop, or the first platform after the approach links of a detailed one
 		for (int i = last + 1; i < Math.min(last + 4, position.getRouteSize()); i++) {
-			RailResource track = position.getRoute(i).getResource();
-			Optional<String> station = stationOf(track);
-			if (station.isPresent()) {
-				Passage passage = passageThrough(position, station.get());
-				// a train ending its trip on a taken terminal platform cannot be diverted: it waits before the block,
-				// or the train on the platform could never leave through it (Cremona, run of 2026-09-18)
-				if (passage.to().equals(NOWHERE) && trackHolders.getOrDefault(track.getId(), Set.of()).stream()
-						.anyMatch(holder -> holder != position.getDriver())) {
-					return false;
-				}
-				return roomForTheMeet(station.get(), passage, position);
+			if (stationOf(position.getRoute(i).getResource()).isPresent()) {
+				return i;
 			}
 		}
-		return true;
+		return -1;
+	}
+
+	/**
+	 * railsim reserves a non-blocking area (a station throat and the platform
+	 * beyond) as one segment and asks the avoidance about the segment only,
+	 * with an answer of yes by default; the station consent has to be asked of
+	 * every link of it, or it would never apply to a detailed station.
+	 */
+	@Override
+	public boolean checkLinks(double time, List<RailLink> links, TrainPosition position) {
+		return links.stream().allMatch(link -> checkLink(time, link, position));
 	}
 
 	/**
@@ -258,15 +294,6 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 			Link back = network.getLinks().get(Id.createLinkId(section.group(2) + "_" + section.group(1)));
 			return resource != null && back != null && resource.equals(back.getAttributes().getAttribute("railsimResourceId"));
 		}));
-	}
-
-	private static int indexOnRoute(TrainPosition position, RailLink link) {
-		for (int i = Math.max(0, position.getRouteIndex() - 1); i < position.getRouteSize(); i++) {
-			if (position.getRoute(i).getLinkId().equals(link.getLinkId())) {
-				return i;
-			}
-		}
-		return -1;
 	}
 
 	/**
