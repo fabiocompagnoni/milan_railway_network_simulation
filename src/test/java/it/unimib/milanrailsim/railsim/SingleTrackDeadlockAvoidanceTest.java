@@ -322,6 +322,19 @@ class SingleTrackDeadlockAvoidanceTest {
 
 		assertFalse(avoidance.checkLink(3, east, second), "a second train from W would fill the station: no track for the meet");
 		assertFalse(avoidance.checkLink(3, platforms[1], second), "nor may it take the second platform itself");
+
+		// a train ending its trip on p2 holds the block: p2 is claimed for it, whoever else asks, however many tracks are free
+		avoidance.onRelease(4, platforms[0].getResource(), first.getDriver());
+		TrainPosition ending = train(east, approaches[1], platforms[1]);
+		avoidance.onReserve(5, block, ending);
+		TrainPosition fromYard = train(platforms[1], approaches[1]);
+		assertFalse(avoidance.checkLink(6, platforms[1], fromYard), "p2 is claimed by the terminating train in the block");
+		assertTrue(avoidance.checkLink(6, platforms[1], ending), "the claimant itself takes it");
+		avoidance.onReserve(7, platforms[1].getResource(), ending);
+		Link out = NetworkUtils.createAndAddLink(network, Id.createLinkId("S.p1.south.W.out"),
+			network.getNodes().get(Id.createNodeId("S.p1.a")), network.getNodes().get(Id.createNodeId("S.south.W.in")), 100, 10, 1, 1);
+		TrainPosition towardsW = train(platforms[0], new RailLink(out, null), west);
+		assertTrue(avoidance.checkLink(8, platforms[0], towardsW), "p1 is free, and a train leaving towards W is the partner of the one that came from W");
 		assertEquals("W", SingleTrackDeadlockAvoidance.neighbourBehind(Id.createLinkId("S.p2.south.W.in")));
 		assertEquals("W", SingleTrackDeadlockAvoidance.neighbourBehind(Id.createLinkId("W_S.entry")));
 	}

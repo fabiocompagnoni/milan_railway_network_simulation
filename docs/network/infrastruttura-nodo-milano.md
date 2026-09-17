@@ -158,7 +158,7 @@ Criticità**.
   per default (`checkLinks`); ora il parere è chiesto binario per binario. E un
   treno che ha ottenuto il blocco verso una stazione vi conta già come
   presente, altrimenti un treno uscito dal ricovero prendeva l'ultimo binario
-  mentre l'altro era in viaggio nella tratta unica.
+  mentre l'altro era in viaggio nella tratta unica. Infine il binario di testa a cui un treno in viaggio nel blocco è destinato resta prenotato per lui, perché non può essere deviato altrove: nel run `reale_2026-09-17_5` un R22 uscito dal ricovero di Varese Nord prendeva proprio il binario 2 verso cui arrivava l'R22 da Malnate, lasciandogli libero l'1, che non poteva usare.
 
 - **Binario unico — transiti nelle stazioni di incrocio**: un treno che non
   ferma in una stazione di incrocio ci passa comunque sopra un binario di

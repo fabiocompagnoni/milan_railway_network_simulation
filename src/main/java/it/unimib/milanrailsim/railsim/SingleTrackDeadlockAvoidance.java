@@ -66,6 +66,8 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 	private final Map<Id<RailResource>, Set<MobsimDriverAgent>> trackHolders = new ConcurrentHashMap<>();
 	/** Trains holding or committed to a track of each crossing station, with their passage through it. */
 	private final Map<String, Map<MobsimDriverAgent, Passage>> stationOccupants = new ConcurrentHashMap<>();
+	/** The terminal platform a train in the block is bound to: it cannot be diverted, so nobody else may take it. */
+	private final Map<Id<RailResource>, MobsimDriverAgent> claimedTracks = new ConcurrentHashMap<>();
 
 	@Inject
 	public SingleTrackDeadlockAvoidance(Network network, EventsManager eventsManager) {
@@ -83,6 +85,10 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 		if (isTwoWay(link.getResource())) {
 			return super.checkLink(time, link, position) && crossingTrackFree(link, position);
 		}
+		MobsimDriverAgent claimant = claimedTracks.get(link.getResource().getId());
+		if (claimant != null && claimant != position.getDriver()) {
+			return false;
+		}
 		return stationOf(link.getResource()).map(station -> roomForTheMeet(station, position)).orElse(true);
 	}
 
@@ -91,15 +97,23 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 		super.onReserve(time, resource, position);
 		if (isTwoWay(resource)) {
 			blockHolders.computeIfAbsent(resource.getId(), id -> ConcurrentHashMap.newKeySet()).add(position.getDriver());
-			stationBeyond(position, resource).ifPresent(station -> stationOccupants
-				.computeIfAbsent(station, id -> new ConcurrentHashMap<>())
-				.putIfAbsent(position.getDriver(), passageThrough(position, station)));
+			int track = trackBeyond(position, resource);
+			if (track >= 0) {
+				RailResource platform = position.getRoute(track).getResource();
+				String station = stationOf(platform).orElseThrow();
+				Passage passage = passageThrough(position, station);
+				stationOccupants.computeIfAbsent(station, id -> new ConcurrentHashMap<>()).putIfAbsent(position.getDriver(), passage);
+				if (passage.to().equals(NOWHERE)) {
+					claimedTracks.putIfAbsent(platform.getId(), position.getDriver());
+				}
+			}
 			return;
 		}
 		stationOf(resource).ifPresent(station -> {
 			trackHolders.computeIfAbsent(resource.getId(), id -> ConcurrentHashMap.newKeySet()).add(position.getDriver());
 			stationOccupants.computeIfAbsent(station, id -> new ConcurrentHashMap<>())
 				.put(position.getDriver(), passageThrough(position, station));
+			claimedTracks.remove(resource.getId(), position.getDriver());
 		});
 	}
 
@@ -107,8 +121,10 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 	public void onRelease(double time, RailResource resource, MobsimDriverAgent driver) {
 		super.onRelease(time, resource, driver);
 		Set<MobsimDriverAgent> holders = blockHolders.get(resource.getId());
-		if (holders != null) {
-			holders.remove(driver);
+		if (holders != null && holders.remove(driver) && isTwoWay(resource)) {
+			// leaving a block without having taken the claimed platform (a changed route): the claim is void
+			claimedTracks.entrySet().removeIf(claim -> claim.getValue() == driver && !trackHolders
+				.getOrDefault(claim.getKey(), Set.of()).contains(driver));
 		}
 		Set<MobsimDriverAgent> onTrack = trackHolders.get(resource.getId());
 		if (onTrack != null) {
@@ -145,12 +161,6 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 			return false;
 		}
 		return roomForTheMeet(station, passage, position);
-	}
-
-	/** The station at the far end of the block on the train's route, if the route reaches one. */
-	private Optional<String> stationBeyond(TrainPosition position, RailResource block) {
-		int track = trackBeyond(position, block);
-		return track < 0 ? Optional.empty() : stationOf(position.getRoute(track).getResource());
 	}
 
 	/**
