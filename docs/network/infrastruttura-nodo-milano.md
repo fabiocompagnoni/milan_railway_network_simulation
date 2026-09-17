@@ -115,6 +115,18 @@ Criticità**.
   spaziatura tra stazioni (es. ponti) sono invisibili alla granularità meso,
   trattabili spezzando il link se rilevanti.
 
+- **Binario unico — transiti nelle stazioni di incrocio**: un treno che non
+  ferma in una stazione di incrocio ci passa comunque sopra un binario di
+  stazione e, se deve, lì aspetta il treno opposto. Nel modello meso le tratte
+  si toccano nel nodo della stazione e il binario di stazione (`stop_<id>`) era
+  percorso solo da chi fermava: il percorso ora lo attraversa anche in
+  transito quando almeno una delle due tratte è a binario unico e la stazione
+  ha almeno due binari (`TransitScheduleBuilder.throughCrossingStations`).
+  Motivo: nella simulazione del 2026-09-17 sera un R3 e un RE3 in transito a
+  Borgo San Giovanni, con i due binari della stazione liberi, aspettavano ognuno
+  il blocco dell'altro per tutto il giorno; stesso stallo a Dervio (RE8) e
+  Olmeneta (R6).
+
 - **Binario unico — consenso all'ingresso nel blocco**: oltre alla
   serializzazione del blocco, un treno entra in una tratta a binario unico solo
   se la stazione di incrocio all'altro capo ha un binario per lui e, quando lì

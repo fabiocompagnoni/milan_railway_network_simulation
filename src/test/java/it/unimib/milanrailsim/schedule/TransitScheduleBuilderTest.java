@@ -192,6 +192,32 @@ class TransitScheduleBuilderTest {
 	}
 
 	@Test
+	void aTrainPassingACrossingStationOnSingleTrackRunsOverItsStationTrack() {
+		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-express"));
+		// S1 -> S3 without calling at S2; the S2 -> S3 section is single track and S2 has two station tracks
+		for (String id : List.of("S2_S3", "S3_S2")) {
+			Link link = network.getLinks().get(Id.createLinkId(id));
+			if (link == null) {
+				link = network.getFactory().createLink(Id.createLinkId(id), network.getNodes().get(Id.createNodeId("S3")),
+					network.getNodes().get(Id.createNodeId("S2")));
+				link.setLength(2000);
+				link.setFreespeed(30);
+				link.setAllowedModes(java.util.Set.of("rail"));
+				network.addLink(link);
+			}
+			link.getAttributes().putAttribute("railsimResourceId", "S2_S3");
+		}
+		StationStopLinks.addStopLinks(network, it.unimib.milanrailsim.network.StationTracks.empty());
+		network.getLinks().get(Id.createLinkId("stop_S2")).getAttributes().putAttribute("railsimTrainCapacity", 2);
+
+		TransitScheduleBuilder.Result result = new TransitScheduleBuilder(feed, network, DATE, RouteVehicleAssignment.defaults()).build();
+
+		TransitRoute route = result.schedule().getTransitLines().get(Id.create("S1", TransitLine.class)).getRoutes().values().iterator().next();
+		assertEquals(List.of("S1_S2", "stop_S2", "S2_S3"), route.getRoute().getLinkIds().stream().map(Id::toString).toList());
+		assertEquals(2, route.getStops().size(), "S2 is run through, not called at");
+	}
+
+	@Test
 	void tripsCallingOutsideTheNetworkAreSkipped() {
 		// a network without S3: T1 (S1-S2-S3) is dropped, TN (S1-S2) survives
 		Network twoStations = NetworkUtils.createNetwork();

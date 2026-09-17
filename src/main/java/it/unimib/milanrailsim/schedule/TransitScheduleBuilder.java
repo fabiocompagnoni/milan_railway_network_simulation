@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.ToDoubleFunction;
 
@@ -312,6 +313,7 @@ public final class TransitScheduleBuilder {
 		if (movement.toSidings()) {
 			chain.addAll(router.path(stopFacilities.getLast().getLinkId(), sidingsOf(stopTimes.getLast().stopId()), costKey, cost));
 		}
+		chain = throughCrossingStations(chain);
 		if (new java.util.HashSet<>(chain).size() < chain.size()) {
 			// railsim tracks a train's head and tail by the links of its route and cannot follow a repeated one
 			throw new IllegalStateException("Route of trip " + trip.id() + " (" + routeShortName + ") runs a link twice: " + chain);
@@ -323,6 +325,49 @@ public final class TransitScheduleBuilder {
 		line.addRoute(transitRoute);
 		patternToRouteId.put(pattern, routeId);
 		return transitRoute;
+	}
+
+	/**
+	 * A train passing a station on single track without calling there still
+	 * runs over a station track, and waits on it when it has to let the
+	 * opposing train by: the meso route, which joins the two sections at the
+	 * station node, gets the station's track link in between. Without it two
+	 * non-stopping trains from the two sides could only wait in the sections,
+	 * each for the other's (Borgo San Giovanni, run of 2026-09-17).
+	 */
+	private List<Id<Link>> throughCrossingStations(List<Id<Link>> chain) {
+		List<Id<Link>> result = new ArrayList<>();
+		for (int i = 0; i < chain.size(); i++) {
+			result.add(chain.get(i));
+			if (i + 1 < chain.size()) {
+				crossingStationBetween(chain.get(i), chain.get(i + 1)).ifPresent(result::add);
+			}
+		}
+		return result;
+	}
+
+	private Optional<Id<Link>> crossingStationBetween(Id<Link> arriving, Id<Link> leaving) {
+		Link in = network.getLinks().get(arriving);
+		Link out = network.getLinks().get(leaving);
+		if (in == null || out == null || !in.getToNode().equals(out.getFromNode()) || in.getFromNode().equals(in.getToNode())
+				|| out.getFromNode().equals(out.getToNode())) {
+			return Optional.empty();
+		}
+		if (!isSingleTrack(in) && !isSingleTrack(out)) {
+			return Optional.empty();
+		}
+		Link station = network.getLinks().get(StationStopLinks.stopLinkId(in.getToNode().getId()));
+		if (station == null || ((Number) station.getAttributes().getAttribute("railsimTrainCapacity")).intValue() < 2) {
+			return Optional.empty();
+		}
+		return Optional.of(station.getId());
+	}
+
+	/** A single-track section: both directions declared under one shared resource, as the meso enricher marks them. */
+	private static boolean isSingleTrack(Link link) {
+		return link.getAttributes().getAttribute("railsimResourceId") != null
+			&& link.getAttributes().getAttribute("microNode") == null
+			&& link.getAttributes().getAttribute("stationLink") == null;
 	}
 
 	private TransitStopFacility facilityFor(TransitSchedule schedule, String line, String tripId,
