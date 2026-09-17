@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class StationTrackResourcesTest {
 
+	private static final String VEHICLE = "v";
+
 	/** Records the track argument of the last capacity query. */
 	private static final class RecordingManager implements RailResourceManager {
 		int lastTrack = Integer.MIN_VALUE;
@@ -95,10 +97,16 @@ class StationTrackResourcesTest {
 	/** @param stops route links the train stops on; {@code nextStopLink} is the one it stops on next */
 	private static TrainPosition train(Network network, String headLink, String tailLink, String nextStopLink,
 			java.util.Set<String> stops, String... route) {
+		org.matsim.core.mobsim.qsim.interfaces.MobsimVehicle vehicle = (org.matsim.core.mobsim.qsim.interfaces.MobsimVehicle) java.lang.reflect.Proxy.newProxyInstance(
+			MobsimDriverAgent.class.getClassLoader(), new Class<?>[] { org.matsim.core.mobsim.qsim.interfaces.MobsimVehicle.class },
+			(proxy, method, args) -> method.getName().equals("getId") ? Id.createVehicleId(VEHICLE) : null);
+		MobsimDriverAgent driver = (MobsimDriverAgent) java.lang.reflect.Proxy.newProxyInstance(
+			MobsimDriverAgent.class.getClassLoader(), new Class<?>[] { MobsimDriverAgent.class },
+			(proxy, method, args) -> method.getName().equals("getVehicle") ? vehicle : null);
 		return new TrainPosition() {
 			@Override
 			public MobsimDriverAgent getDriver() {
-				return null;
+				return driver;
 			}
 
 			@Override
@@ -183,7 +191,7 @@ class StationTrackResourcesTest {
 	@Test
 	void detoursWaitUntilTheTailIsOnTheCurrentRoute() {
 		Network network = network();
-		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of());
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of(), java.util.Map.of());
 
 		assertFalse(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "C_D", "A_B", "C_D", "stop_A")),
 			"the tail is still on the previous route");
@@ -193,9 +201,15 @@ class StationTrackResourcesTest {
 	@Test
 	void noDetourThatWouldDropAStopBeyondTheNextOne() {
 		Network network = network();
-		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of());
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of(), java.util.Map.of());
 		RailLink section = new RailLink(network.getLinks().get(Id.createLinkId("C_D")), null);
 		RailLink stop = new RailLink(network.getLinks().get(Id.createLinkId("stop_A")), null);
+		// railsim reports only the next stop: the later calls of the vehicle's day must come from the schedule
+		StationTrackResources scheduled = new StationTrackResources(new RecordingManager(), network, java.util.Map.of(),
+			java.util.Map.of(Id.createVehicleId(VEHICLE), java.util.Set.of(Id.createLinkId("A_B"), Id.createLinkId("stop_A"))));
+		assertFalse(scheduled.checkReroute(0, null, null, List.of(section, stop), List.of(),
+			train(network, "C_D", "C_D", "A_B", java.util.Set.of("A_B"), "C_D", "A_B", "stop_A")),
+			"stop_A is a later call of the day even though railsim's next stop is A_B");
 
 		assertFalse(resources.checkReroute(0, null, null, List.of(section, stop), List.of(),
 			train(network, "C_D", "C_D", "A_B", java.util.Set.of("A_B", "stop_A"), "C_D", "A_B", "stop_A")),
@@ -213,7 +227,7 @@ class StationTrackResourcesTest {
 		// A_B is a platform shared by two lines, so it carries both areas
 		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network,
 			java.util.Map.of(Id.createLinkId("stop_A"), java.util.Set.of(area), Id.createLinkId("A_B"), java.util.Set.of(otherLine, area),
-				Id.createLinkId("C_D"), java.util.Set.of(otherLine)));
+				Id.createLinkId("C_D"), java.util.Set.of(otherLine)), java.util.Map.of());
 		RailLink stop = new RailLink(network.getLinks().get(Id.createLinkId("stop_A")), null);
 		RailLink other = new RailLink(network.getLinks().get(Id.createLinkId("A_B")), null);
 		RailLink elsewhere = new RailLink(network.getLinks().get(Id.createLinkId("C_D")), null);
@@ -228,7 +242,7 @@ class StationTrackResourcesTest {
 	@Test
 	void noDetourWhileStandingOnAStationLoop() {
 		Network network = network();
-		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of());
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of(), java.util.Map.of());
 
 		assertFalse(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "stop_A", "stop_A", "stop_A", "C_D")));
 	}
@@ -236,7 +250,7 @@ class StationTrackResourcesTest {
 	@Test
 	void oneWayLinksAskForAnyFreeTrack() {
 		RecordingManager delegate = new RecordingManager();
-		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of());
+		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of(), java.util.Map.of());
 
 		resources.hasCapacity(0, Id.createLinkId("C_D"), RailResourceManager.ANY_TRACK_NON_BLOCKING, null);
 
@@ -246,7 +260,7 @@ class StationTrackResourcesTest {
 	@Test
 	void stationLinksAskForAnyFreeTrack() {
 		RecordingManager delegate = new RecordingManager();
-		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of());
+		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of(), java.util.Map.of());
 
 		resources.hasCapacity(0, Id.createLinkId("stop_A"), RailResourceManager.ANY_TRACK_NON_BLOCKING, null);
 
@@ -256,7 +270,7 @@ class StationTrackResourcesTest {
 	@Test
 	void singleTrackSectionsKeepTheNonBlockingRule() {
 		RecordingManager delegate = new RecordingManager();
-		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of());
+		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of(), java.util.Map.of());
 
 		resources.hasCapacity(0, Id.createLinkId("A_B"), RailResourceManager.ANY_TRACK_NON_BLOCKING, null);
 

@@ -11,9 +11,13 @@ import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.core.mobsim.framework.MobsimDriverAgent;
 import org.matsim.core.mobsim.qsim.QSim;
+import org.matsim.pt.transitSchedule.api.Departure;
+import org.matsim.pt.transitSchedule.api.TransitLine;
+import org.matsim.pt.transitSchedule.api.TransitRoute;
 import org.matsim.pt.transitSchedule.api.TransitSchedule;
 import org.matsim.pt.transitSchedule.api.TransitStopArea;
 import org.matsim.pt.transitSchedule.api.TransitStopFacility;
+import org.matsim.vehicles.Vehicle;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -42,16 +46,23 @@ public final class StationTrackResources implements RailResourceManager {
 	private final Set<Id<Link>> anyTrackLinks;
 	private final Set<Id<Link>> loopLinks;
 	private final Map<Id<Link>, Set<Id<TransitStopArea>>> areasOfLink;
+	private final Map<Id<Vehicle>, Set<Id<Link>>> callsOfVehicle;
 
 	@Inject
 	public StationTrackResources(RailResourceManagerImpl delegate, QSim qsim) {
-		this(delegate, qsim.getScenario().getNetwork(), stopAreas(qsim.getScenario().getTransitSchedule()));
+		this(delegate, qsim.getScenario().getNetwork(), stopAreas(qsim.getScenario().getTransitSchedule()),
+			callsOfVehicle(qsim.getScenario().getTransitSchedule()));
 	}
 
-	/** @param areasOfLink the stop areas each platform link belongs to, for the links that have any */
-	StationTrackResources(RailResourceManager delegate, Network network, Map<Id<Link>, Set<Id<TransitStopArea>>> areasOfLink) {
+	/**
+	 * @param areasOfLink    the stop areas each platform link belongs to, for the links that have any
+	 * @param callsOfVehicle the platform links each vehicle calls at over its day
+	 */
+	StationTrackResources(RailResourceManager delegate, Network network, Map<Id<Link>, Set<Id<TransitStopArea>>> areasOfLink,
+			Map<Id<Vehicle>, Set<Id<Link>>> callsOfVehicle) {
 		this.delegate = delegate;
 		this.areasOfLink = Map.copyOf(areasOfLink);
+		this.callsOfVehicle = Map.copyOf(callsOfVehicle);
 		this.anyTrackLinks = network.getLinks().values().stream()
 			.filter(link -> link.getAttributes().getAttribute("stationLink") != null || ownsItsResource(link))
 			.map(Link::getId)
@@ -71,6 +82,19 @@ public final class StationTrackResources implements RailResourceManager {
 			}
 		}
 		return areas;
+	}
+
+	private static Map<Id<Vehicle>, Set<Id<Link>>> callsOfVehicle(TransitSchedule schedule) {
+		Map<Id<Vehicle>, Set<Id<Link>>> calls = new HashMap<>();
+		for (TransitLine line : schedule.getTransitLines().values()) {
+			for (TransitRoute route : line.getRoutes().values()) {
+				for (Departure departure : route.getDepartures().values()) {
+					Set<Id<Link>> links = calls.computeIfAbsent(departure.getVehicleId(), vehicle -> new HashSet<>());
+					route.getStops().forEach(stop -> links.add(stop.getStopFacility().getLinkId()));
+				}
+			}
+		}
+		return calls;
 	}
 
 	/** A link without a declared resource, or whose resource carries its own id, is the only link of that resource. */
@@ -147,13 +171,15 @@ public final class StationTrackResources implements RailResourceManager {
 	 */
 	boolean keepsStops(List<RailLink> subRoute, List<RailLink> detour, TrainPosition position) {
 		Id<Link> nextStopLink = position.getNextStop() == null ? null : position.getNextStop().getLinkId();
+		// railsim only knows the next stop; the later calls of the day come from the schedule, so a
+		// detour decided one station early cannot drop the terminus behind it (seen at Garibaldi)
+		Set<Id<Link>> calls = callsOfVehicle.getOrDefault(position.getDriver().getVehicle().getId(), Set.of());
 		boolean aroundNextStop = false;
 		for (RailLink link : subRoute) {
-			if (position.isStop(link.getLinkId())) {
-				if (!link.getLinkId().equals(nextStopLink)) {
-					return false;
-				}
+			if (link.getLinkId().equals(nextStopLink)) {
 				aroundNextStop = true;
+			} else if (position.isStop(link.getLinkId()) || calls.contains(link.getLinkId())) {
+				return false;
 			}
 		}
 		if (!aroundNextStop) {

@@ -167,7 +167,15 @@ Criticità**.
   verso che lo usano (a Mortara il binario 1 ne ha sette): fino alla
   simulazione del 2026-09-17 sera il controllo ne ricordava una sola, e la
   deviazione veniva rifiutata quasi sempre; i treni aspettavano il binario
-  occupato con quello accanto libero.
+  occupato con quello accanto libero. Un secondo limite di railsim: una
+  deviazione decisa una stazione prima (mentre il treno va ancora verso la
+  fermata precedente) conosce solo la fermata successiva, quindi può
+  sostituire il binario del capolinea con uno su cui il treno non ferma e
+  proseguire fino al ricovero senza servire la fermata (310 casi nel run del
+  17 sera: nessun arrivo registrato al capolinea, ritardi apparenti di ore
+  nell'analisi di puntualità). Il controllo ora conosce tutte le fermate
+  della giornata del veicolo dall'orario e rifiuta ogni deviazione che ne
+  attraversi una senza fermarsi.
 
 - **Circolazione a SINISTRA**: i treni tengono la sinistra (contrario delle
   auto). Determina l'assegnazione binario→direzione in ogni fascio a doppio
