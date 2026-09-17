@@ -1,0 +1,459 @@
+{
+	"node": "milano-asso",
+	"title": "Stazioni di incrocio sul binario unico: Arosio, Asso, Cesano Maderno, Erba, Inverigo, Mariano Comense, Meda, Merone, Seveso",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Arosio: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Arosio; stima OSM 2",
+		"Asso: 4 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Canzo-Asso; stima OSM 5",
+		"Cesano Maderno: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Cesano_Maderno_(2011); stima OSM 11",
+		"Erba: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Erba; stima OSM 4",
+		"Inverigo: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Inverigo; stima OSM 3",
+		"Mariano Comense: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Mariano_Comense; stima OSM 3",
+		"Meda: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Meda; stima OSM 6",
+		"Merone: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Merone; stima OSM 3",
+		"Seveso: 4 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Seveso; stima OSM 5"
+	],
+	"stations": [
+		{
+			"id": "S01092",
+			"name": "Arosio",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "arosio",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01091"
+						],
+						"north": [
+							"meso:S01093"
+						]
+					},
+					"notes": "2 binari (stazione 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Carugo-Giussano, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01101",
+			"name": "Asso",
+			"kind": "terminal",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "asso",
+					"kind": "terminal",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						},
+						{
+							"ref": "4",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01099"
+						]
+					},
+					"notes": "4 binari (capolinea di testa, 4 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Canzo, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01086",
+			"name": "Cesano Maderno",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "cesano_maderno",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01078",
+							"meso:S01085"
+						],
+						"north": [
+							"meso:S01929",
+							"meso:S01934",
+							"meso:S01925"
+						]
+					},
+					"notes": "3 binari (2 binari Milano-Asso piu' 1 sopraelevato Saronno-Seregno); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Milano Affori, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01096",
+			"name": "Erba",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "erba",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01454"
+						],
+						"north": [
+							"meso:S01097"
+						]
+					},
+					"notes": "3 binari (bin.1 incrocio, 2 corsa, 3 tronco); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Merone, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01093",
+			"name": "Inverigo",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "inverigo",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01092"
+						],
+						"north": [
+							"meso:S01094",
+							"meso:S01454"
+						]
+					},
+					"notes": "2 binari (stazione 2 binari, incroci); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Arosio, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01089",
+			"name": "Mariano Comense",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "mariano_comense",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01088"
+						],
+						"north": [
+							"meso:S01091",
+							"meso:S01092"
+						]
+					},
+					"notes": "3 binari (2 passanti piu' 1 tronco); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Cabiate, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01087",
+			"name": "Meda",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "meda",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01925"
+						],
+						"north": [
+							"meso:S01088",
+							"meso:S01089"
+						]
+					},
+					"notes": "3 binari (stazione passante 3 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Seveso, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01454",
+			"name": "Merone",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "merone",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01094",
+							"meso:S01453"
+						],
+						"north": [
+							"meso:S01458",
+							"meso:S01456",
+							"meso:S01096"
+						]
+					},
+					"notes": "3 binari (diramazione, 3 viaggiatori piu' 2 merci); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Lambrugo-Lurago D'Erba, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01925",
+			"name": "Seveso",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "seveso",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						},
+						{
+							"ref": "4",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01086"
+						],
+						"north": [
+							"meso:S01087",
+							"meso:S01316"
+						]
+					},
+					"notes": "4 binari (nodo Ferrovienord, 4 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Cesano Maderno, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01092": [
+					"arosio"
+				],
+				"S01101": [
+					"asso"
+				],
+				"S01086": [
+					"cesano_maderno"
+				],
+				"S01096": [
+					"erba"
+				],
+				"S01093": [
+					"inverigo"
+				],
+				"S01089": [
+					"mariano_comense"
+				],
+				"S01087": [
+					"meda"
+				],
+				"S01454": [
+					"merone"
+				],
+				"S01925": [
+					"seveso"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01092": [
+					"arosio"
+				],
+				"S01101": [
+					"asso"
+				],
+				"S01086": [
+					"cesano_maderno"
+				],
+				"S01096": [
+					"erba"
+				],
+				"S01093": [
+					"inverigo"
+				],
+				"S01089": [
+					"mariano_comense"
+				],
+				"S01087": [
+					"meda"
+				],
+				"S01454": [
+					"merone"
+				],
+				"S01925": [
+					"seveso"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

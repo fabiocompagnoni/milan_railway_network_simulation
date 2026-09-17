@@ -1,0 +1,175 @@
+{
+	"node": "valchiavenna",
+	"title": "Stazioni di incrocio sul binario unico: Chiavenna, Dubino, Novate-Mezzola",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Chiavenna: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Chiavenna; stima OSM 6",
+		"Dubino: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Dubino; stima OSM 2",
+		"Novate-Mezzola: 5 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Novate_Mezzola; stima OSM 2"
+	],
+	"stations": [
+		{
+			"id": "S01400",
+			"name": "Chiavenna",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "chiavenna",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01403"
+						],
+						"north": [
+							"meso:S01417"
+						]
+					},
+					"notes": "3 binari (capolinea, 3 binari viaggiatori); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Novate-Mezzola, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01405",
+			"name": "Dubino",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "dubino",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01420"
+						],
+						"north": [
+							"meso:S01404"
+						]
+					},
+					"notes": "2 binari (secondo binario di incrocio dal 2022); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Colico, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01403",
+			"name": "Novate-Mezzola",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "novate_mezzola",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						},
+						{
+							"ref": "4",
+							"direction": null
+						},
+						{
+							"ref": "5",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01405",
+							"meso:S01404"
+						],
+						"north": [
+							"meso:S01402"
+						]
+					},
+					"notes": "5 binari (2 viaggiatori piu' 3 tronchi); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Dubino, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01400": [
+					"chiavenna"
+				],
+				"S01405": [
+					"dubino"
+				],
+				"S01403": [
+					"novate_mezzola"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01400": [
+					"chiavenna"
+				],
+				"S01405": [
+					"dubino"
+				],
+				"S01403": [
+					"novate_mezzola"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

@@ -1,0 +1,792 @@
+{
+	"node": "valtellina",
+	"title": "Stazioni di incrocio sul binario unico: Abbadia Lariana, Ardenno Masino, Bellano Tartavalle Terme, Castione Andevenno, Cosio Traona, Delebio, Dervio, Lierna, Mandello Del Lario, Piona, Ponte In Valtellina, S.Pietro Berbenno, Sondrio, Tirano, Tresenda-Aprica-Teglio, Varenna Esino",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Abbadia Lariana: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Abbadia_Lariana; stima OSM 4",
+		"Ardenno Masino: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Ardenno-Masino; stima OSM 2",
+		"Bellano Tartavalle Terme: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Bellano-Tartavalle_Terme; stima OSM 5",
+		"Castione Andevenno: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Castione_Andevenno; stima OSM 1",
+		"Cosio Traona: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Cosio-Traona; stima OSM 1",
+		"Delebio: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Delebio; stima OSM 2",
+		"Dervio: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Dervio; stima OSM 4",
+		"Lierna: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Lierna; stima OSM 2",
+		"Mandello Del Lario: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Mandello_del_Lario; stima OSM 3",
+		"Piona: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Piona; stima OSM 2",
+		"Ponte In Valtellina: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Ponte_in_Valtellina; stima OSM 2",
+		"S.Pietro Berbenno: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_San_Pietro_Berbenno; stima OSM 1",
+		"Sondrio: 10 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Sondrio; stima OSM 4",
+		"Tirano: 10 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Tirano_(RFI); stima OSM 14",
+		"Tresenda-Aprica-Teglio: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Tresenda-Aprica-Teglio; stima OSM 2",
+		"Varenna Esino: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Varenna-Esino; stima OSM 4"
+	],
+	"stations": [
+		{
+			"id": "S01416",
+			"name": "Abbadia Lariana",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "abbadia_lariana",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01520"
+						],
+						"north": [
+							"meso:S01415"
+						]
+					},
+					"notes": "2 binari (stazione passante, due binari viaggiatori); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Lecco, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01427",
+			"name": "Ardenno Masino",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "ardenno_masino",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01426"
+						],
+						"north": [
+							"meso:S01428"
+						]
+					},
+					"notes": "2 binari (binario di corsa piu' binario di raddoppio 365 m); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Talamona, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01409",
+			"name": "Bellano Tartavalle Terme",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "bellano_tartavalle_terme",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01411"
+						],
+						"north": [
+							"meso:S01408",
+							"meso:S01420"
+						]
+					},
+					"notes": "2 binari (stazione passante, due binari viaggiatori); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Varenna Esino, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01429",
+			"name": "Castione Andevenno",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "castione_andevenno",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01428"
+						],
+						"north": [
+							"meso:S01430"
+						]
+					},
+					"notes": "2 binari (secondo binario di incrocio); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di S.Pietro Berbenno, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01424",
+			"name": "Cosio Traona",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "cosio_traona",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01422"
+						],
+						"north": [
+							"meso:S01425"
+						]
+					},
+					"notes": "2 binari (due binari passanti viaggiatori); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Delebio, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01422",
+			"name": "Delebio",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "delebio",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01420"
+						],
+						"north": [
+							"meso:S01424"
+						]
+					},
+					"notes": "2 binari (due binari passanti, stazione di incrocio); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Colico, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01408",
+			"name": "Dervio",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "dervio",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01409"
+						],
+						"north": [
+							"meso:S01407"
+						]
+					},
+					"notes": "2 binari (stazione passante, due binari viaggiatori); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Bellano Tartavalle Terme, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01413",
+			"name": "Lierna",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "lierna",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01414"
+						],
+						"north": [
+							"meso:S01412",
+							"meso:S01411"
+						]
+					},
+					"notes": "2 binari (stazione passante, due binari viaggiatori); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Olcio, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01415",
+			"name": "Mandello Del Lario",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "mandello_del_lario",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01520",
+							"meso:S01416"
+						],
+						"north": [
+							"meso:S01414",
+							"meso:S01413",
+							"meso:S01411"
+						]
+					},
+					"notes": "2 binari (stazione passante, due binari viaggiatori); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Lecco, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01406",
+			"name": "Piona",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "piona",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01407"
+						],
+						"north": [
+							"meso:S01420"
+						]
+					},
+					"notes": "2 binari (due binari con possibilita' di incrocio); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Dorio, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01434",
+			"name": "Ponte In Valtellina",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "ponte_in_valtellina",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01433"
+						],
+						"north": [
+							"meso:S01435",
+							"meso:S01437"
+						]
+					},
+					"notes": "2 binari (testo 2 binari, infobox 1: da verificare); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Poggiridenti-Tresivio-Piateda, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01428",
+			"name": "S.Pietro Berbenno",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "s_pietro_berbenno",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01427"
+						],
+						"north": [
+							"meso:S01429"
+						]
+					},
+					"notes": "2 binari (banchina centrale servita da 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Ardenno Masino, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01430",
+			"name": "Sondrio",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "sondrio",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						},
+						{
+							"ref": "4",
+							"direction": null
+						},
+						{
+							"ref": "5",
+							"direction": null
+						},
+						{
+							"ref": "6",
+							"direction": null
+						},
+						{
+							"ref": "7",
+							"direction": null
+						},
+						{
+							"ref": "8",
+							"direction": null
+						},
+						{
+							"ref": "9",
+							"direction": null
+						},
+						{
+							"ref": "10",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01425",
+							"meso:S01429"
+						],
+						"north": [
+							"meso:S01433",
+							"meso:S01437"
+						]
+					},
+					"notes": "10 binari (3 viaggiatori piu' 7 di scalo); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Morbegno, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01440",
+			"name": "Tirano",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "tirano",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						},
+						{
+							"ref": "4",
+							"direction": null
+						},
+						{
+							"ref": "5",
+							"direction": null
+						},
+						{
+							"ref": "6",
+							"direction": null
+						},
+						{
+							"ref": "7",
+							"direction": null
+						},
+						{
+							"ref": "8",
+							"direction": null
+						},
+						{
+							"ref": "9",
+							"direction": null
+						},
+						{
+							"ref": "10",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01437"
+						],
+						"north": [
+							"meso:S01439"
+						]
+					},
+					"notes": "10 binari (capolinea, 3 binari viaggiatori); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Tresenda-Aprica-Teglio, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01437",
+			"name": "Tresenda-Aprica-Teglio",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "tresenda_aprica_teglio",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01430",
+							"meso:S01436"
+						],
+						"north": [
+							"meso:S01438",
+							"meso:S01440"
+						]
+					},
+					"notes": "2 binari (stazione passante, 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Sondrio, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01411",
+			"name": "Varenna Esino",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "varenna_esino",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01415",
+							"meso:S01412"
+						],
+						"north": [
+							"meso:S01409"
+						]
+					},
+					"notes": "2 binari (stazione, binario 1 di incrocio); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Mandello Del Lario, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01416": [
+					"abbadia_lariana"
+				],
+				"S01427": [
+					"ardenno_masino"
+				],
+				"S01409": [
+					"bellano_tartavalle_terme"
+				],
+				"S01429": [
+					"castione_andevenno"
+				],
+				"S01424": [
+					"cosio_traona"
+				],
+				"S01422": [
+					"delebio"
+				],
+				"S01408": [
+					"dervio"
+				],
+				"S01413": [
+					"lierna"
+				],
+				"S01415": [
+					"mandello_del_lario"
+				],
+				"S01406": [
+					"piona"
+				],
+				"S01434": [
+					"ponte_in_valtellina"
+				],
+				"S01428": [
+					"s_pietro_berbenno"
+				],
+				"S01430": [
+					"sondrio"
+				],
+				"S01440": [
+					"tirano"
+				],
+				"S01437": [
+					"tresenda_aprica_teglio"
+				],
+				"S01411": [
+					"varenna_esino"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01416": [
+					"abbadia_lariana"
+				],
+				"S01427": [
+					"ardenno_masino"
+				],
+				"S01409": [
+					"bellano_tartavalle_terme"
+				],
+				"S01429": [
+					"castione_andevenno"
+				],
+				"S01424": [
+					"cosio_traona"
+				],
+				"S01422": [
+					"delebio"
+				],
+				"S01408": [
+					"dervio"
+				],
+				"S01413": [
+					"lierna"
+				],
+				"S01415": [
+					"mandello_del_lario"
+				],
+				"S01406": [
+					"piona"
+				],
+				"S01434": [
+					"ponte_in_valtellina"
+				],
+				"S01428": [
+					"s_pietro_berbenno"
+				],
+				"S01430": [
+					"sondrio"
+				],
+				"S01440": [
+					"tirano"
+				],
+				"S01437": [
+					"tresenda_aprica_teglio"
+				],
+				"S01411": [
+					"varenna_esino"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

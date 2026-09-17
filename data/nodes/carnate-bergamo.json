@@ -1,0 +1,275 @@
+{
+	"node": "carnate-bergamo",
+	"title": "Stazioni di incrocio sul binario unico: Calusco, Carnate Usmate, Paderno Robbiate, Ponte S.Pietro, Terno",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Calusco: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Calusco; stima OSM 1",
+		"Carnate Usmate: 7 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Carnate-Usmate; stima OSM 8",
+		"Paderno Robbiate: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Paderno-Robbiate; stima OSM 1",
+		"Ponte S.Pietro: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Ponte_San_Pietro; stima OSM 3",
+		"Terno: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Terno; stima OSM 2"
+	],
+	"stations": [
+		{
+			"id": "S01503",
+			"name": "Calusco",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "calusco",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01502"
+						],
+						"north": [
+							"meso:S01504"
+						]
+					},
+					"notes": "3 binari (stazione passante, 3 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Paderno Robbiate, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01511",
+			"name": "Carnate Usmate",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "carnate_usmate",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						},
+						{
+							"ref": "4",
+							"direction": null
+						},
+						{
+							"ref": "5",
+							"direction": null
+						},
+						{
+							"ref": "6",
+							"direction": null
+						},
+						{
+							"ref": "7",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01322",
+							"meso:S01510"
+						],
+						"north": [
+							"meso:S01512",
+							"meso:S01513",
+							"meso:S01502"
+						]
+					},
+					"notes": "7 binari (nodo, binari 2-3 di corsa, altri per precedenze e attestamento); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Monza, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01502",
+			"name": "Paderno Robbiate",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "paderno_robbiate",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01511"
+						],
+						"north": [
+							"meso:S01503"
+						]
+					},
+					"notes": "2 binari (stazione passante, 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Carnate Usmate, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01528",
+			"name": "Ponte S.Pietro",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "ponte_s_pietro",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01504"
+						],
+						"north": [
+							"meso:S01527"
+						]
+					},
+					"notes": "3 binari (nodo, binario 3 fuori servizio per lavori fino al 2026); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Terno, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01504",
+			"name": "Terno",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "terno",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01503"
+						],
+						"north": [
+							"meso:S01528"
+						]
+					},
+					"notes": "2 binari (stazione passante, 2 marciapiedi); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Calusco, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01503": [
+					"calusco"
+				],
+				"S01511": [
+					"carnate_usmate"
+				],
+				"S01502": [
+					"paderno_robbiate"
+				],
+				"S01528": [
+					"ponte_s_pietro"
+				],
+				"S01504": [
+					"terno"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01503": [
+					"calusco"
+				],
+				"S01511": [
+					"carnate_usmate"
+				],
+				"S01502": [
+					"paderno_robbiate"
+				],
+				"S01528": [
+					"ponte_s_pietro"
+				],
+				"S01504": [
+					"terno"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

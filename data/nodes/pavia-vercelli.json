@@ -1,0 +1,175 @@
+{
+	"node": "pavia-vercelli",
+	"title": "Stazioni di incrocio sul binario unico: Garlasco, Robbio, Vercelli",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Garlasco: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Garlasco; stima OSM 2",
+		"Robbio: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Robbio; stima OSM 2",
+		"Vercelli: 7 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Vercelli; stima OSM 5"
+	],
+	"stations": [
+		{
+			"id": "S00276",
+			"name": "Garlasco",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "garlasco",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S00277"
+						],
+						"north": [
+							"meso:S00275"
+						]
+					},
+					"notes": "2 binari (stazione di incrocio); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Gropello Cairoli, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S00272",
+			"name": "Robbio",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "robbio",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S00273"
+						],
+						"north": [
+							"meso:S00271"
+						]
+					},
+					"notes": "2 binari (2 passanti piu' 1 tronco); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Nicorvo, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S00245",
+			"name": "Vercelli",
+			"kind": "terminal",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "vercelli",
+					"kind": "terminal",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						},
+						{
+							"ref": "4",
+							"direction": null
+						},
+						{
+							"ref": "5",
+							"direction": null
+						},
+						{
+							"ref": "6",
+							"direction": null
+						},
+						{
+							"ref": "7",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S00271"
+						]
+					},
+					"notes": "7 binari (7 passanti piu' 2 tronchi); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Palestro, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S00276": [
+					"garlasco"
+				],
+				"S00272": [
+					"robbio"
+				],
+				"S00245": [
+					"vercelli"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S00276": [
+					"garlasco"
+				],
+				"S00272": [
+					"robbio"
+				],
+				"S00245": [
+					"vercelli"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

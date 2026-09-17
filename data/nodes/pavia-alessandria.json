@@ -1,0 +1,210 @@
+{
+	"node": "pavia-alessandria",
+	"title": "Stazioni di incrocio sul binario unico: Cava Carbonara, Lomello, Sannazzaro, Torreberetti",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Cava Carbonara: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Cava_Carbonara; stima OSM 4",
+		"Lomello: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Lomello; stima OSM 2",
+		"Sannazzaro: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Sannazzaro; stima OSM 2",
+		"Torreberetti: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Torreberetti; stima OSM 5"
+	],
+	"stations": [
+		{
+			"id": "S00279",
+			"name": "Cava Carbonara",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "cava_carbonara",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01860"
+						],
+						"north": [
+							"meso:S00278"
+						]
+					},
+					"notes": "3 binari (diramazione Vercelli-Pavia / Pavia-Alessandria); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Pavia, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S00405",
+			"name": "Lomello",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "lomello",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S00404"
+						],
+						"north": [
+							"meso:S00406"
+						]
+					},
+					"notes": "2 binari (stazione con binario di incrocio); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Ferrera Lomellina, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S00403",
+			"name": "Sannazzaro",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "sannazzaro",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S00402"
+						],
+						"north": [
+							"meso:S00404"
+						]
+					},
+					"notes": "2 binari (stazione di incrocio, terzo binario merci); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Pieve Albignola, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S00039",
+			"name": "Torreberetti",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "torreberetti",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S00406",
+							"meso:S00038"
+						],
+						"north": [
+							"meso:S00041"
+						]
+					},
+					"notes": "3 binari (diramazione, 3 binari con banchina); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Mede, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S00279": [
+					"cava_carbonara"
+				],
+				"S00405": [
+					"lomello"
+				],
+				"S00403": [
+					"sannazzaro"
+				],
+				"S00039": [
+					"torreberetti"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S00279": [
+					"cava_carbonara"
+				],
+				"S00405": [
+					"lomello"
+				],
+				"S00403": [
+					"sannazzaro"
+				],
+				"S00039": [
+					"torreberetti"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

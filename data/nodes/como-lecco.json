@@ -1,0 +1,257 @@
+{
+	"node": "como-lecco",
+	"title": "Stazioni di incrocio sul binario unico: Cantu', Como Camerlata, Molteno, Oggiono, Valmadrera",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Cantu': 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Cant%C3%B9; stima OSM 1",
+		"Como Camerlata: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Como_Camerlata; stima OSM 14",
+		"Molteno: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Molteno; stima OSM 6",
+		"Oggiono: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Oggiono; stima OSM 4",
+		"Valmadrera: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Valmadrera; stima OSM 1"
+	],
+	"stations": [
+		{
+			"id": "S01451",
+			"name": "Cantu'",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "cantu",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01452",
+							"meso:S01454"
+						],
+						"north": [
+							"meso:S01450"
+						]
+					},
+					"notes": "2 binari (stazione passante 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Brenna-Alzate, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S09998",
+			"name": "Como Camerlata",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "como_camerlata",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01318",
+							"meso:S01312",
+							"meso:S01451",
+							"meso:S01450"
+						],
+						"north": [
+							"meso:S01307"
+						]
+					},
+					"notes": "2 binari (parte RFI su doppio binario); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Seregno, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01458",
+			"name": "Molteno",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "molteno",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01491",
+							"meso:S01457"
+						],
+						"north": [
+							"meso:S01460",
+							"meso:S01463",
+							"meso:S01520"
+						]
+					},
+					"notes": "3 binari (stazione di diramazione, 3 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Costa Masnaga, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01460",
+			"name": "Oggiono",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "oggiono",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01458"
+						],
+						"north": [
+							"meso:S01461",
+							"meso:S01463"
+						]
+					},
+					"notes": "2 binari (stazione passante, 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Molteno, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01463",
+			"name": "Valmadrera",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "valmadrera",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01460",
+							"meso:S01462"
+						],
+						"north": [
+							"meso:S01520"
+						]
+					},
+					"notes": "2 binari (stazione, 2 binari viaggiatori); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Oggiono, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01451": [
+					"cantu"
+				],
+				"S09998": [
+					"como_camerlata"
+				],
+				"S01458": [
+					"molteno"
+				],
+				"S01460": [
+					"oggiono"
+				],
+				"S01463": [
+					"valmadrera"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01451": [
+					"cantu"
+				],
+				"S09998": [
+					"como_camerlata"
+				],
+				"S01458": [
+					"molteno"
+				],
+				"S01460": [
+					"oggiono"
+				],
+				"S01463": [
+					"valmadrera"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}
