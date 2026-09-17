@@ -80,3 +80,14 @@ per nome ha sempre la precedenza sulla regola.
 Convenzioni: circolazione a sinistra; `north` è il verso che si allontana da
 Milano lungo la tratta, `south` quello verso Milano; nei capolinea i binari
 sono bidirezionali (`direction: null`) e restano occupati per tutta la sosta.
+
+Lunghezze usate dal costruttore della rete (`MicroNodeBuilder`), provvisorie:
+banchine 200 m dove il nodo non le dichiara; gola 100 m a 30 km/h dove non è
+rilevata; tratti di ingresso e uscita di ogni tratta e del ricovero 200 m,
+più lunghi del treno più lungo della flotta (137 m), così un treno fermo in
+attesa di un binario sta tutto oltre la sezione precedente e la libera, come
+un treno fermo al segnale di protezione. Con tratti di 100 m ogni attesa in
+stazione teneva bloccata la tratta alle spalle e accodava tutta la linea
+(simulazione del 2026-09-17). I tratti di uscita e ingresso del ricovero hanno
+la capacità del ricovero: in uno scalo esce per primo il treno il cui binario
+è libero, non quello entrato per primo.

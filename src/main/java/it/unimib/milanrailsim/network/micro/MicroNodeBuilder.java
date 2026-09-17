@@ -60,7 +60,7 @@ public final class MicroNodeBuilder {
 	static final double PLATFORM_LENGTH_DEFAULT_M = 200.0;
 	static final double APPROACH_LENGTH_DEFAULT_M = 100.0;
 	static final double APPROACH_SPEED_DEFAULT_KMH = 30.0;
-	static final double STUB_LENGTH_M = 100.0;
+	static final double STUB_LENGTH_M = 200.0;
 	static final double MIN_SECTION_LENGTH_M = 100.0;
 	static final double TRACK_SPACING_M = 5.0;
 	static final int MIN_THROAT_CAPACITY = 2;
@@ -194,8 +194,10 @@ public final class MicroNodeBuilder {
 			leave.getAttributes().putAttribute("railsimEntry", true);
 			Link enter = addLink(prefix + ".enter", junction.out(), entered, STUB_LENGTH_M, SIDINGS_SPEED_MS);
 			enter.getAttributes().putAttribute("railsimExit", true);
+			// a yard lets any of its trains out first: the stubs hold as many trains as the yard, so one
+			// waiting for its platform does not queue the others behind it
 			for (Link stub : List.of(leave, enter)) {
-				stub.getAttributes().putAttribute("railsimTrainCapacity", 1);
+				stub.getAttributes().putAttribute("railsimTrainCapacity", surveyed.orElse(DEFAULT_SIDINGS_TRACKS));
 				stub.getAttributes().putAttribute("microNode", node.id());
 				stub.getAttributes().putAttribute("microStation", station.id());
 			}

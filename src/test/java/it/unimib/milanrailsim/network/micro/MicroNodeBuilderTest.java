@@ -95,8 +95,9 @@ class MicroNodeBuilderTest {
 		assertEquals(1, north.getAttributes().getAttribute("railsimTrainCapacity"));
 		assertEquals("11 12", north.getAttributes().getAttribute("osmWayIds"));
 		assertEquals("test", north.getAttributes().getAttribute("microNode"));
-		// bundle 1500 m minus the 300 m throat at A, the provisional 100 m approach at B and the two 100 m stubs
-		assertEquals(900, north.getLength(), 1e-9);
+		// bundle 1500 m minus the 300 m throat at A, the provisional 100 m approach at B and the two 200 m stubs
+		assertEquals(700, north.getLength(), 1e-9);
+		assertTrue(link("A_B.f1.north.entry").getLength() > 137, "a waiting train must fit on the stub, clear of the section");
 		// the profile beyond the 30 km/h throat runs 1200 m in 48 s
 		assertEquals(25, north.getFreespeed(), 1e-9);
 		assertEquals(Boolean.TRUE, link("A_B.f1.north.exit").getAttributes().getAttribute("railsimExit"));
@@ -227,6 +228,8 @@ class MicroNodeBuilderTest {
 		assertEquals("A.north.sidings.in", link("A.sidings.north.leave").getToNode().getId().toString());
 		assertEquals(Boolean.TRUE, link("A.sidings.north.leave").getAttributes().getAttribute("railsimEntry"));
 		assertEquals(Boolean.TRUE, link("A.sidings.north.enter").getAttributes().getAttribute("railsimExit"));
+		assertEquals(3, link("A.sidings.north.leave").getAttributes().getAttribute("railsimTrainCapacity"),
+			"any train of the yard may leave first");
 		assertEquals("A.north.sidings.in", link("A.p1.north.sidings.in").getFromNode().getId().toString());
 		assertEquals("A.p1.b.in", link("A.p1.north.sidings.in").getToNode().getId().toString());
 		assertEquals("A.north.sidings.out", link("A.p1.north.sidings.out").getToNode().getId().toString());
