@@ -139,6 +139,42 @@ class SingleTrackBlocksTest {
 	}
 
 	@Test
+	void bothDirectionsBetweenDetailedStationsShareOneBlock() {
+		// between two detailed stations each direction enters and leaves through its own junction
+		// node, so the two links share no node: the opposite must still join the same block
+		for (String id : List.of("M.north.N.out", "N.south.M.in", "N.south.M.out", "M.north.N.in", "M.p1", "N.p1")) {
+			network.addNode(network.getFactory().createNode(Id.createNodeId(id), new Coord(0, 0)));
+		}
+		Link towardsN = singleTrack("M_N", "M.north.N.out", "N.south.M.in");
+		Link towardsM = singleTrack("N_M", "N.south.M.out", "M.north.N.in");
+		for (String[] throat : new String[][] { { "M.p1.north.out", "M.p1", "M.north.N.out" }, { "M.p1.north.in", "M.north.N.in", "M.p1" },
+				{ "N.p1.south.out", "N.p1", "N.south.M.out" }, { "N.p1.south.in", "N.south.M.in", "N.p1" } }) {
+			Link link = network.getFactory().createLink(Id.createLinkId(throat[0]),
+				network.getNodes().get(Id.createNodeId(throat[1])), network.getNodes().get(Id.createNodeId(throat[2])));
+			link.setAllowedModes(Set.of("rail"));
+			link.getAttributes().putAttribute("railsimTrainCapacity", 1);
+			link.getAttributes().putAttribute("microNode", "mn");
+			network.addLink(link);
+		}
+
+		SingleTrackBlocks.apply(network);
+
+		assertEquals(resource("M_N"), resource("N_M"));
+		assertTrue(resource("M_N").startsWith("block_"));
+		assertNotEquals(towardsN.getToNode(), towardsM.getFromNode(), "the fixture really keeps the ends apart");
+	}
+
+	private Link singleTrack(String id, String from, String to) {
+		Link link = network.getFactory().createLink(Id.createLinkId(id),
+			network.getNodes().get(Id.createNodeId(from)), network.getNodes().get(Id.createNodeId(to)));
+		link.setAllowedModes(Set.of("rail"));
+		link.getAttributes().putAttribute("railsimTrainCapacity", 1);
+		link.getAttributes().putAttribute("railsimResourceId", "M_N");
+		network.addLink(link);
+		return link;
+	}
+
+	@Test
 	void microNodeLinksKeepTheirOwnResources() {
 		// a throat link of a micro station carries the shared throat resource, never a block
 		network.addNode(network.getFactory().createNode(Id.createNodeId("E.north"), new Coord(0, 0)));

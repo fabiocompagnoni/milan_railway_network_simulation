@@ -2,6 +2,7 @@ package it.unimib.milanrailsim.schedule;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.api.core.v01.network.Node;
@@ -127,7 +128,20 @@ public final class SingleTrackBlocks {
 		return true;
 	}
 
+	/**
+	 * The same section run the other way. Between two detailed stations the two
+	 * directions no longer share end nodes (each enters and leaves through its
+	 * own junction node), so the opposite is found by its id, {@code B_A} for
+	 * {@code A_B}; the node test remains for links that are not named that way.
+	 */
 	private static Link findOpposite(Network network, Link link) {
+		String[] ends = link.getId().toString().split("_");
+		if (ends.length == 2) {
+			Link named = network.getLinks().get(Id.createLinkId(ends[1] + "_" + ends[0]));
+			if (named != null && isSingleTrack(named)) {
+				return named;
+			}
+		}
 		return link.getToNode().getOutLinks().values().stream()
 			.filter(l -> l.getToNode().equals(link.getFromNode()) && isSingleTrack(l))
 			.findFirst().orElse(null);
