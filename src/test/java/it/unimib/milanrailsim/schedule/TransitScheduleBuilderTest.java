@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -162,6 +163,32 @@ class TransitScheduleBuilderTest {
 		assertNull(result.schedule().getFacilities().get(Id.create("S2.p4|S2|S1|through|north", TransitStopFacility.class)),
 			"a track leading to another line is no alternative");
 		assertEquals("S3", t1Route.getStops().getLast().getStopFacility().getId().toString());
+	}
+
+	@Test
+	void aTurnbackOnAThroughTrackGoesThroughTheSidingsWhateverTheLayover(@TempDir Path dir) throws IOException {
+		Path file = dir.resolve("fixture.json");
+		Files.writeString(file, MICRO_NODE);
+		List<MicroNode> nodes = List.of(MicroNode.read(file));
+		new MicroNodeBuilder(network).splice(nodes);
+		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-turnback"));
+
+		// one circulation: S1 -> S2 (08:07), 23 min at S2, back to S1 (08:37), 34 min at S1, out again; layovers under an hour
+		TransitScheduleBuilder.Result result = new TransitScheduleBuilder(feed, network, DATE, RouteVehicleAssignment.defaults())
+			.withMicroNodes(nodes).withCirculations(10 * 60, stop -> 3600).build();
+
+		TransitLine line = result.schedule().getTransitLines().get(Id.create("S1", TransitLine.class));
+		Map<String, TransitRoute> byFirstDeparture = new java.util.HashMap<>();
+		for (TransitRoute route : line.getRoutes().values()) {
+			route.getDepartures().values().forEach(d -> byFirstDeparture.put(String.valueOf((int) d.getDepartureTime()), route));
+		}
+		TransitRoute out = byFirstDeparture.get(String.valueOf(8 * 3600 + 60 - PlatformPlanner.POSITIONING_SECONDS));
+		TransitRoute back = byFirstDeparture.get(String.valueOf(8 * 3600 + 31 * 60 - PlatformPlanner.POSITIONING_SECONDS));
+		assertEquals("S2.sidings", out.getRoute().getEndLinkId().toString(), "S2 has only through tracks: the layover is spent in the sidings");
+		assertEquals("S2.sidings", back.getRoute().getStartLinkId().toString());
+		assertTrue(byFirstDeparture.containsKey(String.valueOf(9 * 3600 + 11 * 60)),
+			"S1 is a terminal track: the 34 min layover stays on the platform and the next trip departs from it");
+		assertTrue(back.getRoute().getEndLinkId().toString().matches("S1\\.p\\d\\.in"), "the trip ends on a platform, not in the sidings");
 	}
 
 	@Test

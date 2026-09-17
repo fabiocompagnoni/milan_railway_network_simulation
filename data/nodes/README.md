@@ -86,6 +86,10 @@ Chiavi di `lines` che iniziano con `*` sono regole per le linee non elencate:
 `*through` (o `*transit`) per quelle che la attraversano. Una linea elencata
 per nome ha sempre la precedenza sulla regola.
 
+Il `kind` di un gruppo decide anche le soste: solo su un gruppo `terminal` un
+treno aspetta in banchina la corsa successiva; su un gruppo `through` si ferma
+il tempo della fermata e, se lì inverte, la sosta la fa nel ricovero.
+
 Convenzioni: circolazione a sinistra; `north` è il verso che si allontana da
 Milano lungo la tratta, `south` quello verso Milano; nei capolinea i binari
 sono bidirezionali (`direction: null`) e restano occupati per tutta la sosta.

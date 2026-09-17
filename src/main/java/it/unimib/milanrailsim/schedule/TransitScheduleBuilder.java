@@ -239,7 +239,16 @@ public final class TransitScheduleBuilder {
 	private boolean longLayover(TripCalls before, TripCalls after) {
 		String terminus = before.calls().getLast().stopId();
 		double wait = after.calls().getFirst().departureSeconds() - before.calls().getLast().arrivalSeconds();
-		return wait > maxLayoverSeconds.applyAsDouble(terminus);
+		return !hasTerminalTrack(before.line(), terminus) || wait > maxLayoverSeconds.applyAsDouble(terminus);
+	}
+
+	private boolean hasTerminalTrack(String line, String stopId) {
+		return planner.nodeOf(stopId).map(node -> {
+			Station station = node.station(stopId);
+			List<String> groups = node.preferredGroups(line, stopId, true);
+			List<Group> candidates = groups.isEmpty() ? station.groups() : groups.stream().map(station::group).toList();
+			return candidates.stream().anyMatch(group -> group.kind() == MicroNode.GroupKind.TERMINAL);
+		}).orElse(true);
 	}
 
 	private void buildLine(String routeShortName, List<GtfsFeed.Trip> trips, TransitSchedule schedule, Vehicles vehicles) {

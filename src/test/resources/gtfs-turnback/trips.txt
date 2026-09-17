@@ -1,0 +1,4 @@
+trip_id,route_id,trip_short_name,service_id
+OUT,SX,200,SVC_WEEKDAY
+BACK,SX,201,SVC_WEEKDAY
+AGAIN,SX,202,SVC_WEEKDAY

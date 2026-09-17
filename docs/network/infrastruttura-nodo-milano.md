@@ -149,6 +149,16 @@ Criticità**.
   per linea non sono state rilevate. Le tratte sotto i 2,7 km (Passante,
   Garibaldi–Centrale) restano a un treno per verso.
 
+- **Sosta fra due corse**: solo sui binari di testa (`kind: terminal` nei
+  nodi) un treno può aspettare in banchina la corsa successiva, fino alla
+  soglia di `sidings.json` (60 min, oltre va nel ricovero). Su un binario
+  passante si ferma solo il tempo della fermata: una corsa che inverte in una
+  stazione senza binari di testa per la sua linea passa dal ricovero
+  qualunque sia la sosta (`TransitScheduleBuilder.longLayover`). Regola data
+  da Fabio il 2026-09-17: nella simulazione una S12 attestata sul binario 7 di
+  Bovisa, binario di corsa del Passante, lo teneva per 51 minuti e accodava
+  23 treni da Dateo a Lancetti.
+
 - **Binario di stazione e sorpassi**: ogni corsa ha il binario abituale del
   piano di utilizzo (`data/nodes/*.json`, assegnato dal `PlatformPlanner`). Se
   all'arrivo quel binario è occupato, railsim può deviare il treno su un altro
