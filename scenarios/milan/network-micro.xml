@@ -8200,7 +8200,7 @@
 				<attribute name="gtfsStopName" class="java.lang.String">Tradate</attribute>
 			</attributes>
 		</node>
-		<node id="S01729_S01737.entry.a" x="490790.2863381684" y="5071145.919317419" >
+		<node id="S01729_S01737.entry.a" x="490784.3701118584" y="5071137.857167194" >
 		</node>
 		<node id="S01729_S01933.entry.a" x="502128.3716353822" y="5052556.430700544" >
 		</node>
@@ -8219,12 +8219,12 @@
 				<attribute name="gtfsStopName" class="java.lang.String">Vedano Olona</attribute>
 			</attributes>
 		</node>
-		<node id="S01736_S01737.entry.a" x="490784.3701118584" y="5071137.857167194" >
+		<node id="S01736_S01737.entry.a" x="490790.2863381684" y="5071145.919317419" >
 		</node>
 		<node id="S01737" x="490548.42183142" y="5071323.406106717" >
 			<attributes>
 				<attribute name="gtfsStopName" class="java.lang.String">Malnate</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 			</attributes>
 		</node>
 		<node id="S01737.north.S01738.in" x="490306.5573246716" y="5071500.892896015" >
@@ -8235,19 +8235,11 @@
 		</node>
 		<node id="S01737.north.sidings.out" x="490321.3478904464" y="5071521.048271578" >
 		</node>
-		<node id="S01737.p1.a.in" x="490629.0433336694" y="5071264.243843618" >
-		</node>
 		<node id="S01737.p1.a.out" x="490629.0433336694" y="5071264.243843618" >
 		</node>
 		<node id="S01737.p1.b.in" x="490467.80032917054" y="5071382.568369816" >
 		</node>
-		<node id="S01737.p1.b.out" x="490467.80032917054" y="5071382.568369816" >
-		</node>
 		<node id="S01737.p2.a.in" x="490626.08522051445" y="5071260.212768505" >
-		</node>
-		<node id="S01737.p2.a.out" x="490626.08522051445" y="5071260.212768505" >
-		</node>
-		<node id="S01737.p2.b.in" x="490464.84221601556" y="5071378.537294704" >
 		</node>
 		<node id="S01737.p2.b.out" x="490464.84221601556" y="5071378.537294704" >
 		</node>
@@ -8263,21 +8255,21 @@
 		</node>
 		<node id="S01737.sidings.b" x="490445.2382569756" y="5071436.335952041" >
 		</node>
-		<node id="S01737.south.S01729.in" x="490790.2863381684" y="5071145.919317419" >
+		<node id="S01737.south.S01729.in" x="490784.3701118584" y="5071137.857167194" >
 		</node>
-		<node id="S01737.south.S01729.out" x="490787.3282250134" y="5071141.888242306" >
+		<node id="S01737.south.S01729.out" x="490781.4119987035" y="5071133.826092081" >
 		</node>
-		<node id="S01737.south.S01736.in" x="490784.3701118584" y="5071137.857167194" >
+		<node id="S01737.south.S01736.in" x="490790.2863381684" y="5071145.919317419" >
 		</node>
-		<node id="S01737.south.S01736.out" x="490781.4119987035" y="5071133.826092081" >
+		<node id="S01737.south.S01736.out" x="490787.3282250134" y="5071141.888242306" >
 		</node>
 		<node id="S01737.south.sidings.in" x="490808.0350170982" y="5071170.105768094" >
 		</node>
 		<node id="S01737.south.sidings.out" x="490805.0769039432" y="5071166.074692981" >
 		</node>
-		<node id="S01737_S01729.exit.b" x="490787.3282250134" y="5071141.888242306" >
+		<node id="S01737_S01729.exit.b" x="490781.4119987035" y="5071133.826092081" >
 		</node>
-		<node id="S01737_S01736.exit.b" x="490781.4119987035" y="5071133.826092081" >
+		<node id="S01737_S01736.exit.b" x="490787.3282250134" y="5071141.888242306" >
 		</node>
 		<node id="S01737_S01738.entry.a" x="487343.1879816946" y="5073955.018216144" >
 		</node>
@@ -8286,7 +8278,7 @@
 		<node id="S01738" x="487050.2100778977" y="5073890.489556722" >
 			<attributes>
 				<attribute name="gtfsStopName" class="java.lang.String">Varese Nord</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 			</attributes>
 		</node>
 		<node id="S01738.north.S01739.in" x="486757.2321741008" y="5073825.9608973" >
@@ -82563,27 +82555,11 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S01737.p1.a.turn" from="S01737.p1.a.out" to="S01737.p1.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S01737.p1</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p1.b.turn" from="S01737.p1.b.out" to="S01737.p1.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S01737.p1</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p1.north" from="S01737.p1.a.in" to="S01737.p1.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01737.p1" from="S01737.p1.b.in" to="S01737.p1.a.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microGroup" class="java.lang.String">malnate</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="microTrack" class="java.lang.String">1</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01737.p1</attribute>
@@ -82594,16 +82570,7 @@
 		<link id="S01737.p1.north.S01738.in" from="S01737.north.S01738.in" to="S01737.p1.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p1.north.S01738.out" from="S01737.p1.b.out" to="S01737.north.S01738.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82612,37 +82579,7 @@
 		<link id="S01737.p1.north.sidings.in" from="S01737.north.sidings.in" to="S01737.p1.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p1.north.sidings.out" from="S01737.p1.b.out" to="S01737.north.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p1.south" from="S01737.p1.b.in" to="S01737.p1.a.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microGroup" class="java.lang.String">malnate</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="microTrack" class="java.lang.String">1</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S01737.p1</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p1.south.S01729.in" from="S01737.south.S01729.in" to="S01737.p1.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82651,16 +82588,7 @@
 		<link id="S01737.p1.south.S01729.out" from="S01737.p1.a.out" to="S01737.south.S01729.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p1.south.S01736.in" from="S01737.south.S01736.in" to="S01737.p1.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82669,16 +82597,7 @@
 		<link id="S01737.p1.south.S01736.out" from="S01737.p1.a.out" to="S01737.south.S01736.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p1.south.sidings.in" from="S01737.south.sidings.in" to="S01737.p1.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82687,33 +82606,17 @@
 		<link id="S01737.p1.south.sidings.out" from="S01737.p1.a.out" to="S01737.south.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S01737.p2.a.turn" from="S01737.p2.a.out" to="S01737.p2.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S01737.p2</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p2.b.turn" from="S01737.p2.b.out" to="S01737.p2.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S01737.p2</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p2.north" from="S01737.p2.a.in" to="S01737.p2.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01737.p2" from="S01737.p2.a.in" to="S01737.p2.b.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microGroup" class="java.lang.String">malnate</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="microTrack" class="java.lang.String">2</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01737.p2</attribute>
@@ -82721,28 +82624,10 @@
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
-		<link id="S01737.p2.north.S01738.in" from="S01737.north.S01738.in" to="S01737.p2.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
-			</attributes>
-		</link>
 		<link id="S01737.p2.north.S01738.out" from="S01737.p2.b.out" to="S01737.north.S01738.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p2.north.sidings.in" from="S01737.north.sidings.in" to="S01737.p2.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82751,37 +82636,16 @@
 		<link id="S01737.p2.north.sidings.out" from="S01737.p2.b.out" to="S01737.north.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p2.south" from="S01737.p2.b.in" to="S01737.p2.a.out" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microGroup" class="java.lang.String">malnate</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="microTrack" class="java.lang.String">2</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S01737.p2</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
 		<link id="S01737.p2.south.S01729.in" from="S01737.south.S01729.in" to="S01737.p2.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p2.south.S01729.out" from="S01737.p2.a.out" to="S01737.south.S01729.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82790,16 +82654,7 @@
 		<link id="S01737.p2.south.S01736.in" from="S01737.south.S01736.in" to="S01737.p2.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p2.south.S01736.out" from="S01737.p2.a.out" to="S01737.south.S01736.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82808,16 +82663,7 @@
 		<link id="S01737.p2.south.sidings.in" from="S01737.south.sidings.in" to="S01737.p2.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
-				<attribute name="microStation" class="java.lang.String">S01737</attribute>
-				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
-			</attributes>
-		</link>
-		<link id="S01737.p2.south.sidings.out" from="S01737.p2.a.out" to="S01737.south.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
-			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82825,7 +82671,7 @@
 		</link>
 		<link id="S01737.p3.a.turn" from="S01737.p3.a.out" to="S01737.p3.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01737.p3</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
@@ -82833,7 +82679,7 @@
 		</link>
 		<link id="S01737.p3.b.turn" from="S01737.p3.b.out" to="S01737.p3.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01737.p3</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
@@ -82843,7 +82689,7 @@
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microGroup" class="java.lang.String">malnate</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="microTrack" class="java.lang.String">3</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01737.p3</attribute>
@@ -82854,7 +82700,7 @@
 		<link id="S01737.p3.north.S01738.in" from="S01737.north.S01738.in" to="S01737.p3.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82863,7 +82709,7 @@
 		<link id="S01737.p3.north.S01738.out" from="S01737.p3.b.out" to="S01737.north.S01738.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82872,7 +82718,7 @@
 		<link id="S01737.p3.north.sidings.in" from="S01737.north.sidings.in" to="S01737.p3.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82881,7 +82727,7 @@
 		<link id="S01737.p3.north.sidings.out" from="S01737.p3.b.out" to="S01737.north.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82891,7 +82737,7 @@
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microGroup" class="java.lang.String">malnate</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="microTrack" class="java.lang.String">3</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01737.p3</attribute>
@@ -82902,7 +82748,7 @@
 		<link id="S01737.p3.south.S01729.in" from="S01737.south.S01729.in" to="S01737.p3.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82911,7 +82757,7 @@
 		<link id="S01737.p3.south.S01729.out" from="S01737.p3.a.out" to="S01737.south.S01729.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82920,7 +82766,7 @@
 		<link id="S01737.p3.south.S01736.in" from="S01737.south.S01736.in" to="S01737.p3.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82929,7 +82775,7 @@
 		<link id="S01737.p3.south.S01736.out" from="S01737.p3.a.out" to="S01737.south.S01736.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82938,7 +82784,7 @@
 		<link id="S01737.p3.south.sidings.in" from="S01737.south.sidings.in" to="S01737.p3.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82947,7 +82793,7 @@
 		<link id="S01737.p3.south.sidings.out" from="S01737.p3.a.out" to="S01737.south.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -82956,7 +82802,7 @@
 		<link id="S01737.sidings" from="S01737.sidings.a" to="S01737.sidings.b" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microSidings" class="java.lang.Boolean">true</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
@@ -82964,7 +82810,7 @@
 		</link>
 		<link id="S01737.sidings.north.enter" from="S01737.north.sidings.out" to="S01737.sidings.a" length="200.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
@@ -82972,7 +82818,7 @@
 		</link>
 		<link id="S01737.sidings.north.leave" from="S01737.sidings.b" to="S01737.north.sidings.in" length="200.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
@@ -82980,7 +82826,7 @@
 		</link>
 		<link id="S01737.sidings.south.enter" from="S01737.south.sidings.out" to="S01737.sidings.a" length="200.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
@@ -82988,7 +82834,7 @@
 		</link>
 		<link id="S01737.sidings.south.leave" from="S01737.sidings.b" to="S01737.south.sidings.in" length="200.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01737</attribute>
 				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
@@ -83067,7 +82913,7 @@
 		</link>
 		<link id="S01738.p1.a.turn" from="S01738.p1.a.out" to="S01738.p1.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01738.p1</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
@@ -83075,7 +82921,7 @@
 		</link>
 		<link id="S01738.p1.b.turn" from="S01738.p1.b.out" to="S01738.p1.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01738.p1</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
@@ -83085,7 +82931,7 @@
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microGroup" class="java.lang.String">varese_nord</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="microTrack" class="java.lang.String">1</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01738.p1</attribute>
@@ -83096,7 +82942,7 @@
 		<link id="S01738.p1.north.S01739.in" from="S01738.north.S01739.in" to="S01738.p1.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83105,7 +82951,7 @@
 		<link id="S01738.p1.north.S01739.out" from="S01738.p1.b.out" to="S01738.north.S01739.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83114,7 +82960,7 @@
 		<link id="S01738.p1.north.sidings.in" from="S01738.north.sidings.in" to="S01738.p1.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83123,7 +82969,7 @@
 		<link id="S01738.p1.north.sidings.out" from="S01738.p1.b.out" to="S01738.north.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83133,7 +82979,7 @@
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microGroup" class="java.lang.String">varese_nord</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="microTrack" class="java.lang.String">1</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01738.p1</attribute>
@@ -83144,7 +82990,7 @@
 		<link id="S01738.p1.south.S01737.in" from="S01738.south.S01737.in" to="S01738.p1.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83153,7 +82999,7 @@
 		<link id="S01738.p1.south.S01737.out" from="S01738.p1.a.out" to="S01738.south.S01737.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83162,7 +83008,7 @@
 		<link id="S01738.p1.south.sidings.in" from="S01738.south.sidings.in" to="S01738.p1.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83171,7 +83017,7 @@
 		<link id="S01738.p1.south.sidings.out" from="S01738.p1.a.out" to="S01738.south.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83179,7 +83025,7 @@
 		</link>
 		<link id="S01738.p2.a.turn" from="S01738.p2.a.out" to="S01738.p2.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01738.p2</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
@@ -83187,7 +83033,7 @@
 		</link>
 		<link id="S01738.p2.b.turn" from="S01738.p2.b.out" to="S01738.p2.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01738.p2</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
@@ -83197,7 +83043,7 @@
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microGroup" class="java.lang.String">varese_nord</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="microTrack" class="java.lang.String">2</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01738.p2</attribute>
@@ -83208,7 +83054,7 @@
 		<link id="S01738.p2.north.S01739.in" from="S01738.north.S01739.in" to="S01738.p2.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83217,7 +83063,7 @@
 		<link id="S01738.p2.north.S01739.out" from="S01738.p2.b.out" to="S01738.north.S01739.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83226,7 +83072,7 @@
 		<link id="S01738.p2.north.sidings.in" from="S01738.north.sidings.in" to="S01738.p2.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83235,7 +83081,7 @@
 		<link id="S01738.p2.north.sidings.out" from="S01738.p2.b.out" to="S01738.north.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83245,7 +83091,7 @@
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microGroup" class="java.lang.String">varese_nord</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="microTrack" class="java.lang.String">2</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01738.p2</attribute>
@@ -83256,7 +83102,7 @@
 		<link id="S01738.p2.south.S01737.in" from="S01738.south.S01737.in" to="S01738.p2.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83265,7 +83111,7 @@
 		<link id="S01738.p2.south.S01737.out" from="S01738.p2.a.out" to="S01738.south.S01737.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83274,7 +83120,7 @@
 		<link id="S01738.p2.south.sidings.in" from="S01738.south.sidings.in" to="S01738.p2.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83283,7 +83129,7 @@
 		<link id="S01738.p2.south.sidings.out" from="S01738.p2.a.out" to="S01738.south.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83291,7 +83137,7 @@
 		</link>
 		<link id="S01738.p3.a.turn" from="S01738.p3.a.out" to="S01738.p3.a.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01738.p3</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
@@ -83299,7 +83145,7 @@
 		</link>
 		<link id="S01738.p3.b.turn" from="S01738.p3.b.out" to="S01738.p3.b.in" length="1.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01738.p3</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
@@ -83309,7 +83155,7 @@
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microGroup" class="java.lang.String">varese_nord</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="microTrack" class="java.lang.String">3</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01738.p3</attribute>
@@ -83320,7 +83166,7 @@
 		<link id="S01738.p3.north.S01739.in" from="S01738.north.S01739.in" to="S01738.p3.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83329,7 +83175,7 @@
 		<link id="S01738.p3.north.S01739.out" from="S01738.p3.b.out" to="S01738.north.S01739.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83338,7 +83184,7 @@
 		<link id="S01738.p3.north.sidings.in" from="S01738.north.sidings.in" to="S01738.p3.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83347,7 +83193,7 @@
 		<link id="S01738.p3.north.sidings.out" from="S01738.p3.b.out" to="S01738.north.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83357,7 +83203,7 @@
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microGroup" class="java.lang.String">varese_nord</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="microTrack" class="java.lang.String">3</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S01738.p3</attribute>
@@ -83368,7 +83214,7 @@
 		<link id="S01738.p3.south.S01737.in" from="S01738.south.S01737.in" to="S01738.p3.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83377,7 +83223,7 @@
 		<link id="S01738.p3.south.S01737.out" from="S01738.p3.a.out" to="S01738.south.S01737.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83386,7 +83232,7 @@
 		<link id="S01738.p3.south.sidings.in" from="S01738.south.sidings.in" to="S01738.p3.a.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83395,7 +83241,7 @@
 		<link id="S01738.p3.south.sidings.out" from="S01738.p3.a.out" to="S01738.south.sidings.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
@@ -83403,43 +83249,42 @@
 		</link>
 		<link id="S01738.sidings" from="S01738.sidings.a" to="S01738.sidings.b" length="300.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microSidings" class="java.lang.Boolean">true</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">6</attribute>
 			</attributes>
 		</link>
 		<link id="S01738.sidings.north.enter" from="S01738.north.sidings.out" to="S01738.sidings.a" length="200.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">6</attribute>
 			</attributes>
 		</link>
 		<link id="S01738.sidings.north.leave" from="S01738.sidings.b" to="S01738.north.sidings.in" length="200.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">6</attribute>
 			</attributes>
 		</link>
 		<link id="S01738.sidings.south.enter" from="S01738.south.sidings.out" to="S01738.sidings.a" length="200.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">6</attribute>
 			</attributes>
 		</link>
 		<link id="S01738.sidings.south.leave" from="S01738.sidings.b" to="S01738.south.sidings.in" length="200.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
-				<attribute name="microNode" class="java.lang.String">saronno-laveno</attribute>
+				<attribute name="microNode" class="java.lang.String">malnate-varese</attribute>
 				<attribute name="microStation" class="java.lang.String">S01738</attribute>
 				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">20</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">6</attribute>
 			</attributes>
 		</link>
 		<link id="S01738_S01737" from="S01738_S01737.exit.b" to="S01738_S01737.entry.a" length="4339.3" freespeed="15.797666666666668" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
