@@ -151,6 +151,14 @@ Criticità**.
   `microStation`) e i treni che li tengono o vi sono diretti, ciascuno con la stazione da cui arriva e quella verso cui riparte. L'ultimo binario libero di una stazione di incrocio può prenderlo solo il partner di un treno già presente, cioè un treno che arriva dalla tratta da cui l'altro riparte o riparte verso quella da cui l'altro è arrivato: i due si scambiano le tratte. Chiunque altro, compreso un treno che esce dal ricovero, aspetta dietro. Vale solo nelle stazioni che toccano una tratta a binario unico.
   Motivi: a Villasanta due S7 dello stesso verso occupavano i due binari e l'S7 opposto restava nel blocco (run del 2026-09-17 sera); a Varese Nord tre treni per Malnate, uno uscito dal ricovero, riempivano i tre binari mentre il RE1 da Malnate aspettava nella tratta che tutti dovevano usare (run del 2026-09-18). Inoltre un treno che finisce la corsa su un binario di testa occupato non può essere deviato (la corsa non ha un tratto di uscita):
   aspetta prima del blocco, altrimenti chi sta sul binario non potrebbe più partire (Cremona, R5, run del 2026-09-18).
+  Due dettagli di railsim rendevano la regola inefficace nelle stazioni
+  dettagliate (run `reale_2026-09-17_3`, coda da Malnate a Tradate): railsim
+  riserva gola e binario di una stazione dettagliata come un solo segmento e
+  chiede alla protezione anti-stallo un parere sul segmento intero, favorevole
+  per default (`checkLinks`); ora il parere è chiesto binario per binario. E un
+  treno che ha ottenuto il blocco verso una stazione vi conta già come
+  presente, altrimenti un treno uscito dal ricovero prendeva l'ultimo binario
+  mentre l'altro era in viaggio nella tratta unica.
 
 - **Binario unico — transiti nelle stazioni di incrocio**: un treno che non
   ferma in una stazione di incrocio ci passa comunque sopra un binario di
