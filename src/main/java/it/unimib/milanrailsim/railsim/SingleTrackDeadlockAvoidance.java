@@ -306,9 +306,6 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 			return Optional.empty();
 		}
 		return stationOf.computeIfAbsent(resource.getId(), id -> {
-			if (resource.getLinks().size() > 2) {
-				return Optional.empty();
-			}
 			Link link = network.getLinks().get(resource.getLinks().getFirst().getLinkId());
 			if (link == null) {
 				return Optional.empty();
@@ -318,8 +315,12 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 				stationTracks.put(station, resource.getTotalCapacity());
 				return Optional.of(station);
 			}
+			// a two-sided bidirectional track is one resource of four links, its two halves and two turnbacks
 			Object station = link.getAttributes().getAttribute("microStation");
-			if (station == null || link.getAttributes().getAttribute("microTrack") == null) {
+			boolean platform = resource.getLinks().stream()
+				.map(l -> network.getLinks().get(l.getLinkId()))
+				.anyMatch(l -> l != null && l.getAttributes().getAttribute("microTrack") != null);
+			if (station == null || !platform) {
 				return Optional.empty();
 			}
 			stationTracks.computeIfAbsent(station.toString(), s -> (int) network.getLinks().values().stream()

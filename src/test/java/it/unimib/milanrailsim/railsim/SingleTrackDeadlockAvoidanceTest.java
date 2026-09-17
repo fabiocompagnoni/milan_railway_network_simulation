@@ -298,9 +298,14 @@ class SingleTrackDeadlockAvoidanceTest {
 			platform.getAttributes().putAttribute("microStation", "S");
 			platform.getAttributes().putAttribute("microTrack", String.valueOf(i));
 			platform.getAttributes().putAttribute("railsimResourceId", "S.p" + i);
+			// a two-sided bidirectional track: the turnback shares the resource and comes first in its link list
+			Link turn = NetworkUtils.createAndAddLink(network, Id.createLinkId("S.p" + i + ".a.turn"),
+				network.getNodes().get(Id.createNodeId("S.p" + i + ".a")), network.getNodes().get(Id.createNodeId("S.p" + i + ".a")), 1, 10, 1, 1);
+			turn.getAttributes().putAttribute("microStation", "S");
+			turn.getAttributes().putAttribute("railsimResourceId", "S.p" + i);
 			approaches[i - 1] = new RailLink(approach, null);
 			platforms[i - 1] = new RailLink(platform, null);
-			RailResourceTestSupport.fixedBlock("S.p" + i, List.of(platforms[i - 1]));
+			RailResourceTestSupport.fixedBlock("S.p" + i, List.of(new RailLink(turn, null), platforms[i - 1]));
 			RailResourceTestSupport.fixedBlock("S.p" + i + ".south.W.in", List.of(approaches[i - 1]));
 		}
 		RailLink east = new RailLink(ws, sw);
