@@ -29,7 +29,7 @@ public final class CreateTransitScheduleFromFeed {
 	private static final String DEFAULT_SERVICE_DATE = "2026-09-16";
 	private static final String DEFAULT_OUTPUT_DIR = "scenarios/milan";
 	/** Local survey of terminal platform tracks; the generated network carries its values. */
-	public static final Path STATION_TRACKS = Path.of("docs", "network", "misure", "capolinea-binari.csv");
+	public static final Path STATION_TRACKS = Path.of("docs", "network", "misure", "binari-stazioni.csv");
 
 	private CreateTransitScheduleFromFeed() {
 	}
