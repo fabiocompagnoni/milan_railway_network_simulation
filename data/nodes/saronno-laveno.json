@@ -1,6 +1,6 @@
 {
 	"node": "saronno-laveno",
-	"title": "Stazioni di incrocio sul binario unico: Barasso-Comerio, Cittiglio, Cocquio Trevisago, Laveno Mombello Lago, Malnate, Varese Casbeno, Varese Nord",
+	"title": "Stazioni di incrocio sul binario unico: Barasso-Comerio, Cittiglio, Cocquio Trevisago, Laveno Mombello Lago, Varese Casbeno",
 	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
 	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
 	"sources": [
@@ -9,9 +9,7 @@
 		"Cittiglio: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Cittiglio; stima OSM 3",
 		"Cocquio Trevisago: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Cocquio-Trevisago; stima OSM 3",
 		"Laveno Mombello Lago: 6 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Laveno-Mombello_Nord; stima OSM 8",
-		"Malnate: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Malnate; stima OSM 8",
-		"Varese Casbeno: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Varese_Casbeno; stima OSM 7",
-		"Varese Nord: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Varese_Nord; stima OSM 18"
+		"Varese Casbeno: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Varese_Casbeno; stima OSM 7"
 	],
 	"stations": [
 		{
@@ -173,47 +171,6 @@
 			}
 		},
 		{
-			"id": "S01737",
-			"name": "Malnate",
-			"kind": "through",
-			"platformLengthM": null,
-			"groups": [
-				{
-					"id": "malnate",
-					"kind": "through",
-					"tracks": [
-						{
-							"ref": "1",
-							"direction": null
-						},
-						{
-							"ref": "2",
-							"direction": null
-						},
-						{
-							"ref": "3",
-							"direction": null
-						}
-					],
-					"connections": {
-						"south": [
-							"meso:S01729",
-							"meso:S01736"
-						],
-						"north": [
-							"meso:S01738"
-						]
-					},
-					"notes": "3 binari (passaggio da doppio a singolo binario); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Tradate, verso Milano"
-				}
-			],
-			"throats": [],
-			"sidings": {
-				"tracks": null,
-				"note": "da rilevare"
-			}
-		},
-		{
 			"id": "S01739",
 			"name": "Varese Casbeno",
 			"kind": "through",
@@ -248,46 +205,6 @@
 				"tracks": null,
 				"note": "da rilevare"
 			}
-		},
-		{
-			"id": "S01738",
-			"name": "Varese Nord",
-			"kind": "through",
-			"platformLengthM": null,
-			"groups": [
-				{
-					"id": "varese_nord",
-					"kind": "through",
-					"tracks": [
-						{
-							"ref": "1",
-							"direction": null
-						},
-						{
-							"ref": "2",
-							"direction": null
-						},
-						{
-							"ref": "3",
-							"direction": null
-						}
-					],
-					"connections": {
-						"south": [
-							"meso:S01737"
-						],
-						"north": [
-							"meso:S01739"
-						]
-					},
-					"notes": "3 binari (3 di transito piu' tronchi e deposito); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Malnate, verso Milano"
-				}
-			],
-			"throats": [],
-			"sidings": {
-				"tracks": null,
-				"note": "da rilevare"
-			}
 		}
 	],
 	"segments": [],
@@ -307,14 +224,8 @@
 				"S01747": [
 					"laveno_mombello_lago"
 				],
-				"S01737": [
-					"malnate"
-				],
 				"S01739": [
 					"varese_casbeno"
-				],
-				"S01738": [
-					"varese_nord"
 				]
 			}
 		},
@@ -333,14 +244,8 @@
 				"S01747": [
 					"laveno_mombello_lago"
 				],
-				"S01737": [
-					"malnate"
-				],
 				"S01739": [
 					"varese_casbeno"
-				],
-				"S01738": [
-					"varese_nord"
 				]
 			}
 		}

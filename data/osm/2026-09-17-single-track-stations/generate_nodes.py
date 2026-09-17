@@ -47,7 +47,10 @@ def main():
 	stops = {r['stop_id']: (r['stop_name'], float(r['stop_lon']), float(r['stop_lat'])) for r in csv.DictReader(open(STOPS, encoding='utf-8'))}
 	declared = set()
 	for f in NODES.glob('*.json'):
-		for s in json.load(open(f)).get('stations', []):
+		node = json.load(open(f))
+		if str(node.get('status', '')).startswith('generato il'):
+			continue  # our own output: a hand-written node always takes a station over
+		for s in node.get('stations', []):
 			declared.add(s['id'])
 	net = open(NETWORK).read()
 	neighbours = collections.defaultdict(set)
