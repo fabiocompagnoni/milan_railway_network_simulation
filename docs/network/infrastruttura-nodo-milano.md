@@ -145,12 +145,12 @@ Criticità**.
   bloccati). Con il tratto di ingresso la deviazione è inoltre decisa a 200 m
   dalla stazione, con l'occupazione reale dei binari, e non chilometri prima.
 
-- **Binario unico — consenso anche nelle stazioni dettagliate**: la regola del
-  consenso conta insieme i binari di una stazione dettagliata (i binari con
-  `microTrack` della stessa `microStation`) e i treni che li tengono o vi sono
-  diretti, con il vicino da cui arrivano; a Villasanta, modellata con i suoi
-  due binari, due S7 dello stesso verso li occupavano entrambi e l'S7 opposto
-  restava nel blocco (run del 2026-09-17 sera).
+- **Binario unico — consenso anche nelle stazioni dettagliate, e l'ultimo
+  binario per l'incrocio**: la regola del consenso conta insieme i binari di
+  una stazione dettagliata (i binari con `microTrack` della stessa
+  `microStation`) e i treni che li tengono o vi sono diretti, ciascuno con la stazione da cui arriva e quella verso cui riparte. L'ultimo binario libero di una stazione di incrocio può prenderlo solo il partner di un treno già presente, cioè un treno che arriva dalla tratta da cui l'altro riparte o riparte verso quella da cui l'altro è arrivato: i due si scambiano le tratte. Chiunque altro, compreso un treno che esce dal ricovero, aspetta dietro. Vale solo nelle stazioni che toccano una tratta a binario unico.
+  Motivi: a Villasanta due S7 dello stesso verso occupavano i due binari e l'S7 opposto restava nel blocco (run del 2026-09-17 sera); a Varese Nord tre treni per Malnate, uno uscito dal ricovero, riempivano i tre binari mentre il RE1 da Malnate aspettava nella tratta che tutti dovevano usare (run del 2026-09-18). Inoltre un treno che finisce la corsa su un binario di testa occupato non può essere deviato (la corsa non ha un tratto di uscita):
+  aspetta prima del blocco, altrimenti chi sta sul binario non potrebbe più partire (Cremona, R5, run del 2026-09-18).
 
 - **Binario unico — transiti nelle stazioni di incrocio**: un treno che non
   ferma in una stazione di incrocio ci passa comunque sopra un binario di

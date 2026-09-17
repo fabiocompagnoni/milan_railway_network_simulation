@@ -13,6 +13,7 @@ import org.matsim.core.api.experimental.events.EventsManager;
 import org.matsim.core.mobsim.framework.MobsimDriverAgent;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,20 +39,33 @@ import java.util.regex.Pattern;
  */
 public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance {
 
-	/** Stands for the link a train arrived through when it started its trip in the station. */
-	private static final Id<Link> STARTED_HERE = Id.createLinkId("started-here");
-	private static final Pattern SECTION = Pattern.compile("([^_.]+)_[^_.]+(\\.entry)?");
-	private static final Pattern APPROACH = Pattern.compile(".*\\.(?:north|south)\\.([^.]+)\\.in");
+	/** Stands for the neighbour a train comes from when its trip starts in the station, or goes to when it ends there. */
+	static final String NOWHERE = "nowhere";
+	private static final Pattern SECTION = Pattern.compile("([^_.]+)_([^_.]+)(\\.entry|\\.exit)?");
+	private static final Pattern APPROACH_IN = Pattern.compile(".*\\.(?:north|south)\\.([^.]+)\\.in");
+	private static final Pattern APPROACH_OUT = Pattern.compile(".*\\.(?:north|south)\\.([^.]+)\\.out");
+
+	/** A train's call at a crossing station: where it comes from and where it goes on. */
+	record Passage(String from, String to) {
+
+		/** Two trains meet when one arrives from where the other departs to: they swap sections at the station. */
+		boolean meets(Passage other) {
+			return (!from.equals(NOWHERE) && from.equals(other.to)) || (!to.equals(NOWHERE) && to.equals(other.from));
+		}
+	}
 
 	private final Network network;
 	private final Map<Id<RailResource>, Boolean> twoWay = new ConcurrentHashMap<>();
 	/** The station each resource is a track of: a mesoscopic stop loop or a platform of a detailed station. */
 	private final Map<Id<RailResource>, Optional<String>> stationOf = new ConcurrentHashMap<>();
 	private final Map<String, Integer> stationTracks = new ConcurrentHashMap<>();
+	private final Map<String, Boolean> stationOnSingleTrack = new ConcurrentHashMap<>();
 	/** Trains holding each two-way resource, so a train already in a block is never refused its next link of it. */
 	private final Map<Id<RailResource>, Set<MobsimDriverAgent>> blockHolders = new ConcurrentHashMap<>();
-	/** Trains holding or committed to a track of each crossing station, with the neighbour each arrives from. */
-	private final Map<String, Map<MobsimDriverAgent, String>> stationOccupants = new ConcurrentHashMap<>();
+	/** Trains holding each station track, so a train bound for a taken terminal platform is held before the block. */
+	private final Map<Id<RailResource>, Set<MobsimDriverAgent>> trackHolders = new ConcurrentHashMap<>();
+	/** Trains holding or committed to a track of each crossing station, with their passage through it. */
+	private final Map<String, Map<MobsimDriverAgent, Passage>> stationOccupants = new ConcurrentHashMap<>();
 
 	@Inject
 	public SingleTrackDeadlockAvoidance(Network network, EventsManager eventsManager) {
@@ -79,8 +93,11 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 			blockHolders.computeIfAbsent(resource.getId(), id -> ConcurrentHashMap.newKeySet()).add(position.getDriver());
 			return;
 		}
-		stationOf(resource).ifPresent(station -> stationOccupants.computeIfAbsent(station, id -> new ConcurrentHashMap<>())
-			.put(position.getDriver(), arrivalNeighbour(position, resource)));
+		stationOf(resource).ifPresent(station -> {
+			trackHolders.computeIfAbsent(resource.getId(), id -> ConcurrentHashMap.newKeySet()).add(position.getDriver());
+			stationOccupants.computeIfAbsent(station, id -> new ConcurrentHashMap<>())
+				.put(position.getDriver(), passageThrough(position, station));
+		});
 	}
 
 	@Override
@@ -89,6 +106,10 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 		Set<MobsimDriverAgent> holders = blockHolders.get(resource.getId());
 		if (holders != null) {
 			holders.remove(driver);
+		}
+		Set<MobsimDriverAgent> onTrack = trackHolders.get(resource.getId());
+		if (onTrack != null) {
+			onTrack.remove(driver);
 		}
 		stationOf(resource).map(stationOccupants::get).ifPresent(occupants -> occupants.remove(driver));
 	}
@@ -119,9 +140,17 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 		}
 		// the station at the far end: its stop loop, or the first platform after the approach links of a detailed one
 		for (int i = last + 1; i < Math.min(last + 4, position.getRouteSize()); i++) {
-			Optional<String> station = stationOf(position.getRoute(i).getResource());
+			RailResource track = position.getRoute(i).getResource();
+			Optional<String> station = stationOf(track);
 			if (station.isPresent()) {
-				return roomForTheMeet(station.get(), neighbourBehind(position.getRoute(last).getLinkId()), position);
+				Passage passage = passageThrough(position, station.get());
+				// a train ending its trip on a taken terminal platform cannot be diverted: it waits before the block,
+				// or the train on the platform could never leave through it (Cremona, run of 2026-09-18)
+				if (passage.to().equals(NOWHERE) && trackHolders.getOrDefault(track.getId(), Set.of()).stream()
+						.anyMatch(holder -> holder != position.getDriver())) {
+					return false;
+				}
+				return roomForTheMeet(station.get(), passage, position);
 			}
 		}
 		return true;
@@ -132,46 +161,66 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 	 * in through: a station reached over double track from one side and single
 	 * track from the other (Villasanta, run of 2026-09-18 after the block rule)
 	 * filled up with trains of one direction all the same. A detailed station
-	 * counts its platform tracks together, so two trains of one direction do
-	 * not take both tracks of a two-track crossing station.
+	 * counts its platform tracks together.
 	 */
 	private boolean roomForTheMeet(String station, TrainPosition position) {
-		Map<MobsimDriverAgent, String> occupants = stationOccupants.getOrDefault(station, Map.of());
+		Map<MobsimDriverAgent, Passage> occupants = stationOccupants.getOrDefault(station, Map.of());
 		if (occupants.containsKey(position.getDriver())) {
 			return true;
 		}
-		return roomForTheMeet(station, arrivalNeighbourOfStation(position, station), position);
-	}
-
-	private boolean roomForTheMeet(String station, String arrivalNeighbour, TrainPosition position) {
-		Map<MobsimDriverAgent, String> occupants = stationOccupants.getOrDefault(station, Map.of());
-		int free = stationTracks.getOrDefault(station, 1) - occupants.size();
-		boolean sameDirectionThere = occupants.containsValue(arrivalNeighbour);
-		return free >= (sameDirectionThere ? 2 : 1);
-	}
-
-	/** The neighbour the train comes from when it reaches the resource, or {@link #STARTED_HERE} when its trip begins on it. */
-	private static String arrivalNeighbour(TrainPosition position, RailResource resource) {
-		for (int i = Math.max(0, position.getRouteIndex() - 1); i < position.getRouteSize(); i++) {
-			if (position.getRoute(i).getResource() == resource) {
-				return i > 0 ? neighbourBehind(position.getRoute(i - 1).getLinkId()) : STARTED_HERE.toString();
-			}
-		}
-		return STARTED_HERE.toString();
-	}
-
-	private String arrivalNeighbourOfStation(TrainPosition position, String station) {
-		for (int i = Math.max(0, position.getRouteIndex() - 1); i < position.getRouteSize(); i++) {
-			if (stationOf(position.getRoute(i).getResource()).filter(station::equals).isPresent()) {
-				return i > 0 ? neighbourBehind(position.getRoute(i - 1).getLinkId()) : STARTED_HERE.toString();
-			}
-		}
-		return STARTED_HERE.toString();
+		return roomForTheMeet(station, passageThrough(position, station), position);
 	}
 
 	/**
-	 * The station a link comes from: {@code N_S} for a mesoscopic section, the
-	 * neighbour named in a detailed station's approach link
+	 * The last free track of a crossing station is kept for the meet: a train
+	 * may take it only if it is the crossing partner of a train already there,
+	 * one arriving from the section the other leaves through. Otherwise it
+	 * waits behind, as with the dispatcher's consent. At Varese Nord three
+	 * trains bound for Malnate, one out of the yard, filled the three tracks
+	 * while the RE1 from Malnate stood in the section they all needed (run of
+	 * 2026-09-18). Stations away from single track are not concerned.
+	 */
+	private boolean roomForTheMeet(String station, Passage passage, TrainPosition position) {
+		Map<MobsimDriverAgent, Passage> occupants = stationOccupants.getOrDefault(station, Map.of());
+		int free = stationTracks.getOrDefault(station, 1) - occupants.size();
+		if (occupants.isEmpty() || free >= 2 || !onSingleTrack(station)) {
+			return free >= 1;
+		}
+		return free == 1 && occupants.values().stream().anyMatch(passage::meets);
+	}
+
+	/** Where the train comes from and goes on when it calls at the station, {@link #NOWHERE} when its trip starts or ends there. */
+	private Passage passageThrough(TrainPosition position, String station) {
+		int first = -1;
+		int last = -1;
+		for (int i = Math.max(0, position.getRouteIndex() - 1); i < position.getRouteSize(); i++) {
+			if (stationOf(position.getRoute(i).getResource()).filter(station::equals).isPresent()) {
+				if (first < 0) {
+					first = i;
+				}
+				last = i;
+			} else if (first >= 0) {
+				break;
+			}
+		}
+		if (first < 0) {
+			return new Passage(NOWHERE, NOWHERE);
+		}
+		String from = first > 0 ? neighbourBehind(position.getRoute(first - 1).getLinkId()) : NOWHERE;
+		String to = NOWHERE;
+		for (int i = last + 1; i < Math.min(last + 4, position.getRouteSize()); i++) {
+			String ahead = neighbourAhead(position.getRoute(i).getLinkId());
+			if (ahead != null) {
+				to = ahead;
+				break;
+			}
+		}
+		return new Passage(from, to);
+	}
+
+	/**
+	 * The station a link comes from: {@code N_S} for a mesoscopic section or
+	 * its stubs, the neighbour named in a detailed station's approach link
 	 * ({@code S.p1.north.N.in}), the link itself otherwise.
 	 */
 	static String neighbourBehind(Id<Link> link) {
@@ -180,8 +229,35 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 		if (section.matches()) {
 			return section.group(1);
 		}
-		Matcher approach = APPROACH.matcher(id);
+		Matcher approach = APPROACH_IN.matcher(id);
 		return approach.matches() ? approach.group(1) : id;
+	}
+
+	/** The station a link leads to, or null for a link inside the station (a turnback, a platform half). */
+	static String neighbourAhead(Id<Link> link) {
+		String id = link.toString();
+		Matcher section = SECTION.matcher(id);
+		if (section.matches()) {
+			return section.group(2);
+		}
+		Matcher approach = APPROACH_OUT.matcher(id);
+		if (approach.matches()) {
+			return approach.group(1);
+		}
+		return id.startsWith("stop_") || id.contains(".p") ? null : id;
+	}
+
+	/** Whether any section into the station is single track: both its directions under one resource. */
+	private boolean onSingleTrack(String station) {
+		return stationOnSingleTrack.computeIfAbsent(station, s -> network.getLinks().values().stream().anyMatch(link -> {
+			Matcher section = SECTION.matcher(link.getId().toString());
+			if (!section.matches() || !section.group(2).equals(s) || section.group(3) != null) {
+				return false;
+			}
+			Object resource = link.getAttributes().getAttribute("railsimResourceId");
+			Link back = network.getLinks().get(Id.createLinkId(section.group(2) + "_" + section.group(1)));
+			return resource != null && back != null && resource.equals(back.getAttributes().getAttribute("railsimResourceId"));
+		}));
 	}
 
 	private static int indexOnRoute(TrainPosition position, RailLink link) {
@@ -243,7 +319,14 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 			return false;
 		}
 		List<? extends Link> links = resource.getLinks().stream().map(link -> network.getLinks().get(link.getLinkId())).toList();
+		Set<String> ids = new HashSet<>();
+		links.forEach(link -> ids.add(link.getId().toString()));
 		for (Link link : links) {
+			// between two detailed stations the directions no longer share nodes: their ids still pair up
+			Matcher section = SECTION.matcher(link.getId().toString());
+			if (section.matches() && section.group(3) == null && ids.contains(section.group(2) + "_" + section.group(1))) {
+				return true;
+			}
 			for (Link other : links) {
 				if (other.getFromNode().equals(link.getToNode()) && other.getToNode().equals(link.getFromNode())
 						&& !link.getFromNode().equals(link.getToNode())) {

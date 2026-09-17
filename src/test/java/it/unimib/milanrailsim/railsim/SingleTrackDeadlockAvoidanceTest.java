@@ -194,6 +194,8 @@ class SingleTrackDeadlockAvoidanceTest {
 		Link sw = NetworkUtils.createAndAddLink(network, Id.createLinkId("S_W"), s, w, 1000, 10, 1, 1);
 		Link se = NetworkUtils.createAndAddLink(network, Id.createLinkId("S_E"), s, e, 1000, 10, 1, 1);
 		Link es = NetworkUtils.createAndAddLink(network, Id.createLinkId("E_S"), e, s, 1000, 10, 1, 1);
+		singleTrack(ws, sw, "block_W_S");
+		singleTrack(se, es, "block_S_E");
 		RailLink atW = new RailLink(stopW, null);
 		RailLink atS = new RailLink(stopS, null);
 		RailLink atE = new RailLink(stopE, null);
@@ -236,6 +238,7 @@ class SingleTrackDeadlockAvoidanceTest {
 		Link ds = NetworkUtils.createAndAddLink(network, Id.createLinkId("D_S"), d, s, 1000, 10, 1, 1);
 		Link se = NetworkUtils.createAndAddLink(network, Id.createLinkId("S_E"), s, e, 1000, 10, 1, 1);
 		Link es = NetworkUtils.createAndAddLink(network, Id.createLinkId("E_S"), e, s, 1000, 10, 1, 1);
+		singleTrack(se, es, "block_S_E");
 		RailLink atS = new RailLink(stopS, null);
 		RailLink fromD = new RailLink(ds, null);
 		RailLink east = new RailLink(se, es);
@@ -255,6 +258,12 @@ class SingleTrackDeadlockAvoidanceTest {
 		assertTrue(avoidance.checkLink(2, atS, opposing), "the opposing train gets the free track");
 	}
 
+	/** Both directions of a section under one resource, as the network enricher marks single track. */
+	private static void singleTrack(Link there, Link back, String resource) {
+		there.getAttributes().putAttribute("railsimResourceId", resource);
+		back.getAttributes().putAttribute("railsimResourceId", resource);
+	}
+
 	private static Link loop(Network network, Node node, String id, int tracks) {
 		Link link = NetworkUtils.createAndAddLink(network, Id.createLinkId(id), node, node, 50, 10, 1, 1);
 		link.getAttributes().putAttribute("railsimTrainCapacity", tracks);
@@ -272,6 +281,7 @@ class SingleTrackDeadlockAvoidanceTest {
 			network.getNodes().get(Id.createNodeId("S.south.W.in")), 1000, 10, 1, 1);
 		Link sw = NetworkUtils.createAndAddLink(network, Id.createLinkId("S_W"), network.getNodes().get(Id.createNodeId("S.south.W.in")),
 			network.getNodes().get(Id.createNodeId("W")), 1000, 10, 1, 1);
+		singleTrack(ws, sw, "block_W_S");
 		RailLink[] platforms = new RailLink[2];
 		RailLink[] approaches = new RailLink[2];
 		for (int i = 1; i <= 2; i++) {
