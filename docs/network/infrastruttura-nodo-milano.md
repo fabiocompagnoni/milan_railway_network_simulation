@@ -126,9 +126,12 @@ Criticità**.
   arrivano. Motivo: nella simulazione del 2026-09-18 due S7 nello stesso verso
   riempivano Villasanta (2 binari) e l'S7 opposto, già nel blocco successivo,
   non poteva più entrare: stallo per tutta la giornata (79 treni su 274
-  bloccati su tratte a binario unico). Limite: la regola vale per le stazioni
-  meso (un anello con più binari); nelle stazioni dettagliate decidono la
-  gola e i binari.
+  bloccati su tratte a binario unico). Lo stesso consenso vale all'ingresso
+  della stazione di incrocio da qualunque lato, anche da una tratta a doppio
+  binario dove non c'è blocco: Villasanta si riempiva lo stesso di treni dello
+  stesso verso arrivati da Monza Sobborghi (simulazione del 2026-09-17 sera).
+  Limite: la regola vale per le stazioni meso (un anello con più binari);
+  nelle stazioni dettagliate decidono la gola e i binari.
 
 - **Doppio binario — distanziamento a blocco automatico**: una tratta a doppio
   binario non tiene un solo treno per verso ma uno per sezione di blocco. Sulle
@@ -158,6 +161,13 @@ Criticità**.
   portano in direzioni diverse e non si scambiano. Motivo: nella simulazione
   del 2026-09-18 RE51 e RE54 a Saronno avevano un solo binario ammesso per
   verso; un treno in sosta oltre l'orario fermava tutti quelli dietro.
+  La deviazione è accettata solo se raggiunge un binario dell'area di fermata
+  della corsa (`StationTrackResources.keepsStops`), altrimenti il treno
+  salterebbe la fermata. Un binario appartiene a un'area per ogni linea e
+  verso che lo usano (a Mortara il binario 1 ne ha sette): fino alla
+  simulazione del 2026-09-17 sera il controllo ne ricordava una sola, e la
+  deviazione veniva rifiutata quasi sempre; i treni aspettavano il binario
+  occupato con quello accanto libero.
 
 - **Circolazione a SINISTRA**: i treni tengono la sinistra (contrario delle
   auto). Determina l'assegnazione binario→direzione in ogni fascio a doppio

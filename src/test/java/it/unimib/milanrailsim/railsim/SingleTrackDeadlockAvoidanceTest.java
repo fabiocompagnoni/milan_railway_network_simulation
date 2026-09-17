@@ -225,6 +225,36 @@ class SingleTrackDeadlockAvoidanceTest {
 		assertTrue(avoidance.checkLink(5, east1, second), "once the first train left, the second may follow");
 	}
 
+	@Test
+	void theStationItselfKeepsATrackForTheMeetWhateverLinkTheTrainComesInThrough() {
+		// D =double= S -single- E: S is entered over double track from D, so no block rule holds trains back there
+		Network network = NetworkUtils.createNetwork();
+		Node d = NetworkUtils.createAndAddNode(network, Id.createNodeId("D"), new Coord(0, 0));
+		Node s = NetworkUtils.createAndAddNode(network, Id.createNodeId("S"), new Coord(1000, 0));
+		Node e = NetworkUtils.createAndAddNode(network, Id.createNodeId("E"), new Coord(2000, 0));
+		Link stopS = loop(network, s, "stop_S", 2);
+		Link ds = NetworkUtils.createAndAddLink(network, Id.createLinkId("D_S"), d, s, 1000, 10, 1, 1);
+		Link se = NetworkUtils.createAndAddLink(network, Id.createLinkId("S_E"), s, e, 1000, 10, 1, 1);
+		Link es = NetworkUtils.createAndAddLink(network, Id.createLinkId("E_S"), e, s, 1000, 10, 1, 1);
+		RailLink atS = new RailLink(stopS, null);
+		RailLink fromD = new RailLink(ds, null);
+		RailLink east = new RailLink(se, es);
+		RailLink west = new RailLink(es, se);
+		RailResourceTestSupport.fixedBlock("D_S", List.of(fromD));
+		RailResourceTestSupport.fixedBlock("block_S_E", List.of(east, west));
+		RailResource stationS = RailResourceTestSupport.fixedBlock("stop_S", List.of(atS));
+		SingleTrackDeadlockAvoidance avoidance = new SingleTrackDeadlockAvoidance(network, EventsUtils.createEventsManager());
+		TrainPosition first = train(fromD, atS, east);
+		TrainPosition second = train(fromD, atS, east);
+		TrainPosition opposing = train(west, atS);
+
+		assertTrue(avoidance.checkLink(0, atS, first));
+		avoidance.onReserve(0, stationS, first);
+		assertTrue(avoidance.checkLink(1, atS, first), "a train holding the station is not questioned again");
+		assertFalse(avoidance.checkLink(2, atS, second), "a second train from the same side would leave no track for the meet");
+		assertTrue(avoidance.checkLink(2, atS, opposing), "the opposing train gets the free track");
+	}
+
 	private static Link loop(Network network, Node node, String id, int tracks) {
 		Link link = NetworkUtils.createAndAddLink(network, Id.createLinkId(id), node, node, 50, 10, 1, 1);
 		link.getAttributes().putAttribute("railsimTrainCapacity", tracks);

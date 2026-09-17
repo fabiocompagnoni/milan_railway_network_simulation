@@ -59,8 +59,10 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 
 	@Override
 	public boolean checkLink(double time, RailLink link, TrainPosition position) {
-		return !isTwoWay(link.getResource())
-			|| (super.checkLink(time, link, position) && crossingTrackFree(link, position));
+		if (isTwoWay(link.getResource())) {
+			return super.checkLink(time, link, position) && crossingTrackFree(link, position);
+		}
+		return !isStationLoop(link.getResource()) || roomForTheMeet(link.getResource(), position);
 	}
 
 	@Override
@@ -118,9 +120,27 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 		if (station == null || !isStationLoop(station)) {
 			return true;
 		}
+		return roomForTheMeet(station, position.getRoute(last).getLinkId(), position);
+	}
+
+	/**
+	 * The same consent at the station itself, whichever link the train comes
+	 * in through: a station reached over double track from one side and single
+	 * track from the other (Villasanta, run of 2026-09-18 after the block rule)
+	 * filled up with trains of one direction all the same.
+	 */
+	private boolean roomForTheMeet(RailResource station, TrainPosition position) {
+		Map<MobsimDriverAgent, Id<Link>> occupants = stationOccupants.getOrDefault(station.getId(), Map.of());
+		if (occupants.containsKey(position.getDriver())) {
+			return true;
+		}
+		return roomForTheMeet(station, arrivalLink(position, station), position);
+	}
+
+	private boolean roomForTheMeet(RailResource station, Id<Link> arrivalLink, TrainPosition position) {
 		Map<MobsimDriverAgent, Id<Link>> occupants = stationOccupants.getOrDefault(station.getId(), Map.of());
 		int free = station.getTotalCapacity() - occupants.size();
-		boolean sameDirectionThere = occupants.containsValue(position.getRoute(last).getLinkId());
+		boolean sameDirectionThere = occupants.containsValue(arrivalLink);
 		return free >= (sameDirectionThere ? 2 : 1);
 	}
 
