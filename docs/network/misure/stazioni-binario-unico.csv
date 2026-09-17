@@ -1,237 +1,237 @@
-stop_id,nome,linee,ruolo,tratte_binario_unico,tratte_doppio_binario,binari_modello,binari_reali_Fabio,note
-S01111,Colmegna,,intermedia,2,0,2,,
-S05410,Gerra,,intermedia,2,0,2,,
-S05406,Magadino-Vira,,intermedia,2,0,2,,
-S01110,Pino-Tronzano,,intermedia,2,0,2,,
-S05405,Quartino,,intermedia,2,0,2,,
-S05408,Ranzo-S. Abbondio,,bivio,3,0,2,,
-S05407,S.Nazzaro,,bivio,3,0,2,,
-S01714,Rovato,"R1,R4,R5,RE6",bivio,1,4,2,,
-S01534,Albano S.Alessandro,"R1,R5",intermedia,2,0,2,,
-S01536,Chiuduno,"R1,R5",intermedia,2,0,2,,
-S01540,Coccaglio,"R1,R5",intermedia,2,0,2,,
-S01539,Cologne,"R1,R5",intermedia,2,0,2,,
-S01537,Grumello Del Monte,"R1,R5",intermedia,2,0,2,,
-S01535,Montello Gorlago,"R1,R5",bivio,4,0,2,,
-S01538,Palazzolo Sull'Oglio,"R1,R5",bivio,4,0,2,,
-S01533,Seriate,"R1,R5",fine doppio binario,1,1,2,,
-S01400,Chiavenna,R11,intermedia,2,0,2,,
-S01405,Dubino,R11,intermedia,2,0,2,,
-S01403,Novate-Mezzola,R11,bivio,3,0,2,,
-S01417,Prata Camportaccio,R11,intermedia,2,0,2,,
-S01401,S.Cassiano Valchiavenna,R11,intermedia,2,0,2,,
-S01402,Samolaco,R11,intermedia,2,0,2,,
-S01404,Verceia,R11,intermedia,2,0,2,,
-S01430,Sondrio,"R12,R13,RE8",bivio,4,0,2,,
-S01438,Bianzone,"R12,RE8",bivio,3,0,2,,
-S01435,Chiuro,"R12,RE8",intermedia,2,0,2,,
-S01433,Poggiridenti-Tresivio-Piateda,"R12,RE8",intermedia,2,0,2,,
-S01434,Ponte In Valtellina,"R12,RE8",bivio,3,0,2,,
-S01436,S.Giacomo Di Teglio,"R12,RE8",intermedia,2,0,2,,
-S01440,Tirano,"R12,RE8",intermedia,2,0,2,,
-S01437,Tresenda-Aprica-Teglio,"R12,RE8",bivio,4,0,2,,
-S01439,Villa Di Tirano,"R12,RE8",intermedia,2,0,2,,
-S01416,Abbadia Lariana,"R13,RE8",intermedia,2,0,2,,
-S01427,Ardenno Masino,"R13,RE8",intermedia,2,0,2,,
-S01409,Bellano Tartavalle Terme,"R13,RE8",bivio,3,0,2,,
-S01429,Castione Andevenno,"R13,RE8",intermedia,2,0,2,,
-S01424,Cosio Traona,"R13,RE8",intermedia,2,0,2,,
-S01422,Delebio,"R13,RE8",intermedia,2,0,2,,
-S01408,Dervio,"R13,RE8",intermedia,2,0,2,,
-S01407,Dorio,"R13,RE8",intermedia,2,0,2,,
-S01412,Fiumelatte,"R13,RE8",intermedia,2,0,2,,
-S01413,Lierna,"R13,RE8",bivio,3,0,2,,
-S01415,Mandello Del Lario,"R13,RE8",bivio,5,0,2,,
-S01414,Olcio,"R13,RE8",intermedia,2,0,2,,
-S01406,Piona,"R13,RE8",intermedia,2,0,2,,
-S01428,S.Pietro Berbenno,"R13,RE8",intermedia,2,0,2,,
-S01426,Talamona,"R13,RE8",intermedia,2,0,2,,
-S01411,Varenna Esino,"R13,RE8",bivio,3,0,2,,
-S01503,Calusco,R14,intermedia,2,0,2,,
-S01502,Paderno Robbiate,R14,intermedia,2,0,2,,
-S01504,Terno,R14,intermedia,2,0,2,,
-S01528,Ponte S.Pietro,"R14,R7",intermedia,2,0,2,,
-S01511,Carnate Usmate,"R14,RE8,S8",bivio,1,4,2,,
-S01092,Arosio,R16,intermedia,2,0,2,,
-S01101,Asso,R16,capolinea binario unico,1,0,2,,
-S01088,Cabiate,R16,intermedia,2,0,2,,
-S01099,Canzo,R16,bivio,3,0,2,,
-S01091,Carugo-Giussano,R16,intermedia,2,0,2,,
-S01098,Caslino D'Erba,R16,intermedia,2,0,2,,
-S01096,Erba,R16,intermedia,2,0,2,,
-S01093,Inverigo,R16,bivio,3,0,2,,
-S01094,Lambrugo-Lurago D'Erba,R16,intermedia,2,0,2,,
-S01089,Mariano Comense,R16,bivio,3,0,2,,
-S01097,Pontelambro-Castelmarte,R16,bivio,3,0,2,,
-S01454,Merone,"R16,R18",bivio,5,0,2,,
-S01087,Meda,"R16,S2",bivio,3,0,2,,
-S01925,Seveso,"R16,S2,S4",bivio,1,2,2,,
-S01086,Cesano Maderno,"R16,S2,S4,S9",bivio,1,4,2,,
-S01764,Como Borghi,"R17,RE7",intermedia,2,0,2,,
-S01763,Como Camerlata Fnm,"R17,RE7",fine doppio binario,1,1,2,,
-S01765,Como Lago,"R17,RE7",capolinea binario unico,1,0,2,,
-S01450,Albate-Trecallo,R18,intermedia,2,0,2,,
-S01453,Anzano Del Parco,R18,intermedia,2,0,2,,
-S01452,Brenna-Alzate,R18,intermedia,2,0,2,,
-S01451,Cantu',R18,bivio,3,0,2,,
-S01457,Casletto-Rogeno,R18,intermedia,2,0,2,,
-S01456,Moiana,R18,intermedia,2,0,2,,
-S09998,Como Camerlata,"R18,RE80,S11",bivio,2,3,2,,
-S01462,Civate,"R18,S7",intermedia,2,0,2,,
-S01458,Molteno,"R18,S7",bivio,5,0,2,,
-S01460,Oggiono,"R18,S7",bivio,3,0,2,,
-S01461,Sala Al Barro-Galbiate,"R18,S7",bivio,3,0,2,,
-S01463,Valmadrera,"R18,S7",bivio,3,0,2,,
-S01145,Besnate,R21,intermedia,2,0,2,,
-S01141,Besozzo,R21,bivio,3,0,2,,
-S01117,Calde',R21,intermedia,2,0,2,,
-S01118,Laveno Mombello,R21,bivio,3,1,2,,
-S01113,Luino,R21,bivio,3,0,2,,
-S01144,Mornago Cimbro,R21,bivio,3,0,2,,
-S01116,Porto Valtravaglia,R21,bivio,3,0,2,,
-S01140,Sangiano,R21,fine doppio binario,1,1,2,,
-S01143,Ternate Varano Borghi,R21,bivio,3,0,2,,
-S01142,Travedona Biandronno,R21,intermedia,2,0,2,,
-S01030,Gallarate,"R21,R23,RE4,RE5,RE51,S5",bivio,1,9,2,,
-S01741,Barasso-Comerio,"R22,RE1",intermedia,2,0,2,,
-S01746,Cittiglio,"R22,RE1",intermedia,2,0,2,,
-S01744,Cocquio Trevisago,"R22,RE1",bivio,3,0,2,,
-S01742,Gavirate,"R22,RE1",bivio,3,0,2,,
-S01743,Gavirate Verbano,"R22,RE1",intermedia,2,0,2,,
-S01745,Gemonio,"R22,RE1",intermedia,2,0,2,,
-S01747,Laveno Mombello Lago,"R22,RE1",capolinea binario unico,1,0,2,,
-S01737,Malnate,"R22,RE1",bivio,1,2,2,,
-S01740,Morosolo Casciago,"R22,RE1",intermedia,2,0,2,,
-S01739,Varese Casbeno,"R22,RE1",intermedia,2,0,2,,
-S01738,Varese Nord,"R22,RE1",intermedia,2,0,2,,
-S00039,Torreberetti,"R25,R31,R35",bivio,1,2,2,,
-S01748,Galliate,R27,intermedia,2,0,2,,
-S00023,Novara Nord,R27,capolinea binario unico,1,0,2,,
-S01751,Turbigo,R27,fine doppio binario,1,1,2,,
-S01778,Boario Terme,"R3,RE3",bivio,3,0,2,,
-S01005,Breno,"R3,RE3",bivio,4,0,2,,
-S01771,Capo Di Ponte,"R3,RE3",bivio,3,0,2,,
-S01769,Cedegolo,"R3,RE3",intermedia,2,0,2,,
-S01772,Ceto-Cerveno,"R3,RE3",intermedia,2,0,2,,
-S01774,Cividate-Malegno,"R3,RE3",intermedia,2,0,2,,
-S01775,Cogno-Esine,"R3,RE3",intermedia,2,0,2,,
-S01006,Darfo-Corna,"R3,RE3",bivio,3,0,2,,
-S01002,Edolo,"R3,RE3",intermedia,2,0,2,,
-S01767,Malonno,"R3,RE3",bivio,3,0,2,,
-S01783,Marone-Zone,"R3,RE3",bivio,3,0,2,,
-S01780,Pian Camuno-Gratacasolo,"R3,RE3",intermedia,2,0,2,,
-S01776,Pian Di Borno,"R3,RE3",intermedia,2,0,2,,
-S01786,Pilzone,"R3,RE3",intermedia,2,0,2,,
-S01014,Pisogne,"R3,RE3",bivio,4,0,2,,
-S01784,Sale Marasino,"R3,RE3",intermedia,2,0,2,,
-S01766,Sonico,"R3,RE3",intermedia,2,0,2,,
-S01785,Sulzano,"R3,RE3",bivio,3,0,2,,
-S01781,Toline,"R3,RE3",intermedia,2,0,2,,
-S01782,Vello,"R3,RE3",intermedia,2,0,2,,
-S01788,Borgonato-Adro,"R3,RE3,S31",intermedia,2,0,2,,
-S01789,Bornato-Calino,"R3,RE3,S31",intermedia,2,0,2,,
-S01797,Brescia Borgo San Giovanni,"R3,RE3,S31",intermedia,2,0,2,,
-S17451,Brescia Violino,"R3,RE3,S31",intermedia,2,0,2,,
-S01795,Castegnato,"R3,RE3,S31",intermedia,2,0,2,,
-S01794,Paderno Franciacorta,"R3,RE3,S31",intermedia,2,0,2,,
-S01793,Passirano,"R3,RE3,S31",intermedia,2,0,2,,
-S01787,Provaglio-Timoline,"R3,RE3,S31",intermedia,2,0,2,,
-S01060,Parona Lomellina,R31,intermedia,2,0,2,,
-S01932,Barbianello,R34,intermedia,2,0,2,,
-S01930,Bressana Argine,R34,intermedia,2,0,2,,
-S01931,Pinarolo Po,R34,intermedia,2,0,2,,
-S01944,Broni,"R34,R41",bivio,1,2,2,,
-S01805,Bressana Bottarone,"R34,RE13",bivio,1,2,2,,
-S00404,Ferrera Lomellina,R35,intermedia,2,0,2,,
-S00405,Lomello,R35,intermedia,2,0,2,,
-S00406,Mede,R35,intermedia,2,0,2,,
-S00402,Pieve Albignola,R35,intermedia,2,0,2,,
-S00408,Sairano,R35,intermedia,2,0,2,,
-S00400,Sairano Zinasco,R35,bivio,3,0,2,,
-S00403,Sannazzaro,R35,intermedia,2,0,2,,
-S00401,Zinasco Nuovo,R35,intermedia,2,0,2,,
-S00279,Cava Carbonara,"R35,R36",intermedia,2,0,2,,
-S00274,Gambolo'-Remondo',R36,intermedia,2,0,2,,
-S00276,Garlasco,R36,intermedia,2,0,2,,
-S00277,Gropello Cairoli,R36,intermedia,2,0,2,,
-S00273,Nicorvo,R36,intermedia,2,0,2,,
-S00271,Palestro,R36,intermedia,2,0,2,,
-S00272,Robbio,R36,intermedia,2,0,2,,
-S00275,Tromello,R36,intermedia,2,0,2,,
-S00245,Vercelli,R36,capolinea binario unico,1,0,2,,
-S00278,Villanova D'Ardenghi,R36,intermedia,2,0,2,,
-S01863,Albuzzano,R37,intermedia,2,0,2,,
-S01864,Belgioioso,R37,intermedia,2,0,2,,
-S01868,Chignolo Po,R37,intermedia,2,0,2,,
-S01865,Corteolona,R37,intermedia,2,0,2,,
-S01869,Lambrinia,R37,intermedia,2,0,2,,
-S01867,Miradolo Terme,R37,intermedia,2,0,2,,
-S01862,Motta S.Damiano,R37,intermedia,2,0,2,,
-S01870,Orio Litta,R37,intermedia,2,0,2,,
-S01871,Ospedaletto Lodigiano,R37,intermedia,2,0,2,,
-S01861,Pavia Porta Garibaldi,R37,intermedia,2,0,2,,
-S01866,S.Cristina E Bissone,R37,intermedia,2,0,2,,
-S01827,Casalpusterlengo,"R37,R38,RE11",bivio,1,3,2,,
-S01913,Acquanegra Cremonese,"R37,R39,RE11",intermedia,2,0,2,,
-S01914,Cava Tigozzi,"R37,R39,RE11",fine doppio binario,1,1,2,,
-S01910,Maleo,"R37,R39,RE11",intermedia,2,0,2,,
-S01911,Pizzighettone,"R37,R39,RE11",intermedia,2,0,2,,
-S01912,Ponte D'Adda,"R37,R39,RE11",bivio,5,0,2,,
-S01920,Bozzolo,"R40,RE11",capolinea binario unico,1,0,2,,
-S01917,Gazzo Pieve S.Giacomo,"R40,RE11",intermedia,2,0,2,,
-S01918,Torre De' Picenardi,"R40,RE11",intermedia,2,0,2,,
-S01916,Villetta Malagnino,"R40,RE11",intermedia,2,0,2,,
-S01901,Bagnolo Mella,R5,intermedia,2,0,2,,
-S01902,Manerbio,R5,intermedia,2,0,2,,
-S01904,Robecco-Pontevico,R5,intermedia,2,0,2,,
-S01903,Verolanuova,R5,intermedia,2,0,2,,
-S01905,Olmeneta,"R5,R6",bivio,3,0,2,,
-S01900,S.Zeno Folzano,"R5,R8",bivio,3,0,2,,
-S01603,Capralba,R6,intermedia,2,0,2,,
-S01602,Caravaggio,R6,intermedia,2,0,2,,
-S01609,Casalbuttano,R6,intermedia,2,0,2,,
-S01604,Casaletto Vaprio,R6,intermedia,2,0,2,,
-S01606,Castelleone,R6,bivio,3,0,2,,
-S01605,Crema,R6,bivio,3,0,2,,
-S01610,Madignano,R6,intermedia,2,0,2,,
-S01607,Soresina,R6,intermedia,2,0,2,,
-S01527,Ambivere Mapello,R7,intermedia,2,0,2,,
-S01525,Cisano Caprino Bergamasco,R7,intermedia,2,0,2,,
-S01526,Pontida,R7,intermedia,2,0,2,,
-S01524,Calolziocorte Olginate,"R7,RE8,S8",bivio,1,6,2,,
-S01847,Asola,R8,bivio,3,0,2,,
-S01843,Calvisano,R8,intermedia,2,0,2,,
-S01848,Canneto Sull'Oglio,R8,intermedia,2,0,2,,
-S01851,Mezzani Rondani,R8,intermedia,2,0,2,,
-S01840,Montirone,R8,intermedia,2,0,2,,
-S01845,Remedello Sopra,R8,bivio,3,0,2,,
-S01846,Remedello Sotto,R8,intermedia,2,0,2,,
-S01842,Viadana Bresciana,R8,intermedia,2,0,2,,
-S01844,Visano,R8,intermedia,2,0,2,,
-S04330,Pozzolo Formigaro,RE13,fine doppio binario,1,1,2,,
-S01810,Tortona,RE13,bivio,1,3,2,,
-S01203,Arcisate,RE5,bivio,1,2,2,,
-S01202,Bisuschio Viggiu',RE5,intermedia,2,0,2,,
-S01204,Induno Olona,RE5,fine doppio binario,1,1,2,,
-S01200,Porto Ceresio,RE5,capolinea binario unico,1,0,2,,
-S01205,Varese,"RE5,S5",bivio,1,2,2,,
-S05404,Cadenazzo,RE80,bivio,2,1,2,,
-S05402,Gordola,RE80,intermedia,2,0,2,,
-S05400,Locarno,RE80,capolinea binario unico,1,0,2,,
-S05417,Minusio,RE80,intermedia,2,0,2,,
-S05412,Riazzino,RE80,intermedia,2,0,2,,
-S05401,Tenero,RE80,intermedia,2,0,2,,
-S01318,Seregno,"RE80,S11,S9",bivio,1,5,2,,
-S01488,Besana,S7,intermedia,2,0,2,,
-S01483,Biassono-Lesmo Parco,S7,intermedia,2,0,2,,
-S01482,Buttafava,S7,intermedia,2,0,2,,
-S01486,Carate-Calo',S7,intermedia,2,0,2,,
-S01490,Cassago-Nibionno-Bulciago,S7,intermedia,2,0,2,,
-S01491,Costa Masnaga,S7,intermedia,2,0,2,,
-S01484,Macherio-Canonica,S7,intermedia,2,0,2,,
-S01480,Monza Sobborghi,S7,fine doppio binario,1,1,2,,
-S01489,Renate-Veduggio,S7,intermedia,2,0,2,,
-S01485,Triuggio-Ponte Albiate,S7,intermedia,2,0,2,,
-S01487,Villa Raverio,S7,intermedia,2,0,2,,
-S01481,Villasanta,S7,fine doppio binario,1,1,2,,
-S01929,Seveso Baruccana,S9,intermedia,2,0,2,,
+stop_id,nome,linee,ruolo,tratte_binario_unico,tratte_doppio_binario,binari_OSM,di_cui_sidings_OSM,passenger_lines_OSM,binari_wikipedia,incrocio_wikipedia,fonte_wikipedia,binari_reali_Fabio,note
+S01111,Colmegna,,intermedia,2,0,4,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Colmegna,,"fermata, binario unico"
+S05410,Gerra,,intermedia,2,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Gerra_(Gambarogno),,"fermata, binario unico"
+S05406,Magadino-Vira,,intermedia,2,0,2,0,2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Magadino-Vira,,2 passanti con banchina piu' 2 tronchi merci
+S01110,Pino-Tronzano,,intermedia,2,0,2,0,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Pino-Tronzano,,2 passanti con banchina piu' 1 tronco
+S05405,Quartino,,intermedia,2,0,4,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Quartino,,"fermata, binario unico"
+S05408,Ranzo-S. Abbondio,,bivio,3,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Ranzo-Sant'Abbondio,,declassata a fermata
+S05407,S.Nazzaro,,bivio,3,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_San_Nazzaro,,"stazione passante, 2 binari con banchina"
+S01714,Rovato,"R1,R4,R5,RE6",bivio,1,4,18,9,1/2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Rovato,,"2 binari di corsa Milano-Venezia piu' 1 tronco per Iseo, piu' 3 di ricovero"
+S01534,Albano S.Alessandro,"R1,R5",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Albano_Sant'Alessandro,,"fermata, binario unico"
+S01536,Chiuduno,"R1,R5",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Chiuduno,,fermata
+S01540,Coccaglio,"R1,R5",intermedia,2,0,2,2,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Coccaglio,,stazione passante sulla Milano-Venezia
+S01539,Cologne,"R1,R5",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Cologne,,"fermata, binario unico"
+S01537,Grumello Del Monte,"R1,R5",intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Grumello_del_Monte,,"bin.1 raddoppio 508 m, bin.2 corsa"
+S01535,Montello Gorlago,"R1,R5",bivio,4,0,4,4,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Montello-Gorlago,,"bin.1 verso Brescia, bin.2 verso Bergamo, terzo non usato"
+S01538,Palazzolo Sull'Oglio,"R1,R5",bivio,4,0,16,8,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Palazzolo_sull%27Oglio,,"bin.1 corsa piu' bin.2, entrambi viaggiatori, piu' tronchi"
+S01533,Seriate,"R1,R5",fine doppio binario,1,1,2,2,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Seriate,,"bin.1 raddoppio 217 m, bin.2 corsa"
+S01400,Chiavenna,R11,intermedia,2,0,6,6,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Chiavenna,,"capolinea, 3 binari viaggiatori"
+S01405,Dubino,R11,intermedia,2,0,2,0,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Dubino,,secondo binario di incrocio dal 2022
+S01403,Novate-Mezzola,R11,bivio,3,0,2,1,1,5,si,https://it.wikipedia.org/wiki/Stazione_di_Novate_Mezzola,,2 viaggiatori piu' 3 tronchi
+S01417,Prata Camportaccio,R11,intermedia,2,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Prata_Camportaccio,,"fermata, binario unico"
+S01401,S.Cassiano Valchiavenna,R11,intermedia,2,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_San_Cassiano_Valchiavenna,,"fermata, binario unico"
+S01402,Samolaco,R11,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Samolaco,,"fermata, binario di incrocio rimosso"
+S01404,Verceia,R11,intermedia,2,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Verceia,,"fermata, binario unico"
+S01430,Sondrio,"R12,R13,RE8",bivio,4,0,4,2,1,10,si,https://it.wikipedia.org/wiki/Stazione_di_Sondrio,,3 viaggiatori piu' 7 di scalo
+S01438,Bianzone,"R12,RE8",bivio,3,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Bianzone,,declassata a fermata nel 1974
+S01435,Chiuro,"R12,RE8",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Chiuro,,fermata dal 1974
+S01433,Poggiridenti-Tresivio-Piateda,"R12,RE8",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Poggiridenti-Tresivio-Piateda,,"fermata, binario unico"
+S01434,Ponte In Valtellina,"R12,RE8",bivio,3,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Ponte_in_Valtellina,,"testo 2 binari, infobox 1: da verificare"
+S01436,S.Giacomo Di Teglio,"R12,RE8",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_San_Giacomo_di_Teglio,,"fermata, binario unico"
+S01440,Tirano,"R12,RE8",intermedia,2,0,14,14,,10,si,https://it.wikipedia.org/wiki/Stazione_di_Tirano_(RFI),,"capolinea, 3 binari viaggiatori"
+S01437,Tresenda-Aprica-Teglio,"R12,RE8",bivio,4,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Tresenda-Aprica-Teglio,,"stazione passante, 2 binari"
+S01439,Villa Di Tirano,"R12,RE8",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Villa_di_Tirano,,fermata dal 1974
+S01416,Abbadia Lariana,"R13,RE8",intermedia,2,0,4,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Abbadia_Lariana,,"stazione passante, due binari viaggiatori"
+S01427,Ardenno Masino,"R13,RE8",intermedia,2,0,2,1,1/2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Ardenno-Masino,,binario di corsa piu' binario di raddoppio 365 m
+S01409,Bellano Tartavalle Terme,"R13,RE8",bivio,3,0,5,3,1/2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Bellano-Tartavalle_Terme,,"stazione passante, due binari viaggiatori"
+S01429,Castione Andevenno,"R13,RE8",intermedia,2,0,1,1,,2,si,https://it.wikipedia.org/wiki/Stazione_di_Castione_Andevenno,,secondo binario di incrocio
+S01424,Cosio Traona,"R13,RE8",intermedia,2,0,1,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Cosio-Traona,,due binari passanti viaggiatori
+S01422,Delebio,"R13,RE8",intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Delebio,,"due binari passanti, stazione di incrocio"
+S01408,Dervio,"R13,RE8",intermedia,2,0,4,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Dervio,,"stazione passante, due binari viaggiatori"
+S01407,Dorio,"R13,RE8",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Dorio,,"fermata, binario unico"
+S01412,Fiumelatte,"R13,RE8",intermedia,2,0,3,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Fiumelatte,,"fermata, binario unico"
+S01413,Lierna,"R13,RE8",bivio,3,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Lierna,,"stazione passante, due binari viaggiatori"
+S01415,Mandello Del Lario,"R13,RE8",bivio,5,0,3,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Mandello_del_Lario,,"stazione passante, due binari viaggiatori"
+S01414,Olcio,"R13,RE8",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Olcio,,"fermata, binario unico"
+S01406,Piona,"R13,RE8",intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Piona,,due binari con possibilita' di incrocio
+S01428,S.Pietro Berbenno,"R13,RE8",intermedia,2,0,1,1,,2,si,https://it.wikipedia.org/wiki/Stazione_di_San_Pietro_Berbenno,,banchina centrale servita da 2 binari
+S01426,Talamona,"R13,RE8",intermedia,2,0,0,0,,1,no,https://it.wikipedia.org/wiki/Stazione_di_Talamona,,"fermata, binario unico"
+S01411,Varenna Esino,"R13,RE8",bivio,3,0,4,2,1/2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Varenna-Esino,,"stazione, binario 1 di incrocio"
+S01503,Calusco,R14,intermedia,2,0,1,1,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Calusco,,"stazione passante, 3 binari"
+S01502,Paderno Robbiate,R14,intermedia,2,0,1,1,,2,si,https://it.wikipedia.org/wiki/Stazione_di_Paderno-Robbiate,,"stazione passante, 2 binari"
+S01504,Terno,R14,intermedia,2,0,2,0,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Terno,,"stazione passante, 2 marciapiedi"
+S01528,Ponte S.Pietro,"R14,R7",intermedia,2,0,3,2,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Ponte_San_Pietro,,"nodo, binario 3 fuori servizio per lavori fino al 2026"
+S01511,Carnate Usmate,"R14,RE8,S8",bivio,1,4,8,4,1/2,7,si,https://it.wikipedia.org/wiki/Stazione_di_Carnate-Usmate,,"nodo, binari 2-3 di corsa, altri per precedenze e attestamento"
+S01092,Arosio,R16,intermedia,2,0,2,0,1/2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Arosio,,stazione 2 binari
+S01101,Asso,R16,capolinea binario unico,1,0,5,3,1/4,4,si,https://it.wikipedia.org/wiki/Stazione_di_Canzo-Asso,,"capolinea di testa, 4 binari"
+S01088,Cabiate,R16,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Cabiate,,fermata
+S01099,Canzo,R16,bivio,3,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Canzo,,fermata
+S01091,Carugo-Giussano,R16,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Carugo-Giussano,,fermata
+S01098,Caslino D'Erba,R16,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Caslino_d%27Erba,,fermata
+S01096,Erba,R16,intermedia,2,0,4,2,3,3,si,https://it.wikipedia.org/wiki/Stazione_di_Erba,,"bin.1 incrocio, 2 corsa, 3 tronco"
+S01093,Inverigo,R16,bivio,3,0,3,0,1/2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Inverigo,,"stazione 2 binari, incroci"
+S01094,Lambrugo-Lurago D'Erba,R16,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Lambrugo-Lurago,,fermata
+S01089,Mariano Comense,R16,bivio,3,0,3,0,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Mariano_Comense,,2 passanti piu' 1 tronco
+S01097,Pontelambro-Castelmarte,R16,bivio,3,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Pontelambro-Castelmarte,,fermata
+S01454,Merone,"R16,R18",bivio,5,0,3,0,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Merone,,"diramazione, 3 viaggiatori piu' 2 merci"
+S01087,Meda,"R16,S2",bivio,3,0,6,2,2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Meda,,stazione passante 3 binari
+S01925,Seveso,"R16,S2,S4",bivio,1,2,5,3,2,4,si,https://it.wikipedia.org/wiki/Stazione_di_Seveso,,"nodo Ferrovienord, 4 binari"
+S01086,Cesano Maderno,"R16,S2,S4,S9",bivio,1,4,11,1,1/2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Cesano_Maderno_(2011),,2 binari Milano-Asso piu' 1 sopraelevato Saronno-Seregno
+S01764,Como Borghi,"R17,RE7",intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Como_Borghi,,binario 2 di incrocio
+S01763,Como Camerlata Fnm,"R17,RE7",fine doppio binario,1,1,14,5,2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Como_Camerlata,,"parte Ferrovienord, 3 binari passanti"
+S01765,Como Lago,"R17,RE7",capolinea binario unico,1,0,5,5,1,4,si,https://it.wikipedia.org/wiki/Stazione_di_Como_Lago,,"capolinea di testa, 4 binari"
+S01450,Albate-Trecallo,R18,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Albate-Trecallo,,fermata
+S01453,Anzano Del Parco,R18,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Anzano_del_Parco,,fermata
+S01452,Brenna-Alzate,R18,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Brenna-Alzate,,fermata
+S01451,Cantu',R18,bivio,3,0,1,0,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Cant%C3%B9,,stazione passante 2 binari
+S01457,Casletto-Rogeno,R18,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Casletto-Rogeno,,"fermata, binario unico"
+S01456,Moiana,R18,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Moiana,,declassata a fermata nel 1985
+S09998,Como Camerlata,"R18,RE80,S11",bivio,2,3,14,5,2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Como_Camerlata,,parte RFI su doppio binario
+S01462,Civate,"R18,S7",intermedia,2,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Civate,,"fermata, binario unico"
+S01458,Molteno,"R18,S7",bivio,5,0,6,4,2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Molteno,,"stazione di diramazione, 3 binari"
+S01460,Oggiono,"R18,S7",bivio,3,0,4,3,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Oggiono,,"stazione passante, 2 binari"
+S01461,Sala Al Barro-Galbiate,"R18,S7",bivio,3,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Sala_al_Barro-Galbiate,,fermata dal 1981
+S01463,Valmadrera,"R18,S7",bivio,3,0,1,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Valmadrera,,"stazione, 2 binari viaggiatori"
+S01145,Besnate,R21,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Besnate,,declassata a fermata nel 1994
+S01141,Besozzo,R21,bivio,3,0,2,0,2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Besozzo,,2 passanti con banchina
+S01117,Calde',R21,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Caldè,,"fermata, binario unico"
+S01118,Laveno Mombello,R21,bivio,3,1,8,1,1/2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Laveno-Mombello,,"stazione di diramazione, 3 binari"
+S01113,Luino,R21,bivio,3,0,9,7,1,4,si,https://it.wikipedia.org/wiki/Stazione_di_Luino,,"stazione di confine, 4 binari viaggiatori"
+S01144,Mornago Cimbro,R21,bivio,3,0,2,0,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Mornago-Cimbro,,2 passanti con banchina
+S01116,Porto Valtravaglia,R21,bivio,3,0,3,0,2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Porto_Valtravaglia,,2 passanti con banchina
+S01140,Sangiano,R21,fine doppio binario,1,1,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Sangiano,,"fermata, binario unico"
+S01143,Ternate Varano Borghi,R21,bivio,3,0,4,3,2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Ternate-Varano_Borghi,,2 passanti con banchina piu' 1 tronco
+S01142,Travedona Biandronno,R21,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Travedona-Biandronno,,"fermata, binario unico"
+S01030,Gallarate,"R21,R23,RE4,RE5,RE51,S5",bivio,1,9,11,9,5,5,si,https://it.wikipedia.org/wiki/Stazione_di_Gallarate,,"stazione di diramazione, 5 binari con banchina"
+S01741,Barasso-Comerio,"R22,RE1",intermedia,2,0,3,3,2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Barasso-Comerio,,"2 passanti, incroci d'orario, piu' tronchino"
+S01746,Cittiglio,"R22,RE1",intermedia,2,0,3,2,2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Cittiglio,,2 binari con banchina
+S01744,Cocquio Trevisago,"R22,RE1",bivio,3,0,3,2,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Cocquio-Trevisago,,2 passanti piu' tronchino
+S01742,Gavirate,"R22,RE1",bivio,3,0,3,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Gavirate,,fermata dal 1994
+S01743,Gavirate Verbano,"R22,RE1",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Gavirate_Verbano,,"fermata, binario unico"
+S01745,Gemonio,"R22,RE1",intermedia,2,0,1,1,,1,no,https://it.wikipedia.org/wiki/Stazione_di_Gemonio,,fermata dal 1994
+S01747,Laveno Mombello Lago,"R22,RE1",capolinea binario unico,1,0,8,6,1,6,si,https://it.wikipedia.org/wiki/Stazione_di_Laveno-Mombello_Nord,,"capolinea di testa, 6 binari con banchina"
+S01737,Malnate,"R22,RE1",bivio,1,2,8,6,2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Malnate,,passaggio da doppio a singolo binario
+S01740,Morosolo Casciago,"R22,RE1",intermedia,2,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Morosolo-Casciago,,fermata
+S01739,Varese Casbeno,"R22,RE1",intermedia,2,0,7,3,1/2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Varese_Casbeno,,2 binari con banchina
+S01738,Varese Nord,"R22,RE1",intermedia,2,0,18,8,1/2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Varese_Nord,,3 di transito piu' tronchi e deposito
+S00039,Torreberetti,"R25,R31,R35",bivio,1,2,5,2,1/2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Torreberetti,,"diramazione, 3 binari con banchina"
+S01748,Galliate,R27,intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Galliate,,stazione passante 2 binari
+S00023,Novara Nord,R27,capolinea binario unico,1,0,42,27,1/2/3,3,si,https://it.wikipedia.org/wiki/Stazione_di_Novara_Nord,,1 passante piu' 2 tronchi
+S01751,Turbigo,R27,fine doppio binario,1,1,3,0,1/2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Turbigo,,passaggio da singolo a doppio binario
+S01778,Boario Terme,"R3,RE3",bivio,3,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Boario_Terme,,fermata passante
+S01005,Breno,"R3,RE3",bivio,4,0,2,1,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Breno,,"corsa piu' 2 raddoppi, piu' scalo"
+S01771,Capo Di Ponte,"R3,RE3",bivio,3,0,6,3,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Capo_di_Ponte,,corsa piu' raddoppio 216 m
+S01769,Cedegolo,"R3,RE3",intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Cedegolo,,corsa piu' raddoppio 190 m
+S01772,Ceto-Cerveno,"R3,RE3",intermedia,2,0,3,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Ceto-Cerveno,,fermata
+S01774,Cividate-Malegno,"R3,RE3",intermedia,2,0,5,4,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Cividate-Malegno,,3 binari di corsa e raddoppio piu' scalo
+S01775,Cogno-Esine,"R3,RE3",intermedia,2,0,1,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Cogno-Esine,,corsa piu' raddoppio 204 m
+S01006,Darfo-Corna,"R3,RE3",bivio,3,0,2,2,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Darfo-Corna,,corsa piu' 2 raddoppi
+S01002,Edolo,"R3,RE3",intermedia,2,0,2,1,1/3,2,si,https://it.wikipedia.org/wiki/Stazione_di_Edolo,,"capolinea di testa, 2 binari viaggiatori piu' 2 scalo"
+S01767,Malonno,"R3,RE3",bivio,3,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Malonno,,corsa piu' raddoppio
+S01783,Marone-Zone,"R3,RE3",bivio,3,0,4,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Marone-Zone,,corsa piu' raddoppio 254 m
+S01780,Pian Camuno-Gratacasolo,"R3,RE3",intermedia,2,0,1,1,,2,si,https://it.wikipedia.org/wiki/Stazione_di_Piancamuno-Gratacasolo,,corsa piu' raddoppio 158 m
+S01776,Pian Di Borno,"R3,RE3",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Pian_di_Borno,,fermata
+S01786,Pilzone,"R3,RE3",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Pilzone,,fermata
+S01014,Pisogne,"R3,RE3",bivio,4,0,4,4,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Pisogne,,"corsa piu' 2 raddoppi, piu' 2 di scalo"
+S01784,Sale Marasino,"R3,RE3",intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Sale_Marasino,,corsa piu' raddoppio 169 m
+S01766,Sonico,"R3,RE3",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Sonico,,fermata
+S01785,Sulzano,"R3,RE3",bivio,3,0,3,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Sulzano,,fermata
+S01781,Toline,"R3,RE3",intermedia,2,0,3,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Toline,,fermata
+S01782,Vello,"R3,RE3",intermedia,2,0,5,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Vello,,fermata
+S01788,Borgonato-Adro,"R3,RE3,S31",intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Borgonato-Adro,,corsa piu' raddoppio 212 m
+S01789,Bornato-Calino,"R3,RE3,S31",intermedia,2,0,4,1,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Bornato-Calino,,"diramazione: bin.1 raccordo Rovato, bin.2 corsa, bin.3 raddoppio"
+S01797,Brescia Borgo San Giovanni,"R3,RE3,S31",intermedia,2,0,3,2,,2,si,https://it.wikipedia.org/wiki/Stazione_di_Brescia_Borgo_San_Giovanni,,"bin.1 raddoppio 139 m, bin.2 corsa"
+S17451,Brescia Violino,"R3,RE3,S31",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Brescia_Violino,,fermata aperta nel 2023
+S01795,Castegnato,"R3,RE3,S31",intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Castegnato,,"corsa piu' raddoppio 107 m, piu' scalo"
+S01794,Paderno Franciacorta,"R3,RE3,S31",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Paderno_Franciacorta,,"fermata, solo binario di corsa"
+S01793,Passirano,"R3,RE3,S31",intermedia,2,0,3,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Passirano,,"bin.1 raddoppio 210 m, bin.2 corsa"
+S01787,Provaglio-Timoline,"R3,RE3,S31",intermedia,2,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Provaglio-Timoline,,fermata
+S01060,Parona Lomellina,R31,intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Parona_Lomellina,,"stazione passante, 2 binari con banchina"
+S01932,Barbianello,R34,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Barbianello,,fermata
+S01930,Bressana Argine,R34,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Bressana_Argine,,"fermata, raddoppio rimosso"
+S01931,Pinarolo Po,R34,intermedia,2,0,2,0,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Pinarolo_Po,,stazione 2 binari
+S01944,Broni,"R34,R41",bivio,1,2,4,2,1/2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Broni,,"diramazione, 3 binari con marciapiede"
+S01805,Bressana Bottarone,"R34,RE13",bivio,1,2,4,2,2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Bressana_Bottarone,,"diramazione, 2 di corsa piu' 1 di precedenza"
+S00404,Ferrera Lomellina,R35,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Ferrera_Lomellina,,fermata dal 1992
+S00405,Lomello,R35,intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Lomello,,stazione con binario di incrocio
+S00406,Mede,R35,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Mede,,fermata dal 1992
+S00402,Pieve Albignola,R35,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Pieve_Albignola,,fermata
+S00408,Sairano,R35,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Sairano,,fermata
+S00400,Sairano Zinasco,R35,bivio,3,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Sairano-Zinasco,,fermata
+S00403,Sannazzaro,R35,intermedia,2,0,2,0,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Sannazzaro,,"stazione di incrocio, terzo binario merci"
+S00401,Zinasco Nuovo,R35,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Zinasco_Nuovo,,"fermata, incrocio rimosso 1992"
+S00279,Cava Carbonara,"R35,R36",intermedia,2,0,4,0,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Cava_Carbonara,,diramazione Vercelli-Pavia / Pavia-Alessandria
+S00274,Gambolo'-Remondo',R36,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Gambol%C3%B2-Remond%C3%B2,,fermata
+S00276,Garlasco,R36,intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Garlasco,,stazione di incrocio
+S00277,Gropello Cairoli,R36,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Gropello_Cairoli,,fermata
+S00273,Nicorvo,R36,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Nicorvo,,"fermata, raddoppio rimosso"
+S00271,Palestro,R36,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Palestro,,fermata
+S00272,Robbio,R36,intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Robbio,,2 passanti piu' 1 tronco
+S00275,Tromello,R36,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Tromello,,fermata
+S00245,Vercelli,R36,capolinea binario unico,1,0,5,4,5,7,si,https://it.wikipedia.org/wiki/Stazione_di_Vercelli,,7 passanti piu' 2 tronchi
+S00278,Villanova D'Ardenghi,R36,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Villanova_d%27Ardenghi,,fermata
+S01863,Albuzzano,R37,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Albuzzano,,fermata
+S01864,Belgioioso,R37,intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Belgioioso,,stazione passante 2 binari
+S01868,Chignolo Po,R37,intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Chignolo_Po,,stazione 2 binari
+S01865,Corteolona,R37,intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Corteolona,,corretto tracciato piu' binario di incrocio
+S01869,Lambrinia,R37,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Lambrinia,,fermata
+S01867,Miradolo Terme,R37,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Miradolo_Terme,,fermata
+S01862,Motta S.Damiano,R37,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Motta_San_Damiano,,binario di precedenza fuori servizio
+S01870,Orio Litta,R37,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Orio_Litta,,fermata
+S01871,Ospedaletto Lodigiano,R37,intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Ospedaletto_Lodigiano,,stazione passante 2 binari
+S01861,Pavia Porta Garibaldi,R37,intermedia,2,0,3,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Pavia_Porta_Garibaldi,,fermata
+S01866,S.Cristina E Bissone,R37,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Santa_Cristina_e_Bissone,,fermata
+S01827,Casalpusterlengo,"R37,R38,RE11",bivio,1,3,3,0,2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Casalpusterlengo,,doppio binario piu' binari di precedenza
+S01913,Acquanegra Cremonese,"R37,R39,RE11",intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Acquanegra_Cremonese,,stazione 2 binari
+S01914,Cava Tigozzi,"R37,R39,RE11",fine doppio binario,1,1,3,1,2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Cava_Tigozzi,,stazione con fascio merci
+S01910,Maleo,"R37,R39,RE11",intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Maleo,,fermata
+S01911,Pizzighettone,"R37,R39,RE11",intermedia,2,0,4,4,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Pizzighettone,,2 binari con banchina piu' 1 ex merci
+S01912,Ponte D'Adda,"R37,R39,RE11",bivio,5,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Ponte_d%27Adda,,fermata
+S01920,Bozzolo,"R40,RE11",capolinea binario unico,1,0,5,1,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Bozzolo,,"stazione 3 binari, capolinea provvisorio"
+S01917,Gazzo Pieve S.Giacomo,"R40,RE11",intermedia,2,0,5,4,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Gazzo-Pieve_San_Giacomo,,stazione passante 2 binari
+S01918,Torre De' Picenardi,"R40,RE11",intermedia,2,0,3,3,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Torre_de%27_Picenardi,,stazione passante 2 binari
+S01916,Villetta Malagnino,"R40,RE11",intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Villetta_Malagnino,,stazione passante 2 binari
+S01901,Bagnolo Mella,R5,intermedia,2,0,2,0,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Bagnolo_Mella,,binario di corsa piu' raddoppio
+S01902,Manerbio,R5,intermedia,2,0,3,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Manerbio,,binario di corsa piu' raddoppio
+S01904,Robecco-Pontevico,R5,intermedia,2,0,5,4,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Robecco-Pontevico,,"stazione passante, 2 binari"
+S01903,Verolanuova,R5,intermedia,2,0,5,2,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Verolanuova,,"stazione passante, 2 binari"
+S01905,Olmeneta,"R5,R6",bivio,3,0,5,2,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Olmeneta,,"diramazione: bin.1 linea Treviglio, bin.3 linea Brescia, bin.2 incroci di entrambe"
+S01900,S.Zeno Folzano,"R5,R8",bivio,3,0,4,2,1,4,si,https://it.wikipedia.org/wiki/Stazione_di_San_Zeno-Folzano,,"diramazione Brescia-Cremona / Brescia-Parma, 3 binari viaggiatori piu' 1 merci"
+S01603,Capralba,R6,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Capralba,,fermata
+S01602,Caravaggio,R6,intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Caravaggio,,2 binari passanti
+S01609,Casalbuttano,R6,intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Casalbuttano,,bin.2 deviato per precedenze
+S01604,Casaletto Vaprio,R6,intermedia,2,0,5,3,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Casaletto_Vaprio,,bin.2 deviato per precedenze
+S01606,Castelleone,R6,bivio,3,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Castelleone,,2 binari passanti
+S01605,Crema,R6,bivio,3,0,4,3,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Crema,,2 passanti piu' 1 per precedenze
+S01610,Madignano,R6,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Madignano,,fermata
+S01607,Soresina,R6,intermedia,2,0,6,6,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Soresina,,binario di raddoppio presente
+S01527,Ambivere Mapello,R7,intermedia,2,0,3,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Ambivere-Mapello,,stazione passante su binario unico
+S01525,Cisano Caprino Bergamasco,R7,intermedia,2,0,4,2,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Cisano-Caprino_Bergamasco,,stazione passante su binario unico
+S01526,Pontida,R7,intermedia,2,0,3,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Pontida,,fermata
+S01524,Calolziocorte Olginate,"R7,RE8,S8",bivio,1,6,6,0,1/2,4,si,https://it.wikipedia.org/wiki/Stazione_di_Calolziocorte-Olginate,,"diramazione Milano-Lecco / Lecco-Bergamo, 4 binari"
+S01847,Asola,R8,bivio,3,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Asola,,corsa piu' raddoppio 505 m
+S01843,Calvisano,R8,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Calvisano,,"fermata, raddoppio rimosso"
+S01848,Canneto Sull'Oglio,R8,intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Canneto_sull%27Oglio,,raddoppio in stazione
+S01851,Mezzani Rondani,R8,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Ferrovia_Brescia-Parma,,fermata (voce della linea)
+S01840,Montirone,R8,intermedia,2,0,2,1,1,3,si,https://it.wikipedia.org/wiki/Stazione_di_Montirone,,2 binari con marciapiede piu' 1 per mezzi d'opera
+S01845,Remedello Sopra,R8,bivio,3,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Remedello_Sopra,,"bin.1 incroci, bin.2 corsa"
+S01846,Remedello Sotto,R8,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Remedello_Sotto,,"fermata passante, solo binario di corsa"
+S01842,Viadana Bresciana,R8,intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Viadana_Bresciana,,corsa piu' raddoppio 335 m
+S01844,Visano,R8,intermedia,2,0,2,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Visano,,corsa piu' 1 raddoppio dal 2015
+S04330,Pozzolo Formigaro,RE13,fine doppio binario,1,1,1,0,2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Pozzolo_Formigaro,,"stazione passante, 3 binari"
+S01810,Tortona,RE13,bivio,1,3,6,4,2,5,si,https://it.wikipedia.org/wiki/Stazione_di_Tortona,,5 con banchina piu' 1 di precedenza e scalo
+S01203,Arcisate,RE5,bivio,1,2,6,0,2,2,no,https://it.wikipedia.org/wiki/Stazione_di_Arcisate_(2017),,fermata su doppio binario
+S01202,Bisuschio Viggiu',RE5,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Bisuschio-Viggi%C3%B9,,fermata su binario unico
+S01204,Induno Olona,RE5,fine doppio binario,1,1,2,0,2,2,no,https://it.wikipedia.org/wiki/Stazione_di_Induno_Olona_(2017),,fermata su doppio binario
+S01200,Porto Ceresio,RE5,capolinea binario unico,1,0,4,3,1/2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Porto_Ceresio,,"capolinea di testa, 2 binari con banchina"
+S01205,Varese,"RE5,S5",bivio,1,2,20,11,1/2,6,si,https://it.wikipedia.org/wiki/Stazione_di_Varese,,3 passanti piu' 3 tronchi
+S05404,Cadenazzo,RE80,bivio,2,1,6,2,2,3,si,https://it.wikipedia.org/wiki/Stazione_di_Cadenazzo,,stazione di diramazione e incrocio
+S05402,Gordola,RE80,intermedia,2,0,1,0,1,2,no,https://it.wikipedia.org/wiki/Stazione_di_Gordola,,fermata su tratto a doppio binario
+S05400,Locarno,RE80,capolinea binario unico,1,0,3,3,3,5,si,https://de.wikipedia.org/wiki/Bahnhof_Locarno,,"capolinea di testa, 5 binari"
+S05417,Minusio,RE80,intermedia,2,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Minusio,,fermata aperta nel 2023
+S05412,Riazzino,RE80,intermedia,2,0,2,0,1,2,no,https://it.wikipedia.org/wiki/Stazione_di_Riazzino,,fermata su tratto a doppio binario
+S05401,Tenero,RE80,intermedia,2,0,2,0,2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Tenero,,"stazione di incrocio, binari 2 e 3 con banchina"
+S01318,Seregno,"RE80,S11,S9",bivio,1,5,14,7,1/2,6,si,https://it.wikipedia.org/wiki/Stazione_di_Seregno,,6 viaggiatori con banchina piu' 6 di manovra
+S01488,Besana,S7,intermedia,2,0,3,2,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Besana,,"stazione, 2 binari viaggiatori"
+S01483,Biassono-Lesmo Parco,S7,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Biassono-Lesmo_Parco,,"fermata, binario di incrocio rimosso"
+S01482,Buttafava,S7,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Buttafava,,"fermata, binario unico"
+S01486,Carate-Calo',S7,intermedia,2,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Carate-Cal%C3%B2,,fermata dal 1986
+S01490,Cassago-Nibionno-Bulciago,S7,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Cassago-Nibionno-Bulciago,,fermata dal 1987
+S01491,Costa Masnaga,S7,intermedia,2,0,4,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Costa_Masnaga,,"stazione passante, 2 binari"
+S01484,Macherio-Canonica,S7,intermedia,2,0,3,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Macherio-Canonica,,fermata dal 1987
+S01480,Monza Sobborghi,S7,fine doppio binario,1,1,4,0,1/2,3,?,https://it.wikipedia.org/wiki/Stazione_di_Monza_Sobborghi,,"fermata, 1 binario per la S7 piu' 2 di corsa"
+S01489,Renate-Veduggio,S7,intermedia,2,0,1,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Renate-Veduggio,,fermata dal 1987
+S01485,Triuggio-Ponte Albiate,S7,intermedia,2,0,5,1,1,2,si,https://it.wikipedia.org/wiki/Stazione_di_Triuggio-Ponte_Albiate,,"stazione passante, 2 binari"
+S01487,Villa Raverio,S7,intermedia,2,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Villa_Raverio,,fermata dal 1987
+S01481,Villasanta,S7,fine doppio binario,1,1,5,2,1/2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Villasanta,,"stazione passante, 2 binari"
+S01929,Seveso Baruccana,S9,intermedia,2,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Seveso-Baruccana,,fermata in piena linea

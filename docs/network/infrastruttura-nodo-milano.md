@@ -115,6 +115,22 @@ Criticità**.
   spaziatura tra stazioni (es. ponti) sono invisibili alla granularità meso,
   trattabili spezzando il link se rilevanti.
 
+- **Binario unico — binari delle stazioni**: i binari di ogni stazione meso
+  che tocca una tratta a binario unico sono censiti in
+  `docs/network/misure/stazioni-binario-unico.csv` (236 stazioni, rilievo del
+  2026-09-17). Per ciascuna: `binari_OSM`, stima automatica dai dati
+  OpenStreetMap del 2026-08-05 (binari paralleli `railway=rail`, esclusi scali,
+  raccordi e comunicazioni, entro 250 m dal punto della stazione, raggruppati
+  per distanza dall'asse della linea); `binari_wikipedia` e
+  `incrocio_wikipedia` dalla voce "Stazione di …" di it.wikipedia, con il link
+  in `fonte_wikipedia`; `binari_reali_Fabio` per il rilievo diretto, che
+  prevale. Risultato: 93 fermate a un solo binario dove l'incrocio è
+  impossibile, 140 stazioni con due o più binari. Il valore provvisorio usato
+  fino a quel giorno era 2 per tutte: ogni fermata sembrava una stazione di
+  incrocio e i bivi con tre tratte, come San Zeno Folzano (3 binari) e
+  Olmeneta (3), ne avevano meno che nella realtà. La tabella è la fonte dei
+  nodi e dei binari di stazione, non viene letta direttamente dal simulatore.
+
 - **Binario unico — transiti nelle stazioni di incrocio**: un treno che non
   ferma in una stazione di incrocio ci passa comunque sopra un binario di
   stazione e, se deve, lì aspetta il treno opposto. Nel modello meso le tratte
