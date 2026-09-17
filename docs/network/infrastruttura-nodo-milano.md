@@ -131,6 +131,27 @@ Criticità**.
   Olmeneta (3), ne avevano meno che nella realtà. La tabella è la fonte dei
   nodi e dei binari di stazione, non viene letta direttamente dal simulatore.
 
+- **Segnale di protezione davanti a ogni stazione dettagliata**: ogni tratta
+  meso che entra in una stazione dettagliata termina 200 m prima della gola in
+  un tratto di ingresso (`<tratta>.entry`), e ogni tratta che ne esce comincia
+  con un tratto di uscita (`<tratta>.exit`); i due tratti hanno la risorsa e la
+  capacità della tratta, quindi un blocco di binario unico li attraversa
+  intero. Motivo: railsim decide una deviazione sul tratto di ingresso e la
+  chiude sul primo tratto di uscita che incontra; fra due stazioni dettagliate
+  la stessa tratta era ingresso dell'una e uscita dell'altra, railsim leggeva
+  solo l'ingresso e non chiudeva mai la deviazione: fra Bagnolo Mella e
+  Manerbio, e in ogni altra coppia di stazioni di incrocio, un treno aspettava
+  il binario occupato con l'altro libero (run del 2026-09-17 sera, 84 treni
+  bloccati). Con il tratto di ingresso la deviazione è inoltre decisa a 200 m
+  dalla stazione, con l'occupazione reale dei binari, e non chilometri prima.
+
+- **Binario unico — consenso anche nelle stazioni dettagliate**: la regola del
+  consenso conta insieme i binari di una stazione dettagliata (i binari con
+  `microTrack` della stessa `microStation`) e i treni che li tengono o vi sono
+  diretti, con il vicino da cui arrivano; a Villasanta, modellata con i suoi
+  due binari, due S7 dello stesso verso li occupavano entrambi e l'S7 opposto
+  restava nel blocco (run del 2026-09-17 sera).
+
 - **Binario unico — transiti nelle stazioni di incrocio**: un treno che non
   ferma in una stazione di incrocio ci passa comunque sopra un binario di
   stazione e, se deve, lì aspetta il treno opposto. Nel modello meso le tratte

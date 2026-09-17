@@ -262,6 +262,50 @@ class SingleTrackDeadlockAvoidanceTest {
 	}
 
 	@Test
+	void aDetailedCrossingStationCountsItsPlatformsTogether() {
+		// station S with two platform tracks p1, p2 reached from W over single track: two trains from W must not take both
+		Network network = NetworkUtils.createNetwork();
+		for (String id : List.of("W", "S.south.W.in", "S.p1.b", "S.p1.a", "S.p2.b", "S.p2.a", "E")) {
+			NetworkUtils.createAndAddNode(network, Id.createNodeId(id), new Coord(0, 0));
+		}
+		Link ws = NetworkUtils.createAndAddLink(network, Id.createLinkId("W_S"), network.getNodes().get(Id.createNodeId("W")),
+			network.getNodes().get(Id.createNodeId("S.south.W.in")), 1000, 10, 1, 1);
+		Link sw = NetworkUtils.createAndAddLink(network, Id.createLinkId("S_W"), network.getNodes().get(Id.createNodeId("S.south.W.in")),
+			network.getNodes().get(Id.createNodeId("W")), 1000, 10, 1, 1);
+		RailLink[] platforms = new RailLink[2];
+		RailLink[] approaches = new RailLink[2];
+		for (int i = 1; i <= 2; i++) {
+			Link approach = NetworkUtils.createAndAddLink(network, Id.createLinkId("S.p" + i + ".south.W.in"),
+				network.getNodes().get(Id.createNodeId("S.south.W.in")), network.getNodes().get(Id.createNodeId("S.p" + i + ".b")), 100, 10, 1, 1);
+			Link platform = NetworkUtils.createAndAddLink(network, Id.createLinkId("S.p" + i + ".north"),
+				network.getNodes().get(Id.createNodeId("S.p" + i + ".b")), network.getNodes().get(Id.createNodeId("S.p" + i + ".a")), 200, 10, 1, 1);
+			platform.getAttributes().putAttribute("microStation", "S");
+			platform.getAttributes().putAttribute("microTrack", String.valueOf(i));
+			platform.getAttributes().putAttribute("railsimResourceId", "S.p" + i);
+			approaches[i - 1] = new RailLink(approach, null);
+			platforms[i - 1] = new RailLink(platform, null);
+			RailResourceTestSupport.fixedBlock("S.p" + i, List.of(platforms[i - 1]));
+			RailResourceTestSupport.fixedBlock("S.p" + i + ".south.W.in", List.of(approaches[i - 1]));
+		}
+		RailLink east = new RailLink(ws, sw);
+		RailLink west = new RailLink(sw, ws);
+		RailResource block = RailResourceTestSupport.fixedBlock("block_W_S", List.of(east, west));
+		SingleTrackDeadlockAvoidance avoidance = new SingleTrackDeadlockAvoidance(network, EventsUtils.createEventsManager());
+		TrainPosition first = train(east, approaches[0], platforms[0]);
+		TrainPosition second = train(east, approaches[1], platforms[1]);
+
+		assertTrue(avoidance.checkLink(0, east, first), "the block may be entered: the station is empty");
+		avoidance.onReserve(0, block, first);
+		avoidance.onReserve(1, platforms[0].getResource(), first);
+		avoidance.onRelease(2, block, first.getDriver());
+
+		assertFalse(avoidance.checkLink(3, east, second), "a second train from W would fill the station: no track for the meet");
+		assertFalse(avoidance.checkLink(3, platforms[1], second), "nor may it take the second platform itself");
+		assertEquals("W", SingleTrackDeadlockAvoidance.neighbourBehind(Id.createLinkId("S.p2.south.W.in")));
+		assertEquals("W", SingleTrackDeadlockAvoidance.neighbourBehind(Id.createLinkId("W_S.entry")));
+	}
+
+	@Test
 	void keepsOnlyResourcesHoldingBothDirectionsOfALink() {
 		Network network = NetworkUtils.createNetwork();
 		Node a = NetworkUtils.createAndAddNode(network, Id.createNodeId("a"), new Coord(0, 0));

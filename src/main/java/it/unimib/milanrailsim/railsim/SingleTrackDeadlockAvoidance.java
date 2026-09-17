@@ -15,8 +15,11 @@ import org.matsim.core.mobsim.framework.MobsimDriverAgent;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * railsim's deadlock avoidance confined to the resources trains can meet on
@@ -37,14 +40,18 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 
 	/** Stands for the link a train arrived through when it started its trip in the station. */
 	private static final Id<Link> STARTED_HERE = Id.createLinkId("started-here");
+	private static final Pattern SECTION = Pattern.compile("([^_.]+)_[^_.]+(\\.entry)?");
+	private static final Pattern APPROACH = Pattern.compile(".*\\.(?:north|south)\\.([^.]+)\\.in");
 
 	private final Network network;
 	private final Map<Id<RailResource>, Boolean> twoWay = new ConcurrentHashMap<>();
-	private final Map<Id<RailResource>, Boolean> stationLoop = new ConcurrentHashMap<>();
+	/** The station each resource is a track of: a mesoscopic stop loop or a platform of a detailed station. */
+	private final Map<Id<RailResource>, Optional<String>> stationOf = new ConcurrentHashMap<>();
+	private final Map<String, Integer> stationTracks = new ConcurrentHashMap<>();
 	/** Trains holding each two-way resource, so a train already in a block is never refused its next link of it. */
 	private final Map<Id<RailResource>, Set<MobsimDriverAgent>> blockHolders = new ConcurrentHashMap<>();
-	/** Trains holding or committed to each crossing station, with the link each arrives through. */
-	private final Map<Id<RailResource>, Map<MobsimDriverAgent, Id<Link>>> stationOccupants = new ConcurrentHashMap<>();
+	/** Trains holding or committed to a track of each crossing station, with the neighbour each arrives from. */
+	private final Map<String, Map<MobsimDriverAgent, String>> stationOccupants = new ConcurrentHashMap<>();
 
 	@Inject
 	public SingleTrackDeadlockAvoidance(Network network, EventsManager eventsManager) {
@@ -62,7 +69,7 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 		if (isTwoWay(link.getResource())) {
 			return super.checkLink(time, link, position) && crossingTrackFree(link, position);
 		}
-		return !isStationLoop(link.getResource()) || roomForTheMeet(link.getResource(), position);
+		return stationOf(link.getResource()).map(station -> roomForTheMeet(station, position)).orElse(true);
 	}
 
 	@Override
@@ -70,10 +77,10 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 		super.onReserve(time, resource, position);
 		if (isTwoWay(resource)) {
 			blockHolders.computeIfAbsent(resource.getId(), id -> ConcurrentHashMap.newKeySet()).add(position.getDriver());
-		} else if (isStationLoop(resource)) {
-			stationOccupants.computeIfAbsent(resource.getId(), id -> new ConcurrentHashMap<>())
-				.put(position.getDriver(), arrivalLink(position, resource));
+			return;
 		}
+		stationOf(resource).ifPresent(station -> stationOccupants.computeIfAbsent(station, id -> new ConcurrentHashMap<>())
+			.put(position.getDriver(), arrivalNeighbour(position, resource)));
 	}
 
 	@Override
@@ -83,10 +90,7 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 		if (holders != null) {
 			holders.remove(driver);
 		}
-		Map<MobsimDriverAgent, Id<Link>> occupants = stationOccupants.get(resource.getId());
-		if (occupants != null) {
-			occupants.remove(driver);
-		}
+		stationOf(resource).map(stationOccupants::get).ifPresent(occupants -> occupants.remove(driver));
 	}
 
 	/**
@@ -113,45 +117,71 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 		while (last + 1 < position.getRouteSize() && position.getRoute(last + 1).getResource() == block) {
 			last++;
 		}
-		if (last + 1 >= position.getRouteSize()) {
-			return true;
+		// the station at the far end: its stop loop, or the first platform after the approach links of a detailed one
+		for (int i = last + 1; i < Math.min(last + 4, position.getRouteSize()); i++) {
+			Optional<String> station = stationOf(position.getRoute(i).getResource());
+			if (station.isPresent()) {
+				return roomForTheMeet(station.get(), neighbourBehind(position.getRoute(last).getLinkId()), position);
+			}
 		}
-		RailResource station = position.getRoute(last + 1).getResource();
-		if (station == null || !isStationLoop(station)) {
-			return true;
-		}
-		return roomForTheMeet(station, position.getRoute(last).getLinkId(), position);
+		return true;
 	}
 
 	/**
 	 * The same consent at the station itself, whichever link the train comes
 	 * in through: a station reached over double track from one side and single
 	 * track from the other (Villasanta, run of 2026-09-18 after the block rule)
-	 * filled up with trains of one direction all the same.
+	 * filled up with trains of one direction all the same. A detailed station
+	 * counts its platform tracks together, so two trains of one direction do
+	 * not take both tracks of a two-track crossing station.
 	 */
-	private boolean roomForTheMeet(RailResource station, TrainPosition position) {
-		Map<MobsimDriverAgent, Id<Link>> occupants = stationOccupants.getOrDefault(station.getId(), Map.of());
+	private boolean roomForTheMeet(String station, TrainPosition position) {
+		Map<MobsimDriverAgent, String> occupants = stationOccupants.getOrDefault(station, Map.of());
 		if (occupants.containsKey(position.getDriver())) {
 			return true;
 		}
-		return roomForTheMeet(station, arrivalLink(position, station), position);
+		return roomForTheMeet(station, arrivalNeighbourOfStation(position, station), position);
 	}
 
-	private boolean roomForTheMeet(RailResource station, Id<Link> arrivalLink, TrainPosition position) {
-		Map<MobsimDriverAgent, Id<Link>> occupants = stationOccupants.getOrDefault(station.getId(), Map.of());
-		int free = station.getTotalCapacity() - occupants.size();
-		boolean sameDirectionThere = occupants.containsValue(arrivalLink);
+	private boolean roomForTheMeet(String station, String arrivalNeighbour, TrainPosition position) {
+		Map<MobsimDriverAgent, String> occupants = stationOccupants.getOrDefault(station, Map.of());
+		int free = stationTracks.getOrDefault(station, 1) - occupants.size();
+		boolean sameDirectionThere = occupants.containsValue(arrivalNeighbour);
 		return free >= (sameDirectionThere ? 2 : 1);
 	}
 
-	/** The link the train runs to reach the resource, or {@link #STARTED_HERE} when its trip begins on it. */
-	private static Id<Link> arrivalLink(TrainPosition position, RailResource resource) {
+	/** The neighbour the train comes from when it reaches the resource, or {@link #STARTED_HERE} when its trip begins on it. */
+	private static String arrivalNeighbour(TrainPosition position, RailResource resource) {
 		for (int i = Math.max(0, position.getRouteIndex() - 1); i < position.getRouteSize(); i++) {
 			if (position.getRoute(i).getResource() == resource) {
-				return i > 0 ? position.getRoute(i - 1).getLinkId() : STARTED_HERE;
+				return i > 0 ? neighbourBehind(position.getRoute(i - 1).getLinkId()) : STARTED_HERE.toString();
 			}
 		}
-		return STARTED_HERE;
+		return STARTED_HERE.toString();
+	}
+
+	private String arrivalNeighbourOfStation(TrainPosition position, String station) {
+		for (int i = Math.max(0, position.getRouteIndex() - 1); i < position.getRouteSize(); i++) {
+			if (stationOf(position.getRoute(i).getResource()).filter(station::equals).isPresent()) {
+				return i > 0 ? neighbourBehind(position.getRoute(i - 1).getLinkId()) : STARTED_HERE.toString();
+			}
+		}
+		return STARTED_HERE.toString();
+	}
+
+	/**
+	 * The station a link comes from: {@code N_S} for a mesoscopic section, the
+	 * neighbour named in a detailed station's approach link
+	 * ({@code S.p1.north.N.in}), the link itself otherwise.
+	 */
+	static String neighbourBehind(Id<Link> link) {
+		String id = link.toString();
+		Matcher section = SECTION.matcher(id);
+		if (section.matches()) {
+			return section.group(1);
+		}
+		Matcher approach = APPROACH.matcher(id);
+		return approach.matches() ? approach.group(1) : id;
 	}
 
 	private static int indexOnRoute(TrainPosition position, RailLink link) {
@@ -163,14 +193,37 @@ public final class SingleTrackDeadlockAvoidance extends SimpleDeadlockAvoidance 
 		return -1;
 	}
 
-	/** A mesoscopic station: one loop link, both directions calling on it. */
-	private boolean isStationLoop(RailResource resource) {
-		return resource != null && stationLoop.computeIfAbsent(resource.getId(), id -> {
-			if (resource.getLinks().size() != 1) {
-				return false;
+	/**
+	 * The station whose track the resource is: a mesoscopic stop loop (all its
+	 * tracks in one resource) or one platform of a detailed station, whose
+	 * tracks are counted over the network once.
+	 */
+	private Optional<String> stationOf(RailResource resource) {
+		if (resource == null) {
+			return Optional.empty();
+		}
+		return stationOf.computeIfAbsent(resource.getId(), id -> {
+			if (resource.getLinks().size() > 2) {
+				return Optional.empty();
 			}
 			Link link = network.getLinks().get(resource.getLinks().getFirst().getLinkId());
-			return link != null && link.getFromNode().equals(link.getToNode());
+			if (link == null) {
+				return Optional.empty();
+			}
+			if (link.getFromNode().equals(link.getToNode()) && resource.getLinks().size() == 1) {
+				String station = link.getId().toString().replace("stop_", "");
+				stationTracks.put(station, resource.getTotalCapacity());
+				return Optional.of(station);
+			}
+			Object station = link.getAttributes().getAttribute("microStation");
+			if (station == null || link.getAttributes().getAttribute("microTrack") == null) {
+				return Optional.empty();
+			}
+			stationTracks.computeIfAbsent(station.toString(), s -> (int) network.getLinks().values().stream()
+				.filter(l -> s.equals(l.getAttributes().getAttribute("microStation")) && l.getAttributes().getAttribute("microTrack") != null)
+				.map(l -> l.getAttributes().getAttribute("railsimResourceId"))
+				.distinct().count());
+			return Optional.of(station.toString());
 		});
 	}
 
