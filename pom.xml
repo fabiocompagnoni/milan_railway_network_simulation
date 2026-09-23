@@ -19,6 +19,9 @@
         <javafx.version>26.0.2</javafx.version>
         <exec.mainClass>it.unimib.milanrailsim.RunMilanRailsim</exec.mainClass>
         <gui.mainClass>it.unimib.milanrailsim.gui.app.Launcher</gui.mainClass>
+        <!-- jpackage refuses -SNAPSHOT: the packaged application carries the plain version -->
+        <dist.version>0.1.0</dist.version>
+        <dist.input>${project.build.directory}/dist/input</dist.input>
     </properties>
 
     <!-- Repository che ospitano le dipendenze transitive di MATSim (geotools, jogl, ecc.).
@@ -109,6 +112,11 @@
                 <version>3.5.6</version>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.5.1</version>
+            </plugin>
+            <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
@@ -150,4 +158,164 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>dist</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <executions>
+                            <execution>
+                                <id>stage-dist</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${dist.input}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.build.directory}</directory>
+                                            <includes>
+                                                <include>milan-railsim-gui.jar</include>
+                                            </includes>
+                                        </resource>
+                                        <resource>
+                                            <directory>scenarios/milan</directory>
+                                            <targetPath>share/scenarios/milan</targetPath>
+                                            <includes>
+                                                <include>config.xml</include>
+                                                <include>network-with-stations.xml</include>
+                                                <include>network-micro.xml</include>
+                                                <include>transitSchedule.xml</include>
+                                                <include>link-geometry.csv</include>
+                                            </includes>
+                                        </resource>
+                                        <resource>
+                                            <directory>data/nodes</directory>
+                                            <targetPath>share/data/nodes</targetPath>
+                                        </resource>
+                                        <resource>
+                                            <directory>data/osm/2026-08-05-network-sweep</directory>
+                                            <targetPath>share/data/osm/2026-08-05-network-sweep</targetPath>
+                                            <includes>
+                                                <include>link_measures.csv</include>
+                                            </includes>
+                                        </resource>
+                                        <resource>
+                                            <directory>orari_trenord</directory>
+                                            <targetPath>share/orari_trenord</targetPath>
+                                            <includes>
+                                                <include>*.txt</include>
+                                            </includes>
+                                        </resource>
+                                        <resource>
+                                            <directory>docs/network/misure</directory>
+                                            <targetPath>share/docs/network/misure</targetPath>
+                                            <includes>
+                                                <include>binari-stazioni.csv</include>
+                                            </includes>
+                                        </resource>
+                                        <resource>
+                                            <directory>config</directory>
+                                            <targetPath>share/config</targetPath>
+                                            <includes>
+                                                <include>costs.json</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>jpackage</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${java.home}/bin/jpackage</executable>
+                                    <arguments>
+                                        <argument>--type</argument>
+                                        <argument>${dist.type}</argument>
+                                        <argument>--input</argument>
+                                        <argument>${dist.input}</argument>
+                                        <argument>--main-jar</argument>
+                                        <argument>milan-railsim-gui.jar</argument>
+                                        <argument>--main-class</argument>
+                                        <argument>${gui.mainClass}</argument>
+                                        <argument>--name</argument>
+                                        <argument>MilanRailSim</argument>
+                                        <argument>--app-version</argument>
+                                        <argument>${dist.version}</argument>
+                                        <argument>--vendor</argument>
+                                        <argument>Fabio Compagnoni, Università di Milano-Bicocca</argument>
+                                        <argument>--description</argument>
+                                        <argument>Simulatore della rete ferroviaria suburbana di Milano</argument>
+                                        <argument>--icon</argument>
+                                        <argument>${dist.icon}</argument>
+                                        <argument>--java-options</argument>
+                                        <argument>-Dmilanrailsim.data=$APPDIR/share</argument>
+                                        <argument>--dest</argument>
+                                        <argument>${project.build.directory}/dist</argument>
+                                        <argument>--resource-dir</argument>
+                                        <argument>assets/jpackage/${dist.platform}</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>dist-linux</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                    <name>Linux</name>
+                </os>
+            </activation>
+            <properties>
+                <dist.platform>linux</dist.platform>
+                <dist.type>deb</dist.type>
+                <dist.icon>src/main/resources/it/unimib/milanrailsim/gui/images/logo.png</dist.icon>
+            </properties>
+        </profile>
+        <profile>
+            <id>dist-windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <dist.platform>windows</dist.platform>
+                <dist.type>exe</dist.type>
+                <dist.icon>assets/logo/logo.ico</dist.icon>
+            </properties>
+        </profile>
+        <profile>
+            <id>dist-mac</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <properties>
+                <dist.platform>mac</dist.platform>
+                <dist.type>dmg</dist.type>
+                <dist.icon>assets/logo/logo.icns</dist.icon>
+            </properties>
+        </profile>
+    </profiles>
 </project>
