@@ -200,6 +200,10 @@
                                             <targetPath>share/data/nodes</targetPath>
                                         </resource>
                                         <resource>
+                                            <directory>data/trains</directory>
+                                            <targetPath>share/data/trains</targetPath>
+                                        </resource>
+                                        <resource>
                                             <directory>data/osm/2026-08-05-network-sweep</directory>
                                             <targetPath>share/data/osm/2026-08-05-network-sweep</targetPath>
                                             <includes>

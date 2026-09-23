@@ -3,8 +3,10 @@ package it.unimib.milanrailsim.gui.view;
 import it.unimib.milanrailsim.gui.app.AppModel;
 import it.unimib.milanrailsim.network.FleetConfig.TrainType;
 import it.unimib.milanrailsim.schedule.LineAssignments;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -16,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -36,6 +39,12 @@ final class FleetGalleryPane extends VBox {
 
 	private static final List<String> PHOTO_EXTENSIONS = List.of("jpg", "jpeg", "png", "webp");
 	private static final long PHOTO_MAX_BYTES = 10_000_000;
+	private static final double CARD_PHOTO_WIDTH = 180;
+	private static final double CARD_PHOTO_HEIGHT = 110;
+	/** The detail photo follows the panel width, up to a size the shipped photos still look sharp at. */
+	private static final double DETAIL_PHOTO_SHARE = 0.4;
+	private static final double DETAIL_PHOTO_MAX_WIDTH = 560;
+	private static final double DETAIL_PLACEHOLDER_HEIGHT = 200;
 
 	private final AppModel model;
 	private final FlowPane gallery = new FlowPane(12, 12);
@@ -49,7 +58,7 @@ final class FleetGalleryPane extends VBox {
 		ScrollPane scroll = new ScrollPane(gallery);
 		scroll.setFitToWidth(true);
 		scroll.getStyleClass().add("plain-scroll");
-		scroll.setPrefHeight(230);
+		scroll.setMaxHeight(Region.USE_PREF_SIZE);
 		Button add = new Button("+ Nuovo tipo");
 		add.setOnAction(event -> showEditor(null));
 		HBox header = new HBox(add);
@@ -78,7 +87,7 @@ final class FleetGalleryPane extends VBox {
 	}
 
 	private Node card(TrainType type) {
-		ImageView image = photoView(type.id(), 180, 100);
+		ImageView image = coverView(type.id(), CARD_PHOTO_WIDTH, CARD_PHOTO_HEIGHT);
 		Label name = new Label(type.name());
 		name.getStyleClass().add("card-title");
 		Label figures = new Label((int) type.vmaxKmh() + " km/h · " + type.seats() + " posti");
@@ -94,7 +103,8 @@ final class FleetGalleryPane extends VBox {
 	}
 
 	private void showDetail(TrainType type) {
-		ImageView image = photoView(type.id(), 320, 180);
+		ImageView image = fullView(type.id());
+		image.fitWidthProperty().bind(Bindings.min(DETAIL_PHOTO_MAX_WIDTH, detail.widthProperty().multiply(DETAIL_PHOTO_SHARE)));
 		Button photo = new Button("Carica foto");
 		photo.setOnAction(event -> uploadPhoto(type.id()));
 		Button edit = new Button("Modifica");
@@ -244,20 +254,50 @@ final class FleetGalleryPane extends VBox {
 		rebuild();
 	}
 
-	private ImageView photoView(String typeId, double width, double height) {
+	/** The photo cropped to fill a fixed frame, so every card has the same shape whatever the photo's ratio. */
+	private ImageView coverView(String typeId, double width, double height) {
 		ImageView view = new ImageView();
 		view.setFitWidth(width);
 		view.setFitHeight(height);
-		view.setPreserveRatio(true);
-		photoOf(typeId).ifPresent(photo -> view.setImage(new Image(photo.toUri().toString(), width, height, true, true)));
+		view.setSmooth(true);
+		photoOf(typeId).ifPresent(photo -> {
+			Image image = new Image(photo.toUri().toString());
+			view.setImage(image);
+			view.setViewport(centredCrop(image, width / height));
+		});
 		if (view.getImage() == null) {
 			view.getStyleClass().add("photo-placeholder");
 		}
 		return view;
 	}
 
+	/** The largest window of the image with the given ratio, centred. */
+	private static Rectangle2D centredCrop(Image image, double ratio) {
+		double width = Math.min(image.getWidth(), image.getHeight() * ratio);
+		double height = width / ratio;
+		return new Rectangle2D((image.getWidth() - width) / 2, (image.getHeight() - height) / 2, width, height);
+	}
+
+	/** The whole photo at its native resolution, scaled by the caller's fit width. */
+	private ImageView fullView(String typeId) {
+		ImageView view = new ImageView();
+		view.setPreserveRatio(true);
+		view.setSmooth(true);
+		photoOf(typeId).ifPresent(photo -> view.setImage(new Image(photo.toUri().toString())));
+		if (view.getImage() == null) {
+			view.getStyleClass().add("photo-placeholder");
+			view.setFitHeight(DETAIL_PLACEHOLDER_HEIGHT);
+		}
+		return view;
+	}
+
+	/** The photo the user uploaded, else the one shipped with the project data. */
 	private Optional<Path> photoOf(String typeId) {
-		Path dir = model.paths().fleetPhotos();
+		return photoIn(model.paths().fleetPhotos(), typeId)
+			.or(() -> photoIn(model.files().fleetPhotos(), typeId));
+	}
+
+	private static Optional<Path> photoIn(Path dir, String typeId) {
 		if (!Files.isDirectory(dir)) {
 			return Optional.empty();
 		}

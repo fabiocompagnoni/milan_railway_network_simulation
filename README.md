@@ -68,8 +68,9 @@ Where the application keeps its files:
 
 - **Project data, read-only** (`gui/config/DataRoot`): the scenario under
   `scenarios/milan`, the node declarations in `data/nodes`, the committed
-  GTFS feed, the station track survey and the default costs, laid out as in
-  this repository. In development this is the working directory; the package
+  GTFS feed, the station track survey, the default costs and the photos of
+  the train types in `data/trains` (one file per type id; a photo the user
+  uploads takes precedence), laid out as in this repository. In development this is the working directory; the package
   copies these files into `lib/app/share` and the launcher passes
   `-Dmilanrailsim.data` pointing there. Rebuild the package after changing
   them. The application never writes here.
