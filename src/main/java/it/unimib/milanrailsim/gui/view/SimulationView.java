@@ -7,6 +7,7 @@ import it.unimib.milanrailsim.gui.sim.LiveSession;
 import it.unimib.milanrailsim.gui.sim.TrainPositions;
 import it.unimib.milanrailsim.server.Protocol;
 import it.unimib.milanrailsim.server.Protocol.TrainState;
+import it.unimib.milanrailsim.server.RailsimJob;
 import javafx.animation.AnimationTimer;
 import javafx.beans.binding.BooleanBinding;
 import javafx.concurrent.Task;
@@ -45,7 +46,7 @@ public final class SimulationView extends BorderPane {
 
 	private static final double[] SPEEDS = { 10, 60, 300, 1000, Protocol.UNTHROTTLED };
 	private static final String[] SPEED_LABELS = { "10×", "60×", "300×", "1000×", "max" };
-	private static final String SIMULATING = "Simulazione";
+	private static final String SIMULATING = RailsimJob.SIMULATING;
 
 	private final AppModel model;
 	private final StackPane stack = new StackPane();
@@ -188,21 +189,17 @@ public final class SimulationView extends BorderPane {
 		});
 		Button stop = new Button("Interrompi");
 		stop.setOnAction(event -> session.stop());
-		ProgressIndicator busy = new ProgressIndicator();
-		busy.setMaxSize(18, 18);
-		HBox controls = controlBar(List.of(pause, speeds, clock, busy, status, stop));
+		HBox controls = controlBar(List.of(pause, speeds, clock, status, stop));
 		controls.getChildren().addAll(zoomButtons());
 		// after the last simulated second the engine writes and analyzes: nothing left to pace or interrupt
 		BooleanBinding wrappingUp = session.phase().isNotEqualTo(SIMULATING).or(session.finished());
 		pause.disableProperty().bind(wrappingUp);
 		speeds.disableProperty().bind(wrappingUp);
 		stop.disableProperty().bind(wrappingUp);
-		busy.visibleProperty().bind(wrappingUp.and(session.finished().not()));
-		busy.managedProperty().bind(busy.visibleProperty());
 
 		VBox drawer = drawer(session, detail);
 		stack.getChildren().removeIf(node -> node != map);
-		stack.getChildren().addAll(controls, drawer);
+		stack.getChildren().addAll(controls, drawer, workBanner(session));
 		setOnKeyPressed(event -> {
 			if (event.getCode() == javafx.scene.input.KeyCode.SPACE && !session.finished().get()) {
 				pause.setSelected(!pause.isSelected());
@@ -231,6 +228,62 @@ public final class SimulationView extends BorderPane {
 				animation.stop();
 			}
 		});
+	}
+
+	/**
+	 * Before the first simulated second the engine starts, generates the
+	 * timetable and loads the scenario; after the last one it writes its outputs
+	 * and analyzes them. Both take minutes on a full day: the user must see that
+	 * work is going on, which phase it is in and for how long.
+	 */
+	private Node workBanner(LiveSession session) {
+		ProgressIndicator spinner = new ProgressIndicator();
+		spinner.setMaxSize(40, 40);
+		Label title = new Label("Preparo la simulazione");
+		title.getStyleClass().add("section-title");
+		Label phase = muted("");
+		phase.textProperty().bind(session.phase());
+		Label elapsed = muted("");
+		VBox text = new VBox(4, title, phase, elapsed);
+		HBox banner = new HBox(16, spinner, text);
+		banner.setAlignment(Pos.CENTER_LEFT);
+		banner.getStyleClass().add("banner-done");
+		banner.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+		StackPane.setAlignment(banner, Pos.CENTER);
+
+		session.phase().addListener((observable, previous, current) -> {
+			if (SIMULATING.equals(previous)) {
+				title.setText("Simulazione conclusa, preparo i risultati");
+			}
+		});
+		BooleanBinding working = session.phase().isNotEqualTo(SIMULATING).and(session.finished().not());
+		banner.visibleProperty().bind(working);
+		banner.managedProperty().bind(banner.visibleProperty());
+		AnimationTimer stopwatch = new AnimationTimer() {
+			private long startedNanos;
+
+			@Override
+			public void start() {
+				startedNanos = System.nanoTime();
+				super.start();
+			}
+
+			@Override
+			public void handle(long now) {
+				elapsed.setText("Trascorsi " + clock((now - startedNanos) / 1e9));
+			}
+		};
+		working.addListener((observable, was, active) -> {
+			if (active) {
+				stopwatch.start();
+			} else {
+				stopwatch.stop();
+			}
+		});
+		if (working.get()) {
+			stopwatch.start();
+		}
+		return banner;
 	}
 
 	/** A run that failed deserves more than a line in the control bar. */
