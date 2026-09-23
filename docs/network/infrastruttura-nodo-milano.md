@@ -252,6 +252,17 @@ Criticità**.
   binario da cui sono arrivati** (inversione banco). Nel modello: il binario
   terminale è una risorsa con ingresso e uscita dallo stesso lato, occupata per
   l'intera sosta di capolinea.
+- **Fine della giornata simulata**: la simulazione termina quando l'ultimo
+  treno ha concluso la sua turnazione; il tetto (ultimo arrivo pianificato
+  dell'orario + 3 ore) resta solo per i treni che non arrivano mai. Motivo
+  (run del 23 settembre): railsim, all'arrivo dall'ultima corsa, mette il
+  macchinista in un'attività senza fine ma non lo riconsegna al motore delle
+  attività di MATSim (`RailsimEngine`, arrivo a destinazione), che è dove un
+  agente viene tolto dal conteggio dei vivi; il conteggio non scendeva mai e
+  il QSim girava a rete vuota fino al tetto, 28 ore per un giorno feriale.
+  `FinishedTrainRetirement` ritira i macchinisti a fine turnazione come
+  farebbe MATSim; nel manifest `simulatedEndSeconds` è ora l'ultimo secondo
+  simulato davvero, non il tetto.
 
 ### 3. Trunk FNM Cadorna–Bovisa–Saronno — 4 binari, 2 fasci fissi
 
