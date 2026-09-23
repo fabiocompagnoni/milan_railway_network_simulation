@@ -1,0 +1,104 @@
+name: Release
+
+# A tag v<version> builds the jar and the native installer on every platform
+# and publishes them as a GitHub Release. Run by hand, it only produces the
+# artifacts, for checking a build without releasing.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  MATSIM_LIBS_COMMIT: 31f4e54e39b94e3e01e348c99207618145174596
+
+jobs:
+  # built once, then shared through the cache with the three platform jobs
+  matsim:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: ./.github/actions/matsim-libs
+        with:
+          commit: ${{ env.MATSIM_LIBS_COMMIT }}
+
+  package:
+    needs: matsim
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            installer: target/dist/*.deb
+          - os: windows-latest
+            platform: windows
+            installer: target/dist/*.exe
+          - os: macos-latest
+            platform: mac
+            installer: target/dist/*.dmg
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+          cache-dependency-path: pom.xml
+
+      - uses: ./.github/actions/matsim-libs
+        with:
+          commit: ${{ env.MATSIM_LIBS_COMMIT }}
+
+      # the tag carries the version; a manual run keeps the one in the pom
+      - name: Version from the tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: echo "DIST_VERSION=-Ddist.version=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
+
+      - name: Build the jar and the installer
+        shell: bash
+        run: mvn -B -ntp -DskipTests verify -Pdist $DIST_VERSION
+
+      # the shaded jar holds the JavaFX natives of the platform that built it
+      - name: Name the jar after its platform
+        shell: bash
+        run: mv target/milan-railsim-gui.jar target/dist/milan-railsim-gui-${{ matrix.platform }}.jar
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: milan-railsim-${{ matrix.platform }}
+          path: |
+            target/dist/milan-railsim-gui-${{ matrix.platform }}.jar
+            ${{ matrix.installer }}
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: package
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Publish the release with every artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" artifacts/* --repo "$GITHUB_REPOSITORY" --title "Milan RailSim $GITHUB_REF_NAME" --generate-notes

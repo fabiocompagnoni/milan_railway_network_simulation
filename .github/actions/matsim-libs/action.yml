@@ -1,0 +1,37 @@
+name: MATSim snapshot dependencies
+description: >
+  Provides matsim and railsim 2027.0-SNAPSHOT in the local Maven repository.
+  They are not published anywhere, so they are built once from the pinned
+  matsim-libs commit and cached; the cache is shared by every job and runner
+  OS, because the artifacts are plain jars.
+inputs:
+  commit:
+    description: The matsim-libs commit to build
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Restore the MATSim artifacts
+      id: cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.m2/repository/org/matsim
+          ~/.m2/repository/ch/sbb
+        key: matsim-libs-${{ inputs.commit }}
+        enableCrossOsArchive: true
+
+    - name: Fetch the pinned matsim-libs commit
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        git init matsim-libs
+        cd matsim-libs
+        git fetch --depth 1 https://github.com/matsim-org/matsim-libs.git "${{ inputs.commit }}"
+        git checkout FETCH_HEAD
+
+    - name: Build railsim and its MATSim modules
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      working-directory: matsim-libs
+      run: mvn -B -ntp -DskipTests -Dmaven.javadoc.skip=true install -pl contribs/railsim -am
