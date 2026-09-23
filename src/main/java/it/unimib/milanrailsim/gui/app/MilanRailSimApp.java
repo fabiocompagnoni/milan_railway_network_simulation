@@ -1,6 +1,7 @@
 package it.unimib.milanrailsim.gui.app;
 
 import it.unimib.milanrailsim.gui.config.AppPaths;
+import it.unimib.milanrailsim.gui.config.DataRoot;
 import it.unimib.milanrailsim.gui.config.ScenarioFiles;
 import it.unimib.milanrailsim.gui.view.FleetView;
 import it.unimib.milanrailsim.gui.view.NewSimulationView;
@@ -10,10 +11,12 @@ import it.unimib.milanrailsim.gui.view.SettingsView;
 import it.unimib.milanrailsim.gui.view.SimulationView;
 import it.unimib.milanrailsim.server.Protocol;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -24,7 +27,7 @@ import java.nio.file.Path;
 /** Desktop application: the simulation is configured, run, watched and replayed from here. */
 public final class MilanRailSimApp extends Application {
 
-	private final AppModel model = new AppModel(AppPaths.defaults(), ScenarioFiles.milan());
+	private AppModel model;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -33,6 +36,16 @@ public final class MilanRailSimApp extends Application {
 	@Override
 	public void start(Stage stage) {
 		Theme.loadFonts();
+		try {
+			model = new AppModel(AppPaths.defaults(), ScenarioFiles.milan(DataRoot.resolve()));
+		} catch (IllegalStateException e) {
+			Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+			alert.setTitle("Milan RailSim");
+			alert.setHeaderText("Dati non trovati");
+			alert.showAndWait();
+			Platform.exit();
+			return;
+		}
 		ObjectProperty<Theme> theme = model.theme();
 		Navigation navigation = new Navigation(theme);
 		navigation.addView("Simulazione", "mdmz-map", () -> new SimulationView(model));
