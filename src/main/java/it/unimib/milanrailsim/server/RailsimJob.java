@@ -97,17 +97,17 @@ public final class RailsimJob implements SimulationServer.Job {
 		out.send(Message.progress(0, 0, "Simulazione"));
 		Path output = inputs.runDir().resolve("output");
 		FrameSampler sampler;
-		double endTime;
+		double simulatedEnd;
 		try (FrameRecorder recorder = new FrameRecorder(inputs.runDir().resolve(FrameRecorder.FILE_NAME))) {
 			sampler = new FrameSampler(FRAME_INTERVAL_S, tripsPerVehicle(timetable), frame -> {
 				recorder.record(frame);
 				out.send(Message.frame(frame));
 			});
-			endTime = simulate(scenarioDir, output, sampler, pacer, out, marker);
+			simulatedEnd = simulate(scenarioDir, output, sampler, pacer, out, marker);
 		}
 
-		Summary summary = new Summary(sampler.arrivedTrains(), sampler.abortedTrains(), sampler.activeTrains(), endTime);
-		RunOutcome outcome = new RunOutcome(summary.arrived(), summary.aborted(), summary.stalled(), endTime,
+		Summary summary = new Summary(sampler.arrivedTrains(), sampler.abortedTrains(), sampler.activeTrains(), simulatedEnd);
+		RunOutcome outcome = new RunOutcome(summary.arrived(), summary.aborted(), summary.stalled(), simulatedEnd,
 			Duration.between(started, Instant.now()));
 		AnalyzeRun.analyze(new AnalyzeRun.Request(output, RunArchive.at(inputs.runDir()),
 			spec.type().name().toLowerCase(), inputs.costsFile(), SPACE_TIME_LINE, outcome, phase -> {
@@ -147,12 +147,12 @@ public final class RailsimJob implements SimulationServer.Job {
 	}
 
 	/**
-	 * Runs the mobsim until every train has finished, or at the latest
-	 * {@link #END_MARGIN_S} after the last planned arrival of the timetable:
-	 * the day is over when the timetable is, and what is still moving then is
-	 * late, not scheduled.
+	 * Runs the mobsim until every train has finished (see
+	 * {@link FinishedTrainRetirement}), or at the latest {@link #END_MARGIN_S}
+	 * after the last planned arrival of the timetable: the day is over when the
+	 * timetable is, and what is still moving then is late, not scheduled.
 	 *
-	 * @return the simulated time the run was allowed to reach
+	 * @return the last simulated second the run actually reached
 	 */
 	private double simulate(Path scenarioDir, Path output, FrameSampler sampler, Pacer pacer, Emitter out, Path marker) {
 		Config config = ConfigUtils.loadConfig(inputs.configTemplate().toString());
@@ -197,11 +197,12 @@ public final class RailsimJob implements SimulationServer.Job {
 			public void install() {
 				addEventHandlerBinding().toInstance(sampler);
 				addMobsimListenerBinding().toInstance(step);
+				addMobsimListenerBinding().toInstance(new FinishedTrainRetirement(sampler));
 				addControllerListenerBinding().toInstance(mobsimDone);
 			}
 		});
 		controler.run();
-		return endTime;
+		return sampler.simulatedTime();
 	}
 
 	/** Departure time plus the last stop's arrival offset, over every departure of the schedule. */
