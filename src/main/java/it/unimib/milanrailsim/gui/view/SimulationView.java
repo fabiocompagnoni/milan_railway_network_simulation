@@ -17,7 +17,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -63,9 +62,7 @@ public final class SimulationView extends BorderPane {
 	}
 
 	private void showLoading() {
-		ProgressIndicator spinner = new ProgressIndicator();
-		spinner.setMaxSize(32, 32);
-		VBox box = new VBox(12, spinner, muted("Carico la rete…"));
+		VBox box = new VBox(12, new LoadingRing(32), muted("Carico la rete…"));
 		box.setAlignment(Pos.CENTER);
 		stack.getChildren().setAll(box);
 	}
@@ -237,8 +234,7 @@ public final class SimulationView extends BorderPane {
 	 * work is going on, which phase it is in and for how long.
 	 */
 	private Node workBanner(LiveSession session) {
-		ProgressIndicator spinner = new ProgressIndicator();
-		spinner.setMaxSize(40, 40);
+		LoadingRing spinner = new LoadingRing(36);
 		Label title = new Label("Preparo la simulazione");
 		title.getStyleClass().add("section-title");
 		Label phase = muted("");

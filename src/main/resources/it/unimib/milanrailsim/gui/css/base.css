@@ -494,10 +494,20 @@
 
 .banner-done {
 	-fx-background-color: -surface;
-	-fx-background-radius: 8;
-	-fx-border-color: -accent;
-	-fx-border-width: 0 0 0 4;
-	-fx-border-radius: 8;
-	-fx-padding: 12 16 12 16;
+	-fx-background-radius: 10;
+	-fx-border-color: -border;
+	-fx-border-width: 1;
+	-fx-border-radius: 10;
+	-fx-padding: 16 20 16 20;
 	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 12, 0, 0, 2);
+}
+
+.loading-ring-track {
+	-fx-fill: transparent;
+	-fx-stroke: -border;
+}
+
+.loading-ring-arc {
+	-fx-fill: transparent;
+	-fx-stroke: -accent;
 }
