@@ -273,6 +273,7 @@
                                         <argument>${project.build.directory}/dist</argument>
                                         <argument>--resource-dir</argument>
                                         <argument>assets/jpackage/${dist.platform}</argument>
+                                        <argument>@assets/jpackage/${dist.platform}/options.txt</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
