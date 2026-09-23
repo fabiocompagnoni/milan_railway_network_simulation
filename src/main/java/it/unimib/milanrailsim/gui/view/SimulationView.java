@@ -3,11 +3,10 @@ package it.unimib.milanrailsim.gui.view;
 import it.unimib.milanrailsim.gui.app.AppModel;
 import it.unimib.milanrailsim.gui.map.MapCanvas;
 import it.unimib.milanrailsim.gui.map.NetworkMap;
-import it.unimib.milanrailsim.gui.sim.LiveSession;
+import it.unimib.milanrailsim.gui.sim.Session;
 import it.unimib.milanrailsim.gui.sim.TrainPositions;
 import it.unimib.milanrailsim.server.Protocol;
 import it.unimib.milanrailsim.server.Protocol.TrainState;
-import it.unimib.milanrailsim.server.RailsimJob;
 import javafx.animation.AnimationTimer;
 import javafx.beans.binding.BooleanBinding;
 import javafx.concurrent.Task;
@@ -18,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
@@ -29,9 +29,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -45,7 +47,7 @@ public final class SimulationView extends BorderPane {
 
 	private static final double[] SPEEDS = { 10, 60, 300, 1000, Protocol.UNTHROTTLED };
 	private static final String[] SPEED_LABELS = { "10×", "60×", "300×", "1000×", "max" };
-	private static final String SIMULATING = RailsimJob.SIMULATING;
+	private static final double TIMELINE_WIDTH_PX = 220;
 
 	private final AppModel model;
 	private final StackPane stack = new StackPane();
@@ -92,7 +94,7 @@ public final class SimulationView extends BorderPane {
 		map = new MapCanvas(network, model.paths().tileCache(), model.theme().get().mapPalette());
 		model.theme().addListener((observable, previous, current) -> map.setPalette(current.mapPalette()));
 		stack.getChildren().setAll(map);
-		LiveSession session = model.session().get();
+		Session session = model.session().get();
 		if (session == null) {
 			stack.getChildren().add(idleBar());
 		} else {
@@ -148,7 +150,7 @@ public final class SimulationView extends BorderPane {
 		return controls;
 	}
 
-	private void attach(LiveSession session) {
+	private void attach(Session session) {
 		if (animation != null) {
 			animation.stop();
 		}
@@ -173,6 +175,9 @@ public final class SimulationView extends BorderPane {
 			button.setSelected(SPEEDS[i] == session.speed().get());
 			speeds.getChildren().add(button);
 		}
+		if (speedGroup.getSelectedToggle() == null) {
+			speedGroup.getToggles().get(1).setSelected(true);
+		}
 		speedGroup.selectedToggleProperty().addListener((observable, previous, selected) -> {
 			if (selected == null) {
 				previous.setSelected(true);
@@ -182,23 +187,31 @@ public final class SimulationView extends BorderPane {
 		});
 		pause.selectedProperty().addListener((observable, was, paused) -> {
 			pause.setGraphic(new FontIcon(paused ? "mdmz-play_arrow" : "mdmz-pause"));
-			session.setSpeed(paused ? 0 : (double) speedGroup.getSelectedToggle().getUserData());
+			if (paused != (session.speed().get() == 0)) {
+				session.setSpeed(paused ? 0 : (double) speedGroup.getSelectedToggle().getUserData());
+			}
 		});
-		Button stop = new Button("Interrompi");
+		// a recording pauses by itself at its end: the button follows
+		session.speed().addListener((observable, previous, speed) -> pause.setSelected(speed.doubleValue() == 0));
+		Optional<Session.Timeline> timeline = session.timeline();
+		Button stop = new Button(timeline.isPresent() ? "Chiudi" : "Interrompi");
 		stop.setOnAction(event -> session.stop());
-		HBox controls = controlBar(List.of(pause, speeds, clock, status, stop));
+		List<Node> bar = new ArrayList<>(List.of(pause, speeds, clock));
+		timeline.ifPresent(recording -> bar.add(timelineSlider(session, recording)));
+		bar.addAll(List.of(status, stop));
+		HBox controls = controlBar(bar);
 		controls.getChildren().addAll(zoomButtons());
 		// after the last simulated second the engine writes and analyzes: nothing left to pace or interrupt
-		BooleanBinding wrappingUp = session.phase().isNotEqualTo(SIMULATING).or(session.finished());
+		BooleanBinding wrappingUp = session.phase().isNotEqualTo(session.runningPhase()).or(session.finished());
 		pause.disableProperty().bind(wrappingUp);
 		speeds.disableProperty().bind(wrappingUp);
-		stop.disableProperty().bind(wrappingUp);
+		stop.disableProperty().bind(session.finished());
 
 		VBox drawer = drawer(session, detail);
 		stack.getChildren().removeIf(node -> node != map);
 		stack.getChildren().addAll(controls, drawer, workBanner(session));
 		setOnKeyPressed(event -> {
-			if (event.getCode() == javafx.scene.input.KeyCode.SPACE && !session.finished().get()) {
+			if (event.getCode() == javafx.scene.input.KeyCode.SPACE && !pause.isDisabled()) {
 				pause.setSelected(!pause.isSelected());
 			}
 		});
@@ -212,7 +225,7 @@ public final class SimulationView extends BorderPane {
 		animation = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				LiveSession.Playback playback = session.playback();
+				Session.Playback playback = session.playback();
 				if (playback != null) {
 					clock.setText(clock(playback.time()));
 					map.setTrains(positions.between(playback.from(), playback.to(), playback.fraction()));
@@ -227,15 +240,50 @@ public final class SimulationView extends BorderPane {
 		});
 	}
 
+	/** Where the recording is, draggable to any moment of it; it follows the clock while not being dragged. */
+	private Node timelineSlider(Session session, Session.Timeline recording) {
+		Slider slider = new Slider();
+		slider.getStyleClass().add("timeline");
+		slider.setPrefWidth(TIMELINE_WIDTH_PX);
+		// the span is known only once the recording is loaded
+		session.phase().addListener((observable, previous, phase) -> {
+			slider.setMin(recording.start());
+			slider.setMax(recording.end());
+		});
+		slider.setMin(recording.start());
+		slider.setMax(recording.end());
+		slider.valueProperty().addListener((observable, previous, value) -> {
+			if (slider.isValueChanging() || slider.isFocused()) {
+				recording.seek(value.doubleValue());
+			}
+		});
+		AnimationTimer follower = new AnimationTimer() {
+			@Override
+			public void handle(long now) {
+				Session.Playback playback = session.playback();
+				if (playback != null && !slider.isValueChanging() && !slider.isFocused()) {
+					slider.setValue(playback.time());
+				}
+			}
+		};
+		follower.start();
+		session.finished().addListener((observable, was, finished) -> {
+			if (finished) {
+				follower.stop();
+			}
+		});
+		return slider;
+	}
+
 	/**
 	 * Before the first simulated second the engine starts, generates the
 	 * timetable and loads the scenario; after the last one it writes its outputs
 	 * and analyzes them. Both take minutes on a full day: the user must see that
 	 * work is going on, which phase it is in and for how long.
 	 */
-	private Node workBanner(LiveSession session) {
+	private Node workBanner(Session session) {
 		LoadingRing spinner = new LoadingRing(36);
-		Label title = new Label("Preparo la simulazione");
+		Label title = new Label(session.preparationTitle());
 		title.getStyleClass().add("section-title");
 		Label phase = muted("");
 		phase.textProperty().bind(session.phase());
@@ -248,11 +296,11 @@ public final class SimulationView extends BorderPane {
 		StackPane.setAlignment(banner, Pos.CENTER);
 
 		session.phase().addListener((observable, previous, current) -> {
-			if (SIMULATING.equals(previous)) {
+			if (session.runningPhase().equals(previous)) {
 				title.setText("Simulazione conclusa, preparo i risultati");
 			}
 		});
-		BooleanBinding working = session.phase().isNotEqualTo(SIMULATING).and(session.finished().not());
+		BooleanBinding working = session.phase().isNotEqualTo(session.runningPhase()).and(session.finished().not());
 		banner.visibleProperty().bind(working);
 		banner.managedProperty().bind(banner.visibleProperty());
 		AnimationTimer stopwatch = new AnimationTimer() {
@@ -296,7 +344,7 @@ public final class SimulationView extends BorderPane {
 		stack.getChildren().add(banner);
 	}
 
-	private VBox drawer(LiveSession session, VBox detail) {
+	private VBox drawer(Session session, VBox detail) {
 		Label legendTitle = new Label("Linee");
 		legendTitle.getStyleClass().add("section-title");
 		VBox legend = new VBox(4);
@@ -353,9 +401,9 @@ public final class SimulationView extends BorderPane {
 			delay);
 	}
 
-	private static String phaseText(LiveSession session) {
+	private static String phaseText(Session session) {
 		String phase = session.phase().get();
-		return SIMULATING.equals(phase) ? phase + " · " + session.activeTrains().get() + " treni attivi" : phase;
+		return session.runningPhase().equals(phase) ? phase + " · " + session.activeTrains().get() + " treni attivi" : phase;
 	}
 
 	static String clock(double seconds) {
