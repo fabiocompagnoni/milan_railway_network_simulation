@@ -46,6 +46,39 @@ Output is written under `output/<runId>/`, including railsim analysis CSVs
 (`railsimTrainStates`, `railsimLinkStates`, `railsimTimeDistance`) in
 `output/<runId>/ITERS/it.0/`.
 
+### Desktop application
+
+```bash
+# Run from the project folder (the data is read from here)
+mvn javafx:run
+
+# Native package with the logo: target/dist/ (a .deb on Linux, .exe on Windows, .dmg on macOS)
+mvn -DskipTests verify -Pdist
+sudo apt install ./target/dist/milanrailsim_*.deb
+```
+
+The package is built with `jpackage` from the shaded jar and bundles a Java
+runtime, so the installed application needs neither Maven nor a JDK. It is
+installed under `/opt/milanrailsim` with a menu entry, and the window is tied
+to its icon through `StartupWMClass` in `assets/jpackage/linux/MilanRailSim.desktop`
+(the stock `jpackage` template lacks it, and GNOME would show a generic icon).
+Windows and macOS need the logo as `assets/logo/logo.ico` and `logo.icns`.
+
+Where the application keeps its files:
+
+- **Project data, read-only** (`gui/config/DataRoot`): the scenario under
+  `scenarios/milan`, the node declarations in `data/nodes`, the committed
+  GTFS feed, the station track survey and the default costs, laid out as in
+  this repository. In development this is the working directory; the package
+  copies these files into `lib/app/share` and the launcher passes
+  `-Dmilanrailsim.data` pointing there. Rebuild the package after changing
+  them. The application never writes here.
+- **User state** (`gui/config/AppPaths`): `~/MilanRailSim/runs` (one folder
+  per simulation: scenario, engine log, MATSim output, analysis, charts),
+  `~/MilanRailSim/config` (imported GTFS feed, cost parameters, rolling stock
+  catalogue with its photos) and `~/MilanRailSim/cache/tiles` (map tiles).
+  The same folders are used in development and once installed.
+
 ## Layout
 
 ```
