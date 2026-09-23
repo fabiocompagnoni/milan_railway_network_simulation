@@ -48,10 +48,20 @@ public final class GtfsImport {
 			CsvTable.read(feedDir.resolve("routes.txt")).size(), CsvTable.read(feedDir.resolve("stops.txt")).size());
 	}
 
-	/** Copies the feed's text files into {@code target}, replacing any feed already there. */
+	/**
+	 * Copies the feed's text files into {@code target}, replacing any feed
+	 * already there. The new feed is assembled and validated next to the old
+	 * one and the two are swapped with two renames, so the installed feed is
+	 * complete at every moment: a failure leaves the old feed in place.
+	 */
 	public static void install(Path source, Path target) {
+		Path staging = target.resolveSibling(target.getFileName() + ".new");
+		Path previous = target.resolveSibling(target.getFileName() + ".old");
 		try {
-			Path staging = Files.createTempDirectory("gtfs-import");
+			Files.createDirectories(target.getParent());
+			deleteTree(staging);
+			deleteTree(previous);
+			Files.createDirectory(staging);
 			if (Files.isDirectory(source)) {
 				try (Stream<Path> files = Files.list(source)) {
 					for (Path file : files.filter(f -> f.toString().endsWith(".txt")).toList()) {
@@ -63,21 +73,28 @@ public final class GtfsImport {
 			}
 			inspect(staging);
 			if (Files.isDirectory(target)) {
-				try (Stream<Path> files = Files.list(target)) {
-					for (Path file : files.toList()) {
-						Files.delete(file);
-					}
-				}
+				Files.move(target, previous, StandardCopyOption.ATOMIC_MOVE);
 			}
-			Files.createDirectories(target);
-			try (Stream<Path> files = Files.list(staging)) {
-				for (Path file : files.toList()) {
-					Files.move(file, target.resolve(file.getFileName().toString()), StandardCopyOption.REPLACE_EXISTING);
-				}
-			}
-			Files.delete(staging);
+			Files.move(staging, target, StandardCopyOption.ATOMIC_MOVE);
+			deleteTree(previous);
 		} catch (IOException e) {
 			throw new UncheckedIOException("Cannot install feed " + source, e);
+		} finally {
+			deleteTree(staging);
+		}
+	}
+
+	private static void deleteTree(Path dir) {
+		if (!Files.isDirectory(dir)) {
+			return;
+		}
+		try (Stream<Path> files = Files.list(dir)) {
+			for (Path file : files.toList()) {
+				Files.delete(file);
+			}
+			Files.delete(dir);
+		} catch (IOException e) {
+			throw new UncheckedIOException("Cannot remove " + dir, e);
 		}
 	}
 
