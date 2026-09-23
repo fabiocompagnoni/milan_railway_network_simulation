@@ -83,7 +83,7 @@ class TransitScheduleBuilderTest {
 		TransitScheduleBuilder.Result result = build();
 		assertNotNull(result.vehicles().getVehicles().get(Id.createVehicleId("T1")));
 		assertNotNull(result.vehicles().getVehicles().get(Id.createVehicleId("TN")));
-		assertEquals(8, result.vehicles().getVehicleTypes().size());
+		assertEquals(9, result.vehicles().getVehicleTypes().size());
 	}
 
 	@Test

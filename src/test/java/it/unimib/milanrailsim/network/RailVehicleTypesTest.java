@@ -20,7 +20,7 @@ class RailVehicleTypesTest {
 	@Test
 	void definesTheApprovedTypes() {
 		assertEquals(Set.of("tsr", "taf", "caravaggio_421", "caravaggio_521",
-			"donizetti", "etr245", "atr125", "tilo_flirt_tsi"), byId().keySet());
+			"donizetti", "etr245", "atr125", "tilo_flirt_tsi", "atr803"), byId().keySet());
 	}
 
 	@Test

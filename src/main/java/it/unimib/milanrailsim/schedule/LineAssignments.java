@@ -39,7 +39,8 @@ public record LineAssignments(Map<String, List<Share>> byLine) {
 		Map.entry("RE13", "donizetti"), Map.entry("R34", "donizetti"),
 		Map.entry("R35", "donizetti"), Map.entry("R36", "donizetti"),
 		Map.entry("R37", "donizetti"),
-		Map.entry("RE80", "tilo_flirt_tsi"));
+		Map.entry("RE80", "tilo_flirt_tsi"),
+		Map.entry("R8", "atr803"));
 
 	public LineAssignments {
 		byLine.forEach((line, shares) -> {

@@ -406,7 +406,7 @@ Fonte: `https://www.trenord.it/chi-siamo/la-flotta/`.
 | **ATR 125** (GTW 4/12 «Besanino») | diesel-elettrico Stadler, **4 casse, 231 posti**, su **Milano–Molteno–Lecco (S7)**; vmax **140 km/h** |
 | **ATR 115** (GTW 2/6) | diesel-elettrico Stadler, **2 casse, 104 posti**, su Brescia–Iseo–Edolo e Como–Lecco; vmax **140 km/h** |
 | **ALn 668** | automotrice diesel, 68 posti, vmax 95–130 km/h |
-| **Colleoni** | diesel nuova generazione, 3 casse, **168 posti**; «+20% in accelerazione» rispetto alla flotta attuale |
+| **Colleoni ATR 803** | diesel-elettrico con batterie (Stadler), **3 casse, 66,8 m, 168 posti** (151 + 17 strapuntini), vmax **140 km/h**; Trenord: «+20% in accelerazione» rispetto alla flotta attuale → nel modello 0,72 m/s² (ATR 125 × 1,2, stima). In servizio dal 12/9/2022 su **Brescia–Parma (R8)**, Pavia–Codogno, Vercelli–Pavia, Pavia–Alessandria al posto delle ALn 668 (Wikipedia it `Autotreno_ATR_803`, 2026-09-23). Nel modello assegnato a R8; R35/R36/R37 restano Donizetti come da assegnazione 2026-08-05 |
 
 - **FLIRT TSI** (TILO RABe 524, per RE80): 6 casse, **105 m, 244 posti**, vmax
   **160 km/h**, 2.600 kW (trainswiss/Wikipedia/sguggiari.ch, 2026-08-05). Il
@@ -430,6 +430,8 @@ Fonte: `https://www.trenord.it/chi-siamo/la-flotta/`.
   (dominante dichiarato: "regionali principalmente Caravaggio").
 - **TILO S10/S30/S40/S50: esclusi dalla v1** (non confluiscono sulla rete
   suburbana); **RE80 incluso** con tipo `tilo_flirt_tsi`.
+- **R8** (Brescia–Parma): `atr803` (Colleoni, dal 2022 al posto delle ALn 668;
+  Wikipedia 2026-09-23).
 
 ### Assi di eterogeneità (per i `vehicleType` railsim)
 
