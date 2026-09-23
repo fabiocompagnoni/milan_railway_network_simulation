@@ -23,7 +23,9 @@ import java.util.function.Supplier;
 public final class Navigation extends BorderPane {
 
 	private static final double COMPACT_BELOW_PX = 1100;
-	private static final double EXTENDED_WIDTH_PX = 176;
+	/** The sidebar is as wide as the extended logo needs to be readable, subtitle included. */
+	private static final double SIDEBAR_WIDTH_PX = 248;
+	private static final double EXTENDED_WIDTH_PX = 224;
 	private static final double MARK_WIDTH_PX = 36;
 
 	private final Map<String, Supplier<Node>> views = new LinkedHashMap<>();
@@ -33,6 +35,7 @@ public final class Navigation extends BorderPane {
 	/** @param theme the current theme, followed by the extended logo */
 	public Navigation(ObservableValue<Theme> theme) {
 		sidebar.getStyleClass().add("sidebar");
+		sidebar.prefWidthProperty().bind(Bindings.when(compact()).then(Region.USE_COMPUTED_SIZE).otherwise(SIDEBAR_WIDTH_PX));
 		sidebar.getChildren().add(brand(theme));
 		setLeft(sidebar);
 	}
