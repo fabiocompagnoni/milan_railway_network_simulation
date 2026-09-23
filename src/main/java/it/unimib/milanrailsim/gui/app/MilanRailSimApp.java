@@ -34,7 +34,7 @@ public final class MilanRailSimApp extends Application {
 	public void start(Stage stage) {
 		Theme.loadFonts();
 		ObjectProperty<Theme> theme = model.theme();
-		Navigation navigation = new Navigation();
+		Navigation navigation = new Navigation(theme);
 		navigation.addView("Simulazione", "mdmz-map", () -> new SimulationView(model));
 		model.session().addListener((observable, previous, session) -> {
 			if (session != null) {
@@ -74,6 +74,7 @@ public final class MilanRailSimApp extends Application {
 		navigation.addFooter(themeToggle);
 
 		stage.setTitle("Milan RailSim");
+		stage.getIcons().setAll(Logo.mark());
 		stage.setMinWidth(720);
 		stage.setMinHeight(480);
 		stage.setScene(scene);
