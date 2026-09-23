@@ -19,10 +19,11 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
- * The simulation engine as a child JVM: same class path as the application,
- * its own heap, announcing its loopback endpoint on stdout. Everything it
+ * The simulation engine as a child JVM: same runtime and class path as the
+ * application, its own heap, announcing its loopback endpoint on stdout. Everything it
  * prints on either stream ends up in {@code engine.log} in the run folder.
  */
 public final class EngineProcess {
@@ -43,7 +44,7 @@ public final class EngineProcess {
 	/** @param heapPercent share of physical memory the engine may use */
 	public static EngineProcess start(RailsimJob.Inputs inputs, int heapPercent, double initialSpeed) {
 		List<String> command = new ArrayList<>(List.of(
-			ProcessHandle.current().info().command().orElse("java"),
+			javaExecutable().toString(),
 			"-XX:MaxRAMPercentage=" + heapPercent,
 			"-cp", System.getProperty("java.class.path"),
 			RunSimulationServer.class.getName(),
@@ -74,6 +75,11 @@ public final class EngineProcess {
 		} catch (IOException e) {
 			throw new UncheckedIOException("Cannot start the simulation engine", e);
 		}
+	}
+
+	private static Path javaExecutable() {
+		boolean windows = System.getProperty("os.name").toLowerCase(Locale.ROOT).startsWith("windows");
+		return Path.of(System.getProperty("java.home"), "bin", windows ? "java.exe" : "java");
 	}
 
 	private static Endpoint readEndpoint(Process process, BufferedReader stdout) throws IOException {
