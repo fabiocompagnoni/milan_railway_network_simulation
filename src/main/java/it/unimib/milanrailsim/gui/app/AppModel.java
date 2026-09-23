@@ -3,6 +3,8 @@ package it.unimib.milanrailsim.gui.app;
 import it.unimib.milanrailsim.gui.config.AppPaths;
 import it.unimib.milanrailsim.gui.config.ScenarioFiles;
 import it.unimib.milanrailsim.gui.sim.LiveSession;
+import it.unimib.milanrailsim.gui.sim.ReplaySession;
+import it.unimib.milanrailsim.gui.sim.Session;
 import it.unimib.milanrailsim.network.FleetConfig;
 import it.unimib.milanrailsim.network.GtfsFeed;
 import it.unimib.milanrailsim.runs.RunLibrary;
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -31,7 +34,8 @@ public final class AppModel {
 	private final ObjectProperty<FleetConfig> fleet = new SimpleObjectProperty<>();
 	private final ObjectProperty<LineAssignments> assignments = new SimpleObjectProperty<>();
 	private final ObjectProperty<RunLibrary.Entry> selectedRun = new SimpleObjectProperty<>();
-	private final ObjectProperty<LiveSession> session = new SimpleObjectProperty<>();
+	private final ObjectProperty<Session> session = new SimpleObjectProperty<>();
+	private final ObjectProperty<ScenarioSpec> draft = new SimpleObjectProperty<>();
 	private final CompletableFuture<Set<String>> networkStops;
 
 	public AppModel(AppPaths paths, ScenarioFiles files) {
@@ -61,8 +65,29 @@ public final class AppModel {
 	}
 
 	/** The run being simulated now, if any; views observe it to show the live map. */
-	public ObjectProperty<LiveSession> session() {
+	public ObjectProperty<Session> session() {
 		return session;
+	}
+
+	/** Plays an archived run back from its recording on the map. */
+	public ReplaySession startReplay(RunLibrary.Entry entry) {
+		ReplaySession replay = ReplaySession.open(entry.dir());
+		session.set(replay);
+		return replay;
+	}
+
+	/**
+	 * A scenario the new-simulation form starts from instead of its defaults:
+	 * an archived run to repeat, under a name not yet taken. Consumed on read.
+	 */
+	public void draftFrom(RunLibrary.Entry entry, ScenarioSpec spec) {
+		draft.set(spec.named(runs().freeName(entry.name())));
+	}
+
+	public Optional<ScenarioSpec> takeDraft() {
+		Optional<ScenarioSpec> taken = Optional.ofNullable(draft.get());
+		draft.set(null);
+		return taken;
 	}
 
 	/** Writes the scenario into its run folder and spawns the engine on it. */

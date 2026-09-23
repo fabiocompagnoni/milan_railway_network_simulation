@@ -9,6 +9,7 @@ import it.unimib.milanrailsim.gui.view.ResultsView;
 import it.unimib.milanrailsim.gui.view.RunLibraryView;
 import it.unimib.milanrailsim.gui.view.SettingsView;
 import it.unimib.milanrailsim.gui.view.SimulationView;
+import it.unimib.milanrailsim.gui.sim.Session;
 import it.unimib.milanrailsim.server.Protocol;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -22,7 +23,6 @@ import javafx.scene.control.Tooltip;
 import org.kordamp.ikonli.javafx.FontIcon;
 import javafx.stage.Stage;
 
-import java.nio.file.Path;
 
 /** Desktop application: the simulation is configured, run, watched and replayed from here. */
 public final class MilanRailSimApp extends Application {
@@ -53,7 +53,7 @@ public final class MilanRailSimApp extends Application {
 			if (session != null) {
 				session.finished().addListener((finishedObservable, was, finished) -> {
 					if (finished && session.error().get() == null) {
-						openResults(navigation, session.runDir());
+						openResults(navigation, session);
 					}
 				});
 			}
@@ -62,10 +62,20 @@ public final class MilanRailSimApp extends Application {
 			model.startRun(spec, Protocol.UNTHROTTLED);
 			navigation.show("Simulazione");
 		}));
-		navigation.addView("Archivio", "mdal-folder_open", () -> new RunLibraryView(model, run -> {
-			model.selectedRun().set(run);
-			navigation.show("Risultati");
-		}, () -> navigation.show("Nuova simulazione")));
+		navigation.addView("Archivio", "mdal-folder_open", () -> new RunLibraryView(model, new RunLibraryView.Actions(
+			run -> {
+				model.selectedRun().set(run);
+				navigation.show("Risultati");
+			},
+			run -> {
+				model.startReplay(run);
+				navigation.show("Simulazione");
+			},
+			(run, spec) -> {
+				model.draftFrom(run, spec);
+				navigation.show("Nuova simulazione");
+			},
+			() -> navigation.show("Nuova simulazione"))));
 		navigation.addView("Risultati", "mdal-bar_chart", () -> new ResultsView(model, () -> navigation.show("Archivio")));
 		navigation.addView("Materiale rotabile", "mdmz-train", () -> new FleetView(model));
 		navigation.addView("Impostazioni", "mdmz-settings", () -> new SettingsView(model,
@@ -94,10 +104,18 @@ public final class MilanRailSimApp extends Application {
 		stage.show();
 	}
 
-	/** A run that completed is archived and analyzed: its results are what the user is waiting for. */
-	private void openResults(Navigation navigation, Path runDir) {
+	/**
+	 * A run that completed is archived and analyzed: its results are what the
+	 * user is waiting for. A replay that ends has nothing new to show and goes
+	 * back to the archive it came from.
+	 */
+	private void openResults(Navigation navigation, Session session) {
 		model.session().set(null);
-		model.selectedRun().set(model.runs().entry(runDir));
+		if (session.timeline().isPresent()) {
+			navigation.show("Archivio");
+			return;
+		}
+		model.selectedRun().set(model.runs().entry(session.runDir()));
 		navigation.show("Risultati");
 	}
 

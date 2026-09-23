@@ -262,7 +262,35 @@ public final class NewSimulationView extends BorderPane {
 		LocalDate today = LocalDate.now();
 		day.setValue(dates.contains(today) ? today : dates.ceiling(today) != null ? dates.ceiling(today) : dates.last());
 		name.setText(suggestedName());
+		model.takeDraft().ifPresent(this::prefill);
 		refresh();
+	}
+
+	/** Fills the form from an archived run's scenario, to repeat it. */
+	private void prefill(ScenarioSpec spec) {
+		name.setText(spec.name());
+		day.setValue(spec.serviceDate());
+		if (spec.window() == null) {
+			wholeDay.setSelected(true);
+		} else {
+			customWindow.setSelected(true);
+			windowStart.getValueFactory().setValue(spec.window().start().getHour());
+			windowEnd.getValueFactory().setValue(spec.window().end().getHour());
+		}
+		typeGroup.getToggles().stream()
+			.filter(toggle -> toggle.getUserData() == spec.type())
+			.forEach(toggle -> toggle.setSelected(true));
+		switch (spec.type()) {
+			case METRO_LIKE -> metroHeadway.getValueFactory().setValue(spec.metroHeadwayMinutes());
+			case COLLAPSE -> {
+				collapseStart.getValueFactory().setValue(spec.collapseStartHeadwayMinutes());
+				collapseStep.getValueFactory().setValue(spec.collapseStepMinutes());
+				collapseSteps.getValueFactory().setValue(spec.collapseSteps());
+			}
+			case DYNAMIC -> dynamicReduction.setValue(spec.dynamicReductionPercent());
+			case REAL -> {
+			}
+		}
 	}
 
 	private String suggestedName() {
