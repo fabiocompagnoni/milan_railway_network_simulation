@@ -59,6 +59,12 @@ public record ScenarioSpec(
 		return new ScenarioSpec(name, SimulationType.REAL, serviceDate, window, null, null, null, null, null);
 	}
 
+	/** The same scenario under another run name. */
+	public ScenarioSpec named(String runName) {
+		return new ScenarioSpec(runName, type, serviceDate, window, metroHeadwayMinutes, collapseStartHeadwayMinutes,
+			collapseStepMinutes, collapseSteps, dynamicReductionPercent);
+	}
+
 	/** Number of engine runs this scenario produces: one, or one per collapse step. */
 	public int runCount() {
 		return type == SimulationType.COLLAPSE ? collapseSteps : 1;
