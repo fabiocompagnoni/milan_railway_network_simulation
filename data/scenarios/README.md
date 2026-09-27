@@ -22,13 +22,13 @@ Lettore: `schedule/DensificationPlan`.
 
 ### Cadenza
 
-Il parametro dello scenario è la cadenza di punta: 20, 15 o 10 minuti. Nell'orario
-reale ogni linea S passa ogni 30 minuti.
+Il parametro dello scenario è la cadenza di punta: 15 o 10 minuti. Nell'orario
+reale ogni linea S passa ogni 30 minuti: le due cadenze ne sono divisori, così le corse aggiunte cadono a metà o a un terzo dell'intervallo reale e nessuna corsa reale viene spostata. Una corsa viene aggiunta solo se l'intervallo che ne risulta non scende sotto la cadenza.
 
 | Livello della fascia | Cadenza applicata |
 |---|---|
 | `peak` | quella scelta |
-| `offPeak` | un gradino più rada: 10 → 15, 15 → 20, 20 → nessuna corsa aggiunta |
+| `offPeak` | un gradino più rada: 10 → 15, 15 → nessuna corsa aggiunta |
 | fuori dalle fasce | nessuna corsa aggiunta |
 
 ### Valori provvisori

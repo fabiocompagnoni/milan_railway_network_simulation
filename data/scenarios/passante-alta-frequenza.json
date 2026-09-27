@@ -60,7 +60,7 @@
 		}
 	],
 	"dayProfiles": {
-		"note": "Fasce provvisorie, definite in assenza di conteggi dei passeggeri. peak = cadenza scelta; offPeak = un gradino piu' rado (10 -> 15, 15 -> 20, 20 -> nessuna aggiunta); fuori dalle fasce nessuna corsa aggiunta. La domenica e' trattata come festivo; le festivita' infrasettimanali non sono distinte.",
+		"note": "Fasce provvisorie, definite in assenza di conteggi dei passeggeri. Cadenze ammesse 15 e 10 minuti, divisori dei 30 dell'orario reale. peak = cadenza scelta; offPeak = un gradino piu' rado (10 -> 15, 15 -> nessuna aggiunta); fuori dalle fasce nessuna corsa aggiunta. La domenica e' trattata come festivo; le festivita' infrasettimanali non sono distinte.",
 		"weekday": [
 			{"from": "06:30", "to": "09:30", "level": "peak"},
 			{"from": "09:30", "to": "16:30", "level": "offPeak"},

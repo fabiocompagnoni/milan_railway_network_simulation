@@ -44,10 +44,10 @@ class DensificationPlanTest {
 		DensificationPlan plan = DensificationPlan.read(COMMITTED);
 
 		assertEquals(OptionalInt.of(600), plan.cadenceSeconds(WEDNESDAY, at(8, 0), 10, Intensity.FULL));
+		assertEquals(OptionalInt.of(900), plan.cadenceSeconds(WEDNESDAY, at(8, 0), 15, Intensity.FULL));
 		assertEquals(OptionalInt.of(900), plan.cadenceSeconds(WEDNESDAY, at(11, 0), 10, Intensity.FULL));
-		assertEquals(OptionalInt.of(1200), plan.cadenceSeconds(WEDNESDAY, at(11, 0), 15, Intensity.FULL));
-		assertEquals(OptionalInt.empty(), plan.cadenceSeconds(WEDNESDAY, at(11, 0), 20, Intensity.FULL),
-			"one step sparser than twenty minutes is the real timetable");
+		assertEquals(OptionalInt.empty(), plan.cadenceSeconds(WEDNESDAY, at(11, 0), 15, Intensity.FULL),
+			"one step sparser than fifteen minutes is the real timetable");
 		assertEquals(OptionalInt.empty(), plan.cadenceSeconds(WEDNESDAY, at(22, 0), 10, Intensity.FULL), "outside every band");
 		assertEquals(OptionalInt.of(600), plan.cadenceSeconds(WEDNESDAY, at(9, 29), 10, Intensity.FULL), "the upper bound is excluded");
 		assertEquals(OptionalInt.of(900), plan.cadenceSeconds(WEDNESDAY, at(9, 30), 10, Intensity.FULL));
@@ -68,7 +68,7 @@ class DensificationPlanTest {
 	void onlyTheCadencesOfTheScenarioAreAccepted() {
 		DensificationPlan plan = DensificationPlan.read(COMMITTED);
 
-		assertThrows(IllegalArgumentException.class, () -> plan.cadenceSeconds(WEDNESDAY, at(8, 0), 5, Intensity.FULL));
+		assertThrows(IllegalArgumentException.class, () -> plan.cadenceSeconds(WEDNESDAY, at(8, 0), 20, Intensity.FULL));
 	}
 
 	@Test

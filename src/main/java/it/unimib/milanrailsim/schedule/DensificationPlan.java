@@ -26,8 +26,12 @@ import java.util.OptionalInt;
 public record DensificationPlan(List<Relation> relations, Tunnel tunnel, int serviceGapSeconds,
 		Map<DayKind, List<Band>> dayProfiles) {
 
-	/** Cadences the scenario offers, densest last; the real lines run every thirty minutes. */
-	static final List<Integer> CADENCES_MINUTES = List.of(20, 15, 10);
+	/**
+	 * Cadences the scenario offers, densest last. Both divide the thirty minutes
+	 * of the real lines, so the added trips fall at even fractions of a real
+	 * headway and no real trip has to move.
+	 */
+	public static final List<Integer> CADENCES_MINUTES = List.of(15, 10);
 
 	public enum Intensity {
 		/** The line reaches the cadence. */
@@ -145,7 +149,7 @@ public record DensificationPlan(List<Relation> relations, Tunnel tunnel, int ser
 	 * The headway to reach at a moment of a day: the chosen cadence at peak
 	 * hours, one step sparser off peak, none outside the bands of the day.
 	 *
-	 * @param peakCadenceMinutes one of 20, 15 and 10
+	 * @param peakCadenceMinutes one of {@link #CADENCES_MINUTES}
 	 * @return the target headway in seconds, or empty when no trip is to be added at that time
 	 * @throws IllegalArgumentException for a cadence the scenario does not offer
 	 */
