@@ -8,7 +8,8 @@
 		"Wikipedia, Stazione di Abbiategrasso (https://it.wikipedia.org/wiki/Stazione_di_Abbiategrasso): 2 binari, terzo binario rimosso",
 		"Wikipedia, Stazione di Vigevano (https://it.wikipedia.org/wiki/Stazione_di_Vigevano): 3 binari passanti, servizio normalmente sui binari 1 e 2; 2 tronchi lato sud di sosta o servizio",
 		"Wikipedia, Stazione di Mortara (https://it.wikipedia.org/wiki/Stazione_di_Mortara): 8 binari passanti, un tronco, 2 binari merci; linee per Novara, Alessandria, Vercelli, Pavia, Milano",
-		"proposte di assegnazione (Albairate centrali per S9 e S19, esterni per R31; Mortara tronco per R31, 2-3 per R25, 7-8 per R36) confermate da Fabio 2026-09-15",
+		"OpenStreetMap, stazione di Albairate-Vermezzo (consultata il 2026-09-27): binari 1 e 3 sulla linea 31 Milano-Mortara, binari 2 e 4 secondari, innestati lato Mortara con i deviatoi 08a, 10a e 10b",
+		"assegnazione dei binari: Albairate 2 e 4 per S9 e S19, 1 e 3 per R31, rilievo del 2026-09-27; Mortara tronco per R31, 2-3 per R25, 7-8 per R36, rilievo del 2026-09-15",
 		"GTFS Trenord orari_trenord, conteggio 2026-09-15: Albairate si attestano S9 67, S19 58, transita R31 48; Abbiategrasso si attesta S19 4, transita R31 48; Vigevano transita R31 48; Mortara si attestano R31 38, R25 9, R36 5, transitano R36 26, R31 10"
 	],
 
@@ -19,12 +20,12 @@
 			"kind": "mixed",
 			"platformLengthM": null,
 			"groups": [
-				{"id": "albairate_esterni", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "4", "direction": "south"}],
+				{"id": "albairate_corsa", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "3", "direction": "south"}],
 					"connections": {"south": ["meso:S01630", "meso:S01063"], "north": ["meso:S01062"]},
-					"notes": "binari esterni per la R31; 1 lato fabbricato verso Mortara (north), 4 verso Milano (ipotesi)"},
-				{"id": "albairate_centrali", "kind": "through", "tracks": [{"ref": "2", "direction": null}, {"ref": "3", "direction": null}],
+					"notes": "binari di corsa della Milano-Mortara, uno per marciapiede, per la R31; 1 verso Mortara (north), 3 verso Milano (ipotesi)"},
+				{"id": "albairate_attestamento", "kind": "through", "tracks": [{"ref": "2", "direction": null}, {"ref": "4", "direction": null}],
 					"connections": {"south": ["meso:S01630", "meso:S01063"], "north": ["meso:S01062"]},
-					"notes": "binari centrali per l'attestamento di S9 e S19"}
+					"notes": "binari secondari per l'attestamento di S9 e S19. Lato Mortara rientrano sulla linea con i deviatoi 08a e 10a/10b: servono da tronco o da binario di passaggio, percio' il gruppo resta passante"}
 			],
 			"throats": [],
 			"sidings": {"tracks": null, "note": "nessun ricovero noto: valore provvisorio del simulatore"}
@@ -76,17 +77,17 @@
 	"segments": [],
 
 	"lines": {
-		"S9": {"bundle": null, "stations": {"S01059": ["albairate_centrali", "albairate_esterni"]}},
-		"S19": {"bundle": null, "stations": {"S01059": ["albairate_centrali", "albairate_esterni"], "S01062": ["abbiategrasso"]}},
-		"R31": {"bundle": null, "stations": {"S01059": ["albairate_esterni", "albairate_centrali"], "S01062": ["abbiategrasso"], "S01061": ["vigevano/1", "vigevano/2", "vigevano"], "S00034": ["mortara_tronco/tronco", "mortara"]}},
+		"S9": {"bundle": null, "stations": {"S01059": ["albairate_attestamento", "albairate_corsa"]}},
+		"S19": {"bundle": null, "stations": {"S01059": ["albairate_attestamento", "albairate_corsa"], "S01062": ["abbiategrasso"]}},
+		"R31": {"bundle": null, "stations": {"S01059": ["albairate_corsa", "albairate_attestamento"],"S01062": ["abbiategrasso"], "S01061": ["vigevano/1", "vigevano/2", "vigevano"], "S00034": ["mortara_tronco/tronco", "mortara"]}},
 		"R25": {"bundle": null, "stations": {"S00034": ["mortara/2", "mortara/3", "mortara"]}},
 		"R36": {"bundle": null, "stations": {"S00034": ["mortara/7", "mortara/8", "mortara"]}},
-		"*terminal": {"bundle": null, "stations": {"S01059": ["albairate_centrali"], "S00034": ["mortara"]}},
-		"*through": {"bundle": null, "stations": {"S01059": ["albairate_esterni"], "S01062": ["abbiategrasso"], "S01061": ["vigevano"], "S00034": ["mortara"]}}
+		"*terminal": {"bundle": null, "stations": {"S01059": ["albairate_attestamento"], "S00034": ["mortara"]}},
+		"*through": {"bundle": null, "stations": {"S01059": ["albairate_corsa"],"S01062": ["abbiategrasso"], "S01061": ["vigevano"], "S00034": ["mortara"]}}
 	},
 
 	"openQuestions": [
-		"Albairate: binari di attestamento di S9 e S19 e verso dei binari esterni",
+		"Albairate: verso dei binari di corsa 1 e 3; innesto dei binari 2 e 4 lato Milano",
 		"Mortara: lato del tronco e collegamento di ciascun gruppo di binari alle 5 direzioni",
 		"Vigevano: verso dei binari 1 e 2"
 	]
