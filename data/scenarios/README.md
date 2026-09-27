@@ -4,38 +4,58 @@ Dati che descrivono gli scenari diversi dall'orario reale. Come per i nodi in `d
 
 ## `passante-alta-frequenza.json`
 
-Corse aggiunte nell'area urbana di Milano, delimitata da Saronno, Monza,
-Rogoredo, Rho Fiera e Albairate. Fuori dall'area l'orario resta quello reale.
-Lettore: `schedule/DensificationPlan`.
+Corse aggiunte nell'area urbana di Milano. Fuori dalle relazioni dichiarate l'orario resta quello reale, e le corse reali non vengono mai spostate.
+Lettore: `schedule/DensificationPlan`; generatore: `schedule/TimetableDensifier`.
 
 | Campo | Significato |
 |---|---|
-| `serviceGapMinutes` | Oltre questo intervallo fra due corse della stessa linea si tratta di una pausa del servizio, che non viene riempita |
+| `criteria` | I criteri con cui le relazioni sono state scelte |
+| `serviceGapMinutes` | Oltre questo intervallo fra due treni si tratta di una pausa del servizio, che non viene riempita |
+| `minSpacingSeconds` | Nessuna corsa viene aggiunta se l'intervallo risultante scende sotto questo valore |
 | `tunnel.referenceStop` | Fermata in cui si misura l'intervallo nel tunnel del Passante |
 | `tunnel.minHeadwaySeconds` | Intervallo minimo fra due treni nella stessa direzione nel tunnel |
-| `relations[].lines` | Linee di cui si copiano le corse; se sono più di una, le corse aggiunte si alternano |
-| `relations[].from`, `to` | Fermate estreme della corsa aggiunta, valide nelle due direzioni |
-| `relations[].intensity` | `full`: la linea raggiunge la cadenza; `reduced`: corse aggiunte in un intervallo sì e uno no |
+| `relations[].flow` | Due fermate: l'intervallo si misura su tutti i treni, di qualunque linea, che fermano nella prima e poi nella seconda; per la direzione opposta, nell'ordine inverso |
+| `relations[].services` | Le corse da copiare, a rotazione: linea e fermate estreme della copia. Una linea che non circola nel giorno cede il turno alla successiva |
+| `relations[].intensity` | `full`: ogni vuoto sopra l'obiettivo riceve le sue corse; `reduced`: un vuoto sì e uno no |
 | `relations[].throughTunnel` | La corsa attraversa il tunnel e ne rispetta l'intervallo minimo |
+| `relations[].levelCrossings` | Passaggi a livello sul percorso delle corse aggiunte |
 | `relations[].reason` | Motivazione della scelta |
+| `discarded` | Relazioni e linee valutate e scartate, con il motivo |
 | `dayProfiles` | Per feriale, sabato e festivo, le fasce orarie in cui si aggiungono corse |
 
-### Cadenza
+Le relazioni sono servite nell'ordine del file: ciascuna misura il proprio
+flusso contando anche le corse aggiunte da quelle che la precedono.
 
-Il parametro dello scenario è la cadenza di punta: 15 o 10 minuti. Nell'orario
-reale ogni linea S passa ogni 30 minuti: le due cadenze ne sono divisori, così le corse aggiunte cadono a metà o a un terzo dell'intervallo reale e nessuna corsa reale viene spostata. Una corsa viene aggiunta solo se l'intervallo che ne risulta non scende sotto la cadenza.
+### Obiettivo
 
-| Livello della fascia | Cadenza applicata |
+Il parametro dello scenario è l'attesa massima nelle ore di punta: 15 o 10
+minuti. Fra due treni consecutivi di un flusso si aggiungono le corse
+necessarie a non superarla, equidistanti.
+
+| Vuoto fra due treni | Obiettivo 15 | Obiettivo 10 |
+|---|---|---|
+| 30 min, linea S isolata | 1 corsa, un treno ogni 15 min | 2 corse, un treno ogni 10 min |
+| 15 min | nessuna | 1 corsa, un treno ogni 7,5 min |
+| 11 min, fra due coppie di treni a Bovisa | nessuna | 1 corsa, un treno ogni 5,5 min |
+| 10 min o meno | nessuna | nessuna |
+
+| Livello della fascia | Obiettivo applicato |
 |---|---|
-| `peak` | quella scelta |
-| `offPeak` | un gradino più rada: 10 → 15, 15 → nessuna corsa aggiunta |
+| `peak` | quello scelto |
+| `offPeak` | un gradino più lungo: 10 → 15, 15 → nessuna corsa aggiunta |
 | fuori dalle fasce | nessuna corsa aggiunta |
+
+### Limiti
+
+- Il flusso è misurato in un solo punto della relazione. Lungo il percorso una
+  corsa aggiunta può trovarsi a ridosso di un treno di un'altra linea.
+- I passaggi a livello non sono modellati nella simulazione.
+- L'orario comprende il solo servizio Trenord.
 
 ### Valori provvisori
 
-- Intervallo minimo nel tunnel, 180 s.
+- Intervallo minimo nel tunnel, 180 s, e distanza minima fra due treni, 300 s.
 - Fasce orarie e livelli per tipo di giorno, definiti in assenza di conteggi
   dei passeggeri.
 
-Entrambi vanno confermati con la serie sperimentale registrata in
-`docs/esperimenti`.
+Vanno confermati con la serie sperimentale registrata in `docs/esperimenti`.

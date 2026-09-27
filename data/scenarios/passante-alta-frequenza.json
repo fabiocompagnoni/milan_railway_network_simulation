@@ -1,66 +1,109 @@
 {
 	"scenario": "passante-alta-frequenza",
 	"title": "Passante ad alta frequenza: corse aggiunte nell'area urbana di Milano",
-	"status": "prima versione, 2026-09-27: relazioni definite, fasce orarie e intervallo minimo provvisori",
+	"status": "seconda versione, 2026-09-27: relazioni definite sui flussi reali e sui passaggi a livello; fasce orarie e intervalli minimi provvisori",
 	"sources": [
 		"Relazioni e criteri di scelta: decisione di progetto, 2026-09-27",
-		"Orario reale: GTFS Trenord orari_trenord, mercoledi' 2026-09-23. Nel tunnel 12 treni S per ora e direzione, intervallo medio 5 min, da 2 a 9-11 min; ogni linea S ha cadenza 30 min"
+		"Orario reale: GTFS Trenord orari_trenord, mercoledi' 2026-09-23",
+		"Passaggi a livello: OpenStreetMap, nodi railway=level_crossing sulle way dei link della rete (data/osm/2026-08-05-network-sweep). Il rilievo raccoglie tutti i binari di una tratta, compresi quelli di servizio, e puo' essere incompleto",
+		"Storia delle linee S: Wikipedia, Servizio ferroviario suburbano di Milano (consultata il 2026-09-27)"
+	],
+	"criteria": [
+		"L'intervallo di una relazione si misura su un flusso: tutti i treni, di qualunque linea, che fermano nelle due stazioni indicate, nell'ordine di marcia. Una corsa a ridosso di un altro treno non serve.",
+		"Le corse reali non vengono mai spostate.",
+		"Una corsa viene aggiunta dove l'attesa supera l'obiettivo, purche' l'intervallo risultante non scenda sotto il minimo.",
+		"Si potenzia dove non ci sono passaggi a livello. L'unica eccezione e' la S9, dichiarata nella sua relazione.",
+		"Le relazioni sono servite nell'ordine del file: ciascuna vede le corse aggiunte da quelle che la precedono."
 	],
 	"serviceGapMinutes": 60,
+	"minSpacingSeconds": 300,
 	"tunnel": {
 		"referenceStop": "S01648",
 		"minHeadwaySeconds": 180,
-		"note": "Milano Repubblica. Intervallo minimo fra due treni nella stessa direzione, valore provvisorio: sosta di 60 s da orario, sgombero della banchina, una sezione di blocco da 1350 m libera davanti al treno che segue. Da verificare con la serie sperimentale."
+		"note": "Milano Repubblica. Intervallo minimo fra due treni nella stessa direzione, valore provvisorio: sosta di 60 s da orario, sgombero della banchina, una sezione di blocco da 1350 m libera davanti al treno che segue. Nel tunnel circolano 12 treni l'ora per direzione, in media uno ogni 5 minuti."
 	},
 	"relations": [
 		{
-			"id": "saronno-rogoredo",
-			"lines": ["S1"],
-			"from": "S01933",
-			"to": "S01820",
+			"id": "bovisa-passante",
+			"flow": ["S01642", "S01643"],
+			"services": [
+				{"line": "S2", "from": "S01109", "to": "S01820"},
+				{"line": "S1", "from": "S01933", "to": "S01820"},
+				{"line": "S2", "from": "S01109", "to": "S01820"},
+				{"line": "S12", "from": "S01642", "to": "S01820"},
+				{"line": "S2", "from": "S01109", "to": "S01820"},
+				{"line": "S1", "from": "S01933", "to": "S01820"},
+				{"line": "S2", "from": "S01109", "to": "S01820"},
+				{"line": "S13", "from": "S01642", "to": "S01820"}
+			],
 			"intensity": "full",
 			"throughTunnel": true,
-			"reason": "Collega Saronno al Passante. La S1 reale prosegue fino a Lodi: la corsa aggiunta termina a Rogoredo, confine sud dell'area. La S3 non e' potenziata: fra Cadorna e Saronno circolano gia' i regionali, piu' veloci perche' non effettuano le fermate intermedie."
+			"levelCrossings": 0,
+			"reason": "Flusso fra Milano Bovisa e il Passante. I treni arrivano a coppie: due a 4 minuti, poi un vuoto di 11. Una corsa in ogni vuoto porta a un treno ogni 5 minuti circa. Le corse aggiunte ruotano fra S2 da Cormano, S1 da Saronno e la navetta Bovisa-Rogoredo: i treni per Saronno e per il ramo di Seveso sono numerosi, ma quasi tutti diretti a Cadorna, e pochi collegano il nord al sud della citta'. La navetta riprende il servizio della S10, Bovisa-Porta Vittoria dal 2004, prolungata a Pavia e rinominata S13 nel 2011. Le corse terminano a Rogoredo, confine sud dell'area."
 		},
 		{
 			"id": "saronno-albairate",
-			"lines": ["S9"],
-			"from": "S01933",
-			"to": "S01059",
+			"flow": ["S01934", "S01086"],
+			"services": [
+				{"line": "S9", "from": "S01933", "to": "S01059"}
+			],
 			"intensity": "full",
 			"throughTunnel": false,
-			"reason": "Potenziata sull'intero percorso: serve Saronno, Monza e la cintura sud. Comprende tratte a binario unico che il generatore non limita: la tenuta della cadenza e' un risultato della simulazione."
+			"levelCrossings": 5,
+			"reason": "Potenziata sull'intero percorso: collega Saronno e Monza a Milano est e alla cintura sud senza passare dal centro, in alternativa a Cadorna e alla metropolitana. Rende inutile potenziare la S19, che sulla cintura sud si sovrapporrebbe. Limiti noti: 5 passaggi a livello fra Desio e Cesano Maderno e binario unico fra Saronno e Seregno. Il generatore non li limita: il binario unico e' misurato dalla simulazione, i passaggi a livello non sono modellati."
 		},
 		{
-			"id": "rogoredo-albairate",
-			"lines": ["S19"],
-			"from": "S01820",
-			"to": "S01059",
+			"id": "cormano-cadorna",
+			"flow": ["S01109", "S01079"],
+			"services": [
+				{"line": "S4", "from": "S01109", "to": "S01066"}
+			],
 			"intensity": "full",
 			"throughTunnel": false,
-			"reason": "Copre la sola cintura sud, zona priva di metropolitana e di altri servizi su ferro."
+			"levelCrossings": 0,
+			"reason": "Tratto urbano del ramo di Seveso, servito da S2 e S4. Le corse aggiunte si fermano a Cormano-Cusano Milanino: oltre, fino a Seveso, si contano 10 passaggi a livello in 12 km. A Cormano un binario esterno alla stazione consente la sosta e la manovra. Segue la relazione del Passante, di cui vede le S2 aggiunte."
 		},
 		{
 			"id": "monza-garibaldi",
-			"lines": ["S8", "S11"],
-			"from": "S01322",
-			"to": "S01645",
+			"flow": ["S01322", "S01325"],
+			"services": [
+				{"line": "S8", "from": "S01322", "to": "S01645"},
+				{"line": "S11", "from": "S01322", "to": "S01645"}
+			],
 			"intensity": "reduced",
 			"throughTunnel": false,
-			"reason": "Monza e' gia' servita dalla S9 potenziata: corse aggiuntive a intensita' ridotta, alternate fra S8 e S11. La S7 e' esclusa: trazione diesel, prestazioni insufficienti per queste cadenze, e aggiungerebbe solo traffico fino a Monza."
+			"levelCrossings": 0,
+			"reason": "Monza e' gia' servita dalla S9 potenziata: corse aggiuntive a intensita' ridotta, alternate fra S8 e S11, sulla linea a quattro binari per Sesto San Giovanni. Segue la relazione della S9, di cui vede le corse aggiunte."
 		}
 	],
 	"discarded": [
 		{
 			"id": "garibaldi-rho",
-			"lines": ["S11"],
-			"from": "S01645",
-			"to": "S01039",
-			"reason": "Valutata e scartata il 2026-09-27. A Rho Fiera fermano, oltre a S5, S6 e S11, i regionali RE4, RE5, R23 e R21: verso Milano 8-9 treni l'ora, con intervalli fra 5 e 10 minuti e un solo vuoto oltre i 10 minuti fra le 7 e le 9 (GTFS Trenord, 2026-09-23). Le corse aggiunte si sovrapporrebbero ai regionali. S5 e S6 non sono potenziate: gia' molto cariche, e la S5 ha un percorso troppo lungo, da Varese a Treviglio."
+			"reason": "A Rho Fiera fermano, oltre a S5, S6 e S11, i regionali RE4, RE5, R23 e R21: verso Milano 8-9 treni l'ora, con intervalli fra 5 e 10 minuti. Le corse aggiunte si sovrapporrebbero ai regionali. La relazione e' fattibile: la S14 Rho-Rogoredo ha circolato per Expo dal 26 aprile al 31 ottobre 2015."
+		},
+		{
+			"id": "rogoredo-albairate",
+			"reason": "La S19 percorre la cintura sud insieme alla S9: potenziate entrambe si sovrapporrebbero. Torna utile solo per un obiettivo di 5 minuti sulla cintura."
+		},
+		{
+			"id": "S3",
+			"reason": "Fra Cadorna e Saronno circolano gia' i regionali, piu' veloci perche' non effettuano le fermate intermedie. Da Saronno verso Milano parte un treno ogni 3-4 minuti."
+		},
+		{
+			"id": "S5, S6",
+			"reason": "Gia' molto cariche; la S5 ha un percorso troppo lungo, da Varese a Treviglio."
+		},
+		{
+			"id": "S7",
+			"reason": "Trazione diesel, prestazioni insufficienti per queste cadenze; aggiungerebbe solo traffico fino a Monza."
+		},
+		{
+			"id": "S2 e S4 oltre Cormano",
+			"reason": "10 passaggi a livello fra Cormano e Seveso, altri 6 fino a Meda e 4 fino a Camnago: con le cadenze dello scenario le sbarre resterebbero abbassate per gran parte del tempo."
 		}
 	],
 	"dayProfiles": {
-		"note": "Fasce provvisorie, definite in assenza di conteggi dei passeggeri. Cadenze ammesse 15 e 10 minuti, divisori dei 30 dell'orario reale. peak = cadenza scelta; offPeak = un gradino piu' rado (10 -> 15, 15 -> nessuna aggiunta); fuori dalle fasce nessuna corsa aggiunta. La domenica e' trattata come festivo; le festivita' infrasettimanali non sono distinte.",
+		"note": "Fasce provvisorie, definite in assenza di conteggi dei passeggeri. Obiettivi ammessi: attesa massima di 15 o di 10 minuti. peak = obiettivo scelto; offPeak = un gradino piu' rado (10 -> 15, 15 -> nessuna aggiunta); fuori dalle fasce nessuna corsa aggiunta. La domenica e' trattata come festivo; le festivita' infrasettimanali non sono distinte.",
 		"weekday": [
 			{"from": "06:30", "to": "09:30", "level": "peak"},
 			{"from": "09:30", "to": "16:30", "level": "offPeak"},
