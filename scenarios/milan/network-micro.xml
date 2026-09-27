@@ -98691,7 +98691,7 @@
 				<attribute name="microNode" class="java.lang.String">lodi-codogno</attribute>
 				<attribute name="microSidings" class="java.lang.Boolean">true</attribute>
 				<attribute name="microStation" class="java.lang.String">S01828</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">11</attribute>
 			</attributes>
 		</link>
 		<link id="S01828.sidings.north.enter" from="S01828.north.sidings.out" to="S01828.sidings.a" length="200.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -98699,7 +98699,7 @@
 				<attribute name="microNode" class="java.lang.String">lodi-codogno</attribute>
 				<attribute name="microStation" class="java.lang.String">S01828</attribute>
 				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">11</attribute>
 			</attributes>
 		</link>
 		<link id="S01828.sidings.north.leave" from="S01828.sidings.b" to="S01828.north.sidings.in" length="200.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -98707,7 +98707,7 @@
 				<attribute name="microNode" class="java.lang.String">lodi-codogno</attribute>
 				<attribute name="microStation" class="java.lang.String">S01828</attribute>
 				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">11</attribute>
 			</attributes>
 		</link>
 		<link id="S01828.sidings.south.enter" from="S01828.south.sidings.out" to="S01828.sidings.a" length="200.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -98715,7 +98715,7 @@
 				<attribute name="microNode" class="java.lang.String">lodi-codogno</attribute>
 				<attribute name="microStation" class="java.lang.String">S01828</attribute>
 				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">11</attribute>
 			</attributes>
 		</link>
 		<link id="S01828.sidings.south.leave" from="S01828.sidings.b" to="S01828.south.sidings.in" length="200.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -98723,7 +98723,7 @@
 				<attribute name="microNode" class="java.lang.String">lodi-codogno</attribute>
 				<attribute name="microStation" class="java.lang.String">S01828</attribute>
 				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">11</attribute>
 			</attributes>
 		</link>
 		<link id="S01828_S01825" from="S01828_S01825.exit.b" to="S01828_S01825.entry.a" length="23224.8" freespeed="26.249777777777776" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
