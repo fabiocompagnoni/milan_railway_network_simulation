@@ -1,0 +1,77 @@
+{
+	"scenario": "passante-alta-frequenza",
+	"title": "Passante ad alta frequenza: corse aggiunte nell'area urbana di Milano",
+	"status": "prima versione, 2026-09-27: relazioni definite, fasce orarie e intervallo minimo provvisori",
+	"sources": [
+		"Relazioni e criteri di scelta: decisione di progetto, 2026-09-27",
+		"Orario reale: GTFS Trenord orari_trenord, mercoledi' 2026-09-23. Nel tunnel 12 treni S per ora e direzione, intervallo medio 5 min, da 2 a 9-11 min; ogni linea S ha cadenza 30 min"
+	],
+	"serviceGapMinutes": 60,
+	"tunnel": {
+		"referenceStop": "S01648",
+		"minHeadwaySeconds": 180,
+		"note": "Milano Repubblica. Intervallo minimo fra due treni nella stessa direzione, valore provvisorio: sosta di 60 s da orario, sgombero della banchina, una sezione di blocco da 1350 m libera davanti al treno che segue. Da verificare con la serie sperimentale."
+	},
+	"relations": [
+		{
+			"id": "saronno-rogoredo",
+			"lines": ["S1"],
+			"from": "S01933",
+			"to": "S01820",
+			"intensity": "full",
+			"throughTunnel": true,
+			"reason": "Collega Saronno al Passante. La S1 reale prosegue fino a Lodi: la corsa aggiunta termina a Rogoredo, confine sud dell'area. La S3 non e' potenziata: fra Cadorna e Saronno circolano gia' i regionali, piu' veloci perche' non effettuano le fermate intermedie."
+		},
+		{
+			"id": "saronno-albairate",
+			"lines": ["S9"],
+			"from": "S01933",
+			"to": "S01059",
+			"intensity": "full",
+			"throughTunnel": false,
+			"reason": "Potenziata sull'intero percorso: serve Saronno, Monza e la cintura sud. Comprende tratte a binario unico che il generatore non limita: la tenuta della cadenza e' un risultato della simulazione."
+		},
+		{
+			"id": "rogoredo-albairate",
+			"lines": ["S19"],
+			"from": "S01820",
+			"to": "S01059",
+			"intensity": "full",
+			"throughTunnel": false,
+			"reason": "Copre la sola cintura sud, zona priva di metropolitana e di altri servizi su ferro."
+		},
+		{
+			"id": "garibaldi-rho",
+			"lines": ["S11"],
+			"from": "S01645",
+			"to": "S01039",
+			"intensity": "full",
+			"throughTunnel": false,
+			"reason": "Gran parte delle S11 termina a Milano Porta Garibaldi senza proseguire fino a Rho Fiera: le corse aggiunte coprono quei vuoti. S5 e S6 non sono potenziate: sono gia' molto cariche e la S5 ha un percorso troppo lungo, da Varese a Treviglio."
+		},
+		{
+			"id": "monza-garibaldi",
+			"lines": ["S8", "S11"],
+			"from": "S01322",
+			"to": "S01645",
+			"intensity": "reduced",
+			"throughTunnel": false,
+			"reason": "Monza e' gia' servita dalla S9 potenziata: corse aggiuntive a intensita' ridotta, alternate fra S8 e S11. La S7 e' esclusa: trazione diesel, prestazioni insufficienti per queste cadenze, e aggiungerebbe solo traffico fino a Monza."
+		}
+	],
+	"dayProfiles": {
+		"note": "Fasce provvisorie, definite in assenza di conteggi dei passeggeri. peak = cadenza scelta; offPeak = un gradino piu' rado (10 -> 15, 15 -> 20, 20 -> nessuna aggiunta); fuori dalle fasce nessuna corsa aggiunta. La domenica e' trattata come festivo; le festivita' infrasettimanali non sono distinte.",
+		"weekday": [
+			{"from": "06:30", "to": "09:30", "level": "peak"},
+			{"from": "09:30", "to": "16:30", "level": "offPeak"},
+			{"from": "16:30", "to": "19:30", "level": "peak"},
+			{"from": "19:30", "to": "21:00", "level": "offPeak"}
+		],
+		"saturday": [
+			{"from": "07:00", "to": "21:00", "level": "offPeak"}
+		],
+		"holiday": [
+			{"from": "09:00", "to": "20:00", "level": "offPeak", "onlyIntensity": "full"}
+		]
+	}
+}
