@@ -42,6 +42,33 @@ class GtfsFeedTest {
 	}
 
 	@Test
+	void furtherTripsGiveANewFeedAndLeaveThisOneAsItWas() {
+		GtfsFeed feed = GtfsFeed.load(fixture());
+		GtfsFeed.Trip extra = new GtfsFeed.Trip("T1x", "SX", "SVC_WEEKDAY");
+		List<GtfsFeed.StopTime> calls = List.of(new GtfsFeed.StopTime("T1x", 9 * 3600, 9 * 3600, "S1", 1),
+			new GtfsFeed.StopTime("T1x", 9 * 3600 + 300, 9 * 3600 + 300, "S2", 2));
+
+		GtfsFeed extended = feed.with(List.of(extra), java.util.Map.of("T1x", calls));
+
+		assertEquals(feed.tripsById().size() + 1, extended.tripsById().size());
+		assertEquals(calls, extended.stopTimesByTripId().get("T1x"));
+		assertNull(feed.tripsById().get("T1x"));
+	}
+
+	@Test
+	void aFurtherTripMustBeNewRunOnAKnownRouteAndCallSomewhere() {
+		GtfsFeed feed = GtfsFeed.load(fixture());
+		List<GtfsFeed.StopTime> calls = List.of(new GtfsFeed.StopTime("x", 0, 0, "S1", 1));
+
+		assertThrows(IllegalArgumentException.class,
+			() -> feed.with(List.of(new GtfsFeed.Trip("T1", "SX", "SVC_WEEKDAY")), java.util.Map.of("T1", calls)));
+		assertThrows(IllegalArgumentException.class,
+			() -> feed.with(List.of(new GtfsFeed.Trip("x", "NOWHERE", "SVC_WEEKDAY")), java.util.Map.of("x", calls)));
+		assertThrows(IllegalArgumentException.class,
+			() -> feed.with(List.of(new GtfsFeed.Trip("x", "SX", "SVC_WEEKDAY")), java.util.Map.of()));
+	}
+
+	@Test
 	void failsOnMissingDirectory() {
 		assertThrows(RuntimeException.class, () -> GtfsFeed.load(Path.of("does/not/exist")));
 	}
