@@ -7,7 +7,8 @@
 		"rilievo diretto 2026-09-13: 7 fisso S9 (capolinea); 1tr fisso S3, 2tr fisso S1; 1-2 verso Como; 3-4 verso Varese e Laveno; 5-6 verso Novara (anche Malpensa Express e RE51); a sud i due tronchi sui binari lenti dei suburbani, il resto sui binari veloci dei regionali che saltano tutte le fermate fino a Bovisa; 7 con percorso dedicato",
 		"docs/network/infrastruttura-nodo-milano.md: da Bovisa a Saronno 4 binari, 1-2 suburbani con tutte le fermate, 3-4 regionali senza fermate; S9 mono-binario dedicato",
 		"GTFS Trenord orari_trenord: vicini meso di Saronno (S01077 Saronno Sud, S01642 Bovisa diretta, S01135 Rescaldina, S01137 Busto Arsizio Nord, S01724 Gerenzano-Turate, S01729 Tradate, S01755 Rovello Porro, S01757 Lomazzo)",
-		"data/osm/2026-09-13-micro-nodes/platform_ways.csv: way OSM (railway:track_ref) dei binari 1-7, 1Tr e 2Tr"
+		"data/osm/2026-09-13-micro-nodes/platform_ways.csv: way OSM (railway:track_ref) dei binari 1-7, 1Tr e 2Tr",
+		"rilievo diretto 2026-09-27: la S9 si attesta a Saronno sul binario 7 e puo' usare anche l'8; fra Saronno e Saronno Sud percorre due binari dedicati, distinti dai quattro delle altre linee; a Saronno Sud ferma ai binari 1s e 2s, separati dagli altri quattro; doppio binario fino al posto di movimento Groane, che ha tre binari per gli incroci, poi binario unico fino a Seregno"
 	],
 
 	"stations": [
@@ -18,17 +19,17 @@
 			"platformLengthM": null,
 			"groups": [
 				{"id": "saronno_s3", "kind": "terminal", "tracks": [{"ref": "1tr", "direction": null, "wayIds": [951200635]}],
-					"connections": {"south": ["meso:S01077"]}, "notes": "fisso S3; binari lenti verso Bovisa"},
+					"connections": {"south": ["segment:S01077_S01933:lenti"]}, "notes": "fisso S3; binari lenti verso Bovisa"},
 				{"id": "saronno_s1", "kind": "terminal", "tracks": [{"ref": "2tr", "direction": null, "wayIds": [951200636]}],
-					"connections": {"south": ["meso:S01077"]}, "notes": "fisso S1; binari lenti verso Bovisa"},
+					"connections": {"south": ["segment:S01077_S01933:lenti"]}, "notes": "fisso S1; binari lenti verso Bovisa"},
 				{"id": "saronno_como", "kind": "through", "tracks": [{"ref": "1", "direction": "north", "wayIds": [900184102]}, {"ref": "2", "direction": "south", "wayIds": [900184103]}],
 					"connections": {"south": ["meso:S01642"], "north": ["meso:S01755", "meso:S01757"]}, "notes": "verso Como; binari veloci verso Bovisa"},
 				{"id": "saronno_varese", "kind": "through", "tracks": [{"ref": "3", "direction": "north", "wayIds": [900528147]}, {"ref": "4", "direction": "south", "wayIds": [372123777]}],
 					"connections": {"south": ["meso:S01642"], "north": ["meso:S01724", "meso:S01729"]}, "notes": "verso Varese e Laveno; binari veloci verso Bovisa"},
 				{"id": "saronno_novara", "kind": "through", "tracks": [{"ref": "5", "direction": "north", "wayIds": [900175100]}, {"ref": "6", "direction": "south", "wayIds": [900175101]}],
-					"connections": {"south": ["meso:S01642", "meso:S01077"], "north": ["meso:S01135", "meso:S01137"]}, "notes": "verso Novara e Malpensa; binari veloci verso Bovisa; RE51 prosegue verso Garibaldi"},
-				{"id": "saronno_s9", "kind": "terminal", "tracks": [{"ref": "7", "direction": null, "wayIds": [372119852]}],
-					"connections": {"south": ["meso:S01077"]}, "notes": "fisso S9, capolinea; percorso dedicato verso Seregno, quasi mai in conflitto"}
+					"connections": {"south": ["meso:S01642"], "north": ["meso:S01135", "meso:S01137"]}, "notes": "verso Novara e Malpensa; binari veloci verso Bovisa; RE51 prosegue verso Garibaldi"},
+				{"id": "saronno_s9", "kind": "terminal", "tracks": [{"ref": "7", "direction": null, "wayIds": [372119852]}, {"ref": "8", "direction": null, "wayIds": []}],
+					"connections": {"south": ["segment:S01077_S01933:s9"]}, "notes": "capolinea della S9: binario 7, con l'8 utilizzabile; percorso dedicato verso Seregno, separato dalle altre linee"}
 			],
 			"throats": [
 				{"id": "saronno_throat_south", "side": "south", "resource": "saronno_throat_south", "lengthM": null, "speedKmh": null, "switches": null,
@@ -39,16 +40,52 @@
 					"notes": "diramazione Como / Varese / Novara; da rilevare"}
 			],
 			"sidings": {"tracks": null, "note": "da rilevare"},
-			"notes": "coppie 1-2, 3-4, 5-6 direzionali con circolazione a sinistra; il binario 7 non condivide la gola sud (percorso dedicato)"
+			"notes": "coppie 1-2, 3-4, 5-6 direzionali con circolazione a sinistra; i binari 7 e 8 non condividono la gola sud (percorso dedicato)"
+		},
+		{
+			"id": "S01077",
+			"name": "Saronno Sud",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "saronno_sud_milano", "kind": "through", "capacity": 2, "otherOperatorsShare": 0,
+					"connections": {"north": ["segment:S01077_S01933:lenti"], "south": ["meso:S01076"]},
+					"notes": "linea Milano-Saronno, quattro binari: qui i due lenti, dove fermano S1 e S3; i due veloci sono rappresentati dal collegamento diretto Bovisa-Saronno, percorso dai treni che non fermano. south = verso Milano"},
+				{"id": "saronno_sud_s9", "kind": "through", "tracks": [{"ref": "1s", "direction": null, "wayIds": []}, {"ref": "2s", "direction": null, "wayIds": []}],
+					"connections": {"north": ["segment:S01077_S01933:s9"], "south": ["meso:S01934"]},
+					"notes": "binari 1s e 2s della linea per Seregno, separati dagli altri quattro; verso di ciascun binario non rilevato. south = verso Seregno"}
+			],
+			"throats": [],
+			"notes": "due impianti affiancati e indipendenti: la linea per Milano e quella per Seregno"
 		}
 	],
 
-	"segments": [],
+	"segments": [
+		{
+			"from": "S01077",
+			"to": "S01933",
+			"bundles": {
+				"lenti": {
+					"north": {"wayIds": [], "lengthM": 1835},
+					"south": {"wayIds": [], "lengthM": 1835},
+					"speedProfile": [{"kmh": 60, "lengthM": 1835}],
+					"use": "binari lenti della Milano-Saronno, percorsi da S1 e S3"
+				},
+				"s9": {
+					"north": {"wayIds": [], "lengthM": 1835},
+					"south": {"wayIds": [], "lengthM": 1835},
+					"speedProfile": [{"kmh": 60, "lengthM": 1835}],
+					"use": "due binari dedicati alla linea per Seregno, percorsi dalla sola S9"
+				}
+			},
+			"notes": "lunghezza e velocita' dalla tabella delle misure OSM (1835 m, 60 km/h); attribuzione delle way ai due fasci da rilevare"
+		}
+	],
 
 	"lines": {
-		"S1": {"bundle": null, "stations": {"S01933": ["saronno_s1"]}},
-		"S3": {"bundle": null, "stations": {"S01933": ["saronno_s3"]}},
-		"S9": {"bundle": null, "stations": {"S01933": ["saronno_s9"]}},
+		"S1": {"bundle": "lenti", "stations": {"S01933": ["saronno_s1"], "S01077": ["saronno_sud_milano"]}},
+		"S3": {"bundle": "lenti", "stations": {"S01933": ["saronno_s3"], "S01077": ["saronno_sud_milano"]}},
+		"S9": {"bundle": "s9", "stations": {"S01933": ["saronno_s9"], "S01077": ["saronno_sud_s9"]}},
 		"RE54": {"bundle": null, "stations": {"S01933": ["saronno_novara"]}, "notes": "Malpensa Express: stessi binari della linea per Novara"},
 		"RE51": {"bundle": null, "stations": {"S01933": ["saronno_novara"]}, "notes": "come RE54 fino a Bovisa, poi verso Garibaldi"},
 		"R17": {"bundle": null, "stations": {"S01933": ["saronno_como"]}},
