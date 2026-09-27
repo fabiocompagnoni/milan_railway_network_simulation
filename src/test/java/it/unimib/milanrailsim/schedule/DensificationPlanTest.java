@@ -29,7 +29,7 @@ class DensificationPlanTest {
 	void readsTheCommittedScenario() {
 		DensificationPlan plan = DensificationPlan.read(COMMITTED);
 
-		assertEquals(5, plan.relations().size());
+		assertEquals(4, plan.relations().size());
 		assertEquals("S01648", plan.tunnel().referenceStop());
 		assertEquals(180, plan.tunnel().minHeadwaySeconds());
 		assertEquals(3600, plan.serviceGapSeconds());

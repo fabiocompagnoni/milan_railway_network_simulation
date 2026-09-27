@@ -41,15 +41,6 @@
 			"reason": "Copre la sola cintura sud, zona priva di metropolitana e di altri servizi su ferro."
 		},
 		{
-			"id": "garibaldi-rho",
-			"lines": ["S11"],
-			"from": "S01645",
-			"to": "S01039",
-			"intensity": "full",
-			"throughTunnel": false,
-			"reason": "Gran parte delle S11 termina a Milano Porta Garibaldi senza proseguire fino a Rho Fiera: le corse aggiunte coprono quei vuoti. S5 e S6 non sono potenziate: sono gia' molto cariche e la S5 ha un percorso troppo lungo, da Varese a Treviglio."
-		},
-		{
 			"id": "monza-garibaldi",
 			"lines": ["S8", "S11"],
 			"from": "S01322",
@@ -57,6 +48,15 @@
 			"intensity": "reduced",
 			"throughTunnel": false,
 			"reason": "Monza e' gia' servita dalla S9 potenziata: corse aggiuntive a intensita' ridotta, alternate fra S8 e S11. La S7 e' esclusa: trazione diesel, prestazioni insufficienti per queste cadenze, e aggiungerebbe solo traffico fino a Monza."
+		}
+	],
+	"discarded": [
+		{
+			"id": "garibaldi-rho",
+			"lines": ["S11"],
+			"from": "S01645",
+			"to": "S01039",
+			"reason": "Valutata e scartata il 2026-09-27. A Rho Fiera fermano, oltre a S5, S6 e S11, i regionali RE4, RE5, R23 e R21: verso Milano 8-9 treni l'ora, con intervalli fra 5 e 10 minuti e un solo vuoto oltre i 10 minuti fra le 7 e le 9 (GTFS Trenord, 2026-09-23). Le corse aggiunte si sovrapporrebbero ai regionali. S5 e S6 non sono potenziate: gia' molto cariche, e la S5 ha un percorso troppo lungo, da Varese a Treviglio."
 		}
 	],
 	"dayProfiles": {
