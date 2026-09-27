@@ -7,7 +7,9 @@ import it.unimib.milanrailsim.network.micro.MicroNode;
 import it.unimib.milanrailsim.network.micro.Sidings;
 import it.unimib.milanrailsim.railsim.RailsimSetup;
 import it.unimib.milanrailsim.results.AnalyzeRun;
+import it.unimib.milanrailsim.results.PunctualityAnalysis;
 import it.unimib.milanrailsim.results.RunArchive;
+import it.unimib.milanrailsim.results.RunData;
 import it.unimib.milanrailsim.results.RunOutcome;
 import it.unimib.milanrailsim.runs.RunLibrary;
 import it.unimib.milanrailsim.runs.ScenarioSpec;
@@ -106,19 +108,20 @@ public final class RailsimJob implements SimulationServer.Job {
 		out.send(Message.progress(0, 0, "Carico la rete e l'orario"));
 		Path output = inputs.runDir().resolve("output");
 		FrameSampler sampler;
-		double simulatedEnd;
+		RunData data;
 		try (FrameRecorder recorder = new FrameRecorder(inputs.runDir().resolve(FrameRecorder.FILE_NAME))) {
 			sampler = new FrameSampler(FRAME_INTERVAL_S, tripsPerVehicle(timetable), frame -> {
 				recorder.record(frame);
 				out.send(Message.frame(frame));
 			});
-			simulatedEnd = simulate(scenarioDir, output, sampler, pacer, out, marker);
+			data = simulate(scenarioDir, output, sampler, pacer, out, marker);
 		}
 
+		double simulatedEnd = sampler.simulatedTime();
 		Summary summary = new Summary(sampler.arrivedTrains(), sampler.abortedTrains(), sampler.activeTrains(), simulatedEnd);
 		RunOutcome outcome = new RunOutcome(summary.arrived(), summary.aborted(), summary.stalled(), simulatedEnd,
 			Duration.between(started, Instant.now()));
-		AnalyzeRun.analyze(new AnalyzeRun.Request(output, RunArchive.at(inputs.runDir()),
+		AnalyzeRun.analyze(new AnalyzeRun.Request(data, RunArchive.at(inputs.runDir()),
 			spec.type().name().toLowerCase(), inputs.costsFile(), SPACE_TIME_LINE, outcome, phase -> {
 				out.send(Message.progress(0, 0, phase));
 				touch(marker);
@@ -189,9 +192,9 @@ public final class RailsimJob implements SimulationServer.Job {
 	 * after the last planned arrival of the timetable: the day is over when the
 	 * timetable is, and what is still moving then is late, not scheduled.
 	 *
-	 * @return the last simulated second the run actually reached
+	 * @return the simulated scenario with the punctuality measured on its events
 	 */
-	private double simulate(Path scenarioDir, Path output, FrameSampler sampler, Pacer pacer, Emitter out, Path marker) {
+	private RunData simulate(Path scenarioDir, Path output, FrameSampler sampler, Pacer pacer, Emitter out, Path marker) {
 		Config config = ConfigUtils.loadConfig(inputs.configTemplate().toString());
 		config.network().setInputFile(scenarioDir.resolve("network-with-stations.xml").toAbsolutePath().toString());
 		config.transit().setTransitScheduleFile(scenarioDir.resolve("transitSchedule.xml").toAbsolutePath().toString());
@@ -199,12 +202,19 @@ public final class RailsimJob implements SimulationServer.Job {
 		config.controller().setOutputDirectory(output.toAbsolutePath().toString());
 		config.controller().setRunId(inputs.runDir().getFileName().toString());
 		config.controller().setOverwriteFileSetting(OutputDirectoryHierarchy.OverwriteFileSetting.deleteDirectoryIfExists);
+		// everything the analysis needs is measured in memory while the day runs: the events file
+		// (hundreds of MB, written twice) and the end-of-run dump of the inputs would go unread
+		config.controller().setWriteEventsInterval(0);
+		config.controller().setWritePlansInterval(0);
+		config.controller().setDumpDataAtEnd(false);
+		config.controller().setCreateGraphsInterval(0);
 
 		Scenario scenario = ScenarioUtils.loadScenario(config);
 		double endTime = lastPlannedArrival(scenario.getTransitSchedule()) + END_MARGIN_S;
 		config.qsim().setEndTime(endTime);
 		Controler controler = new Controler(scenario);
 		RailsimSetup.install(controler);
+		PunctualityAnalysis punctuality = new PunctualityAnalysis(scenario.getTransitSchedule());
 		MobsimAfterSimStepListener step = new MobsimAfterSimStepListener() {
 			private double nextProgress;
 
@@ -234,6 +244,7 @@ public final class RailsimJob implements SimulationServer.Job {
 			@Override
 			public void install() {
 				addEventHandlerBinding().toInstance(sampler);
+				addEventHandlerBinding().toInstance(punctuality);
 				addMobsimListenerBinding().toInstance(mobsimReady);
 				addMobsimListenerBinding().toInstance(step);
 				addMobsimListenerBinding().toInstance(new FinishedTrainRetirement(sampler));
@@ -241,7 +252,7 @@ public final class RailsimJob implements SimulationServer.Job {
 			}
 		});
 		controler.run();
-		return sampler.simulatedTime();
+		return new RunData(scenario.getTransitSchedule(), scenario.getTransitVehicles(), scenario.getNetwork(), punctuality, output);
 	}
 
 	/** Departure time plus the last stop's arrival offset, over every departure of the schedule. */

@@ -59,7 +59,7 @@ class AnalyzeRunTest {
 		for (String chart : List.of("delay_histogram", "delay_by_hour", "space_time", "cost_breakdown")) {
 			assertTrue(Files.size(archived.resolve("charts/" + chart + ".png")) > 1000, chart);
 		}
-		assertTrue(Files.exists(archived.resolve("raw/fake.0.events.xml")));
+		assertFalse(Files.exists(archived.resolve("raw")), "the outputs are never copied");
 	}
 
 	@Test
@@ -71,14 +71,14 @@ class AnalyzeRunTest {
 		TestRuns.writeFakeRun(fixture, output, "fake", EVENTS, TIME_DISTANCE);
 		List<String> phases = new java.util.ArrayList<>();
 
-		AnalyzeRun.analyze(new AnalyzeRun.Request(output, RunArchive.at(runDir), "real", Path.of("config/costs.json"),
-			"S1", new RunOutcome(7, 1, 2, 100_000, java.time.Duration.ofSeconds(90)), phases::add));
+		AnalyzeRun.analyze(new AnalyzeRun.Request(RunData.fromOutput(output), RunArchive.at(runDir), "real",
+			Path.of("config/costs.json"), "S1", new RunOutcome(7, 1, 2, 100_000, java.time.Duration.ofSeconds(90)),
+			phases::add));
 
 		String manifest = Files.readString(runDir.resolve("manifest.json"));
 		assertTrue(manifest.contains("\"trainsArrived\" : 7"));
 		assertTrue(manifest.contains("\"trainsStalled\" : 2"));
 		assertTrue(manifest.contains("\"wallClockSeconds\" : 90"));
-		assertFalse(Files.exists(runDir.resolve("raw")), "outputs already live in the run folder");
 		assertTrue(phases.getFirst().startsWith("Analisi"));
 		assertEquals("Archiviazione", phases.getLast());
 	}
