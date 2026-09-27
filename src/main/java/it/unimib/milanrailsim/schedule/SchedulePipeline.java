@@ -34,8 +34,14 @@ public final class SchedulePipeline {
 
 	private static final Logger log = LogManager.getLogger(SchedulePipeline.class);
 
-	/** Terminal turnaround: crews change ends and rotate (domain estimate, Fabio). */
-	public static final int TURNAROUND_SECONDS = 15 * 60;
+	/**
+	 * Shortest time between an arrival at a terminus and the departure the same
+	 * train can take: passengers alight, the driver changes ends, passengers
+	 * board. It is a technical floor, not a layover: a train already standing at
+	 * its platform leaves with the next trip of its line, whenever that is.
+	 * Estimate for a multiple unit of 100 to 140 m.
+	 */
+	public static final int TURNAROUND_SECONDS = 5 * 60;
 
 	private final GtfsFeed feed;
 	private final Network network;
