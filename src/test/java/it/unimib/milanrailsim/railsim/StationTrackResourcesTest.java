@@ -232,6 +232,22 @@ class StationTrackResourcesTest {
 	}
 
 	@Test
+	void noDetourOverAPlatformTheTripCallsAtLater() {
+		Network network = network();
+		// the trip runs through the station on C_D, reverses further on and comes back to end on A_B
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of(),
+			position -> java.util.Set.of(Id.createLinkId("stop_A"), Id.createLinkId("A_B")));
+		RailLink planned = new RailLink(network.getLinks().get(Id.createLinkId("C_D")), null);
+		RailLink terminus = new RailLink(network.getLinks().get(Id.createLinkId("A_B")), null);
+		RailLink free = new RailLink(network.getLinks().get(Id.createLinkId("B_A")), null);
+		TrainPosition train = train(network, "C_D", "C_D", "stop_A", java.util.Set.of("stop_A"), "C_D", "stop_A", "A_B");
+
+		assertFalse(resources.checkReroute(0, null, null, List.of(planned), List.of(terminus), train),
+			"the route would cross A_B twice, and railsim looks for the next stop from the start of the route");
+		assertTrue(resources.checkReroute(0, null, null, List.of(planned), List.of(free), train));
+	}
+
+	@Test
 	void aDetourAroundTheNextStopMustReachAPlatformOfItsArea() {
 		Network network = network();
 		Id<org.matsim.pt.transitSchedule.api.TransitStopArea> area = Id.create("A", org.matsim.pt.transitSchedule.api.TransitStopArea.class);

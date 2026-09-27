@@ -166,12 +166,22 @@ public final class StationTrackResources implements RailResourceManager {
 	 * no platform of its area would drop the next stop itself. Either way the
 	 * train would run through the station: such detours are refused and the
 	 * planned platform is waited for instead.
+	 * <p>
+	 * Refused as well is a detour over a platform the trip calls at later, as
+	 * when a train runs through a station, reverses further on and comes back
+	 * to end there: the platform would be on the route twice, and railsim
+	 * looks for the next stop from the start of the route, so that on the way
+	 * back it would find the stop behind the train and fail
+	 * ({@code TrainState.getRouteUntilNextStop}; seen at Pavia).
 	 */
 	boolean keepsStops(List<RailLink> subRoute, List<RailLink> detour, TrainPosition position) {
 		Id<Link> nextStopLink = position.getNextStop() == null ? null : position.getNextStop().getLinkId();
 		// railsim only knows the next stop; the later calls of the trip come from its route, so a
 		// detour decided one station early cannot drop the terminus behind it (seen at Garibaldi)
 		Set<Id<Link>> calls = callsOfTrip.apply(position);
+		if (detour.stream().anyMatch(link -> calls.contains(link.getLinkId()) && !subRoute.contains(link))) {
+			return false;
+		}
 		boolean aroundNextStop = false;
 		for (RailLink link : subRoute) {
 			if (link.getLinkId().equals(nextStopLink)) {
