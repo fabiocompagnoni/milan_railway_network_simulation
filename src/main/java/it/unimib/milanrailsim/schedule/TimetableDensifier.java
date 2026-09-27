@@ -64,6 +64,24 @@ public final class TimetableDensifier {
 		public Map<String, Long> addedByRelation() {
 			return added.stream().collect(Collectors.groupingBy(Added::relation, TreeMap::new, Collectors.counting()));
 		}
+
+		/** One line per added trip under a header; times in seconds since midnight. */
+		public List<String> addedCsv() {
+			List<String> lines = new ArrayList<>();
+			lines.add("relation,line,trip,copied_trip,from,to,departure_s");
+			added.forEach(trip -> lines.add(String.join(",", trip.relation(), trip.line(), trip.tripId(), trip.templateTripId(),
+				trip.from(), trip.to(), Integer.toString(trip.departureSeconds()))));
+			return lines;
+		}
+
+		/** One line per trip given up under a header; times in seconds since midnight. */
+		public List<String> skippedCsv() {
+			List<String> lines = new ArrayList<>();
+			lines.add("relation,line,planned_s,reason");
+			skipped.forEach(trip -> lines.add(String.join(",", trip.relation(), trip.line(), Integer.toString(trip.plannedSeconds()),
+				trip.reason())));
+			return lines;
+		}
 	}
 
 	public record Densified(GtfsFeed feed, Report report) {
