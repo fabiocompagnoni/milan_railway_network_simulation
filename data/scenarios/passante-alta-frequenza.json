@@ -12,6 +12,7 @@
 		"L'intervallo di una relazione si misura su un flusso: tutti i treni, di qualunque linea, che fermano nelle due stazioni indicate, nell'ordine di marcia. Una corsa a ridosso di un altro treno non serve.",
 		"Le corse reali non vengono mai spostate.",
 		"Una corsa viene aggiunta dove l'attesa supera l'obiettivo, purche' l'intervallo risultante non scenda sotto il minimo.",
+		"Nei capolinea dichiarati una corsa aggiunta parte appena il treno arrivato con un'altra corsa aggiunta ha invertito la marcia, anziche' a meta' del vuoto. Vale per le sole corse aggiunte e per un solo capo di ogni servizio: il tempo guadagnato a un capo si spende all'altro.",
 		"Si potenzia dove non ci sono passaggi a livello. L'unica eccezione e' la S9, dichiarata nella sua relazione.",
 		"Le relazioni sono servite nell'ordine del file: ciascuna vede le corse aggiunte da quelle che la precedono."
 	],
@@ -38,6 +39,8 @@
 			],
 			"intensity": "full",
 			"throughTunnel": true,
+			"promptTermini": ["S01933", "S01109", "S01642"],
+			"promptTerminiReason": "Saronno, Cormano-Cusano Milanino e Milano Bovisa. A Saronno la S1 si attesta sul solo binario 2tr, a Cormano la manovra avviene su un binario esterno alla stazione: la sosta deve restare sotto l'intervallo fra due arrivi. Il margine si scarica a Rogoredo.",
 			"levelCrossings": 0,
 			"reason": "Flusso fra Milano Bovisa e il Passante. I treni arrivano a coppie: due a 4 minuti, poi un vuoto di 11. Una corsa in ogni vuoto porta a un treno ogni 5 minuti circa. Le corse aggiunte ruotano fra S2 da Cormano, S1 da Saronno e la navetta Bovisa-Rogoredo: i treni per Saronno e per il ramo di Seveso sono numerosi, ma quasi tutti diretti a Cadorna, e pochi collegano il nord al sud della citta'. La navetta riprende il servizio della S10, Bovisa-Porta Vittoria dal 2004, prolungata a Pavia e rinominata S13 nel 2011. Le corse terminano a Rogoredo, confine sud dell'area."
 		},
@@ -49,6 +52,8 @@
 			],
 			"intensity": "full",
 			"throughTunnel": false,
+			"promptTermini": ["S01933"],
+			"promptTerminiReason": "Saronno. I due capolinea hanno lo stesso numero di binari per la S9: a Saronno il 7 e l'8, ad Albairate-Vermezzo i tronchi 2 e 4. Sulla cintura sud le corse si inseriscono fra le S19 e i regionali per Mortara, percio' gli orari sono comandati da Saronno.",
 			"levelCrossings": 5,
 			"reason": "Potenziata sull'intero percorso: collega Saronno e Monza a Milano est e alla cintura sud senza passare dal centro, in alternativa a Cadorna e alla metropolitana. Rende inutile potenziare la S19, che sulla cintura sud si sovrapporrebbe. Limiti noti: 5 passaggi a livello fra Desio e Cesano Maderno e binario unico fra Saronno e Seregno. Il generatore non li limita: il binario unico e' misurato dalla simulazione, i passaggi a livello non sono modellati."
 		},
@@ -60,6 +65,8 @@
 			],
 			"intensity": "full",
 			"throughTunnel": false,
+			"promptTermini": ["S01109"],
+			"promptTerminiReason": "Cormano-Cusano Milanino: un solo binario di manovra, contro i binari tronchi di Milano Cadorna.",
 			"levelCrossings": 0,
 			"reason": "Tratto urbano del ramo di Seveso, servito da S2 e S4. Le corse aggiunte si fermano a Cormano-Cusano Milanino: oltre, fino a Seveso, si contano 10 passaggi a livello in 12 km. A Cormano un binario esterno alla stazione consente la sosta e la manovra. Segue la relazione del Passante, di cui vede le S2 aggiunte."
 		},
@@ -72,6 +79,8 @@
 			],
 			"intensity": "reduced",
 			"throughTunnel": false,
+			"promptTermini": ["S01322"],
+			"promptTerminiReason": "Monza: soli binari passanti, contro i binari tronchi di Milano Porta Garibaldi.",
 			"levelCrossings": 0,
 			"reason": "Monza e' gia' servita dalla S9 potenziata: corse aggiuntive a intensita' ridotta, alternate fra S8 e S11, sulla linea a quattro binari per Sesto San Giovanni. Segue la relazione della S9, di cui vede le corse aggiunte."
 		}
