@@ -15,9 +15,11 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -157,6 +159,55 @@ class TimetableDensifierTest {
 		assertEquals("S1", first.line());
 		assertEquals(at(7, 15), first.plannedSeconds());
 		assertEquals(REAL.tripsById().size(), densified.feed().tripsById().size());
+	}
+
+	@Test
+	void atATerminusOfPromptDepartureATripLeavesWhenTheTrainThatArrivedHasTurnedAround() {
+		// trains added from U reach V at 07:18 (S6), 07:33 (S5), 07:48 (S6) and 08:03 (S5)
+		Densified densified = new TimetableDensifier(plan(0, betweenUAndV(Set.of("V")))).densify(REAL, WEDNESDAY, 10);
+
+		assertEquals(List.of(at(7, 8), at(7, 23), at(7, 38), at(7, 53)), departuresFrom(densified, "U"), "the middle of each gap");
+		assertEquals(List.of(at(7, 23), at(7, 38), at(7, 53), at(8, 8)), departuresFrom(densified, "V"),
+			"five minutes after each arrival, not in the middle of the gap");
+		assertEquals(List.of("S6", "S5", "S6", "S5"), linesFrom(densified, "V"), "each trip is of the line of the train taking it");
+	}
+
+	@Test
+	void elsewhereTheTripsOfTheTwoDirectionsAreUnrelated() {
+		Densified densified = new TimetableDensifier(plan(0, betweenUAndV(Set.of()))).densify(REAL, WEDNESDAY, 10);
+
+		assertEquals(List.of(at(7, 21), at(7, 36), at(7, 51), at(8, 6)), departuresFrom(densified, "V"));
+	}
+
+	@Test
+	void theDirectionLeavingATerminusOfPromptDepartureIsFilledLast() {
+		Densified densified = new TimetableDensifier(plan(0, betweenUAndV(Set.of("U")))).densify(REAL, WEDNESDAY, 10);
+
+		// trains added from V leave in the middle of the gaps and reach U from 07:31, a quarter of an hour apart
+		assertEquals(List.of(at(7, 21), at(7, 36), at(7, 51), at(8, 6)), departuresFrom(densified, "V"));
+		assertEquals(List.of(at(7, 8), at(7, 23), at(7, 36), at(7, 51)), departuresFrom(densified, "U"),
+			"no train has arrived for the first two trips; the others leave five minutes after an arrival");
+	}
+
+	@Test
+	void promptDeparturesAtBothEndsOfAServiceAreRefused() {
+		assertThrows(IllegalArgumentException.class, () -> betweenUAndV(Set.of("U", "V")));
+	}
+
+	/** S6 and S5 trips between U and V, in turn. */
+	private static Relation betweenUAndV(Set<String> promptTermini) {
+		return new Relation("u-v", List.of("U", "V"), List.of(new Service("S6", "U", "V"), new Service("S5", "U", "V")),
+			Intensity.FULL, false, promptTermini);
+	}
+
+	private static List<Integer> departuresFrom(Densified densified, String stop) {
+		return densified.report().added().stream().filter(added -> added.from().equals(stop)).map(Added::departureSeconds)
+			.sorted().toList();
+	}
+
+	private static List<String> linesFrom(Densified densified, String stop) {
+		return densified.report().added().stream().filter(added -> added.from().equals(stop))
+			.sorted(Comparator.comparingInt(Added::departureSeconds)).map(Added::line).toList();
 	}
 
 	@Test

@@ -10,10 +10,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.Set;
 
 /**
  * Where and how much the urban timetable is densified, as declared in
@@ -65,12 +67,27 @@ public record DensificationPlan(List<Relation> relations, Tunnel tunnel, int ser
 	 *                      and then at the second, and the other way round for the opposite direction
 	 * @param services      what the added trips are copies of, taken in turn
 	 * @param throughTunnel whether the trips run through the Passante tunnel and must keep its minimum headway
+	 * @param promptTermini stop ids of the ends of the services where an added trip leaves as soon as the train of an
+	 *                      added trip that ended there has turned around; at most one end of each service
 	 */
-	public record Relation(String id, List<String> flow, List<Service> services, Intensity intensity, boolean throughTunnel) {
+	public record Relation(String id, List<String> flow, List<Service> services, Intensity intensity, boolean throughTunnel,
+			Set<String> promptTermini) {
 
 		public Relation {
 			flow = List.copyOf(flow);
 			services = List.copyOf(services);
+			promptTermini = Set.copyOf(promptTermini);
+			for (Service service : services) {
+				if (promptTermini.contains(service.from()) && promptTermini.contains(service.to())) {
+					throw new IllegalArgumentException("Relation " + id + " asks for prompt departures at both ends of " + service.line()
+						+ ": the time gained at one end is spent at the other");
+				}
+			}
+		}
+
+		/** A relation whose added trips all leave at even fractions of the gap they fill. */
+		public Relation(String id, List<String> flow, List<Service> services, Intensity intensity, boolean throughTunnel) {
+			this(id, flow, services, intensity, throughTunnel, Set.of());
 		}
 	}
 
@@ -146,8 +163,12 @@ public record DensificationPlan(List<Relation> relations, Tunnel tunnel, int ser
 		if (services.isEmpty() || services.stream().anyMatch(service -> service.from().equals(service.to()))) {
 			throw new IllegalArgumentException("Relation " + id + " in " + file + " needs services between two different stops");
 		}
+		Set<String> promptTermini = new HashSet<>();
+		if (node.has("promptTermini")) {
+			node.get("promptTermini").forEach(stop -> promptTermini.add(stop.asText()));
+		}
 		return new Relation(id, flow, services, Intensity.valueOf(required(node, "intensity", file).asText().toUpperCase()),
-			required(node, "throughTunnel", file).asBoolean());
+			required(node, "throughTunnel", file).asBoolean(), promptTermini);
 	}
 
 	private static Band band(JsonNode node, Path file) {

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -32,6 +33,11 @@ import java.util.stream.Collectors;
  * are added between them. An added trip is a copy of a real trip of one of
  * the relation's services, cut to the ends of the service and shifted: same
  * stops, same running and dwell times. Real trips are never moved.
+ * <p>
+ * Added trips leave at even fractions of the gap they fill. At the termini a
+ * relation declares, a trip leaves instead when the train of an added trip
+ * that ended there has turned around, as long as the target wait and the
+ * minimum spacing hold.
  * <p>
  * Whether the network carries the denser timetable is not decided here: the
  * only constraint applied is the minimum headway of the Passante tunnel,
@@ -112,6 +118,10 @@ public final class TimetableDensifier {
 
 	/** The part of a real trip between the two ends of a service. */
 	private record Segment(Run run, int first, int last) {
+
+		StopTime origin() {
+			return run.calls().get(first);
+		}
 	}
 
 	/** Departures from the tunnel's reference stop, by the stop the trains head for next. */
@@ -162,10 +172,7 @@ public final class TimetableDensifier {
 	 */
 	public Densified densify(GtfsFeed real, LocalDate day, int peakCadenceMinutes) {
 		Filling filling = new Filling(day, peakCadenceMinutes, railRunsOf(real, day));
-		for (Relation relation : plan.relations()) {
-			filling.fill(relation, relation.flow().getFirst(), relation.flow().getLast());
-			filling.fill(relation, relation.flow().getLast(), relation.flow().getFirst());
-		}
+		plan.relations().forEach(filling::fill);
 		return new Densified(real.with(filling.trips, filling.calls), new Report(List.copyOf(filling.added), List.copyOf(filling.skipped)));
 	}
 
@@ -195,6 +202,7 @@ public final class TimetableDensifier {
 		private final List<Added> added = new ArrayList<>();
 		private final List<Skipped> skipped = new ArrayList<>();
 		private final Map<String, Integer> copiesOfTrip = new HashMap<>();
+		private final Map<Terminus, PriorityQueue<Integer>> arrivalsByTerminus = new HashMap<>();
 
 		Filling(LocalDate day, int peakCadenceMinutes, List<Run> realRuns) {
 			this.day = day;
@@ -217,31 +225,167 @@ public final class TimetableDensifier {
 			for (int i = 0; i + 1 < departures.size(); i++) {
 				int start = departures.get(i);
 				int gap = departures.get(i + 1) - start;
-				int tripsToAdd = tripsFitting(relation, start, gap);
+				OptionalInt cadence = cadenceOf(relation, start, gap);
+				int tripsToAdd = cadence.isEmpty() ? 0 : plan.tripsFitting(gap, cadence.getAsInt());
 				if (tripsToAdd == 0 || (relation.intensity() == Intensity.REDUCED && served++ % 2 == 1)) {
 					continue;
 				}
 				Gap between = new Gap(stop, next, start, start + gap);
+				int previous = start;
 				for (int n = 1; n <= tripsToAdd; n++) {
 					int planned = wholeMinute(start + (double) n * gap / (tripsToAdd + 1));
-					Optional<Turn> taken = nextInTurn(relation, turn, between);
-					if (taken.isEmpty()) {
-						skipped.add(new Skipped(relation.id(), relation.services().get(turn % relation.services().size()).line(),
-							planned, NO_TRIP_TO_COPY));
-						continue;
+					Window spaced = between.keeping(plan.minSpacingSeconds(), previous, tripsToAdd - n);
+					Window timely = spaced.within(between.within(cadence.getAsInt(), previous, tripsToAdd - n));
+					Optional<Placement> placed = takenByWaitingTrain(relation, between, timely);
+					if (placed.isEmpty()) {
+						Optional<Turn> taken = nextInTurn(relation, turn, between);
+						if (taken.isEmpty()) {
+							skipped.add(new Skipped(relation.id(), relation.services().get(turn % relation.services().size()).line(),
+								planned, NO_TRIP_TO_COPY));
+							continue;
+						}
+						turn = taken.get().position() + 1;
+						Segment template = taken.get().template();
+						placed = departureWithRoom(relation, template, between, between.inside(), spaced.nearest(planned))
+							.map(leaving -> new Placement(template, leaving));
+						if (placed.isEmpty()) {
+							skipped.add(new Skipped(relation.id(), template.run().line(), planned, NO_ROOM_IN_TUNNEL));
+							continue;
+						}
 					}
-					turn = taken.get().position() + 1;
-					add(relation, taken.get().template(), between, planned);
+					add(relation, placed.get(), between);
+					previous = placed.get().leaving();
 				}
 			}
 		}
 
+		/**
+		 * Fills the two directions of a relation. The one leaving the termini
+		 * of prompt departure comes second: its trips are taken by the trains
+		 * the other direction brings there.
+		 */
+		void fill(Relation relation) {
+			String one = relation.flow().getFirst();
+			String other = relation.flow().getLast();
+			if (leavesPromptTermini(relation, one, other)) {
+				fill(relation, other, one);
+				fill(relation, one, other);
+			} else {
+				fill(relation, one, other);
+				fill(relation, other, one);
+			}
+		}
+
+		private boolean leavesPromptTermini(Relation relation, String stop, String next) {
+			return relation.services().stream().anyMatch(service -> realRuns.stream()
+				.filter(run -> run.line().equals(service.line()) && run.runs(stop, next))
+				.map(run -> segmentOf(run, service))
+				.anyMatch(segment -> segment.first() >= 0 && relation.promptTermini().contains(segment.origin().stopId())));
+		}
+
 		/** Two consecutive trains of a flow, by their departures from its first stop. */
 		private record Gap(String stop, String next, int start, int end) {
+
+			/** Any departure between the two trains. */
+			Window inside() {
+				return new Window(start + 1, end - 1);
+			}
+
+			/**
+			 * When a trip may leave for no train of the gap to follow another
+			 * closer than the spacing.
+			 *
+			 * @param previous      departure of the train before this trip
+			 * @param tripsToFollow trips still to be added in the gap after this one
+			 */
+			Window keeping(int spacingSeconds, int previous, int tripsToFollow) {
+				return new Window(previous + spacingSeconds, end - (tripsToFollow + 1) * spacingSeconds);
+			}
+
+			/**
+			 * When a trip may leave for no wait of the gap to exceed the
+			 * target; empty when the trips of the gap are too few for it.
+			 */
+			Window within(int waitSeconds, int previous, int tripsToFollow) {
+				return new Window(end - (tripsToFollow + 1) * waitSeconds, previous + waitSeconds);
+			}
+		}
+
+		/** Departures from the first stop of a flow a trip may take, bounds included. */
+		private record Window(int earliest, int latest) {
+
+			boolean isEmpty() {
+				return latest < earliest;
+			}
+
+			boolean holds(int seconds) {
+				return seconds >= earliest && seconds <= latest;
+			}
+
+			Window within(Window other) {
+				return new Window(Math.max(earliest, other.earliest), Math.min(latest, other.latest));
+			}
+
+			Window notBefore(int seconds) {
+				return new Window(Math.max(earliest, seconds), latest);
+			}
+
+			int nearest(int seconds) {
+				return Math.clamp(seconds, earliest, latest);
+			}
 		}
 
 		/** The service a trip is copied from, by its position in the rotation of the relation. */
 		private record Turn(int position, Segment template) {
+		}
+
+		/** The real trip an added one copies and when the added one leaves the first stop of the flow. */
+		private record Placement(Segment template, int leaving) {
+		}
+
+		/** Where the added trips of a line end, and their trains wait for the next one. */
+		private record Terminus(String line, String stopId) {
+		}
+
+		/**
+		 * The trip taken by a train that ended an added trip at the terminus
+		 * this one starts from, where the relation asks for prompt departures:
+		 * it leaves as soon as the train has turned around, or at the earliest
+		 * time the gap allows if the train is ready before. Among the lines of
+		 * the relation the train waiting longest goes first.
+		 *
+		 * @param timely departures keeping both the minimum spacing and the target wait
+		 * @return empty when no train can leave within the window
+		 */
+		private Optional<Placement> takenByWaitingTrain(Relation relation, Gap gap, Window timely) {
+			Optional<Placement> chosen = Optional.empty();
+			Terminus left = null;
+			int waitingSince = Integer.MAX_VALUE;
+			for (Service service : relation.services()) {
+				Optional<Segment> template = templateOf(service, gap);
+				if (template.isEmpty() || !relation.promptTermini().contains(template.get().origin().stopId())) {
+					continue;
+				}
+				StopTime origin = template.get().origin();
+				Terminus terminus = new Terminus(service.line(), origin.stopId());
+				Integer arrival = arrivalsByTerminus.getOrDefault(terminus, new PriorityQueue<>()).peek();
+				if (arrival == null || arrival >= waitingSince) {
+					continue;
+				}
+				int runningToTheFlow = template.get().run().departureFrom(gap.stop()) - origin.departureSeconds();
+				Window ready = timely.notBefore(arrival + SchedulePipeline.TURNAROUND_SECONDS + runningToTheFlow);
+				Optional<Integer> leaving = ready.isEmpty() ? Optional.empty()
+					: departureWithRoom(relation, template.get(), gap, ready, ready.earliest());
+				if (leaving.isPresent()) {
+					chosen = Optional.of(new Placement(template.get(), leaving.get()));
+					left = terminus;
+					waitingSince = arrival;
+				}
+			}
+			if (chosen.isPresent()) {
+				arrivalsByTerminus.get(left).poll();
+			}
+			return chosen;
 		}
 
 		/** The next service of the rotation that runs on the day: a line out of service yields its turn. */
@@ -256,22 +400,18 @@ public final class TimetableDensifier {
 			return Optional.empty();
 		}
 
-		private int tripsFitting(Relation relation, int start, int gap) {
+		/** The longest wait to allow in a gap, or empty when the gap is not to be filled. */
+		private OptionalInt cadenceOf(Relation relation, int start, int gap) {
 			if (gap <= 0 || gap > plan.serviceGapSeconds()) {
-				return 0;
+				return OptionalInt.empty();
 			}
-			OptionalInt cadence = plan.cadenceSeconds(day, start % SECONDS_PER_DAY, peakCadenceMinutes, relation.intensity());
-			return cadence.isEmpty() ? 0 : plan.tripsFitting(gap, cadence.getAsInt());
+			return plan.cadenceSeconds(day, start % SECONDS_PER_DAY, peakCadenceMinutes, relation.intensity());
 		}
 
-		private void add(Relation relation, Segment template, Gap gap, int planned) {
+		private void add(Relation relation, Placement placement, Gap gap) {
+			Segment template = placement.template();
 			Run run = template.run();
-			Optional<Integer> leaving = relation.throughTunnel() ? departureWithRoom(template, gap, planned) : Optional.of(planned);
-			if (leaving.isEmpty()) {
-				skipped.add(new Skipped(relation.id(), run.line(), planned, NO_ROOM_IN_TUNNEL));
-				return;
-			}
-			int shift = leaving.get() - run.departureFrom(gap.stop());
+			int shift = placement.leaving() - run.departureFrom(gap.stop());
 			String id = run.tripId() + ADDED_MARK + copiesOfTrip.merge(run.tripId(), 1, Integer::sum);
 			List<StopTime> copy = new ArrayList<>();
 			for (int i = template.first(); i <= template.last(); i++) {
@@ -285,6 +425,8 @@ public final class TimetableDensifier {
 			added.add(new Added(relation.id(), run.line(), id, run.tripId(), copy.getFirst().stopId(), copy.getLast().stopId(),
 				copy.getFirst().departureSeconds()));
 			tunnelPassage(template).ifPresent(passage -> tunnel.record(passage.nextStop(), passage.departure() + shift));
+			arrivalsByTerminus.computeIfAbsent(new Terminus(run.line(), copy.getLast().stopId()), terminus -> new PriorityQueue<>())
+				.add(copy.getLast().arrivalSeconds());
 		}
 
 		/**
@@ -329,20 +471,23 @@ public final class TimetableDensifier {
 		}
 
 		/**
-		 * The departure from the first stop of the flow nearest to the planned
-		 * one, within the gap, that keeps the minimum headway of the tunnel
-		 * from every other train: tried a minute later, a minute earlier, two
-		 * minutes later and so on.
+		 * The departure from the first stop of the flow nearest to the
+		 * preferred one, within the window, that keeps the minimum headway of
+		 * the tunnel from every other train: tried a minute later, a minute
+		 * earlier, two minutes later and so on. A trip outside the tunnel
+		 * leaves at the preferred time.
+		 *
+		 * @param preferred a departure of the window
 		 */
-		private Optional<Integer> departureWithRoom(Segment template, Gap gap, int planned) {
-			Optional<Passage> passage = tunnelPassage(template);
+		private Optional<Integer> departureWithRoom(Relation relation, Segment template, Gap gap, Window window, int preferred) {
+			Optional<Passage> passage = relation.throughTunnel() ? tunnelPassage(template) : Optional.empty();
 			if (passage.isEmpty()) {
-				return Optional.of(planned);
+				return Optional.of(preferred);
 			}
 			int templateDeparture = template.run().departureFrom(gap.stop());
-			for (int step = 0; planned + step < gap.end() || planned - step > gap.start(); step += SHIFT_STEP_SECONDS) {
-				for (int leaving : step == 0 ? new int[] { planned } : new int[] { planned + step, planned - step }) {
-					if (leaving > gap.start() && leaving < gap.end()
+			for (int step = 0; window.holds(preferred + step) || window.holds(preferred - step); step += SHIFT_STEP_SECONDS) {
+				for (int leaving : step == 0 ? new int[] { preferred } : new int[] { preferred + step, preferred - step }) {
+					if (window.holds(leaving)
 							&& tunnel.hasRoom(passage.get().nextStop(), passage.get().departure() + leaving - templateDeparture)) {
 						return Optional.of(leaving);
 					}
