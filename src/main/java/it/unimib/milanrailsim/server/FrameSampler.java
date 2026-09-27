@@ -60,8 +60,13 @@ public final class FrameSampler
 	@Override
 	public void handleEvent(RailsimTrainStateEvent event) {
 		String id = event.getVehicleId().toString();
-		latest.put(id, new TrainState(id, line(id), event.getHeadLink().toString(), event.getHeadPosition(),
-			event.getSpeed(), event.getAcceleration(), event.getDelay()));
+		// the map cannot show finer than a metre or a tenth of a metre per second, and the recording halves in size
+		latest.put(id, new TrainState(id, line(id), event.getHeadLink().toString(), Math.round(event.getHeadPosition()),
+			rounded(event.getSpeed()), rounded(event.getAcceleration()), Math.round(event.getDelay())));
+	}
+
+	private static double rounded(double value) {
+		return Math.round(value * 10) / 10.0;
 	}
 
 	@Override
