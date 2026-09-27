@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -94,6 +95,9 @@ public final class AppModel {
 	public LiveSession startRun(ScenarioSpec spec, double initialSpeed) {
 		Path runDir = paths.runs().resolve(spec.name());
 		spec.write(runDir.resolve("scenario.json"));
+		if (spec.type() == ScenarioSpec.SimulationType.METRO_LIKE) {
+			keepDensificationPlan(runDir);
+		}
 		RailsimJob.Inputs inputs = new RailsimJob.Inputs(runDir, files.engineConfig(),
 			files.engineNetwork(), gtfsDir(), paths.fleetTypesFile(), paths.lineAssignmentsFile(), paths.costsFile(),
 			Files.exists(files.stationTracks()) ? files.stationTracks() : null,
@@ -101,6 +105,15 @@ public final class AppModel {
 		LiveSession started = LiveSession.start(inputs, initialSpeed);
 		session.set(started);
 		return started;
+	}
+
+	/** A run keeps the plan it was generated from: the one in the project data may change afterwards. */
+	private void keepDensificationPlan(Path runDir) {
+		try {
+			Files.copy(files.densificationPlan(), runDir.resolve(RailsimJob.DENSIFICATION_PLAN), StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			throw new UncheckedIOException("Cannot copy " + files.densificationPlan() + " into " + runDir, e);
+		}
 	}
 
 	public RunLibrary runs() {

@@ -15,9 +15,11 @@ import java.nio.file.Path;
  * @param defaultCosts  the cost parameters the user's copy is seeded from
  * @param linkMeasures  the measured sections shown in the settings
  * @param fleetPhotos   the photos of the catalogue's train types, one file named after each type id
+ * @param densificationPlan the relations and hours of the high-frequency scenario
  */
 public record ScenarioFiles(Path network, Path engineNetwork, Path engineConfig, Path microNodes, Path transitSchedule,
-		Path linkGeometry, Path stationTracks, Path gtfsDir, Path defaultCosts, Path linkMeasures, Path fleetPhotos, String crs) {
+		Path linkGeometry, Path stationTracks, Path gtfsDir, Path defaultCosts, Path linkMeasures, Path fleetPhotos,
+		Path densificationPlan, String crs) {
 
 	/** The committed Milan scenario under {@code root}, laid out as in the repository. */
 	public static ScenarioFiles milan(Path root) {
@@ -34,6 +36,7 @@ public record ScenarioFiles(Path network, Path engineNetwork, Path engineConfig,
 			root.resolve("config").resolve("costs.json"),
 			root.resolve("data").resolve("osm").resolve("2026-08-05-network-sweep").resolve("link_measures.csv"),
 			root.resolve("data").resolve("trains"),
+			root.resolve("data").resolve("scenarios").resolve("passante-alta-frequenza.json"),
 			"EPSG:32632");
 	}
 }

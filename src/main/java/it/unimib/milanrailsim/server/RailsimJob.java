@@ -12,9 +12,11 @@ import it.unimib.milanrailsim.results.RunOutcome;
 import it.unimib.milanrailsim.runs.RunLibrary;
 import it.unimib.milanrailsim.runs.ScenarioSpec;
 import it.unimib.milanrailsim.schedule.CreateTransitScheduleFromFeed;
+import it.unimib.milanrailsim.schedule.DensificationPlan;
 import it.unimib.milanrailsim.schedule.LineAssignments;
 import it.unimib.milanrailsim.schedule.RouteVehicleAssignment;
 import it.unimib.milanrailsim.schedule.SchedulePipeline;
+import it.unimib.milanrailsim.schedule.TimetableDensifier;
 import it.unimib.milanrailsim.server.Protocol.Message;
 import it.unimib.milanrailsim.server.Protocol.Summary;
 import it.unimib.milanrailsim.server.SimulationServer.Emitter;
@@ -59,6 +61,10 @@ public final class RailsimJob implements SimulationServer.Job {
 	private static final String SPACE_TIME_LINE = "S1";
 	/** Phase name of the simulated day itself; the client tells it from the preparation and wrap-up phases. */
 	public static final String SIMULATING = "Simulazione";
+	/** The plan of a high-frequency run, copied into its folder when the run is launched. */
+	public static final String DENSIFICATION_PLAN = "densification.json";
+	public static final String ADDED_TRIPS = "added_trips.csv";
+	public static final String SKIPPED_TRIPS = "skipped_trips.csv";
 
 	/**
 	 * Where the engine finds its inputs; the run folder holds {@code scenario.json}.
@@ -145,8 +151,36 @@ public final class RailsimJob implements SimulationServer.Job {
 		List<MicroNode> microNodes = hasNodes ? MicroNode.readAll(inputs.microNodesDir()) : List.of();
 		Path sidingsFile = hasNodes ? inputs.microNodesDir().resolve(CreateTransitScheduleFromFeed.SIDINGS_FILE) : null;
 		Sidings sidings = sidingsFile != null && Files.exists(sidingsFile) ? Sidings.read(sidingsFile) : Sidings.none();
-		return new SchedulePipeline(GtfsFeed.load(inputs.gtfsDir()), inputs.engineNetwork(), fleet,
+		return new SchedulePipeline(timetableOf(spec, scenarioDir), inputs.engineNetwork(), fleet,
 			new RouteVehicleAssignment(assignments), tracks, microNodes, sidings).generate(spec.serviceDate(), start, end, scenarioDir);
+	}
+
+	/**
+	 * The published timetable, with the trips of the scenario added to it for
+	 * a high-frequency run. The plan is the copy the application left in the
+	 * run folder, so the run records what it was generated from; the trips
+	 * added and given up are written next to the generated scenario.
+	 */
+	private GtfsFeed timetableOf(ScenarioSpec spec, Path scenarioDir) {
+		GtfsFeed published = GtfsFeed.load(inputs.gtfsDir());
+		if (spec.type() != ScenarioSpec.SimulationType.METRO_LIKE) {
+			return published;
+		}
+		DensificationPlan plan = DensificationPlan.read(inputs.runDir().resolve(DENSIFICATION_PLAN));
+		TimetableDensifier.Densified densified = new TimetableDensifier(plan)
+			.densify(published, spec.serviceDate(), spec.metroHeadwayMinutes());
+		write(scenarioDir.resolve(ADDED_TRIPS), densified.report().addedCsv());
+		write(scenarioDir.resolve(SKIPPED_TRIPS), densified.report().skippedCsv());
+		return densified.feed();
+	}
+
+	private static void write(Path file, List<String> lines) {
+		try {
+			Files.createDirectories(file.getParent());
+			Files.write(file, lines);
+		} catch (IOException e) {
+			throw new UncheckedIOException("Cannot write " + file, e);
+		}
 	}
 
 	/**

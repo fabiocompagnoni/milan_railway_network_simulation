@@ -200,6 +200,13 @@
                                             <targetPath>share/data/nodes</targetPath>
                                         </resource>
                                         <resource>
+                                            <directory>data/scenarios</directory>
+                                            <targetPath>share/data/scenarios</targetPath>
+                                            <includes>
+                                                <include>*.json</include>
+                                            </includes>
+                                        </resource>
+                                        <resource>
                                             <directory>data/trains</directory>
                                             <targetPath>share/data/trains</targetPath>
                                         </resource>
