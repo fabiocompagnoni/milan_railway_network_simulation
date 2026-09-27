@@ -1,0 +1,9 @@
+stop_id,stop_name,stop_lat,stop_lon
+A,Alfa,45.50,9.10
+B,Beta,45.52,9.12
+T,Tunnel,45.54,9.14
+C,Gamma,45.56,9.16
+D,Delta,45.58,9.18
+E,Epsilon,45.60,9.20
+P,Pi,45.70,9.30
+Q,Rho,45.72,9.32
