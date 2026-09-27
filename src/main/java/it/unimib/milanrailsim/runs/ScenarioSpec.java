@@ -1,5 +1,6 @@
 package it.unimib.milanrailsim.runs;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -16,7 +17,7 @@ import java.time.LocalTime;
  * stays reproducible. Parameters that do not apply to the run are null.
  *
  * @param window the part of the service day to simulate; null for the whole day
- * @param metroHeadwayMinutes target headway on the Passante core (high-frequency Passante)
+ * @param metroHeadwayMinutes longest wait allowed at peak hours on the urban relations (high-frequency Passante)
  * @param collapseStartHeadwayMinutes first headway of the collapse campaign
  * @param collapseStepMinutes headway decrease between collapse steps
  * @param collapseSteps number of runs in the collapse campaign
@@ -50,8 +51,10 @@ public record ScenarioSpec(
 	public record TimeWindow(LocalTime start, LocalTime end) {
 	}
 
+	// a scenario written by a later version may carry parameters this one does not know: the run stays readable
 	private static final ObjectMapper JSON = new ObjectMapper()
 		.registerModule(new JavaTimeModule())
+		.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 		.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 		.enable(SerializationFeature.INDENT_OUTPUT);
 
