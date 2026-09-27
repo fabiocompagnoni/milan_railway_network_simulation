@@ -8,6 +8,8 @@ import it.unimib.milanrailsim.network.ServiceCalendar;
 import it.unimib.milanrailsim.runs.ScenarioSpec.SimulationType;
 import it.unimib.milanrailsim.runs.ScenarioSpec.TimeWindow;
 import it.unimib.milanrailsim.runs.ScenarioSpec;
+import it.unimib.milanrailsim.schedule.DensificationPlan;
+import javafx.collections.FXCollections;
 import it.unimib.milanrailsim.schedule.RouteVehicleAssignment;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -66,7 +68,7 @@ public final class NewSimulationView extends BorderPane {
 	private final Spinner<Integer> windowEnd = hourSpinner(10);
 	private final ToggleGroup typeGroup = new ToggleGroup();
 	private final StackPane parameters = new StackPane();
-	private final Spinner<Integer> metroHeadway = new Spinner<>(2, 15, 4);
+	private final Spinner<Integer> metroHeadway = new Spinner<>(FXCollections.observableArrayList(DensificationPlan.CADENCES_MINUTES));
 	private final Spinner<Integer> collapseStart = new Spinner<>(3, 30, 10);
 	private final Spinner<Integer> collapseStep = new Spinner<>(1, 10, 2);
 	private final Spinner<Integer> collapseSteps = new Spinner<>(2, 10, 4);
@@ -190,10 +192,11 @@ public final class NewSimulationView extends BorderPane {
 
 	private Node metroPanel() {
 		metroHeadway.valueProperty().addListener(observable -> scheduleRefresh());
-		HBox row = new HBox(12, new Label("Distanziamento obiettivo sul Passante"), metroHeadway, new Label("minuti"));
+		HBox row = new HBox(12, new Label("Attesa massima nelle ore di punta"), metroHeadway, new Label("minuti"));
 		row.setAlignment(Pos.CENTER_LEFT);
-		return new VBox(8, row, muted("Vale solo per il tratto urbano comune alle linee S del Passante; "
-			+ "il resto della rete resta all'orario reale."));
+		return new VBox(8, row, muted("Si aggiungono corse nell'area urbana dove l'attesa fra due treni supera l'obiettivo: "
+			+ "Bovisa e Passante, S9, ramo di Seveso fino a Cormano, Monza. Le corse reali non vengono spostate; "
+			+ "fuori dalle ore di punta l'obiettivo è un gradino più lungo."));
 	}
 
 	private Node collapsePanel() {
