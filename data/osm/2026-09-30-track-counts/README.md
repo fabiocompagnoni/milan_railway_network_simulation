@@ -74,7 +74,7 @@ dettaglio e i file della mappa:
   Seveso, Busto Arsizio - Busto Arsizio Nord, Laveno Mombello - Sangiano,
   Bergamo - Seriate, Iseo - Brescia, Treviglio Ovest - Treviglio;
 - **a doppio binario** (erano contate a binario unico o senza dato):
-  Bisuschio Viggiu' - Arcisate, Cadenazzo - Quartino, Lungavilla - Voghera,
+  Cadenazzo - Quartino, Lungavilla - Voghera,
   Chiasso - Balerna, Balerna - Mendrisio, Chiasso - Mendrisio, Mendrisio
   S. Martino - Capolago-Riva S. Vitale, Castione - Bellinzona;
 - **spezzate dove cambia il numero di binari**, con un nodo nuovo:
@@ -82,6 +82,7 @@ dettaglio e i file della mappa:
 | Tratta | Nodo | Binario unico | Doppio binario |
 |---|---|---|---|
 | Cesano Maderno - Ceriano Laghetto-Solaro | `S01927` Ceriano Laghetto Groane, a 59 m da PM Groane | Cesano Maderno - nodo, 1,9 km | nodo - Ceriano Laghetto-Solaro, 2,8 km |
+| Bisuschio Viggiu' - Arcisate | `PMBEVERA` P.M. Bevera | Bisuschio Viggiu' - nodo, 2,0 km | nodo - Arcisate, 1,5 km |
 | Induno Olona - Varese | `PPINDUNO` P.P. Induno | nodo - Varese, 2,7 km | Induno Olona - nodo, 0,9 km |
 | Cadenazzo - Riazzino | `CADENAZZOOVEST` bivio Cadenazzo Ovest | nodo - Riazzino, 3,8 km | Cadenazzo - nodo, 1,7 km |
 | Tortona - Pozzolo Formigaro | `BIVIOPOZZOLO` Bivio Pozzolo F. | nodo - Pozzolo Formigaro, 4,7 km | Tortona - nodo, 9,3 km |
