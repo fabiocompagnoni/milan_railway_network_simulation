@@ -1,28 +1,22 @@
 package it.unimib.milanrailsim.schedule;
 
 import it.unimib.milanrailsim.network.GtfsFeed;
-import it.unimib.milanrailsim.network.GtfsFeed.Route;
 import it.unimib.milanrailsim.network.GtfsFeed.StopTime;
-import it.unimib.milanrailsim.network.GtfsFeed.Trip;
-import it.unimib.milanrailsim.network.ServiceCalendar;
 import it.unimib.milanrailsim.schedule.DensificationPlan.Intensity;
 import it.unimib.milanrailsim.schedule.DensificationPlan.Relation;
 import it.unimib.milanrailsim.schedule.DensificationPlan.Service;
+import it.unimib.milanrailsim.schedule.TunnelTraffic.Passage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.PriorityQueue;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -45,11 +39,8 @@ import java.util.stream.Collectors;
  */
 public final class TimetableDensifier {
 
-	private static final int RAIL = 2;
 	private static final int SECONDS_PER_DAY = 24 * 3600;
 	private static final int SHIFT_STEP_SECONDS = 60;
-	private static final String ADDED_MARK = "+a";
-	private static final Pattern ADDED_ID = Pattern.compile(".+\\+a\\d+");
 	private static final String NO_ROOM_IN_TUNNEL = "intervallo minimo nel tunnel";
 	private static final String NO_TRIP_TO_COPY = "nessuna corsa reale da copiare";
 
@@ -93,65 +84,11 @@ public final class TimetableDensifier {
 	public record Densified(GtfsFeed feed, Report report) {
 	}
 
-	/** A trip of the service day with its line. */
-	private record Run(String tripId, String routeId, String serviceId, String line, List<StopTime> calls) {
-
-		int indexOf(String stopId) {
-			for (int i = 0; i < calls.size(); i++) {
-				if (calls.get(i).stopId().equals(stopId)) {
-					return i;
-				}
-			}
-			return -1;
-		}
-
-		/** Whether the trip calls at the two stops in this order. */
-		boolean runs(String stop, String next) {
-			int index = indexOf(stop);
-			return index >= 0 && index < indexOf(next);
-		}
-
-		int departureFrom(String stopId) {
-			return calls.get(indexOf(stopId)).departureSeconds();
-		}
-	}
-
 	/** The part of a real trip between the two ends of a service. */
-	private record Segment(Run run, int first, int last) {
+	private record Segment(DayTrip run, int first, int last) {
 
 		StopTime origin() {
 			return run.calls().get(first);
-		}
-	}
-
-	/** Departures from the tunnel's reference stop, by the stop the trains head for next. */
-	private static final class TunnelTraffic {
-
-		private final String referenceStop;
-		private final int minHeadwaySeconds;
-		private final Map<String, TreeSet<Integer>> departuresByNextStop = new HashMap<>();
-
-		TunnelTraffic(DensificationPlan.Tunnel tunnel, List<Run> runs) {
-			this.referenceStop = tunnel.referenceStop();
-			this.minHeadwaySeconds = tunnel.minHeadwaySeconds();
-			for (Run run : runs) {
-				int index = run.indexOf(referenceStop);
-				if (index >= 0 && index + 1 < run.calls().size()) {
-					record(run.calls().get(index + 1).stopId(), run.calls().get(index).departureSeconds());
-				}
-			}
-		}
-
-		void record(String nextStop, int departure) {
-			departuresByNextStop.computeIfAbsent(nextStop, stop -> new TreeSet<>()).add(departure);
-		}
-
-		boolean hasRoom(String nextStop, int departure) {
-			TreeSet<Integer> departures = departuresByNextStop.getOrDefault(nextStop, new TreeSet<>());
-			Integer before = departures.floor(departure);
-			Integer after = departures.ceiling(departure);
-			return (before == null || departure - before >= minHeadwaySeconds)
-				&& (after == null || after - departure >= minHeadwaySeconds);
 		}
 	}
 
@@ -161,32 +98,14 @@ public final class TimetableDensifier {
 		this.plan = plan;
 	}
 
-	/** Whether a trip id is that of an added trip. */
-	public static boolean isAdded(String tripId) {
-		return ADDED_ID.matcher(tripId).matches();
-	}
-
 	/**
 	 * @param peakCadenceMinutes the longest wait to allow at peak hours, one of {@link DensificationPlan#CADENCES_MINUTES}
 	 * @return the timetable of the day with the added trips, and what was added or given up
 	 */
 	public Densified densify(GtfsFeed real, LocalDate day, int peakCadenceMinutes) {
-		Filling filling = new Filling(day, peakCadenceMinutes, railRunsOf(real, day));
+		Filling filling = new Filling(day, peakCadenceMinutes, DayTrip.of(real, day));
 		plan.relations().forEach(filling::fill);
-		return new Densified(real.with(filling.trips, filling.calls), new Report(List.copyOf(filling.added), List.copyOf(filling.skipped)));
-	}
-
-	private static List<Run> railRunsOf(GtfsFeed feed, LocalDate day) {
-		Set<String> active = ServiceCalendar.activeServiceIds(feed.calendarDateRows(), day);
-		List<Run> runs = new ArrayList<>();
-		for (Trip trip : feed.tripsById().values()) {
-			Route route = feed.routesById().get(trip.routeId());
-			List<StopTime> calls = feed.stopTimesByTripId().get(trip.id());
-			if (active.contains(trip.serviceId()) && route != null && route.type() == RAIL && calls != null) {
-				runs.add(new Run(trip.id(), trip.routeId(), trip.serviceId(), route.shortName(), calls));
-			}
-		}
-		return runs;
+		return new Densified(filling.copies.addTo(real), new Report(List.copyOf(filling.added), List.copyOf(filling.skipped)));
 	}
 
 	/** The added trips of one day, accumulated relation by relation. */
@@ -194,17 +113,15 @@ public final class TimetableDensifier {
 
 		private final LocalDate day;
 		private final int peakCadenceMinutes;
-		private final List<Run> realRuns;
-		private final List<Run> traffic;
+		private final List<DayTrip> realRuns;
+		private final List<DayTrip> traffic;
 		private final TunnelTraffic tunnel;
-		private final List<Trip> trips = new ArrayList<>();
-		private final Map<String, List<StopTime>> calls = new LinkedHashMap<>();
+		private final AddedTrips copies = new AddedTrips();
 		private final List<Added> added = new ArrayList<>();
 		private final List<Skipped> skipped = new ArrayList<>();
-		private final Map<String, Integer> copiesOfTrip = new HashMap<>();
 		private final Map<Terminus, PriorityQueue<Integer>> arrivalsByTerminus = new HashMap<>();
 
-		Filling(LocalDate day, int peakCadenceMinutes, List<Run> realRuns) {
+		Filling(LocalDate day, int peakCadenceMinutes, List<DayTrip> realRuns) {
 			this.day = day;
 			this.peakCadenceMinutes = peakCadenceMinutes;
 			this.realRuns = realRuns;
@@ -410,23 +327,15 @@ public final class TimetableDensifier {
 
 		private void add(Relation relation, Placement placement, Gap gap) {
 			Segment template = placement.template();
-			Run run = template.run();
+			DayTrip run = template.run();
 			int shift = placement.leaving() - run.departureFrom(gap.stop());
-			String id = run.tripId() + ADDED_MARK + copiesOfTrip.merge(run.tripId(), 1, Integer::sum);
-			List<StopTime> copy = new ArrayList<>();
-			for (int i = template.first(); i <= template.last(); i++) {
-				StopTime call = run.calls().get(i);
-				copy.add(new StopTime(id, call.arrivalSeconds() + shift, call.departureSeconds() + shift, call.stopId(),
-					copy.size() + 1));
-			}
-			trips.add(new Trip(id, run.routeId(), run.serviceId()));
-			calls.put(id, copy);
-			traffic.add(new Run(id, run.routeId(), run.serviceId(), run.line(), copy));
-			added.add(new Added(relation.id(), run.line(), id, run.tripId(), copy.getFirst().stopId(), copy.getLast().stopId(),
-				copy.getFirst().departureSeconds()));
-			tunnelPassage(template).ifPresent(passage -> tunnel.record(passage.nextStop(), passage.departure() + shift));
-			arrivalsByTerminus.computeIfAbsent(new Terminus(run.line(), copy.getLast().stopId()), terminus -> new PriorityQueue<>())
-				.add(copy.getLast().arrivalSeconds());
+			DayTrip copy = copies.copy(run, template.first(), template.last(), shift);
+			traffic.add(copy);
+			added.add(new Added(relation.id(), run.line(), copy.tripId(), run.tripId(), copy.firstStop(), copy.lastStop(),
+				copy.departure()));
+			tunnelPassage(template).ifPresent(passage -> tunnel.record(new Passage(passage.nextStop(), passage.departure() + shift)));
+			arrivalsByTerminus.computeIfAbsent(new Terminus(run.line(), copy.lastStop()), terminus -> new PriorityQueue<>())
+				.add(copy.calls().getLast().arrivalSeconds());
 		}
 
 		/**
@@ -450,24 +359,15 @@ public final class TimetableDensifier {
 		}
 
 		/** The calls of a trip between the two ends of a service, in the order the trip makes them; first is -1 if it misses one. */
-		private static Segment segmentOf(Run run, Service service) {
+		private static Segment segmentOf(DayTrip run, Service service) {
 			int one = run.indexOf(service.from());
 			int other = run.indexOf(service.to());
 			return new Segment(run, one < 0 || other < 0 ? -1 : Math.min(one, other), Math.max(one, other));
 		}
 
-		private record Passage(String nextStop, int departure) {
-		}
-
 		/** Where and when the template leaves the tunnel's reference stop, if its segment runs through it. */
 		private Optional<Passage> tunnelPassage(Segment template) {
-			List<StopTime> templateCalls = template.run().calls();
-			for (int i = template.first(); i < template.last(); i++) {
-				if (templateCalls.get(i).stopId().equals(tunnel.referenceStop)) {
-					return Optional.of(new Passage(templateCalls.get(i + 1).stopId(), templateCalls.get(i).departureSeconds()));
-				}
-			}
-			return Optional.empty();
+			return tunnel.passageOf(template.run(), template.first(), template.last());
 		}
 
 		/**
@@ -488,7 +388,7 @@ public final class TimetableDensifier {
 			for (int step = 0; window.holds(preferred + step) || window.holds(preferred - step); step += SHIFT_STEP_SECONDS) {
 				for (int leaving : step == 0 ? new int[] { preferred } : new int[] { preferred + step, preferred - step }) {
 					if (window.holds(leaving)
-							&& tunnel.hasRoom(passage.get().nextStop(), passage.get().departure() + leaving - templateDeparture)) {
+							&& tunnel.hasRoom(new Passage(passage.get().nextStop(), passage.get().departure() + leaving - templateDeparture))) {
 						return Optional.of(leaving);
 					}
 				}

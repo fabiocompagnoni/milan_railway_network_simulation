@@ -238,7 +238,7 @@ class TimetableDensifierTest {
 		Densified densified = new TimetableDensifier(plan(0, LINE, shared(Intensity.FULL))).densify(REAL, WEDNESDAY, 10);
 
 		assertEquals(Map.of("a-d", 8L, "p-q", 5L), densified.report().addedByRelation());
-		assertTrue(densified.report().added().stream().allMatch(added -> TimetableDensifier.isAdded(added.tripId())));
-		assertFalse(TimetableDensifier.isAdded("F1"));
+		assertTrue(densified.report().added().stream().allMatch(added -> AddedTrips.isAdded(added.tripId())));
+		assertFalse(AddedTrips.isAdded("F1"));
 	}
 }
