@@ -1,0 +1,983 @@
+{
+ "downloaded": "2026-09-30",
+ "bbox": "44.74252,8.18657,46.54760,11.37805",
+ "elements": [
+  {
+   "type": "node",
+   "id": 50834541,
+   "lat": 45.5133773,
+   "lon": 9.5570094,
+   "tags": {
+    "name": "PM Bivio Adda",
+    "operator": "Rete Ferroviaria Italiana",
+    "operator:short": "RFI",
+    "operator:wikidata": "Q1060049",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 266674118,
+   "lat": 45.8116224,
+   "lon": 8.6213274,
+   "tags": {
+    "disused:public_transport": "station",
+    "disused:railway": "station",
+    "name": "Posto di Manovra Ispra",
+    "old_name": "Ispra",
+    "operator": "Rete Ferroviaria Italiana",
+    "operator:short": "RFI",
+    "operator:wikidata": "Q1060049",
+    "railway": "service_station",
+    "short_name": "PM Ispra",
+    "wikidata": "Q16609307",
+    "wikipedia": "it:Stazione di Ispra"
+   }
+  },
+  {
+   "type": "node",
+   "id": 984712482,
+   "lat": 46.2987342,
+   "lon": 10.0742608,
+   "tags": {
+    "alt_name": "Le Prese Cantoniera",
+    "ele": "973",
+    "name": "Le Prese Spinadascio",
+    "old_name": "Le Prese (incrocio)",
+    "operator": "RhB",
+    "operator:de": "Rh\u00e4tische Bahn",
+    "operator:rm": "Viafier retica",
+    "operator:wikidata": "Q177598",
+    "passenger": "no",
+    "railway": "service_station",
+    "railway:ref": "PRET",
+    "uic_name": "Le Prese (incrocio)",
+    "uic_ref": "8515161"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1526262127,
+   "lat": 45.5083345,
+   "lon": 9.1488291,
+   "tags": {
+    "name": "Bivio Musocco",
+    "railway": "junction",
+    "short_name": "B. Musocco"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2015365092,
+   "lat": 45.8292685,
+   "lon": 9.0378824,
+   "tags": {
+    "name": "Stazione di Ponte Chiasso",
+    "railway": "service_station"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2120598515,
+   "lat": 45.5098073,
+   "lon": 9.5180351,
+   "tags": {
+    "name": "Bivio Casirate",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2188424058,
+   "lat": 46.3733198,
+   "lon": 10.0369253,
+   "tags": {
+    "ele": "1934",
+    "name": "Stablini",
+    "operator": "RhB",
+    "passenger_service": "no",
+    "railway": "service_station",
+    "railway:ref": "STAK",
+    "uic_name": "Stablini",
+    "uic_ref": "8516075"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2535059126,
+   "lat": 45.5142915,
+   "lon": 9.5712405,
+   "tags": {
+    "name": "Bivio Adda",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3032841464,
+   "lat": 46.5321992,
+   "lon": 8.4143773,
+   "tags": {
+    "ele": "1461",
+    "name": "Kreuzungsstation Geren",
+    "operator": "MGB",
+    "passenger": "no",
+    "railway": "service_station",
+    "source:name": "https://maps.trafimage.ch/#/ch.sbb.infrastruktur?baselayers=ch.sbb.netzkarte.relief,ch.sbb.netzkarte.luftbild.group&lang=de&zoom=6&x=677658.93&y=156512.86&display_srs=EPSG:2056&layers=ch.sbb.infrastruktur.infrastruktur_sbb.betriebspunkte,ch.sbb.infrastruk",
+    "uic_name": "Kreuzungsstation Geren",
+    "uic_ref": "8518954"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3032841466,
+   "lat": 46.5468889,
+   "lon": 8.47616,
+   "tags": {
+    "ele": "1598",
+    "name": "Rotondo West (Verzw)",
+    "operator": "MGB",
+    "passenger": "no",
+    "railway": "service_station",
+    "uic_name": "Rotondo West (Verzw)",
+    "uic_ref": "8517014"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3074774946,
+   "lat": 46.490214,
+   "lon": 8.7401351,
+   "tags": {
+    "name": "Rodi-Fiesso",
+    "operator": "SBB",
+    "railway": "service_station",
+    "railway:ref": "RO",
+    "uic_name": "Rodi-Fiesso",
+    "uic_ref": "8505203",
+    "wikidata": "Q106232553"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3075350718,
+   "lat": 45.4341383,
+   "lon": 10.9507002,
+   "tags": {
+    "name": "Bivio/P.C. San Massimo",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3140659105,
+   "lat": 45.9029952,
+   "lon": 8.9788325,
+   "tags": {
+    "alt_name": "Capolago Lago",
+    "ele": "274",
+    "name": "Capolago FFS",
+    "operator": "Ferrovia Monte Generoso SA",
+    "railway": "service_station",
+    "source": "Bundesamt f\u00fcr Verkehr (BAV), DIDOK 2009",
+    "uic_name": "Capolago Lago",
+    "uic_ref": "8505367",
+    "wikidata": "Q354045",
+    "wikipedia": "it:Ferrovia Monte Generoso"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3340755377,
+   "lat": 45.6291798,
+   "lon": 9.1171248,
+   "tags": {
+    "name": "PM Groane",
+    "operator": "Ferrovienord",
+    "operator:wikidata": "Q3736799",
+    "railway": "service_station",
+    "wikidata": "Q3969755",
+    "wikipedia": "it:Stazione di Groane"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5850813913,
+   "lat": 46.0205106,
+   "lon": 8.9177663,
+   "tags": {
+    "ele": "291",
+    "name": "Lugano Vedeggio",
+    "operator": "SBB",
+    "railway": "service_station",
+    "source": "opentransportdata.swiss",
+    "uic_name": "Lugano Vedeggio",
+    "uic_ref": "8505345"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5850859803,
+   "lat": 46.0176254,
+   "lon": 8.9327261,
+   "tags": {
+    "ele": "341",
+    "name": "Massagno Nord",
+    "operator": "SBB",
+    "railway": "service_station",
+    "source": "opentransportdata.swiss",
+    "uic_name": "Massagno Nord",
+    "uic_ref": "8515412"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6061421937,
+   "lat": 46.5049703,
+   "lon": 8.7171954,
+   "tags": {
+    "ele": "972",
+    "name": "Quinto Tre Cappelle",
+    "operator": "SBB",
+    "railway": "service_station",
+    "uic_name": "Quinto Tre Cappelle",
+    "uic_ref": "8517104"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6061421938,
+   "lat": 46.5175962,
+   "lon": 8.6478429,
+   "tags": {
+    "ele": "1062",
+    "name": "Sordo",
+    "operator": "SBB",
+    "railway": "crossover",
+    "uic_name": "Sordo (c bin)",
+    "uic_ref": "8505241"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6063541621,
+   "lat": 46.4890316,
+   "lon": 8.7647499,
+   "tags": {
+    "ele": "851",
+    "name": "Pardorea",
+    "operator": "SBB CFF FFS",
+    "railway": "crossover",
+    "uic_name": "Pardorea (c bin)",
+    "uic_ref": "8505242"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6064556943,
+   "lat": 46.466551,
+   "lon": 8.8239209,
+   "tags": {
+    "ele": "673",
+    "name": "Chiggiogna",
+    "operator": "SBB CFF FFS",
+    "railway": "crossover",
+    "uic_name": "Chiggiogna (c bin)",
+    "uic_ref": "8505243"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6070388477,
+   "lat": 46.4979038,
+   "lon": 8.8108707,
+   "tags": {
+    "ele": "1630",
+    "name": "Faido SMF",
+    "operator": "SBB",
+    "railway": "service_station",
+    "railway:ref": "FSMF",
+    "uic_name": "Faido SMF",
+    "uic_ref": "8518304"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6535492784,
+   "lat": 46.1507038,
+   "lon": 8.9808923,
+   "tags": {
+    "name": "Viagana",
+    "note": "\"Viagana\" ist laut \"Eisenbahn-Revue International\" 2019, S. 354, die Bezeichnung des Spurwechsels",
+    "railway": "crossover"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6966691773,
+   "lat": 46.0257,
+   "lon": 8.93466,
+   "tags": {
+    "ele": "329",
+    "name": "Vezia (bif)",
+    "operator": "SBB",
+    "railway": "junction",
+    "railway:ref": "VEZB",
+    "uic_name": "Vezia (bif)",
+    "uic_ref": "8515720"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6973901226,
+   "lat": 46.1679704,
+   "lon": 8.993463,
+   "tags": {
+    "ele": "224",
+    "name": "Giubiasco Ovest",
+    "operator": "SBB",
+    "railway": "junction",
+    "uic_name": "Giubiasco Ovest",
+    "uic_ref": "8515975"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7419974477,
+   "lat": 46.1561101,
+   "lon": 8.9863461,
+   "tags": {
+    "name": "Camorino",
+    "railway": "junction",
+    "railway:ref": "CAMO",
+    "uic_name": "Camorino (dira)",
+    "uic_ref": "8515733"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7503410133,
+   "lat": 46.3208817,
+   "lon": 10.0560048,
+   "tags": {
+    "ele": "1011",
+    "name": "Pradei",
+    "operator": "RhB",
+    "railway": "service_station",
+    "railway:ref": "PRAD",
+    "uic_name": "Pradei",
+    "uic_ref": "8519675"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7532488874,
+   "lat": 46.3340734,
+   "lon": 10.0554278,
+   "tags": {
+    "name": "Poschiavo Nord",
+    "opening_date": "2017",
+    "operator": "RhB",
+    "operator:wikidata": "Q177598",
+    "railway": "junction",
+    "railway:ref": "POSN"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8064939686,
+   "lat": 46.1543642,
+   "lon": 8.9214291,
+   "tags": {
+    "ele": "203",
+    "name": "Cadenazzo Ovest",
+    "operator": "SBB",
+    "railway": "junction",
+    "uic_name": "Cadenazzo Ovest (bif)",
+    "uic_ref": "8515391"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8669584548,
+   "lat": 45.4987739,
+   "lon": 9.2197198,
+   "tags": {
+    "alt_name": "Posto di Movimento Turro",
+    "name": "P.M. Turro",
+    "old_name": "Quadrivio Turro",
+    "operator": "Rete Ferroviaria Italiana",
+    "operator:short": "RFI",
+    "operator:wikidata": "Q1060049",
+    "railway": "service_station",
+    "wikidata": "Q131396283"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8669592014,
+   "lat": 45.4464544,
+   "lon": 9.2269952,
+   "tags": {
+    "name": "Bivio Porta Romana",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9282957753,
+   "lat": 45.8491372,
+   "lon": 9.0000537,
+   "tags": {
+    "ele": "274",
+    "name": "Balerna per Smistamento",
+    "operator": "FFS",
+    "railway": "junction",
+    "railway:ref": "BASM",
+    "uic_name": "Balerna per Smistamento (bif)",
+    "uic_ref": "8505347"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9282957754,
+   "lat": 45.8414688,
+   "lon": 9.0046304,
+   "tags": {
+    "ele": "238",
+    "name": "Chiasso Smistamento Nord",
+    "operator": "FFS",
+    "railway": "junction",
+    "railway:ref": "CHSN",
+    "uic_name": "Chiasso Smistamento Nord (bif)",
+    "uic_ref": "8515394"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9283072674,
+   "lat": 45.8299445,
+   "lon": 9.0368403,
+   "tags": {
+    "ele": "239",
+    "name": "Chiasso Est",
+    "operator": "FFS",
+    "railway": "junction",
+    "railway:ref": "CHIE",
+    "uic_name": "Chiasso Est",
+    "uic_ref": "8515393"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9391588938,
+   "lat": 45.7768296,
+   "lon": 9.0733206,
+   "tags": {
+    "name": "P.M. Albate",
+    "railway": "service_station",
+    "wikidata": "Q3968849",
+    "wikipedia": "it:Stazione di Albate-Camerlata"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9534694521,
+   "lat": 46.4538275,
+   "lon": 9.9362399,
+   "tags": {
+    "ele": "1880",
+    "name": "Alp Nouva",
+    "operator": "RhB",
+    "operator:wikidata": "Q177598",
+    "railway": "service_station",
+    "railway:ref": "ALPN",
+    "uic_name": "Alp Nouva",
+    "uic_ref": "8518122"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9707596149,
+   "lat": 45.8542389,
+   "lon": 8.880424,
+   "tags": {
+    "name": "P.M. Bevera",
+    "operator": "Rete Ferroviaria Italiana",
+    "operator:short": "RFI",
+    "operator:wikidata": "Q1060049",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9711568302,
+   "lat": 45.7654086,
+   "lon": 9.0820461,
+   "tags": {
+    "name": "Bivio/P.C. Rosales",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9899065946,
+   "lat": 45.469656,
+   "lon": 9.2732717,
+   "tags": {
+    "name": "Rifornimento",
+    "railway": "service_station"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10012109914,
+   "lat": 45.8396426,
+   "lon": 8.8362746,
+   "tags": {
+    "name": "P.P. Induno",
+    "operator": "Rete Ferroviaria Italiana",
+    "operator:short": "RFI",
+    "operator:wikidata": "Q1060049",
+    "railway": "service_station"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10042315665,
+   "lat": 46.1451606,
+   "lon": 8.8502822,
+   "tags": {
+    "name": "Magadino-Vira",
+    "railway": "service_station",
+    "train": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11306150408,
+   "lat": 44.7588746,
+   "lon": 10.5407099,
+   "tags": {
+    "distance": "72.860",
+    "name": "P.M. Campegine",
+    "operator": "Rete Ferroviaria Italiana",
+    "railway": "service_station",
+    "wikidata": "Q338194",
+    "wikipedia": "it:Ferrovia Milano-Bologna (alta velocit\u00e0)"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11306150409,
+   "lat": 44.8160738,
+   "lon": 10.4092983,
+   "tags": {
+    "distance": "85.602",
+    "name": "1\u00b0 Bivio Parma Est",
+    "operator": "Rete Ferroviaria Italiana",
+    "railway": "service_station",
+    "wikidata": "Q3743512",
+    "wikipedia": "it:Ferrovia Milano-Verona (alta velocit\u00e0)"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11306150410,
+   "lat": 44.8829867,
+   "lon": 10.1345719,
+   "tags": {
+    "distance": "18.699",
+    "name": "P.C. Fontanellato",
+    "operator": "Rete Ferroviaria Italiana",
+    "railway": "service_station",
+    "wikidata": "Q338194",
+    "wikipedia": "it:Ferrovia Milano-Bologna (alta velocit\u00e0)"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11306150415,
+   "lat": 44.9153868,
+   "lon": 10.0105274,
+   "tags": {
+    "distance": "119.296",
+    "name": "1\u00b0 Bivio Fidenza Ovest",
+    "operator": "Rete Ferroviaria Italiana",
+    "railway": "service_station",
+    "wikidata": "Q338194",
+    "wikipedia": "it:Ferrovia Milano-Bologna (alta velocit\u00e0)"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11308350678,
+   "lat": 44.9937611,
+   "lon": 9.8326141,
+   "tags": {
+    "distance": "135.853",
+    "name": "P.C. Piacenza",
+    "operator": "Rete Ferroviaria Italiana",
+    "railway": "service_station",
+    "wikidata": "Q338194",
+    "wikipedia": "it:Ferrovia Milano-Bologna (alta velocit\u00e0)"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11308350679,
+   "lat": 45.0117269,
+   "lon": 9.7910818,
+   "tags": {
+    "distance": "139.693",
+    "name": "1\u00b0 Bivio Piacenza Est",
+    "operator": "Rete Ferroviaria Italiana",
+    "railway": "service_station",
+    "wikidata": "Q338194",
+    "wikipedia": "it:Ferrovia Milano-Bologna (alta velocit\u00e0)"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11308350680,
+   "lat": 45.1149323,
+   "lon": 9.7027157,
+   "tags": {
+    "distance": "153.358",
+    "name": "Bivio Piacenza Ovest",
+    "operator": "Rete Ferroviaria Italiana",
+    "railway": "service_station",
+    "wikidata": "Q338194",
+    "wikipedia": "it:Ferrovia Milano-Bologna (alta velocit\u00e0)"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11308350681,
+   "lat": 45.1846903,
+   "lon": 9.5739407,
+   "tags": {
+    "distance": "166.252",
+    "length": "1.835",
+    "name": "P.M. Livraga",
+    "operator": "Rete Ferroviaria Italiana",
+    "railway": "service_station"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11308350682,
+   "lat": 45.3418238,
+   "lon": 9.3485809,
+   "tags": {
+    "distance": "191.220",
+    "name": "P.J. / P.C. Melegnano",
+    "operator": "Rete Ferroviaria Italiana",
+    "railway": "service_station",
+    "wikidata": "Q338194",
+    "wikipedia": "it:Ferrovia Milano-Bologna (alta velocit\u00e0)"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11444019398,
+   "lat": 44.8958587,
+   "lon": 8.8387788,
+   "tags": {
+    "name": "Bivio/PC Tortona",
+    "railway": "service_station"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11587773245,
+   "lat": 45.4660101,
+   "lon": 8.5840779,
+   "tags": {
+    "name": "P.M. Agognate",
+    "railway": "service_station"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11637997360,
+   "lat": 45.4983182,
+   "lon": 9.2036374,
+   "tags": {
+    "name": "Bivio Mirabello",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11966540244,
+   "lat": 44.8351641,
+   "lon": 8.8004589,
+   "tags": {
+    "name": "Bivio Pozzolo F.",
+    "railway": "service_station"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12031520962,
+   "lat": 44.8944353,
+   "lon": 10.0437416,
+   "tags": {
+    "name": "2\u00b0 Bivio/PP Fidenza Ovest",
+    "operator": "Rete Ferroviaria Italiana",
+    "operator:short": "RFI",
+    "operator:wikidata": "Q1060049",
+    "railway": "service_station"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12031565000,
+   "lat": 45.0908937,
+   "lon": 9.7186204,
+   "tags": {
+    "name": "PM Piancenza Ovest",
+    "railway": "service_station"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12031595817,
+   "lat": 45.0344563,
+   "lon": 9.7574254,
+   "tags": {
+    "name": "2\u00b0 Bivio Piacenza Est",
+    "railway": "service_station"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12031623603,
+   "lat": 44.8205738,
+   "lon": 10.3741536,
+   "tags": {
+    "name": "2\u00b0 Bivio/PC Parma Est",
+    "railway": "service_station"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12175473623,
+   "lat": 45.5037042,
+   "lon": 9.196962,
+   "tags": {
+    "name": "Triplo Bivio Seveso",
+    "railway": "junction",
+    "short_name": "T.B./P.C. Seveso"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12176934777,
+   "lat": 45.49781,
+   "lon": 9.1604355,
+   "tags": {
+    "name": "Posto di Movimemto Ghisolfa",
+    "railway": "junction",
+    "short_name": "P.M. Ghisolfa"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12176934778,
+   "lat": 45.4718702,
+   "lon": 9.2491464,
+   "tags": {
+    "name": "Bivio Lambro",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12176934780,
+   "lat": 45.4612678,
+   "lon": 9.2373212,
+   "tags": {
+    "name": "Posto di Movimento Trecca",
+    "railway": "junction",
+    "short_name": "P.M. Trecca"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12201156458,
+   "lat": 45.4271095,
+   "lon": 10.9416955,
+   "tags": {
+    "name": "Bivio/P.C. Fenilone",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12201191674,
+   "lat": 45.4176131,
+   "lon": 10.9485822,
+   "tags": {
+    "name": "Bivio/P.C. Santa Lucia",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12290311217,
+   "lat": 45.5915055,
+   "lon": 8.8128487,
+   "tags": {
+    "name": "Bivio Sacconago",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12331308507,
+   "lat": 45.4871102,
+   "lon": 10.3473802,
+   "tags": {
+    "name": "Bivio/PC Mazzano",
+    "opening_date": "2024-12-08",
+    "railway": "junction",
+    "railway:position": "94.7",
+    "railway:position:exact": "94.685"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12446980659,
+   "lat": 46.0471996,
+   "lon": 8.2777053,
+   "tags": {
+    "name": "Bivio Valle",
+    "operator": "Rete Ferroviaria Italiana",
+    "operator:short": "RFI",
+    "operator:wikidata": "Q1060049",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12447017775,
+   "lat": 46.0875607,
+   "lon": 8.2951508,
+   "tags": {
+    "name": "Bivio Toce",
+    "operator": "Rete Ferroviaria Italiana",
+    "operator:short": "RFI",
+    "operator:wikidata": "Q1060049",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12476296685,
+   "lat": 45.4726243,
+   "lon": 9.2529559,
+   "tags": {
+    "name": "Bivio/PC Lambro",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13042157742,
+   "lat": 46.4207888,
+   "lon": 8.8609308,
+   "tags": {
+    "name": "Pianotondo",
+    "operator": "SBB",
+    "railway": "crossover",
+    "railway:ref": "PIA"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13042157743,
+   "lat": 46.3583856,
+   "lon": 8.9530504,
+   "tags": {
+    "name": "Pollegio",
+    "operator": "SBB",
+    "railway": "service_station",
+    "railway:ref": "POLL",
+    "start_date": "2016-06"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13304984123,
+   "lat": 45.0923967,
+   "lon": 11.1317146,
+   "tags": {
+    "name": "Ostiglia Nord",
+    "railway": "crossover"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13348736990,
+   "lat": 45.4267939,
+   "lon": 10.9052271,
+   "tags": {
+    "long_name": "Bivio/ Posto di Comunicazione Lugagnano",
+    "name": "Bivio/PC Lugagnano",
+    "opening_date": "2025-12-07",
+    "railway": "junction",
+    "railway:position": "150.6"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13416285859,
+   "lat": 45.6632804,
+   "lon": 8.7613325,
+   "tags": {
+    "name": "Bivio/PC Cardano",
+    "operator": "Ferrovienord",
+    "railway": "service_station",
+    "wikidata": "Q137895953"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13428670115,
+   "lat": 45.4704201,
+   "lon": 8.6159972,
+   "tags": {
+    "name": "Interconnessione Novara Ovest",
+    "railway": "junction"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13512464250,
+   "lat": 45.4627382,
+   "lon": 8.4143896,
+   "tags": {
+    "long_name": "Posto di Comunicazione Recetto",
+    "name": "PC Recetto",
+    "railway": "crossover",
+    "railway:position": "68.2",
+    "railway:position:exact": "68.206"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13622973517,
+   "lat": 45.5124499,
+   "lon": 9.0508534,
+   "tags": {
+    "name": "Posto di Movimento Rho Fiera",
+    "operator": "Rete Ferroviaria Italiana",
+    "operator:short": "RFI",
+    "operator:wikidata": "Q1060049",
+    "railway": "service_station"
+   }
+  }
+ ]
+}
