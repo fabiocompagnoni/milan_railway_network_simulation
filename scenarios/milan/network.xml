@@ -633,6 +633,8 @@
 				<attribute name="gtfsStopName" class="java.lang.String">Induno Olona</attribute>
 			</attributes>
 		</node>
+		<node id="PPINDUNO" x="487285.790694315" y="5076243.968561373" >
+		</node>
 		<node id="S01205" x="487027.28731949494" y="5073643.421486313" >
 			<attributes>
 				<attribute name="gtfsStopName" class="java.lang.String">Varese</attribute>
@@ -1998,6 +2000,11 @@
 				<attribute name="gtfsStopName" class="java.lang.String">Saronno</attribute>
 			</attributes>
 		</node>
+		<node id="S01927" x="509179.57028022624" y="5052886.114032191" >
+			<attributes>
+				<attribute name="gtfsStopName" class="java.lang.String">Ceriano Laghetto Groane</attribute>
+			</attributes>
+		</node>
 		<node id="S01934" x="506243.9392764344" y="5052386.1354601085" >
 			<attributes>
 				<attribute name="gtfsStopName" class="java.lang.String">Ceriano Laghetto-Solaro</attribute>
@@ -2092,6 +2099,8 @@
 			<attributes>
 				<attribute name="gtfsStopName" class="java.lang.String">Novi Ligure</attribute>
 			</attributes>
+		</node>
+		<node id="BIVIOPOZZOLO" x="484228.0812104717" y="4964658.850799351" >
 		</node>
 		<node id="S04330" x="482810.1689057868" y="4960463.858389758" >
 			<attributes>
@@ -2222,6 +2231,8 @@
 			<attributes>
 				<attribute name="gtfsStopName" class="java.lang.String">Gerra</attribute>
 			</attributes>
+		</node>
+		<node id="CADENAZZOOVEST" x="493933.01416124176" y="5111201.6464153165" >
 		</node>
 		<node id="S05412" x="491216.7229009825" y="5113549.879383766" >
 			<attributes>
@@ -3468,8 +3479,9 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">R3,RE3</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">28422757 28662842 58417144 58478896 58478897 62285858 63556920 63556939 63611016 75580133 75580143 75580159 75580173 89477290 94722236 94722253 94722255 94722273 94722276 94795604 94815433 94815434 94815435 94937239 94937241 94961319 107326177 125459970 125459971 177479692 177479694 179161421 179161424 187058990 281601154 281601156 281601157 281601160 288491271 288491273 292489961 292489963 292792370 292792372 349503805 349503808 349503812 349503822 351704545 351704550 389671800 389671806 397350530 397350533 427163767 555418127 555418128 712089279 789237289 803223255 803223256 838263828 838263829 900165601 927791017 927791018 927791033 927791048 970437774 970437775 981332939 984898904 984898905 984898906 1021438072 1021438074 1055343522 1055343523 1134017153 1252634294 1443309744 1443309745 1443310561</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">11</attribute>
-				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01021_S09999</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01022_S01032" from="S01022" to="S01032" length="1241.3" freespeed="22.22222222222222" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -3811,8 +3823,9 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">S50</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">226312430 266378121 337817941 337817949 465017957 465017967 908558912 1096699933 1096699934 1349354113 1388381319</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01031_S01137</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01032_S01022" from="S01032" to="S01022" length="1241.3" freespeed="22.22222222222222" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -4853,11 +4866,37 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01086_S01934" from="S01086" to="S01934" length="4698.3" freespeed="9.788125" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01086_S01927" from="S01086" to="S01927" length="1888.7" freespeed="9.788125" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">33</attribute>
-				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">480</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">193</attribute>
+				<attribute name="gtfsRoutes" class="java.lang.String">S9</attribute>
+				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
+				<attribute name="osmWayIds" class="java.lang.String">143022683 189999105 323858897 323859784 323860158 323860161 323860163 323865976 323867463 323867881 323867883 438438426 1425996874 1471089157 1471089172 1471089174 1471089175</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01086_S01927</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01927_S01086" from="S01927" to="S01086" length="1888.7" freespeed="9.788125" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="gtfsDailyTrips" class="java.lang.Integer">33</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">193</attribute>
+				<attribute name="gtfsRoutes" class="java.lang.String">S9</attribute>
+				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
+				<attribute name="osmWayIds" class="java.lang.String">143022683 189999105 323858897 323859784 323860158 323860161 323860163 323865976 323867463 323867881 323867883 438438426 1425996874 1471089157 1471089172 1471089174 1471089175</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01086_S01927</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S01927_S01934" from="S01927" to="S01934" length="2809.6" freespeed="9.788125" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="gtfsDailyTrips" class="java.lang.Integer">33</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">287</attribute>
 				<attribute name="gtfsRoutes" class="java.lang.String">S9</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">143022683 189999105 323858897 323859784 323860158 323860161 323860163 323865976 323867463 323867881 323867883 438438426 1425996874 1471089157 1471089172 1471089174 1471089175</attribute>
@@ -5461,8 +5500,9 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">R21,S30</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">32964316 32964317 76791785 191695220 758692406 889488708</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01118_S01140</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01118_S01141" from="S01118" to="S01141" length="7632.1" freespeed="18.171666666666667" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -5531,8 +5571,9 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">S50</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">226312430 266378121 337817941 337817949 465017957 465017967 908558912 1096699933 1096699934 1349354113 1388381319</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01031_S01137</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01137_S01136" from="S01137" to="S01136" length="1879.9" freespeed="33.333333333333336" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -5654,8 +5695,9 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">R21,S30</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">32964316 32964317 76791785 191695220 758692406 889488708</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01118_S01140</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01140_S01141" from="S01140" to="S01141" length="4371.4" freespeed="36.11111111111111" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -5883,9 +5925,8 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">RE5</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">539196210 539196211 539196497 539196499 539200830 539232240 539234976 539234986 574728675 789281513 1051221627 1051221630 1051221631 1051221632</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S01202_S01203</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S01203_S01202" from="S01203" to="S01202" length="3564.8" freespeed="23.638888888888886" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -5895,9 +5936,8 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">RE5</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">539196210 539196211 539196497 539196499 539200830 539232240 539234976 539234986 574728675 789281513 1051221627 1051221630 1051221631 1051221632</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S01202_S01203</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S01203_S01204" from="S01203" to="S01204" length="2401.9" freespeed="30.555555555555554" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -5933,14 +5973,36 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S01204_S01205" from="S01204" to="S01205" length="3620.7" freespeed="24.333333333333332" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01204_PPINDUNO" from="S01204" to="PPINDUNO" length="887.1" freespeed="24.333333333333332" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">52</attribute>
-				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">240</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">59</attribute>
 				<attribute name="gtfsRoutes" class="java.lang.String">RE5,S40,S50</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">53800102 53800105 53800108 53800112 53800113 53800114 53800115 53800117 53800118 53800122 53800125 53800128 53800129 223882143 539201117 539231989 539231995 539231996 539232000 549168982 564106097 984730402 1096692808 1096692809 1385131041</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S01204_S01205</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="PPINDUNO_S01204" from="PPINDUNO" to="S01204" length="887.1" freespeed="24.333333333333332" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="gtfsDailyTrips" class="java.lang.Integer">52</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">44</attribute>
+				<attribute name="gtfsRoutes" class="java.lang.String">RE5,S40,S50</attribute>
+				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
+				<attribute name="osmWayIds" class="java.lang.String">53800102 53800105 53800108 53800112 53800113 53800114 53800115 53800117 53800118 53800122 53800125 53800128 53800129 223882143 539201117 539231989 539231995 539231996 539232000 549168982 564106097 984730402 1096692808 1096692809 1385131041</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="PPINDUNO_S01205" from="PPINDUNO" to="S01205" length="2733.6" freespeed="24.333333333333332" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="gtfsDailyTrips" class="java.lang.Integer">52</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">181</attribute>
+				<attribute name="gtfsRoutes" class="java.lang.String">RE5,S40,S50</attribute>
+				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
+				<attribute name="osmWayIds" class="java.lang.String">53800102 53800105 53800108 53800112 53800113 53800114 53800115 53800117 53800118 53800122 53800125 53800128 53800129 223882143 539201117 539231989 539231995 539231996 539232000 549168982 564106097 984730402 1096692808 1096692809 1385131041</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">PPINDUNO_S01205</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
@@ -5957,14 +6019,14 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S01205_S01204" from="S01205" to="S01204" length="3620.7" freespeed="24.333333333333332" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01205_PPINDUNO" from="S01205" to="PPINDUNO" length="2733.6" freespeed="24.333333333333332" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">52</attribute>
-				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">180</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">136</attribute>
 				<attribute name="gtfsRoutes" class="java.lang.String">RE5,S40,S50</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">53800102 53800105 53800108 53800112 53800113 53800114 53800115 53800117 53800118 53800122 53800125 53800128 53800129 223882143 539201117 539231989 539231995 539231996 539232000 549168982 564106097 984730402 1096692808 1096692809 1385131041</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S01204_S01205</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">PPINDUNO_S01205</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
@@ -6113,6 +6175,7 @@
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">173937411 173937438 173945444 173945447 173945448 173945451 173945452 173945453 173953285 900954053 973578076 1006404598 1084267730 1096521688</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S01301_S13143" from="S01301" to="S13143" length="7448.6" freespeed="17.734761904761907" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -6123,7 +6186,8 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">RE80</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">40332336 40332337 76238246 76238253 172026229 173661841 173664891 173664895 173664896 173664903 173664909 173911504 173922104 173922106 173922108 173922123 173922124 173922125 173922126 173922127 173937428 173937440 173945448 173945450 173945453 173953285 900954053 973578076 974416031 974416034 1006404598 1084267730 1096521688 1497189340</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S01301_S19919" from="S01301" to="S19919" length="9608.4" freespeed="10.00875" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -6287,8 +6351,9 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">S4</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">60229523 196092685 196092688 224740057 314109357 1022678356 1022678357 1022678358 1031302524 1385171982</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01316_S01925</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01318_S01307" from="S01318" to="S01307" length="24848.4" freespeed="13.359354838709677" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -9075,8 +9140,9 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">R1</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">34055600 34055601 37705126 37705127 54680039 54680042 54680055 325790539 927791007 982933927 1414551661 1414551668 1414551669 1482200684</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01529_S01533</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01529_S01535" from="S01529" to="S01535" length="11068.4" freespeed="29.833333333333336" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -9134,8 +9200,9 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">R1,R5</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">34055600 34055601 37705126 37705127 54680039 54680042 54680055 325790539 927791007 982933927 1414551661 1414551668 1414551669 1482200684</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01529_S01533</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01533_S01534" from="S01533" to="S01534" length="3453.8" freespeed="30.555555555555554" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -9487,7 +9554,9 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">R2</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">246466943 246471073 325803794 387307018 598202658 931534403 941962262 941962263 973727558</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01601_S01708</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01602_S01603" from="S01602" to="S01603" length="5640.8" freespeed="33.333333333333336" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -10621,7 +10690,9 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">R2</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">246466943 246471073 325803794 387307018 598202658 931534403 941962262 941962263 973727558</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01601_S01708</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01708_S01602" from="S01708" to="S01602" length="5021.0" freespeed="16.736666666666668" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -11875,7 +11946,7 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">R17,RE7</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">4816700 31721972 31721974 31721975 31735472 89668171 89668173 89668205 174480667 174480668 315118579 315120860 315120861 315120862 368471034 368471064 368471065 907147518 907147525 984966326</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S01763_S01764</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S09998_S01764</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
@@ -11888,7 +11959,7 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">R17,RE7</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">4816700 31721972 31721974 31721975 31735472 89668171 89668173 89668205 174480667 174480668 315118579 315120860 315120861 315120862 368471034 368471064 368471065 907147518 907147525 984966326</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S01763_S01764</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S09998_S01764</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
@@ -12707,7 +12778,8 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">RE13</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">190344879 272025693 272025695 324590338 722991345 984027000 1460810618</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S01806_S01860" from="S01806" to="S01860" length="17391.9" freespeed="24.155416666666667" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -12730,7 +12802,8 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">RE13</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">190344879 272025693 272025695 324590338 722991345 984027000 1460810618</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S01807_S01809" from="S01807" to="S01809" length="7367.6" freespeed="24.558666666666667" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -12841,15 +12914,27 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S01810_S04330" from="S01810" to="S04330" length="14014.7" freespeed="17.967564102564104" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01810_BIVIOPOZZOLO" from="S01810" to="BIVIOPOZZOLO" length="9277.7" freespeed="17.967564102564104" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">1</attribute>
-				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">780</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">516</attribute>
 				<attribute name="gtfsRoutes" class="java.lang.String">RE13</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">69249552 69249560 178711368 178711369 191732753 224643555 224643560 281246006 281485194 751529057 751529058 759253350 984003154 1013570827 1026423278 1125933400 1205837236 1233853671 1233853672 1233853674 1290019312 1290019313 1290655582 1290655585 1324405313 1334599858</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S01810_S04330</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="BIVIOPOZZOLO_S04330" from="BIVIOPOZZOLO" to="S04330" length="4737.0" freespeed="17.967564102564104" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="gtfsDailyTrips" class="java.lang.Integer">1</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">264</attribute>
+				<attribute name="gtfsRoutes" class="java.lang.String">RE13</attribute>
+				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
+				<attribute name="osmWayIds" class="java.lang.String">69249552 69249560 178711368 178711369 191732753 224643555 224643560 281246006 281485194 751529057 751529058 759253350 984003154 1013570827 1026423278 1125933400 1205837236 1233853671 1233853672 1233853674 1290019312 1290019313 1290655582 1290655585 1324405313 1334599858</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">BIVIOPOZZOLO_S04330</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
@@ -14660,8 +14745,9 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">S4</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">60229523 196092685 196092688 224740057 314109357 1022678356 1022678357 1022678358 1031302524 1385171982</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01316_S01925</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S01929_S01086" from="S01929" to="S01086" length="1871.5" freespeed="27.77777777777778" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -14865,11 +14951,11 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S01934_S01086" from="S01934" to="S01086" length="4698.3" freespeed="9.788125" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01934_S01927" from="S01934" to="S01927" length="2809.6" freespeed="9.788125" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">33</attribute>
-				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">480</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">287</attribute>
 				<attribute name="gtfsRoutes" class="java.lang.String">S9</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">143022683 189999105 323858897 323859784 323860158 323860161 323860163 323865976 323867463 323867881 323867883 438438426 1425996874 1471089157 1471089172 1471089174 1471089175</attribute>
@@ -15303,17 +15389,29 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S04330_S01810" from="S04330" to="S01810" length="14014.7" freespeed="16.684166666666666" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S04330_BIVIOPOZZOLO" from="S04330" to="BIVIOPOZZOLO" length="4737.0" freespeed="16.684166666666666" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">1</attribute>
-				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">840</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">284</attribute>
 				<attribute name="gtfsRoutes" class="java.lang.String">RE13</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">69249552 69249560 178711368 178711369 191732753 224643555 224643560 281246006 281485194 751529057 751529058 759253350 984003154 1013570827 1026423278 1125933400 1205837236 1233853671 1233853672 1233853674 1290019312 1290019313 1290655582 1290655585 1324405313 1334599858</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S01810_S04330</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">BIVIOPOZZOLO_S04330</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="BIVIOPOZZOLO_S01810" from="BIVIOPOZZOLO" to="S01810" length="9277.7" freespeed="16.684166666666666" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="gtfsDailyTrips" class="java.lang.Integer">1</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">556</attribute>
+				<attribute name="gtfsRoutes" class="java.lang.String">RE13</attribute>
+				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
+				<attribute name="osmWayIds" class="java.lang.String">69249552 69249560 178711368 178711369 191732753 224643555 224643560 281246006 281485194 751529057 751529058 759253350 984003154 1013570827 1026423278 1125933400 1205837236 1233853671 1233853672 1233853674 1290019312 1290019313 1290655582 1290655585 1324405313 1334599858</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S04330_S04203" from="S04330" to="S04203" length="4110.3" freespeed="5.70875" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -15482,6 +15580,7 @@
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">158665607 217516103 217520107 217520111 217618216 217618223 217877683 412630739 453264883 453264884 453264885 453264886 453264887 453265910 613881408 617354690 617354698 703038957 703038958 744426062 744426065 744445365 744445367 744445368 744445369 744445371 744445372 744445374 744445376 908022368 908022373 908022375 908022376 977347538 977347540 1328097227</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S05213_S05212" from="S05213" to="S05212" length="3544.9" freespeed="14.770416666666668" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -15493,6 +15592,7 @@
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">158665607 217516103 217520107 217520111 217618216 217618223 217877683 412630739 453264883 453264884 453264885 453264886 453264887 453265910 613881408 617354690 617354698 703038957 703038958 744426062 744426065 744445365 744445367 744445368 744445369 744445371 744445372 744445374 744445376 908022368 908022373 908022375 908022376 977347538 977347540 1328097227</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S05213_S05216" from="S05213" to="S05216" length="14110.4" freespeed="18.09025641025641" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -15768,6 +15868,7 @@
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">173937411 173937438 173945444 173945447 173945448 173945451 173945452 173945453 173953285 900954053 973578076 1006404598 1084267730 1096521688</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S05306_S13143" from="S05306" to="S13143" length="4792.8" freespeed="15.976" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -15779,6 +15880,7 @@
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">172026229 173661841 173664891 173664895 173664896 173664903 173664909 173911504 173922104 173922106 173922108 173922123 173922124 173922125 173922126 173922127 173937428 974416031 974416034 1497189340</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S05400_S05417" from="S05400" to="S05417" length="1395.4" freespeed="11.628333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -15851,19 +15953,40 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">S30</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">218643021 218643026 218645082 218645084 313980347 313980348 313980350 313980351 317936480 354414183 354414184 414761156 414761159 414761161 414767702 437776320 437776321 612002470 865261995 868256960 868256981 941426280 1278641057</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S05404_S05405</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S05404_S05412" from="S05404" to="S05412" length="5443.2" freespeed="32.05555555555556" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S05404_CADENAZZOOVEST" from="S05404" to="CADENAZZOOVEST" length="1660.2" freespeed="32.05555555555556" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">18</attribute>
-				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">300</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">92</attribute>
 				<attribute name="gtfsRoutes" class="java.lang.String">RE80</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">20128268 25335876 218645081 218645082 414761159 612002446 617428828 617428830 941426280 974791106 974791107 974791109 1084267738</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S05404_S05412</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="CADENAZZOOVEST_S05404" from="CADENAZZOOVEST" to="S05404" length="1660.2" freespeed="32.05555555555556" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="gtfsDailyTrips" class="java.lang.Integer">16</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">110</attribute>
+				<attribute name="gtfsRoutes" class="java.lang.String">RE80</attribute>
+				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
+				<attribute name="osmWayIds" class="java.lang.String">20128268 25335876 218645081 218645082 414761159 612002446 617428828 617428830 941426280 974791106 974791107 974791109 1084267738</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="CADENAZZOOVEST_S05412" from="CADENAZZOOVEST" to="S05412" length="3783.0" freespeed="32.05555555555556" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="gtfsDailyTrips" class="java.lang.Integer">18</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">208</attribute>
+				<attribute name="gtfsRoutes" class="java.lang.String">RE80</attribute>
+				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
+				<attribute name="osmWayIds" class="java.lang.String">20128268 25335876 218645081 218645082 414761159 612002446 617428828 617428830 941426280 974791106 974791107 974791109 1084267738</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">CADENAZZOOVEST_S05412</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
@@ -15888,9 +16011,8 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">S30</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">218643021 218643026 218645082 218645084 313980347 313980348 313980350 313980351 317936480 354414183 354414184 414761156 414761159 414761161 414767702 437776320 437776321 612002470 865261995 868256960 868256981 941426280 1278641057</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S05404_S05405</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
-				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S05405_S05406" from="S05405" to="S05406" length="2907.6" freespeed="12.115" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -16039,14 +16161,14 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S05412_S05404" from="S05412" to="S05404" length="5443.2" freespeed="32.05555555555556" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S05412_CADENAZZOOVEST" from="S05412" to="CADENAZZOOVEST" length="3783.0" freespeed="32.05555555555556" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">16</attribute>
-				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">360</attribute>
+				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">250</attribute>
 				<attribute name="gtfsRoutes" class="java.lang.String">RE80</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">20128268 25335876 218645081 218645082 414761159 612002446 617428828 617428830 941426280 974791106 974791107 974791109 1084267738</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">S05404_S05412</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">CADENAZZOOVEST_S05412</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
@@ -16182,8 +16304,9 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">R3,RE3</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">28422757 28662842 58417144 58478896 58478897 62285858 63556920 63556939 63611016 75580133 75580143 75580159 75580173 89477290 94722236 94722253 94722255 94722273 94722276 94795604 94815433 94815434 94815435 94937239 94937241 94961319 107326177 125459970 125459971 177479692 177479694 179161421 179161424 187058990 281601154 281601156 281601157 281601160 288491271 288491273 292489961 292489963 292792370 292792372 349503805 349503808 349503812 349503822 351704545 351704550 389671800 389671806 397350530 397350533 427163767 555418127 555418128 712089279 789237289 803223255 803223256 838263828 838263829 900165601 927791017 927791018 927791033 927791048 970437774 970437775 981332939 984898904 984898905 984898906 1021438072 1021438074 1055343522 1055343523 1134017153 1252634294 1443309744 1443309745 1443310561</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">11</attribute>
-				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S01021_S09999</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
 		<link id="S09999_S01538" from="S09999" to="S01538" length="26940.0" freespeed="18.708333333333332" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -16291,7 +16414,8 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">RE80</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">40332336 40332337 76238246 76238253 172026229 173661841 173664891 173664895 173664896 173664903 173664909 173911504 173922104 173922106 173922108 173922123 173922124 173922125 173922126 173922127 173937428 173937440 173945448 173945450 173945453 173953285 900954053 973578076 974416031 974416034 1006404598 1084267730 1096521688 1497189340</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S13143_S05301" from="S13143" to="S05301" length="15844.8" freespeed="22.006666666666664" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -16315,6 +16439,7 @@
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">172026229 173661841 173664891 173664895 173664896 173664903 173664909 173911504 173922104 173922106 173922108 173922123 173922124 173922125 173922126 173922127 173937428 974416031 974416034 1497189340</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S13143_S19901" from="S13143" to="S19901" length="1019.8" freespeed="32.97222222222222" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -16385,6 +16510,7 @@
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">173587361 173597906 173602662</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 		<link id="S19919_S01206" from="S19919" to="S01206" length="3435.4" freespeed="26.02777777777778" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -16431,6 +16557,7 @@
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">173587361 173597906 173602662</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
 	</links>
