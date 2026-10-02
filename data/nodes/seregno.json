@@ -46,7 +46,8 @@
 					"connections": {
 						"south": [
 							"meso:S01322",
-							"meso:S01320"
+							"meso:S01320",
+							"meso:S01500"
 						],
 						"north": [
 							"meso:S01929",
