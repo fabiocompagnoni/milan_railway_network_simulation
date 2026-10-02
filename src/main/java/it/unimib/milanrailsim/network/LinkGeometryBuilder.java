@@ -27,17 +27,26 @@ import java.util.stream.Stream;
  * shortest path over those fragments between the two station anchors. A station's
  * anchor is the OSM node within {@value #ANCHOR_RADIUS_M} m shared by the most
  * incident links (nearest to the station among ties), so all links meeting there
- * end at the same point on the through tracks; a link whose own track misses the anchor is joined to it by a short connector. Links without ways, or whose fragments do
- * not connect, fall back to the straight segment between their nodes.
+ * end at the same point on the through tracks; a link whose own track misses the
+ * anchor is joined to it by a short connector. Where a station has two track
+ * groups apart, the links of the group without the anchor meet at a point of
+ * their own tracks instead. Links without ways, or whose fragments do not
+ * connect, fall back to the straight segment between their nodes.
  */
 public final class LinkGeometryBuilder {
 
 	private static final String WAY_IDS_ATTRIBUTE = "osmWayIds";
 	/** Station points lie up to ~150 m off the tracks; beyond this an OSM node is not the station. */
 	private static final double ANCHOR_RADIUS_M = 300;
+	/** Up to this distance an anchor off a track is the neighbouring track of the same group. */
+	private static final double SIDE_STEP_M = 30;
+	/** Beyond the side step a connector is drawn only if it bends the track by less than this. */
+	private static final double MAX_BEND_DEGREES = 30;
 
 	private final OsmRailWays osm;
 	private final Map<Node, Long> anchors = new HashMap<>();
+	private final Map<Link, List<Coord>> traces = new HashMap<>();
+	private final Map<Node, Optional<Coord>> sideAnchors = new HashMap<>();
 
 	public LinkGeometryBuilder(OsmRailWays osm, Network network) {
 		this.osm = osm;
@@ -46,28 +55,80 @@ public final class LinkGeometryBuilder {
 
 	/** @throws IllegalArgumentException if the link references a way absent from the snapshot */
 	public List<Coord> polyline(Link link) {
-		List<Coord> straight = List.of(link.getFromNode().getCoord(), link.getToNode().getCoord());
-		Map<Long, Set<Long>> adjacency = adjacency(wayIds(link));
-		if (adjacency.isEmpty()) {
-			return straight;
-		}
-		long start = endpoint(adjacency, link.getFromNode());
-		long end = endpoint(adjacency, link.getToNode());
-		List<Coord> traced = shortestPath(adjacency, start, end);
+		List<Coord> traced = trace(link);
 		if (traced.isEmpty()) {
-			return straight;
+			return List.of(link.getFromNode().getCoord(), link.getToNode().getCoord());
 		}
 		List<Coord> joined = new ArrayList<>();
-		Long fromAnchor = anchors.get(link.getFromNode());
-		Long toAnchor = anchors.get(link.getToNode());
-		if (fromAnchor != null && fromAnchor != start) {
-			joined.add(coord(fromAnchor));
-		}
+		prolongation(link.getFromNode(), traced.reversed()).ifPresent(joined::add);
 		joined.addAll(traced);
-		if (toAnchor != null && toAnchor != end) {
-			joined.add(coord(toAnchor));
-		}
+		prolongation(link.getToNode(), traced).ifPresent(joined::add);
 		return List.copyOf(joined);
+	}
+
+	/** The track of a link between its two stations; empty without ways or when its fragments do not connect. */
+	private List<Coord> trace(Link link) {
+		List<Coord> known = traces.get(link);
+		if (known != null) {
+			return known;
+		}
+		Map<Long, Set<Long>> adjacency = adjacency(wayIds(link));
+		List<Coord> traced = adjacency.isEmpty() ? List.of()
+			: shortestPath(adjacency, endpoint(adjacency, link.getFromNode()), endpoint(adjacency, link.getToNode()));
+		traces.put(link, traced);
+		return traced;
+	}
+
+	/**
+	 * The point a track reaching a station is drawn on to: the station's
+	 * anchor or, when the anchor lies on another track group, the point shared
+	 * by the tracks of its own group.
+	 */
+	private Optional<Coord> prolongation(Node station, List<Coord> track) {
+		Long anchor = anchors.get(station);
+		if (anchor == null || track.getLast().equals(coord(anchor))) {
+			return Optional.empty();
+		}
+		if (continues(track, coord(anchor))) {
+			return Optional.of(coord(anchor));
+		}
+		return sideAnchor(station).filter(side -> !side.equals(track.getLast()) && continues(track, side));
+	}
+
+	/** Where the tracks that the station's anchor does not prolong meet: the end, nearest to the station, of one of them. */
+	private Optional<Coord> sideAnchor(Node station) {
+		if (sideAnchors.containsKey(station)) {
+			return sideAnchors.get(station);
+		}
+		Coord anchor = coord(anchors.get(station));
+		Optional<Coord> side = Stream.concat(
+				station.getInLinks().values().stream().map(this::trace),
+				station.getOutLinks().values().stream().map(link -> trace(link).reversed()))
+			.filter(track -> !track.isEmpty() && !track.getLast().equals(anchor) && !continues(track, anchor))
+			.map(List::getLast)
+			.min(Comparator.comparingDouble((Coord end) -> CoordUtils.calcEuclideanDistance(end, station.getCoord()))
+				.thenComparingDouble(Coord::getX).thenComparingDouble(Coord::getY));
+		sideAnchors.put(station, side);
+		return side;
+	}
+
+	/**
+	 * Whether the anchor prolongs a traced track past its last point: next to
+	 * it, as the parallel track of the same line, or ahead in its direction.
+	 * An anchor well to the side lies on another track group of the station
+	 * (Como Camerlata: the Ferrovienord tracks run 150 m from the RFI ones),
+	 * and a connector to it would draw the line across the station.
+	 */
+	private static boolean continues(List<Coord> track, Coord anchor) {
+		Coord end = track.getLast();
+		double connector = CoordUtils.calcEuclideanDistance(end, anchor);
+		if (connector <= SIDE_STEP_M || track.size() < 2) {
+			return connector <= SIDE_STEP_M;
+		}
+		Coord before = track.get(track.size() - 2);
+		double along = ((end.getX() - before.getX()) * (anchor.getX() - end.getX())
+			+ (end.getY() - before.getY()) * (anchor.getY() - end.getY())) / CoordUtils.calcEuclideanDistance(before, end);
+		return along >= connector * Math.cos(Math.toRadians(MAX_BEND_DEGREES));
 	}
 
 	private Optional<Long> anchor(Node node) {
