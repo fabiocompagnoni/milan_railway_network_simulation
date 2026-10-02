@@ -32,6 +32,9 @@ stations[]
     id, side (north | south), resource, lengthM, speedKmh, switches, groups[]
                 risorsa di conflitto condivisa dai link fra la gola e i gruppi elencati
   sidings       {tracks, note}  presenza di ricovero (regola in sidings.json)
+  sharedStock   [[linea, linea, ...]]  linee che in questa stazione condividono i treni:
+                il treno arrivato con una puo' ripartire con la corsa di un'altra
+                (default: ogni linea ha i suoi treni)
   notes
 segments[]
   from, to      stop GTFS; il link meso from_to (e il contrario) viene sostituito

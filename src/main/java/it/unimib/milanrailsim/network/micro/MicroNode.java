@@ -11,11 +11,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -86,8 +88,13 @@ public record MicroNode(String id, String title, List<Station> stations, List<Se
 	public record Sidings(Optional<Integer> tracks) {
 	}
 
+	/** @param sharedStock sets of lines run by one pool of trains at this station: a train in on one may leave on another */
 	public record Station(String id, String name, StationKind kind, OptionalDouble platformLengthM, List<Group> groups,
-			List<Throat> throats, Optional<Sidings> sidings) {
+			List<Throat> throats, Optional<Sidings> sidings, List<Set<String>> sharedStock) {
+
+		public boolean sharesStock(String line, String other) {
+			return sharedStock.stream().anyMatch(pool -> pool.contains(line) && pool.contains(other));
+		}
 
 		public Group group(String groupId) {
 			return groups.stream().filter(group -> group.id().equals(groupId)).findFirst()
@@ -333,9 +340,15 @@ public record MicroNode(String id, String title, List<Station> stations, List<Se
 			? Optional.of(new Sidings(node.get("sidings").hasNonNull("tracks")
 				? Optional.of(node.get("sidings").get("tracks").asInt()) : Optional.empty()))
 			: Optional.empty();
+		List<Set<String>> sharedStock = new ArrayList<>();
+		for (JsonNode pool : node.path("sharedStock")) {
+			Set<String> lines = new LinkedHashSet<>();
+			pool.forEach(line -> lines.add(line.asText()));
+			sharedStock.add(Set.copyOf(lines));
+		}
 		return new Station(text(node, "id"), text(node, "name"),
 			StationKind.valueOf(text(node, "kind").toUpperCase(Locale.ROOT)),
-			optionalDouble(node, "platformLengthM"), groups, throats, sidings);
+			optionalDouble(node, "platformLengthM"), groups, throats, sidings, List.copyOf(sharedStock));
 	}
 
 	private static Group parseGroup(JsonNode node) {

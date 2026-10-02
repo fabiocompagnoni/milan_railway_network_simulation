@@ -65,4 +65,39 @@ class TripChainsTest {
 
 		assertEquals(2, chains.size());
 	}
+
+	/** Lines R1 and R5 are one pool of trains at terminus B and nowhere else. */
+	private static final TripChains.Termini POOLED_AT_B = new TripChains.Termini() {
+
+		@Override
+		public double maxLayoverSeconds(String stop) {
+			return Double.POSITIVE_INFINITY;
+		}
+
+		@Override
+		public boolean shareStock(String stop, String line, String other) {
+			return stop.equals("B") && List.of("R1", "R5").containsAll(List.of(line, other));
+		}
+	};
+
+	@Test
+	void linesSharingStockAtATerminusChainThere() {
+		// the single stub of B holds one train: the R1 in at 6:16 must leave as the R5 of 6:43, the one in at 6:54 as the R1 of 7:06
+		List<List<Journey>> chains = TripChains.chain(List.of(
+			new Journey("in1", "R1", "A", "B", 330 * 60, 376 * 60),
+			new Journey("r5", "R5", "B", "C", 403 * 60, 460 * 60),
+			new Journey("in2", "R1", "A", "B", 370 * 60, 414 * 60),
+			new Journey("out", "R1", "B", "A", 426 * 60, 470 * 60)), TURNAROUND / 3, POOLED_AT_B);
+
+		assertEquals(List.of(List.of("in1", "r5"), List.of("in2", "out")), ids(chains));
+	}
+
+	@Test
+	void sharedStockDoesNotReachOtherTermini() {
+		List<List<Journey>> chains = TripChains.chain(List.of(
+			new Journey("a", "R1", "B", "A", 480 * 60, 500 * 60),
+			new Journey("b", "R5", "A", "C", 530 * 60, 550 * 60)), TURNAROUND, POOLED_AT_B);
+
+		assertEquals(List.of(List.of("a"), List.of("b")), ids(chains));
+	}
 }

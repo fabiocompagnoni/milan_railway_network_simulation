@@ -207,12 +207,24 @@ public final class TransitScheduleBuilder {
 			journeys.add(new Journey(trip.id(), line, calls.getFirst().stopId(), calls.getLast().stopId(),
 				calls.getFirst().departureSeconds(), calls.getLast().arrivalSeconds()));
 		}));
-		// a detailed station has sidings: a long layover there is spent in them, not by a new vehicle
-		ToDoubleFunction<String> chainLimit = stop -> planner.isMicro(stop) ? Double.POSITIVE_INFINITY
-			: maxLayoverSeconds.applyAsDouble(stop);
-		return TripChains.chain(journeys, turnaroundSeconds, chainLimit).stream()
+		return TripChains.chain(journeys, turnaroundSeconds, new DeclaredTermini()).stream()
 			.map(chain -> chain.stream().map(journey -> callsByTrip.get(journey.tripId())).toList())
 			.toList();
+	}
+
+	/** The termini as the detailed stations declare them. */
+	private final class DeclaredTermini implements TripChains.Termini {
+
+		@Override
+		public double maxLayoverSeconds(String stop) {
+			// a detailed station has sidings: a long layover there is spent in them, not by a new vehicle
+			return planner.isMicro(stop) ? Double.POSITIVE_INFINITY : maxLayoverSeconds.applyAsDouble(stop);
+		}
+
+		@Override
+		public boolean shareStock(String stop, String line, String other) {
+			return planner.nodeOf(stop).map(node -> node.station(stop).sharesStock(line, other)).orElse(false);
+		}
 	}
 
 	/**
