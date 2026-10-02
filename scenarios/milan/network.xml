@@ -1535,11 +1535,6 @@
 				<attribute name="gtfsStopName" class="java.lang.String">Grandate-Breccia</attribute>
 			</attributes>
 		</node>
-		<node id="S01763" x="506177.85172894364" y="5070113.488152102" >
-			<attributes>
-				<attribute name="gtfsStopName" class="java.lang.String">Como Camerlata Fnm</attribute>
-			</attributes>
-		</node>
 		<node id="S01764" x="507057.2168966535" y="5072374.960903327" >
 			<attributes>
 				<attribute name="gtfsStopName" class="java.lang.String">Como Borghi</attribute>
@@ -2259,7 +2254,7 @@
 				<attribute name="gtfsStopName" class="java.lang.String">Minusio</attribute>
 			</attributes>
 		</node>
-		<node id="S09998" x="506239.4303389121" y="5070021.556599209" >
+		<node id="S09998" x="506182.1803177391" y="5070107.648483585" >
 			<attributes>
 				<attribute name="gtfsStopName" class="java.lang.String">Como Camerlata</attribute>
 			</attributes>
@@ -12000,7 +11995,7 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S01762_S01763" from="S01762" to="S01763" length="1864.8" freespeed="10.36" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01762_S09998" from="S01762" to="S09998" length="1864.8" freespeed="10.36" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">35</attribute>
@@ -12012,7 +12007,7 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S01763_S01762" from="S01763" to="S01762" length="1864.8" freespeed="10.36" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S09998_S01762" from="S09998" to="S01762" length="1864.8" freespeed="10.36" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">35</attribute>
@@ -12024,7 +12019,7 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
-		<link id="S01763_S01764" from="S01763" to="S01764" length="2891.6" freespeed="12.048333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S09998_S01764" from="S09998" to="S01764" length="2891.6" freespeed="12.048333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">35</attribute>
@@ -12037,7 +12032,7 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S01764_S01763" from="S01764" to="S01763" length="2891.6" freespeed="12.048333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S01764_S09998" from="S01764" to="S09998" length="2891.6" freespeed="12.048333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">35</attribute>
