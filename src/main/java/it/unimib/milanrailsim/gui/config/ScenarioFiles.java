@@ -7,6 +7,7 @@ import java.nio.file.Path;
  * {@link DataRoot} and read-only: the application never writes here.
  *
  * @param network       the network with station links, drawn by the map
+ * @param mesoNetwork   the mesoscopic network, one node per stop and the measured track count of each section
  * @param engineNetwork the network with the micro nodes spliced in, the engine's input
  * @param engineConfig  the MATSim configuration template the engine starts from
  * @param microNodes    the declarations of those micro nodes
@@ -16,16 +17,18 @@ import java.nio.file.Path;
  * @param linkMeasures  the measured sections shown in the settings
  * @param fleetPhotos   the photos of the catalogue's train types, one file named after each type id
  * @param densificationPlan the relations and hours of the high-frequency scenario
+ * @param lineUpgradePlan the fixed parameters of the line upgrade scenario
  */
-public record ScenarioFiles(Path network, Path engineNetwork, Path engineConfig, Path microNodes, Path transitSchedule,
+public record ScenarioFiles(Path network, Path mesoNetwork, Path engineNetwork, Path engineConfig, Path microNodes, Path transitSchedule,
 		Path linkGeometry, Path stationTracks, Path gtfsDir, Path defaultCosts, Path linkMeasures, Path fleetPhotos,
-		Path densificationPlan, String crs) {
+		Path densificationPlan, Path lineUpgradePlan, String crs) {
 
 	/** The committed Milan scenario under {@code root}, laid out as in the repository. */
 	public static ScenarioFiles milan(Path root) {
 		Path scenario = root.resolve("scenarios").resolve("milan");
 		return new ScenarioFiles(
 			scenario.resolve("network-with-stations.xml"),
+			scenario.resolve("network.xml"),
 			scenario.resolve("network-micro.xml"),
 			scenario.resolve("config.xml"),
 			root.resolve("data").resolve("nodes"),
@@ -37,6 +40,7 @@ public record ScenarioFiles(Path network, Path engineNetwork, Path engineConfig,
 			root.resolve("data").resolve("osm").resolve("2026-08-05-network-sweep").resolve("link_measures.csv"),
 			root.resolve("data").resolve("trains"),
 			root.resolve("data").resolve("scenarios").resolve("passante-alta-frequenza.json"),
+			root.resolve("data").resolve("scenarios").resolve("potenziamento-per-linea.json"),
 			"EPSG:32632");
 	}
 }

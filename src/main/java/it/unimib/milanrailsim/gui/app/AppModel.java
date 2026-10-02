@@ -7,6 +7,7 @@ import it.unimib.milanrailsim.gui.sim.ReplaySession;
 import it.unimib.milanrailsim.gui.sim.Session;
 import it.unimib.milanrailsim.network.FleetConfig;
 import it.unimib.milanrailsim.network.GtfsFeed;
+import it.unimib.milanrailsim.network.RouteTracks;
 import it.unimib.milanrailsim.runs.RunLibrary;
 import it.unimib.milanrailsim.runs.ScenarioSpec;
 import it.unimib.milanrailsim.server.RailsimJob;
@@ -38,6 +39,7 @@ public final class AppModel {
 	private final ObjectProperty<Session> session = new SimpleObjectProperty<>();
 	private final ObjectProperty<ScenarioSpec> draft = new SimpleObjectProperty<>();
 	private final CompletableFuture<Set<String>> networkStops;
+	private final CompletableFuture<RouteTracks> routeTracks;
 
 	public AppModel(AppPaths paths, ScenarioFiles files) {
 		this.paths = paths;
@@ -47,6 +49,7 @@ public final class AppModel {
 			.getNodes().values().stream()
 			.filter(node -> node.getAttributes().getAttribute("gtfsStopName") != null)
 			.map(node -> node.getId().toString()).collect(Collectors.toUnmodifiableSet()));
+		routeTracks = CompletableFuture.supplyAsync(() -> new RouteTracks(NetworkUtils.readNetwork(files.mesoNetwork().toString())));
 		seedCosts();
 		fleet.set(Files.exists(paths.fleetTypesFile()) ? FleetConfig.read(paths.fleetTypesFile()) : FleetConfig.defaults());
 		assignments.set(Files.exists(paths.lineAssignmentsFile())
@@ -95,8 +98,11 @@ public final class AppModel {
 	public LiveSession startRun(ScenarioSpec spec, double initialSpeed) {
 		Path runDir = paths.runs().resolve(spec.name());
 		spec.write(runDir.resolve("scenario.json"));
-		if (spec.type() == ScenarioSpec.SimulationType.METRO_LIKE) {
-			keepDensificationPlan(runDir);
+		switch (spec.type()) {
+			case METRO_LIKE -> keepPlan(files.densificationPlan(), runDir.resolve(RailsimJob.DENSIFICATION_PLAN));
+			case LINE_UPGRADE -> keepPlan(files.lineUpgradePlan(), runDir.resolve(RailsimJob.LINE_UPGRADE_PLAN));
+			case REAL -> {
+			}
 		}
 		RailsimJob.Inputs inputs = new RailsimJob.Inputs(runDir, files.engineConfig(),
 			files.engineNetwork(), gtfsDir(), paths.fleetTypesFile(), paths.lineAssignmentsFile(), paths.costsFile(),
@@ -108,11 +114,11 @@ public final class AppModel {
 	}
 
 	/** A run keeps the plan it was generated from: the one in the project data may change afterwards. */
-	private void keepDensificationPlan(Path runDir) {
+	private static void keepPlan(Path plan, Path copy) {
 		try {
-			Files.copy(files.densificationPlan(), runDir.resolve(RailsimJob.DENSIFICATION_PLAN), StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(plan, copy, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
-			throw new UncheckedIOException("Cannot copy " + files.densificationPlan() + " into " + runDir, e);
+			throw new UncheckedIOException("Cannot copy " + plan + " to " + copy, e);
 		}
 	}
 
@@ -147,6 +153,11 @@ public final class AppModel {
 	/** Ids of the stations the mesoscopic network models, loaded once in the background. */
 	public CompletableFuture<Set<String>> networkStops() {
 		return networkStops;
+	}
+
+	/** Lengths and single track of routes on the mesoscopic network, loaded once in the background. */
+	public CompletableFuture<RouteTracks> routeTracks() {
+		return routeTracks;
 	}
 
 	/** The feed loaded by the user, if any, otherwise the one committed with the scenario. */

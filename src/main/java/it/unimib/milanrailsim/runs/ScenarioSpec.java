@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import it.unimib.milanrailsim.schedule.RouteTarget;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -11,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * Everything a run is configured with; written next to its results so a run
@@ -18,10 +20,7 @@ import java.time.LocalTime;
  *
  * @param window the part of the service day to simulate; null for the whole day
  * @param metroHeadwayMinutes longest wait allowed at peak hours on the urban relations (high-frequency Passante)
- * @param collapseStartHeadwayMinutes first headway of the collapse campaign
- * @param collapseStepMinutes headway decrease between collapse steps
- * @param collapseSteps number of runs in the collapse campaign
- * @param dynamicReductionPercent headway reduction applied to every line (dynamic)
+ * @param routeTargets the routes upgraded and the longest wait allowed on each (line upgrade)
  */
 public record ScenarioSpec(
 		String name,
@@ -29,13 +28,14 @@ public record ScenarioSpec(
 		LocalDate serviceDate,
 		TimeWindow window,
 		Integer metroHeadwayMinutes,
-		Integer collapseStartHeadwayMinutes,
-		Integer collapseStepMinutes,
-		Integer collapseSteps,
-		Integer dynamicReductionPercent) {
+		List<RouteTarget> routeTargets) {
+
+	public ScenarioSpec {
+		routeTargets = routeTargets == null ? null : List.copyOf(routeTargets);
+	}
 
 	public enum SimulationType {
-		REAL("Reale"), METRO_LIKE("Passante ad alta frequenza"), COLLAPSE("Collasso"), DYNAMIC("Dinamica");
+		REAL("Reale"), METRO_LIKE("Passante ad alta frequenza"), LINE_UPGRADE("Potenziamento per linea");
 
 		private final String label;
 
@@ -59,18 +59,12 @@ public record ScenarioSpec(
 		.enable(SerializationFeature.INDENT_OUTPUT);
 
 	public static ScenarioSpec real(String name, LocalDate serviceDate, TimeWindow window) {
-		return new ScenarioSpec(name, SimulationType.REAL, serviceDate, window, null, null, null, null, null);
+		return new ScenarioSpec(name, SimulationType.REAL, serviceDate, window, null, null);
 	}
 
 	/** The same scenario under another run name. */
 	public ScenarioSpec named(String runName) {
-		return new ScenarioSpec(runName, type, serviceDate, window, metroHeadwayMinutes, collapseStartHeadwayMinutes,
-			collapseStepMinutes, collapseSteps, dynamicReductionPercent);
-	}
-
-	/** Number of engine runs this scenario produces: one, or one per collapse step. */
-	public int runCount() {
-		return type == SimulationType.COLLAPSE ? collapseSteps : 1;
+		return new ScenarioSpec(runName, type, serviceDate, window, metroHeadwayMinutes, routeTargets);
 	}
 
 	public void write(Path file) {

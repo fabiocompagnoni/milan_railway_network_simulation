@@ -14,8 +14,11 @@ import it.unimib.milanrailsim.results.RunOutcome;
 import it.unimib.milanrailsim.runs.RunLibrary;
 import it.unimib.milanrailsim.runs.ScenarioSpec;
 import it.unimib.milanrailsim.schedule.CreateTransitScheduleFromFeed;
+import it.unimib.milanrailsim.schedule.AddedTrips;
 import it.unimib.milanrailsim.schedule.DensificationPlan;
 import it.unimib.milanrailsim.schedule.LineAssignments;
+import it.unimib.milanrailsim.schedule.LineUpgrade;
+import it.unimib.milanrailsim.schedule.LineUpgradePlan;
 import it.unimib.milanrailsim.schedule.RouteVehicleAssignment;
 import it.unimib.milanrailsim.schedule.SchedulePipeline;
 import it.unimib.milanrailsim.schedule.TimetableDensifier;
@@ -44,9 +47,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * One run end to end: timetable of the requested day, railsim simulation
@@ -65,8 +71,12 @@ public final class RailsimJob implements SimulationServer.Job {
 	public static final String SIMULATING = "Simulazione";
 	/** The plan of a high-frequency run, copied into its folder when the run is launched. */
 	public static final String DENSIFICATION_PLAN = "densification.json";
+	/** The plan of a line upgrade run, copied into its folder when the run is launched. */
+	public static final String LINE_UPGRADE_PLAN = "line-upgrade.json";
 	public static final String ADDED_TRIPS = "added_trips.csv";
 	public static final String SKIPPED_TRIPS = "skipped_trips.csv";
+	public static final String TUNNEL_WARNINGS = "tunnel_warnings.csv";
+	public static final String UNSCHEDULED_ADDED_TRIPS = "unscheduled_added_trips.csv";
 
 	/**
 	 * Where the engine finds its inputs; the run folder holds {@code scenario.json}.
@@ -154,27 +164,65 @@ public final class RailsimJob implements SimulationServer.Job {
 		List<MicroNode> microNodes = hasNodes ? MicroNode.readAll(inputs.microNodesDir()) : List.of();
 		Path sidingsFile = hasNodes ? inputs.microNodesDir().resolve(CreateTransitScheduleFromFeed.SIDINGS_FILE) : null;
 		Sidings sidings = sidingsFile != null && Files.exists(sidingsFile) ? Sidings.read(sidingsFile) : Sidings.none();
-		return new SchedulePipeline(timetableOf(spec, scenarioDir), inputs.engineNetwork(), fleet,
+		GtfsFeed feed = timetableOf(spec, scenarioDir);
+		TransitSchedule schedule = new SchedulePipeline(feed, inputs.engineNetwork(), fleet,
 			new RouteVehicleAssignment(assignments), tracks, microNodes, sidings).generate(spec.serviceDate(), start, end, scenarioDir);
+		if (spec.type() != ScenarioSpec.SimulationType.REAL) {
+			write(scenarioDir.resolve(UNSCHEDULED_ADDED_TRIPS), unscheduledAddedTrips(feed, schedule, start, end));
+		}
+		return schedule;
 	}
 
 	/**
-	 * The published timetable, with the trips of the scenario added to it for
-	 * a high-frequency run. The plan is the copy the application left in the
-	 * run folder, so the run records what it was generated from; the trips
-	 * added and given up are written next to the generated scenario.
+	 * The published timetable with the trips of the scenario added to it. The
+	 * plan is the copy the application left in the run folder, so the run
+	 * records what it was generated from; what the generator did is written
+	 * next to the generated scenario.
 	 */
 	private GtfsFeed timetableOf(ScenarioSpec spec, Path scenarioDir) {
 		GtfsFeed published = GtfsFeed.load(inputs.gtfsDir());
-		if (spec.type() != ScenarioSpec.SimulationType.METRO_LIKE) {
-			return published;
-		}
+		return switch (spec.type()) {
+			case REAL -> published;
+			case METRO_LIKE -> densified(published, spec, scenarioDir);
+			case LINE_UPGRADE -> upgraded(published, spec, scenarioDir);
+		};
+	}
+
+	private GtfsFeed densified(GtfsFeed published, ScenarioSpec spec, Path scenarioDir) {
 		DensificationPlan plan = DensificationPlan.read(inputs.runDir().resolve(DENSIFICATION_PLAN));
 		TimetableDensifier.Densified densified = new TimetableDensifier(plan)
 			.densify(published, spec.serviceDate(), spec.metroHeadwayMinutes());
 		write(scenarioDir.resolve(ADDED_TRIPS), densified.report().addedCsv());
 		write(scenarioDir.resolve(SKIPPED_TRIPS), densified.report().skippedCsv());
 		return densified.feed();
+	}
+
+	private GtfsFeed upgraded(GtfsFeed published, ScenarioSpec spec, Path scenarioDir) {
+		LineUpgradePlan plan = LineUpgradePlan.read(inputs.runDir().resolve(LINE_UPGRADE_PLAN));
+		LineUpgrade.Upgraded upgraded = new LineUpgrade(plan).upgrade(published, spec.serviceDate(), spec.routeTargets());
+		write(scenarioDir.resolve(ADDED_TRIPS), upgraded.report().addedCsv());
+		write(scenarioDir.resolve(TUNNEL_WARNINGS), upgraded.report().tunnelWarningsCsv());
+		return upgraded.feed();
+	}
+
+	/**
+	 * Added trips of the simulated window that the timetable left out, as it
+	 * does with every trip calling at a station the network does not model:
+	 * the scenario runs without them, and the file says so.
+	 */
+	private static List<String> unscheduledAddedTrips(GtfsFeed feed, TransitSchedule schedule, int start, int end) {
+		Set<String> departures = new HashSet<>();
+		schedule.getTransitLines().values().forEach(line -> line.getRoutes().values()
+			.forEach(route -> route.getDepartures().keySet().forEach(id -> departures.add(id.toString()))));
+		List<String> lines = new ArrayList<>();
+		lines.add("trip");
+		feed.stopTimesByTripId().forEach((trip, calls) -> {
+			int departure = calls.getFirst().departureSeconds();
+			if (AddedTrips.isAdded(trip) && departure >= start && departure <= end && !departures.contains(trip)) {
+				lines.add(trip);
+			}
+		});
+		return lines;
 	}
 
 	private static void write(Path file, List<String> lines) {
