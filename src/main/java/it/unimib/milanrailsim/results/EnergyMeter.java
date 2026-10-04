@@ -64,6 +64,16 @@ public final class EnergyMeter implements RailsimTrainStateEventHandler, Transit
 		}
 	}
 
+	/**
+	 * The state of the meter at one sample.
+	 *
+	 * @param kilowattByVehicle power each electric train running a trip exchanges with the line, by vehicle id:
+	 *                          positive when it draws, negative when it returns braking power
+	 */
+	public record Reading(EnergyLedger.Live totals, Map<String, Double> kilowattByVehicle) {
+	}
+
+	private Reading reading = new Reading(new EnergyLedger.Live(0, 0, 0), Map.of());
 	private final EnergyModel model;
 	private final Network network;
 	private final double interval;
@@ -138,15 +148,28 @@ public final class EnergyMeter implements RailsimTrainStateEventHandler, Transit
 		}
 		nextSample = time + interval;
 		List<EnergyLedger.Sample> samples = new ArrayList<>();
+		Map<String, Double> kilowattByVehicle = new HashMap<>();
 		running.forEach((vehicle, trip) -> {
 			State state = states.get(vehicle);
 			if (state != null) {
-				samples.add(sample(trip, state, time));
+				EnergyLedger.Sample sample = sample(trip, state, time);
+				samples.add(sample);
+				if (sample.electric()) {
+					kilowattByVehicle.put(vehicle, sample.demandKilowatt() - sample.regeneratedKilowatt());
+				}
 			}
 		});
-		if (!samples.isEmpty()) {
-			ledger.tick(time, interval, samples);
+		if (samples.isEmpty()) {
+			reading = new Reading(ledger.live().idle(), Map.of());
+			return;
 		}
+		ledger.tick(time, interval, samples);
+		reading = new Reading(ledger.live(), kilowattByVehicle);
+	}
+
+	/** What the meter read at its last sample. */
+	public Reading reading() {
+		return reading;
 	}
 
 	private EnergyLedger.Sample sample(Trip trip, State state, double time) {

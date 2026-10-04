@@ -91,4 +91,17 @@ class EnergyLedgerTest {
 		assertEquals(1, profile.get(0).trainsInService());
 		assertEquals(2000, ledger.use().peak().orElseThrow().lineKilowatt(), 1e-9);
 	}
+
+	@Test
+	void theLiveFiguresAreThePowerOfTheLastIntervalAndTheEnergySoFar() {
+		EnergyLedger ledger = new EnergyLedger(RADIUS);
+
+		ledger.tick(0, HOUR, List.of(electric("t1", 1000, 0, 0)));
+		ledger.tick(HOUR, HOUR, List.of(electric("t1", 400, 0, 0)));
+
+		assertEquals(400, ledger.live().lineKilowatt(), 1e-9);
+		assertEquals(1400, ledger.live().drawnKilowattHours(), 1e-9);
+		assertEquals(0, ledger.live().idle().lineKilowatt());
+		assertEquals(1400, ledger.live().idle().drawnKilowattHours(), 1e-9);
+	}
 }

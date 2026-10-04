@@ -87,6 +87,21 @@ public final class EnergyLedger {
 			double litresPerHour, int trainsInService) {
 	}
 
+	/**
+	 * The running figures of the day, for a view that follows it.
+	 *
+	 * @param lineKilowatt       power drawn from the substations in the last interval booked
+	 * @param drawnKilowattHours energy drawn from the substations so far
+	 * @param litres             fuel burnt so far
+	 */
+	public record Live(double lineKilowatt, double drawnKilowattHours, double litres) {
+
+		/** The same totals with no train drawing power. */
+		public Live idle() {
+			return new Live(0, drawnKilowattHours, litres);
+		}
+	}
+
 	/** What the day used, by trip (in order of first appearance) and by minute. */
 	public record Use(Map<String, TripEnergy> byTrip, List<Minute> profile) {
 
@@ -138,6 +153,7 @@ public final class EnergyLedger {
 	private final double recoveryRadiusMetres;
 	private final Map<String, TripTotals> trips = new LinkedHashMap<>();
 	private final Map<Integer, MinuteTotals> minutes = new TreeMap<>();
+	private Live live = new Live(0, 0, 0);
 
 	public EnergyLedger(double recoveryRadiusMetres) {
 		this.recoveryRadiusMetres = recoveryRadiusMetres;
@@ -181,6 +197,8 @@ public final class EnergyLedger {
 		MinuteTotals minute = minutes.computeIfAbsent((int) Math.floor(time / 60), key -> new MinuteTotals());
 		minute.trains = Math.max(minute.trains, samples.size());
 		minute.recoveredKilowattSeconds += selfUsed * duration;
+		double lineKilowatt = 0;
+		double litresPerHour = 0;
 		for (int i = 0; i < samples.size(); i++) {
 			Sample sample = samples.get(i);
 			TripTotals trip = trips.computeIfAbsent(sample.trip(), key -> new TripTotals(sample.line(), sample.electric()));
@@ -198,7 +216,14 @@ public final class EnergyLedger {
 			minute.recoveredKilowattSeconds += given[i] * duration;
 			minute.lostKilowattSeconds += lost * duration;
 			minute.litreSecondsPerHour += sample.litresPerHour() * duration;
+			lineKilowatt += drawn;
+			litresPerHour += sample.litresPerHour();
 		}
+		live = new Live(lineKilowatt, live.drawnKilowattHours() + lineKilowatt * hours, live.litres() + litresPerHour * hours);
+	}
+
+	public Live live() {
+		return live;
 	}
 
 	/** Electric trains with demand still open within the radius of the giver, nearest first. */
