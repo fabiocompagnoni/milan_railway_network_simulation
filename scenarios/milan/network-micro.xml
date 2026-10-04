@@ -26501,7 +26501,7 @@
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
 				<attribute name="microSidings" class="java.lang.Boolean">true</attribute>
 				<attribute name="microStation" class="java.lang.String">S01066</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">8</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">40</attribute>
 			</attributes>
 		</link>
 		<link id="S01066.sidings.north.enter" from="S01066.north.sidings.out" to="S01066.sidings.a" length="200.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -26509,7 +26509,7 @@
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
 				<attribute name="microStation" class="java.lang.String">S01066</attribute>
 				<attribute name="railsimExit" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">8</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">40</attribute>
 			</attributes>
 		</link>
 		<link id="S01066.sidings.north.leave" from="S01066.sidings.b" to="S01066.north.sidings.in" length="200.0" freespeed="8.0" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
@@ -26517,7 +26517,7 @@
 				<attribute name="microNode" class="java.lang.String">cadorna-bovisa</attribute>
 				<attribute name="microStation" class="java.lang.String">S01066</attribute>
 				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">8</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">40</attribute>
 			</attributes>
 		</link>
 		<link id="S01066_S01067.f1.north" from="S01066_S01067.f1.north.a" to="S01066_S01067.f1.north.b" length="431.0" freespeed="24.999999999999996" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
