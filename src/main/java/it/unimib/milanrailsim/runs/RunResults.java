@@ -87,8 +87,13 @@ public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List
 			double departureDelay) {
 	}
 
+	/**
+	 * The costs of the timetable as planned.
+	 *
+	 * @param simulated the costs of the day as it was simulated; empty for a run analysed before they existed
+	 */
 	public record Costs(String currency, Map<String, Double> byCategory, double trainKm, double trainHours,
-			int fleetSize, double total) {
+			int fleetSize, double total, Optional<Costs> simulated) {
 	}
 
 	public static final String DELAY_HISTOGRAM = "delay_histogram";
@@ -231,14 +236,18 @@ public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List
 
 	private static Costs readCosts(Path json) {
 		try {
-			JsonNode root = new ObjectMapper().readTree(json.toFile());
-			Map<String, Double> byCategory = new LinkedHashMap<>();
-			root.path("byCategory").properties().forEach(field -> byCategory.put(field.getKey(), field.getValue().asDouble()));
-			return new Costs(root.path("currency").asText("EUR"), byCategory, root.path("trainKm").asDouble(),
-				root.path("trainHours").asDouble(), root.path("fleetSize").asInt(), root.path("total").asDouble());
+			return costs(new ObjectMapper().readTree(json.toFile()));
 		} catch (IOException e) {
 			throw new UncheckedIOException("Cannot read " + json, e);
 		}
+	}
+
+	private static Costs costs(JsonNode node) {
+		Map<String, Double> byCategory = new LinkedHashMap<>();
+		node.path("byCategory").properties().forEach(field -> byCategory.put(field.getKey(), field.getValue().asDouble()));
+		Optional<Costs> simulated = node.has("simulated") ? Optional.of(costs(node.get("simulated"))) : Optional.empty();
+		return new Costs(node.path("currency").asText("EUR"), byCategory, node.path("trainKm").asDouble(),
+			node.path("trainHours").asDouble(), node.path("fleetSize").asInt(), node.path("total").asDouble(), simulated);
 	}
 
 	private static double number(String value) {

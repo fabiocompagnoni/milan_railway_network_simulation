@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 
@@ -89,19 +90,30 @@ public final class AnalyzeRun {
 		});
 
 		request.progress().accept("Analisi: costi");
-		CostModel.Breakdown costs = new CostModel(data.schedule(), data.vehicles(), data.network(),
-			CostParameters.load(request.costsFile())).compute();
-		archive.writeJson("costs.json", costsJson(costs));
+		CostModel costModel = new CostModel(data.schedule(), data.vehicles(), data.network(),
+			CostParameters.load(request.costsFile()));
+		CostModel.Breakdown costs = costModel.compute();
+		Optional<CostModel.Breakdown> simulatedCosts = data.energy()
+			.flatMap(energy -> costModel.computeSimulated(trips, energy.byTrip()));
+		Map<String, Object> costsFile = costsJson(costs);
+		simulatedCosts.ifPresent(simulated -> costsFile.put("simulated", costsJson(simulated)));
+		archive.writeJson("costs.json", costsFile);
 
 		request.progress().accept("Analisi: grafici");
 		RunCharts.delayHistogram(visits, archive.chart("delay_histogram"));
 		RunCharts.delayByHour(visits, archive.chart("delay_by_hour"));
 		RunCharts.spaceTime(trajectories(data.timeDistanceCsv(), request.spaceTimeLine()), archive.chart("space_time"));
-		RunCharts.costBreakdown(costs, archive.chart("cost_breakdown"));
+		RunCharts.costBreakdown(simulatedCosts.orElse(costs), archive.chart("cost_breakdown"));
 
 		request.progress().accept("Archiviazione");
 		int anomalies = data.punctuality().anomalyCount();
-		archive.writeJson("manifest.json", manifest(request, visits, anomalies, unfinished.size(), costs));
+		Map<String, Object> manifest = manifest(request, visits, anomalies, unfinished.size(), costs);
+		simulatedCosts.ifPresent(simulated -> {
+			// the headline cost of a run is what the simulated day cost; the timetable's stays next to it
+			manifest.put("plannedCost", manifest.get("totalCost"));
+			manifest.put("totalCost", costsJson(simulated).get("total"));
+		});
+		archive.writeJson("manifest.json", manifest);
 
 		logSummary(visits, anomalies, unfinished.size(), archive.dir());
 		return archive.dir();
