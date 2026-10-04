@@ -166,7 +166,7 @@ public final class ResultsView extends BorderPane {
 		tabs.getTabs().addAll(new Tab("Sintesi", summaryTab()), new Tab("Linee", linesTab()),
 			new Tab("Stazioni", DelayTabs.stations(results, labels)),
 			new Tab("Treni", DelayTabs.trains(results, labels)), new Tab("Corse", visitsTab()),
-			new Tab("Costi", costsTab()));
+			new Tab("Energia", EnergyTab.of(results)), new Tab("Costi", costsTab()));
 		VBox.setVgrow(tabs, Priority.ALWAYS);
 		VBox column = new VBox(16, header, headline, tabs);
 		body.getChildren().setAll(column);
@@ -232,7 +232,7 @@ public final class ResultsView extends BorderPane {
 		return String.format(Locale.ITALY, "%+.1f punti", difference);
 	}
 
-	private static Node metric(String label, String value, String note, boolean warn) {
+	static Node metric(String label, String value, String note, boolean warn) {
 		Label key = muted(label);
 		Label text = new Label(value);
 		text.getStyleClass().add("headline-value");

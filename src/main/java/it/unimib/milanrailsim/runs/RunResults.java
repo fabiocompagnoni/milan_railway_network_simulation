@@ -20,7 +20,30 @@ import java.util.Optional;
 public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List<VisitRow>> visits,
 		Optional<List<UnfinishedRow>> unfinished, Optional<Costs> costs, Optional<Indicators> indicators,
 		Optional<Map<String, Indicators>> indicatorsByLine, Optional<List<StationRow>> stations,
-		Optional<List<StationHourRow>> stationsHourly, Optional<List<TrainRow>> trains) {
+		Optional<List<StationHourRow>> stationsHourly, Optional<List<TrainRow>> trains, Optional<Energy> energy,
+		Optional<List<EnergyLineRow>> energyByLine) {
+
+	/**
+	 * The energy of the run: electric trains in kWh, diesel trains in litres.
+	 *
+	 * @param drawnKilowattHours  taken from the substations
+	 * @param demandKilowattHours what the trains would have drawn with no braking energy reused
+	 * @param peakMinuteOfDay     minute with the highest mean power drawn, -1 when unknown
+	 */
+	public record Energy(double drawnKilowattHours, double demandKilowattHours, double regeneratedKilowattHours,
+			double reusedByOthersKilowattHours, double lostKilowattHours, double electricTrainKilometres,
+			double kilowattHoursPerTrainKilometre, double kilowattHoursPerTonneKilometre,
+			double kilowattHoursPerTonneKilometreWithoutRecovery, double litres, double dieselTrainKilometres,
+			double litresPerTrainKilometre, int peakMinuteOfDay, double peakKilowatt, int peakTrains) {
+	}
+
+	/** The energy of one line and traction; kWh columns are NaN for diesel, litres for electric. */
+	public record EnergyLineRow(String line, String traction, double trainKilometres, double drawnKilowattHours,
+			double regeneratedKilowattHours, double lostKilowattHours, double litres, double kilowattHoursPerTrainKilometre,
+			double litresPerTrainKilometre) {
+	}
+
+	public static final String POWER_PROFILE = "power_profile";
 
 	/** Arrival delays at a station, early arrivals counted as zero; {@code latePercent} is the share over five minutes. */
 	public record StationRow(String station, int observations, double meanDelay, double p95Delay, double maxDelay,
@@ -83,7 +106,35 @@ public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List
 			optional(dir.resolve("indicators_by_line.csv"), RunResults::readIndicatorsByLine),
 			optional(dir.resolve("stations.csv"), RunResults::readStations),
 			optional(dir.resolve("stations_hourly.csv"), RunResults::readStationsHourly),
-			optional(dir.resolve("trains.csv"), RunResults::readTrains));
+			optional(dir.resolve("trains.csv"), RunResults::readTrains),
+			optional(dir.resolve("energy.json"), RunResults::readEnergy),
+			optional(dir.resolve("energy_by_line.csv"), RunResults::readEnergyByLine));
+	}
+
+	private static Energy readEnergy(Path json) {
+		try {
+			JsonNode root = new ObjectMapper().readTree(json.toFile());
+			JsonNode electric = root.path("electric");
+			JsonNode diesel = root.path("diesel");
+			JsonNode peak = root.path("peakMinute");
+			return new Energy(electric.path("drawnFromSubstationsKilowattHours").asDouble(),
+				electric.path("demandWithoutRecoveryKilowattHours").asDouble(),
+				electric.path("regeneratedKilowattHours").asDouble(), electric.path("reusedByOtherTrainsKilowattHours").asDouble(),
+				electric.path("lostInBrakingKilowattHours").asDouble(), electric.path("trainKilometres").asDouble(),
+				electric.path("kilowattHoursPerTrainKilometre").asDouble(), electric.path("kilowattHoursPerTonneKilometre").asDouble(),
+				electric.path("kilowattHoursPerTonneKilometreWithoutRecovery").asDouble(), diesel.path("litres").asDouble(),
+				diesel.path("trainKilometres").asDouble(), diesel.path("litresPerTrainKilometre").asDouble(),
+				peak.path("minuteOfDay").asInt(-1), peak.path("lineKilowatt").asDouble(), peak.path("trainsInService").asInt());
+		} catch (IOException e) {
+			throw new UncheckedIOException("Cannot read " + json, e);
+		}
+	}
+
+	private static List<EnergyLineRow> readEnergyByLine(Path csv) {
+		return CsvTable.read(csv).stream().map(row -> new EnergyLineRow(row.get("line"), row.get("traction"),
+			number(row.get("train_km")), number(row.get("drawn_kwh")), number(row.get("regenerated_kwh")),
+			number(row.get("lost_kwh")), number(row.get("litres")), number(row.get("kwh_per_train_km")),
+			number(row.get("litres_per_train_km")))).toList();
 	}
 
 	private static List<StationRow> readStations(Path csv) {
