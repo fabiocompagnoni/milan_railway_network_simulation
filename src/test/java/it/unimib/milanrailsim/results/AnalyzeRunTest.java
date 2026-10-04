@@ -52,7 +52,15 @@ class AnalyzeRunTest {
 
 		List<String> punctuality = Files.readAllLines(archived.resolve("punctuality.csv"));
 		assertEquals(3, punctuality.size()); // header + stops A and B
-		assertTrue(punctuality.get(1).startsWith("t1,S1,S1_1,A,28800"));
+		assertTrue(punctuality.get(1).startsWith("t1,S1,S1_1,t1,0,B,A,28800"), punctuality.get(1));
+
+		List<String> trips = Files.readAllLines(archived.resolve("trips.csv"));
+		assertEquals(2, trips.size(), "header and the one trip");
+		assertTrue(trips.get(1).startsWith("t1,S1,S1_1,t1,A,B,") && trips.get(1).endsWith(",2,2,completed"), trips.get(1));
+		assertEquals(2, Files.readAllLines(archived.resolve("indicators_by_line.csv")).size());
+		String indicators = Files.readString(archived.resolve("indicators.json"));
+		assertTrue(indicators.contains("\"regularityPercent\" : 100.0"), indicators);
+		assertTrue(indicators.contains("\"tripsScheduled\" : 1"), indicators);
 
 		assertEquals(2, Files.readAllLines(archived.resolve("punctuality_by_line.csv")).size());
 		assertTrue(Files.readString(archived.resolve("costs.json")).contains("staff"));

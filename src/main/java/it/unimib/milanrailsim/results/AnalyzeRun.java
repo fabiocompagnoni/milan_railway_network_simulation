@@ -68,8 +68,13 @@ public final class AnalyzeRun {
 		request.progress().accept("Analisi: puntualità");
 		List<PunctualityAnalysis.StopVisit> visits = data.punctuality().visits();
 		List<PunctualityAnalysis.Unfinished> unfinished = data.punctuality().unfinished();
+		List<PunctualityAnalysis.TripOutcome> trips = data.punctuality().trips();
+		ServiceIndicators indicators = ServiceIndicators.of(trips, visits, ServiceIndicators.ON_TIME_THRESHOLD_SECONDS);
 		archive.writeLines("punctuality.csv", punctualityCsv(visits));
 		archive.writeLines("punctuality_by_line.csv", byLineCsv(visits));
+		archive.writeLines("trips.csv", tripsCsv(trips));
+		archive.writeLines("indicators_by_line.csv", indicatorsByLineCsv(trips, visits));
+		archive.writeJson("indicators.json", indicatorsJson(indicators));
 		archive.writeLines("unfinished.csv", unfinishedCsv(unfinished));
 
 		request.progress().accept("Analisi: costi");
@@ -93,10 +98,11 @@ public final class AnalyzeRun {
 
 	private static List<String> punctualityCsv(List<PunctualityAnalysis.StopVisit> visits) {
 		List<String> lines = new ArrayList<>();
-		lines.add("vehicle,line,route,stop,planned_arrival_s,actual_arrival_s,arrival_delay_s,"
-			+ "planned_departure_s,actual_departure_s,departure_delay_s");
+		lines.add("vehicle,line,route,trip,stop_sequence,destination,stop,planned_arrival_s,actual_arrival_s,"
+			+ "arrival_delay_s,planned_departure_s,actual_departure_s,departure_delay_s");
 		for (PunctualityAnalysis.StopVisit visit : visits) {
-			lines.add(String.join(",", visit.vehicle(), visit.line(), visit.route(), visit.stop(),
+			lines.add(String.join(",", visit.vehicle(), visit.line(), visit.route(), visit.trip(),
+				Integer.toString(visit.stopSequence()), visit.destination(), visit.stop(),
 				format(visit.plannedArrival()), format(visit.actualArrival()),
 				format(visit.arrivalDelaySeconds()),
 				format(visit.plannedDeparture()), format(visit.actualDeparture()),
@@ -114,6 +120,65 @@ public final class AnalyzeRun {
 				format(summary.p95DelaySeconds()), format(summary.maxDelaySeconds())));
 		}
 		return lines;
+	}
+
+	private static List<String> tripsCsv(List<PunctualityAnalysis.TripOutcome> trips) {
+		List<String> lines = new ArrayList<>();
+		lines.add("trip,line,route,vehicle,origin,destination,planned_departure_s,planned_arrival_s,"
+			+ "actual_arrival_s,arrival_delay_s,stops_planned,stops_served,status");
+		for (PunctualityAnalysis.TripOutcome trip : trips) {
+			lines.add(String.join(",", trip.trip(), trip.line(), trip.route(), trip.vehicle(), trip.origin(),
+				trip.destination(), format(trip.plannedDeparture()), format(trip.plannedArrival()),
+				format(trip.actualArrival()), format(trip.arrivalDelaySeconds()),
+				Integer.toString(trip.stopsPlanned()), Integer.toString(trip.stopsServed()),
+				trip.status().name().toLowerCase(java.util.Locale.ROOT)));
+		}
+		return lines;
+	}
+
+	private static List<String> indicatorsByLineCsv(List<PunctualityAnalysis.TripOutcome> trips,
+			List<PunctualityAnalysis.StopVisit> visits) {
+		List<String> lines = new ArrayList<>();
+		lines.add("line,trips_scheduled,trips_completed,trips_interrupted,trips_never_departed,regularity_pct,"
+			+ "stops_planned,stops_served,punctuality_destination_pct,punctuality_stops_pct,mean_delay_s,"
+			+ "mean_deviation_s,median_delay_s,p95_delay_s");
+		ServiceIndicators.byLine(trips, visits, ServiceIndicators.ON_TIME_THRESHOLD_SECONDS).forEach((line, of) ->
+			lines.add(String.join(",", line, Integer.toString(of.tripsScheduled()),
+				Integer.toString(of.tripsCompleted()), Integer.toString(of.tripsInterrupted()),
+				Integer.toString(of.tripsNeverDeparted()), decimal(of.regularityPercent()),
+				Integer.toString(of.stopsPlanned()), Integer.toString(of.stopsServed()),
+				decimal(of.punctualityAtDestinationPercent()), decimal(of.punctualityAtStopsPercent()),
+				format(of.meanDelaySeconds()), format(of.meanDeviationSeconds()),
+				format(of.medianDelaySeconds()), format(of.p95DelaySeconds()))));
+		return lines;
+	}
+
+	private static Map<String, Object> indicatorsJson(ServiceIndicators indicators) {
+		Map<String, Object> json = new LinkedHashMap<>();
+		json.put("onTimeThresholdSeconds", ServiceIndicators.ON_TIME_THRESHOLD_SECONDS);
+		json.put("tripsScheduled", indicators.tripsScheduled());
+		json.put("tripsCompleted", indicators.tripsCompleted());
+		json.put("tripsInterrupted", indicators.tripsInterrupted());
+		json.put("tripsNeverDeparted", indicators.tripsNeverDeparted());
+		json.put("regularityPercent", number(indicators.regularityPercent()));
+		json.put("stopsPlanned", indicators.stopsPlanned());
+		json.put("stopsServed", indicators.stopsServed());
+		json.put("punctualityAtDestinationPercent", number(indicators.punctualityAtDestinationPercent()));
+		json.put("punctualityAtStopsPercent", number(indicators.punctualityAtStopsPercent()));
+		json.put("meanDelaySeconds", number(indicators.meanDelaySeconds()));
+		json.put("meanDeviationSeconds", number(indicators.meanDeviationSeconds()));
+		json.put("medianDelaySeconds", number(indicators.medianDelaySeconds()));
+		json.put("p95DelaySeconds", number(indicators.p95DelaySeconds()));
+		return json;
+	}
+
+	/** JSON has no NaN: an indicator with nothing to measure is written as null. */
+	private static Double number(double value) {
+		return Double.isNaN(value) ? null : value;
+	}
+
+	private static String decimal(double value) {
+		return Double.isNaN(value) ? "" : String.format(java.util.Locale.ROOT, "%.1f", value);
 	}
 
 	private static List<String> unfinishedCsv(List<PunctualityAnalysis.Unfinished> unfinished) {
