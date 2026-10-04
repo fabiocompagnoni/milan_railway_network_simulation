@@ -19,7 +19,25 @@ import java.util.Optional;
  */
 public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List<VisitRow>> visits,
 		Optional<List<UnfinishedRow>> unfinished, Optional<Costs> costs, Optional<Indicators> indicators,
-		Optional<Map<String, Indicators>> indicatorsByLine) {
+		Optional<Map<String, Indicators>> indicatorsByLine, Optional<List<StationRow>> stations,
+		Optional<List<StationHourRow>> stationsHourly, Optional<List<TrainRow>> trains) {
+
+	/** Arrival delays at a station, early arrivals counted as zero; {@code latePercent} is the share over five minutes. */
+	public record StationRow(String station, int observations, double meanDelay, double p95Delay, double maxDelay,
+			double latePercent) {
+	}
+
+	/**
+	 * Trains calling at a station towards a terminus in one hour of the
+	 * timetable; delays and punctuality are NaN when none of them called.
+	 */
+	public record StationHourRow(String station, String direction, int hour, int trainsPlanned, int trainsCalled,
+			double meanDelay, double p95Delay, double punctualityPercent) {
+	}
+
+	/** {@code finalDelay} is the arrival delay at the last stop the train reached. */
+	public record TrainRow(String vehicle, String line, int stops, double meanDelay, double maxDelay, double finalDelay) {
+	}
 
 	/**
 	 * Quality of service as the analysis measured it (see
@@ -62,7 +80,29 @@ public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List
 			optional(dir.resolve("unfinished.csv"), RunResults::readUnfinished),
 			optional(dir.resolve("costs.json"), RunResults::readCosts),
 			optional(dir.resolve("indicators.json"), RunResults::readIndicators),
-			optional(dir.resolve("indicators_by_line.csv"), RunResults::readIndicatorsByLine));
+			optional(dir.resolve("indicators_by_line.csv"), RunResults::readIndicatorsByLine),
+			optional(dir.resolve("stations.csv"), RunResults::readStations),
+			optional(dir.resolve("stations_hourly.csv"), RunResults::readStationsHourly),
+			optional(dir.resolve("trains.csv"), RunResults::readTrains));
+	}
+
+	private static List<StationRow> readStations(Path csv) {
+		return CsvTable.read(csv).stream().map(row -> new StationRow(row.get("station"),
+			Integer.parseInt(row.get("observations")), number(row.get("mean_delay_s")), number(row.get("p95_delay_s")),
+			number(row.get("max_delay_s")), number(row.get("late_pct")))).toList();
+	}
+
+	private static List<StationHourRow> readStationsHourly(Path csv) {
+		return CsvTable.read(csv).stream().map(row -> new StationHourRow(row.get("station"), row.get("direction"),
+			Integer.parseInt(row.get("hour")), Integer.parseInt(row.get("trains_planned")),
+			Integer.parseInt(row.get("trains_called")), number(row.get("mean_delay_s")), number(row.get("p95_delay_s")),
+			number(row.get("punctuality_pct")))).toList();
+	}
+
+	private static List<TrainRow> readTrains(Path csv) {
+		return CsvTable.read(csv).stream().map(row -> new TrainRow(row.get("vehicle"), row.get("line"),
+			Integer.parseInt(row.get("stops")), number(row.get("mean_delay_s")), number(row.get("max_delay_s")),
+			number(row.get("final_delay_s")))).toList();
 	}
 
 	private static Indicators readIndicators(Path json) {

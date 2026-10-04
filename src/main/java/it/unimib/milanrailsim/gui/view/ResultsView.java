@@ -164,7 +164,7 @@ public final class ResultsView extends BorderPane {
 		TabPane tabs = new TabPane();
 		tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 		tabs.getTabs().addAll(new Tab("Sintesi", summaryTab()), new Tab("Linee", linesTab()),
-			new Tab("Stazioni", DelayTabs.stations(results, labels, ON_TIME_THRESHOLD_S)),
+			new Tab("Stazioni", DelayTabs.stations(results, labels)),
 			new Tab("Treni", DelayTabs.trains(results, labels)), new Tab("Corse", visitsTab()),
 			new Tab("Costi", costsTab()));
 		VBox.setVgrow(tabs, Priority.ALWAYS);
