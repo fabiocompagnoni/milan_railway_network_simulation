@@ -98,6 +98,7 @@ public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List
 
 	public static final String DELAY_HISTOGRAM = "delay_histogram";
 	public static final String DELAY_BY_HOUR = "delay_by_hour";
+	public static final String TRAINS_RUNNING = "trains_running";
 	public static final String SPACE_TIME = "space_time";
 	public static final String COST_BREAKDOWN = "cost_breakdown";
 

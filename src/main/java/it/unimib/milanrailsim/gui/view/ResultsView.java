@@ -250,7 +250,7 @@ public final class ResultsView extends BorderPane {
 		ScrollPane spaceTime = new ScrollPane(chart(RunResults.SPACE_TIME, 1040));
 		spaceTime.getStyleClass().add("plain-scroll");
 		spaceTime.setFitToHeight(true);
-		VBox column = new VBox(16, outcomePanel(), charts, spaceTime);
+		VBox column = new VBox(16, outcomePanel(), charts, chart(RunResults.TRAINS_RUNNING, 1040), spaceTime);
 		column.setPadding(new Insets(16, 0, 0, 0));
 		ScrollPane scroll = new ScrollPane(column);
 		scroll.setFitToWidth(true);
