@@ -27,6 +27,47 @@ class RunChartsTest {
 	}
 
 	@Test
+	void delaysAreCountedByMinuteWithOneClassForEachTail() {
+		Map<String, Integer> classes = RunCharts.delayClasses(List.of(
+			visit("S1", 8 * 3600, -400), visit("S1", 8 * 3600, -30), visit("S1", 8 * 3600, 0),
+			visit("S1", 8 * 3600, 59), visit("S1", 8 * 3600, 60), visit("S1", 8 * 3600, 1799), visit("S1", 8 * 3600, 1800)));
+
+		assertEquals(37, classes.size(), "below -5, the 35 minutes from -5 to 29, 30 and over");
+		assertEquals(1, classes.get("< −5"));
+		assertEquals(1, classes.get("−1"), "30 s early is in the minute from -1 to 0");
+		assertEquals(2, classes.get("0"));
+		assertEquals(1, classes.get("1"));
+		assertEquals(1, classes.get("29"));
+		assertEquals(1, classes.get("≥ 30"));
+	}
+
+	@Test
+	void theMeanDelayByHourTakesThePlannedHourAndCountsEarlyArrivalsAsOnTime() {
+		Map<Integer, Double> minutes = RunCharts.meanDelayMinutesByPlannedHour(List.of(
+			visit("S1", 8 * 3600 + 3500, 240), visit("S1", 8 * 3600, -120), visit("S1", 25 * 3600, 60)));
+
+		assertEquals(2.0, minutes.get(8), 1e-9, "240 s and 0 s over two arrivals planned in the hour of 8");
+		assertEquals(1.0, minutes.get(25), 1e-9, "an hour past midnight of the service day keeps its number");
+	}
+
+	@Test
+	void tripsInProgressAreCountedMinuteByMinute() {
+		int[] running = RunCharts.tripsRunningByMinute(List.of(
+			trip(8 * 3600, 8 * 3600 + 600, PunctualityAnalysis.TripStatus.COMPLETED),
+			trip(8 * 3600 + 300, 8 * 3600 + 900, PunctualityAnalysis.TripStatus.COMPLETED),
+			trip(8 * 3600, Double.NaN, PunctualityAnalysis.TripStatus.NEVER_DEPARTED)));
+
+		assertEquals(1, running[8 * 60]);
+		assertEquals(2, running[8 * 60 + 7]);
+		assertEquals(1, running[8 * 60 + 12]);
+		assertEquals(0, running[8 * 60 + 16]);
+	}
+
+	private static PunctualityAnalysis.TripOutcome trip(double departure, double arrival, PunctualityAnalysis.TripStatus status) {
+		return new PunctualityAnalysis.TripOutcome("t", "S1", "S1_1", "v", "A", "B", departure, departure + 600, arrival, 2, 2, status);
+	}
+
+	@Test
 	void writesAllFourChartTypes() throws IOException {
 		List<PunctualityAnalysis.StopVisit> visits = List.of(
 			visit("S1", 8 * 3600, 30), visit("S1", 9 * 3600, 90),

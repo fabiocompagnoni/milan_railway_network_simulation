@@ -102,6 +102,7 @@ public final class AnalyzeRun {
 		request.progress().accept("Analisi: grafici");
 		RunCharts.delayHistogram(visits, archive.chart("delay_histogram"));
 		RunCharts.delayByHour(visits, archive.chart("delay_by_hour"));
+		RunCharts.trainsRunning(trips, archive.chart("trains_running"));
 		RunCharts.spaceTime(trajectories(data.timeDistanceCsv(), request.spaceTimeLine()), archive.chart("space_time"));
 		RunCharts.costBreakdown(simulatedCosts.orElse(costs), archive.chart("cost_breakdown"));
 
