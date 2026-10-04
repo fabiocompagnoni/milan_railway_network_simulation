@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class LineSummariesTest {
 
 	private static PunctualityAnalysis.StopVisit visit(String line, double arrivalDelay) {
-		return new PunctualityAnalysis.StopVisit("v", line, line + "_1", "A",
+		return new PunctualityAnalysis.StopVisit("v", line, line + "_1", "t", 0, "B", "A",
 			1000, 1000 + arrivalDelay, 1060, 1060);
 	}
 

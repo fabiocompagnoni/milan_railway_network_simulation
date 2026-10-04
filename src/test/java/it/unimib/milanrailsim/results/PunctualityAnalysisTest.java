@@ -100,6 +100,32 @@ class PunctualityAnalysisTest {
 	}
 
 	@Test
+	void aTripIsNeverDepartedThenInterruptedThenCompleted() {
+		PunctualityAnalysis analysis = new PunctualityAnalysis(schedule("A.p1|A|S1|terminal", "B.p2|B|S1|terminal"));
+
+		analysis.handleEvent(arrival("V1", DEPARTURE_TIME + 10, "A.p1|A|S1|terminal"));
+		PunctualityAnalysis.TripOutcome waiting = analysis.trips().getFirst();
+		assertEquals(PunctualityAnalysis.TripStatus.NEVER_DEPARTED, waiting.status(), "standing at the first stop");
+		assertEquals("d1", waiting.trip());
+		assertEquals("A", waiting.origin());
+		assertEquals("B", waiting.destination());
+		assertEquals(2, waiting.stopsPlanned());
+
+		analysis.handleEvent(departure("V1", DEPARTURE_TIME + 70, "A.p1|A|S1|terminal"));
+		assertEquals(PunctualityAnalysis.TripStatus.INTERRUPTED, analysis.trips().getFirst().status());
+
+		analysis.handleEvent(arrival("V1", DEPARTURE_TIME + 420, "B.p2|B|S1|terminal"));
+		PunctualityAnalysis.TripOutcome arrived = analysis.trips().getFirst();
+		assertEquals(PunctualityAnalysis.TripStatus.COMPLETED, arrived.status());
+		assertEquals(120, arrived.arrivalDelaySeconds());
+		assertEquals(2, arrived.stopsServed());
+		PunctualityAnalysis.StopVisit last = analysis.visits().getLast();
+		assertEquals("d1", last.trip());
+		assertEquals(1, last.stopSequence());
+		assertEquals("B", last.destination());
+	}
+
+	@Test
 	void anotherPlatformOfThePlannedStationIsThePlannedStop() {
 		PunctualityAnalysis analysis = new PunctualityAnalysis(schedule("A.p1|A|S1|through", "B"));
 

@@ -17,7 +17,7 @@ class RunChartsTest {
 	Path dir;
 
 	private static PunctualityAnalysis.StopVisit visit(String line, double time, double delay) {
-		return new PunctualityAnalysis.StopVisit("v", line, line + "_1", "A",
+		return new PunctualityAnalysis.StopVisit("v", line, line + "_1", "t", 0, "B", "A",
 			time, time + delay, time + 30, time + 30 + delay);
 	}
 
