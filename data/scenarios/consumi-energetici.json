@@ -28,6 +28,8 @@
 		"engineEfficiency": 0.40,
 		"transmissionEfficiency": 0.76,
 		"kilowattHoursPerLitre": 10,
+		"calibration": 0.41,
+		"calibrationNote": "coefficiente di taratura sul consumo di gasolio: senza taratura il modello da' 2,18 l/km per l'ATR 125 nel giorno reale del 2026-10-05 (7626 treni-km, 16657 l), contro un consumo medio reale di 0,9 l/km; 0,9 / 2,18 = 0,41. Compensa lo stile di guida del simulatore, che accelera al massimo fino alla velocita' della tratta e frena al massimo a ogni fermata, senza marcia per inerzia: un treno diesel non recupera quell'energia in frenata. Applicato a tutti i treni diesel",
 		"note": "nessun recupero in linea; ausiliari alimentati dal motore"
 	},
 	"passengers": {

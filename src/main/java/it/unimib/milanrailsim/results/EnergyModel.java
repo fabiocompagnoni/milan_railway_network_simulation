@@ -31,13 +31,16 @@ import java.util.Optional;
  * @param resistanceConstant  running resistance at standstill, N per kN of weight
  * @param resistanceQuadratic growth of the running resistance, N per kN per (km/h)²
  * @param rotatingMassFactor  inertia of the rotating masses, as a factor on the mass
+ * @param dieselCalibration   factor on the fuel burnt, fitted on a measured consumption: railsim drives
+ *                            every train at full acceleration and full braking, with no coasting, and a
+ *                            diesel train recovers none of the energy that costs
  * @param loads               share of the seats taken, by kind of day and hour
  * @param trains              mass and cars of each vehicle type, by type id
  */
 public record EnergyModel(double resistanceConstant, double resistanceQuadratic, double rotatingMassFactor,
 		double tractionEfficiency, double recoveryEfficiency, double recoveryRadiusMetres, double auxiliaryKilowattPerCar,
 		double dieselEngineEfficiency, double dieselTransmissionEfficiency, double dieselKilowattHoursPerLitre,
-		double kilogramsPerPassenger, Loads loads, Map<String, Train> trains) {
+		double dieselCalibration, double kilogramsPerPassenger, Loads loads, Map<String, Train> trains) {
 
 	private static final double GRAVITY = 9.80665;
 
@@ -119,7 +122,7 @@ public record EnergyModel(double resistanceConstant, double resistanceQuadratic,
 	public double dieselLitresPerHour(double massKilograms, int cars, double speed, double acceleration) {
 		double wheelKilowatt = Math.max(0, wheelKilowatt(massKilograms, speed, acceleration));
 		double engineKilowatt = wheelKilowatt / dieselTransmissionEfficiency + cars * auxiliaryKilowattPerCar;
-		return engineKilowatt / dieselEngineEfficiency / dieselKilowattHoursPerLitre;
+		return dieselCalibration * engineKilowatt / dieselEngineEfficiency / dieselKilowattHoursPerLitre;
 	}
 
 	/** Power at the wheels: positive when the train is pulled, negative when its brakes hold it. */
@@ -153,7 +156,7 @@ public record EnergyModel(double resistanceConstant, double resistanceQuadratic,
 				required(recovery, "efficiency", file).asDouble(), required(recovery, "radiusMetres", file).asDouble(),
 				required(root, "auxiliaryKilowattPerCar", file).asDouble(),
 				required(diesel, "engineEfficiency", file).asDouble(), required(diesel, "transmissionEfficiency", file).asDouble(),
-				required(diesel, "kilowattHoursPerLitre", file).asDouble(),
+				required(diesel, "kilowattHoursPerLitre", file).asDouble(), required(diesel, "calibration", file).asDouble(),
 				required(passengers, "kilogramsPerPassenger", file).asDouble(),
 				new Loads(required(load, "weekdayPeak", file).asDouble(), required(load, "weekdayOffPeak", file).asDouble(),
 					required(load, "saturday", file).asDouble(), required(load, "sundayAndHolidays", file).asDouble(),

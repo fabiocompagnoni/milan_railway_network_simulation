@@ -83,7 +83,9 @@ class EnergyModelTest {
 		double resistance = MODEL.resistanceNewton(136_000, 20);
 		double wheelKilowatt = (136_000 * 1.06 * 0.3 + resistance) * 20 / 1000;
 
-		assertEquals((wheelKilowatt / 0.76 + 4 * 30) / 0.40 / 10, MODEL.dieselLitresPerHour(136_000, 4, 20, 0.3), 1e-6);
-		assertEquals(4 * 30 / 0.40 / 10, MODEL.dieselLitresPerHour(136_000, 4, 20, -0.5), 1e-9, "braking burns for the auxiliaries only");
+		// the calibration factor scales the whole fuel figure to the measured consumption of the ATR 125
+		assertEquals(0.41 * (wheelKilowatt / 0.76 + 4 * 30) / 0.40 / 10, MODEL.dieselLitresPerHour(136_000, 4, 20, 0.3), 1e-6);
+		assertEquals(0.41 * 4 * 30 / 0.40 / 10, MODEL.dieselLitresPerHour(136_000, 4, 20, -0.5), 1e-9,
+			"braking burns for the auxiliaries only");
 	}
 }
