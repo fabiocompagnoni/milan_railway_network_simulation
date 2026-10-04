@@ -85,6 +85,7 @@ public final class AnalyzeRun {
 			archive.writeJson("energy.json", EnergyReport.json(energy));
 			archive.writeLines("energy_by_line.csv", EnergyReport.byLineCsv(energy));
 			archive.writeLines("power_profile.csv", EnergyReport.profileCsv(energy));
+			RunCharts.powerProfile(energy.profile(), archive.chart("power_profile"));
 		});
 
 		request.progress().accept("Analisi: costi");

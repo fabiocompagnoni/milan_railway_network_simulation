@@ -75,6 +75,22 @@ public final class RunCharts {
 		save(chart, png);
 	}
 
+	/** Power drawn from the substations and braking power reused, minute by minute. */
+	public static void powerProfile(List<EnergyLedger.Minute> profile, Path png) {
+		XYSeries drawn = new XYSeries("assorbita dalla linea");
+		XYSeries recovered = new XYSeries("recuperata in frenata");
+		for (EnergyLedger.Minute minute : profile) {
+			drawn.add(minute.minuteOfDay() / 60.0, minute.lineKilowatt() / 1000);
+			recovered.add(minute.minuteOfDay() / 60.0, minute.recoveredKilowatt() / 1000);
+		}
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		dataset.addSeries(drawn);
+		dataset.addSeries(recovered);
+		JFreeChart chart = ChartFactory.createXYLineChart("Potenza elettrica nel giorno (media al minuto)",
+			"ora", "potenza [MW]", dataset, PlotOrientation.VERTICAL, true, false, false);
+		save(chart, png);
+	}
+
 	private static void save(JFreeChart chart, Path png) {
 		try {
 			ChartUtils.saveChartAsPNG(png.toFile(), chart, WIDTH, HEIGHT);
