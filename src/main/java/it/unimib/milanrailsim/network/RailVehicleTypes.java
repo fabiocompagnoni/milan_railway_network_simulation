@@ -5,6 +5,7 @@ import org.matsim.vehicles.VehicleType;
 import org.matsim.vehicles.VehicleUtils;
 
 import java.util.List;
+import java.util.Locale;
 
 /** Railsim vehicle types built from the fleet catalogue; estimates are flagged in the attributes. */
 public final class RailVehicleTypes {
@@ -13,6 +14,10 @@ public final class RailVehicleTypes {
 	}
 
 	static final double REVERSING_SECONDS = 60.0;
+
+	/** Vehicle type attribute telling the traction: {@code electric} or {@link #DIESEL}. */
+	public static final String TRACTION_ATTRIBUTE = "traction";
+	public static final String DIESEL = "diesel";
 
 	public static List<VehicleType> all() {
 		return from(FleetConfig.defaults());
@@ -31,6 +36,7 @@ public final class RailVehicleTypes {
 		vehicleType.getCapacity().setStandingRoom(0);
 		vehicleType.getAttributes().putAttribute("railsimAcceleration", train.accelerationMps2());
 		vehicleType.getAttributes().putAttribute("railsimDeceleration", train.decelerationMps2());
+		vehicleType.getAttributes().putAttribute(TRACTION_ATTRIBUTE, train.traction().name().toLowerCase(Locale.ROOT));
 		// every unit of the fleet has a cab at both ends, so it reverses on a terminal platform;
 		// the seconds to change ends are a placeholder until surveyed
 		vehicleType.getAttributes().putAttribute("railsimReversible", REVERSING_SECONDS);
