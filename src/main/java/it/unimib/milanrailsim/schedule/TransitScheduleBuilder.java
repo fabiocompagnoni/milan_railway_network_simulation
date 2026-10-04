@@ -142,8 +142,10 @@ public final class TransitScheduleBuilder {
 		Set<String> activeServiceIds = ServiceCalendar.activeServiceIds(feed.calendarDateRows(), serviceDate);
 		Map<String, List<GtfsFeed.Trip>> includedTripsByRoute = includedTripsByRoute(activeServiceIds);
 
-		List<List<TripCalls>> chains = viaSidings(chains(includedTripsByRoute));
-		plan = planner.plan(chains);
+		List<List<TripCalls>> timetabled = viaSidings(chains(includedTripsByRoute));
+		plan = planner.plan(timetabled);
+		List<List<TripCalls>> chains = plan.withSidingsMoves(timetabled);
+		LOG.info("{} layovers moved to the sidings for want of a free platform track", plan.sentToSidings().size());
 		chains.forEach(chain -> chain.forEach(trip -> movements.put(trip.tripId(), trip)));
 
 		for (Map.Entry<String, List<GtfsFeed.Trip>> entry : includedTripsByRoute.entrySet()) {

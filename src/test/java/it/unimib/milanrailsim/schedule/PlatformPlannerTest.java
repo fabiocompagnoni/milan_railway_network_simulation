@@ -75,11 +75,13 @@ class PlatformPlannerTest {
 		TripCalls arriving = trip("t1", 8 * 60, "C", "B", "A").via(false, true);
 		TripCalls departing = trip("t2", 11 * 60, "A", "B", "C").via(true, false);
 		TripCalls between = trip("t3", 8 * 60 + 25, "A", "B", "C");
+		TripCalls after = trip("t4", 8 * 60 + 35, "A", "B", "C");
 
-		Plan plan = planner.plan(List.of(List.of(arriving, departing), List.of(between)));
+		Plan plan = planner.plan(List.of(List.of(arriving, departing), List.of(between), List.of(after)));
 
 		assertEquals(Id.createLinkId("A.p1.in"), plan.platform("t1", 2).orElseThrow());
-		assertEquals(Id.createLinkId("A.p1.in"), plan.platform("t3", 0).orElseThrow(),
+		assertEquals(Id.createLinkId("A.p2.in"), plan.platform("t3", 0).orElseThrow(), "the tracks of the group rotate");
+		assertEquals(Id.createLinkId("A.p1.in"), plan.platform("t4", 0).orElseThrow(),
 			"the platform is free again right after t1 left it");
 		assertEquals(0, plan.conflicts());
 	}
@@ -171,6 +173,45 @@ class PlatformPlannerTest {
 		Id<Link> platform = plan.platform("in", 2).orElseThrow();
 		assertEquals(platform, plan.platform("out", 0).orElseThrow());
 		assertNotEquals(platform, plan.platform("other", 0).orElseThrow(), "the platform is held until the departure");
+	}
+
+	@Test
+	void aStandingTrainLeavesForTheSidingsWhenAnArrivalFindsNoFreeTrack() {
+		// S2 has two tracks at A. Trains arrive at 8:20, 8:24 and 8:30 and leave again at 9:00, 9:30 and 9:10: the first
+		// two take the tracks, so when the third arrives the one due to leave last (9:30) is sent to the sidings
+		List<TripCalls> first = List.of(trip("xi", "S2", 480, "C", "B", "A"), trip("xo", "S2", 540, "A", "B", "C"));
+		List<TripCalls> second = List.of(trip("yi", "S2", 490, "C", "B", "A"), trip("yo", "S2", 550, "A", "B", "C"));
+		List<TripCalls> third = List.of(trip("zi", "S2", 484, "C", "B", "A"), trip("zo", "S2", 570, "A", "B", "C"));
+
+		Plan plan = planner.plan(List.of(first, second, third));
+
+		assertEquals(0, plan.conflicts());
+		assertEquals(java.util.Set.of("zi"), plan.sentToSidings());
+		assertEquals(java.util.Set.of("zo"), plan.broughtFromSidings());
+		assertEquals(plan.platform("zi", 2).orElseThrow(), plan.platform("yi", 2).orElseThrow(),
+			"the arriving train takes the track that was cleared");
+		assertEquals(plan.platform("xi", 2).orElseThrow(), plan.platform("xo", 0).orElseThrow(), "the first train waited");
+		List<TripCalls> moved = plan.withSidingsMoves(List.of(third)).getFirst();
+		assertTrue(moved.get(0).toSidings() && moved.get(1).fromSidings());
+		assertEquals(first, plan.withSidingsMoves(List.of(first)).getFirst(), "a train that keeps its track is left as it was");
+	}
+
+	@Test
+	void callsArePlannedInOrderOfTimeWhateverTheOrderOfTheChains() {
+		// one train calls at A early and late, the other in between: taken chain by chain the two tracks still suffice,
+		// but the result must not depend on which chain comes first
+		List<TripCalls> early = List.of(trip("e1", "S2", 480, "A", "C"), trip("e2", "S2", 600, "A", "C"));
+		List<TripCalls> between = List.of(trip("m1", "S2", 540, "A", "C"));
+
+		Plan one = planner.plan(List.of(early, between));
+		Plan other = planner.plan(List.of(between, early));
+
+		for (String trip : List.of("e1", "m1", "e2")) {
+			assertEquals(one.platform(trip, 0).orElseThrow(), other.platform(trip, 0).orElseThrow(), trip);
+		}
+		assertEquals(Id.createLinkId("A.p1.in"), one.platform("e1", 0).orElseThrow());
+		assertEquals(Id.createLinkId("A.p2.in"), one.platform("m1", 0).orElseThrow());
+		assertEquals(Id.createLinkId("A.p1.in"), one.platform("e2", 0).orElseThrow());
 	}
 
 	@Test

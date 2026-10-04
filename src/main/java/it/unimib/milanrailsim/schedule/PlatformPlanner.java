@@ -14,9 +14,11 @@ import org.matsim.api.core.v01.network.Link;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Plans the platform track every trip uses at the micro stations: the first
@@ -57,7 +59,21 @@ public final class PlatformPlanner {
 	}
 
 	/** The planned platform of every call at a micro station, by trip and call index. */
-	public record Plan(Map<String, Map<Integer, Id<Link>>> platforms, int conflicts) {
+	/**
+	 * @param sentToSidings      trips whose train clears its last platform for the sidings because no track
+	 *                           was free for the layover
+	 * @param broughtFromSidings the trips those trains come back from the sidings to run
+	 */
+	public record Plan(Map<String, Map<Integer, Id<Link>>> platforms, int conflicts, Set<String> sentToSidings,
+			Set<String> broughtFromSidings) {
+
+		/** The chains with the sidings moves the plan decided marked on their trips. */
+		public List<List<TripCalls>> withSidingsMoves(List<List<TripCalls>> chains) {
+			return chains.stream().map(chain -> chain.stream()
+				.map(trip -> trip.via(trip.fromSidings() || broughtFromSidings.contains(trip.tripId()),
+					trip.toSidings() || sentToSidings.contains(trip.tripId())))
+				.toList()).toList();
+		}
 
 		public Optional<Id<Link>> platform(String tripId, int callIndex) {
 			return Optional.ofNullable(platforms.getOrDefault(tripId, Map.of()).get(callIndex));
@@ -136,54 +152,163 @@ public final class PlatformPlanner {
 		return Optional.empty();
 	}
 
+	/** A call at a detailed station: which trip of which chain, and when its platform is first needed. */
+	private record PlannedCall(int chain, int trip, int call, double start) {
+	}
+
+	/**
+	 * A train standing on a platform between two trips; it can still be sent
+	 * to the sidings, which ends its hold on the track at {@code shortEnd}.
+	 */
+	private record Layover(String station, double[] window, double shortEnd, String trip, String nextTrip) {
+	}
+
+	/**
+	 * Plans the platform of every call in order of time, as a dispatcher
+	 * fills the station: taking the calls train by train instead leaves each
+	 * track with gaps that fit no later train, and calls end up on taken
+	 * tracks although one is free at every moment (interval partitioning, cf.
+	 * Kleinberg-Tardos §4.1).
+	 * <p>
+	 * A train waits for its next trip on the platform it arrived at only
+	 * while the tracks allow it. When a call finds no free track, the train
+	 * clears the platform for the sidings right after its arrival, or a train
+	 * already standing at the station is sent there, and comes back shortly
+	 * before leaving: the tracks of a busy terminus are not held by standing
+	 * trains while arriving ones wait outside.
+	 */
 	public Plan plan(List<List<TripCalls>> chains) {
 		Map<String, List<double[]>> windowsByTrack = new HashMap<>();
 		Map<String, Integer> rotation = new HashMap<>();
 		Map<String, Map<Integer, Id<Link>>> platforms = new HashMap<>();
 		Map<String, Integer> conflictsByStation = new java.util.TreeMap<>();
+		Set<String> sentToSidings = new HashSet<>();
+		Set<String> broughtFromSidings = new HashSet<>();
+		List<Layover> layovers = new ArrayList<>();
 		int conflicts = 0;
-		for (List<TripCalls> chain : chains) {
-			Id<Link> inherited = null;
-			for (int t = 0; t < chain.size(); t++) {
-				TripCalls trip = chain.get(t);
-				TripCalls next = t + 1 < chain.size() ? chain.get(t + 1) : null;
-				Map<Integer, Id<Link>> planned = new HashMap<>();
-				for (int i = 0; i < trip.calls().size(); i++) {
-					Call call = trip.calls().get(i);
-					if (!nodeByStation.containsKey(call.stopId())) {
-						continue;
-					}
-					if (i == 0 && inherited != null) {
-						planned.put(i, inherited);
-						continue;
-					}
-					double[] window = window(trip, i, next);
-					Optional<Candidate> chosen = choose(trip, i, window, windowsByTrack, rotation);
-					if (chosen.isEmpty()) {
-						continue;
-					}
-					Candidate candidate = chosen.get();
-					if (!isFree(windowsByTrack, candidate.trackId(), window)) {
-						conflicts++;
-						conflictsByStation.merge(call.stopId(), 1, Integer::sum);
-					}
-					windowsByTrack.computeIfAbsent(candidate.trackId(), key -> new ArrayList<>()).add(window);
-					Id<Link> link = MicroIds.platformLink(candidate.trackId(), candidate.group(), candidate.track(),
-						travelAt(trip, i).orElse(null));
-					planned.put(i, link);
+		for (PlannedCall planned : inOrderOfTime(chains)) {
+			List<TripCalls> chain = chains.get(planned.chain());
+			TripCalls timetabled = chain.get(planned.trip());
+			TripCalls previous = planned.trip() > 0 ? chain.get(planned.trip() - 1) : null;
+			TripCalls next = planned.trip() + 1 < chain.size() ? chain.get(planned.trip() + 1) : null;
+			TripCalls trip = timetabled.via(
+				timetabled.fromSidings() || broughtFromSidings.contains(timetabled.tripId()), timetabled.toSidings());
+			int i = planned.call();
+			Call call = trip.calls().get(i);
+			Map<Integer, Id<Link>> ofTrip = platforms.computeIfAbsent(trip.tripId(), key -> new HashMap<>());
+			if (i == 0 && previous != null) {
+				layovers.removeIf(layover -> layover.nextTrip().equals(trip.tripId()));
+				Id<Link> inherited = inherited(previous, call, platforms, sentToSidings);
+				if (inherited != null) {
+					ofTrip.put(i, inherited);
+					continue;
 				}
-				platforms.put(trip.tripId(), planned);
-				int last = trip.calls().size() - 1;
-				inherited = next != null && !trip.toSidings()
-					&& next.calls().getFirst().stopId().equals(trip.calls().get(last).stopId())
-					? planned.get(last) : null;
 			}
+			double[] window = window(trip, i, next);
+			Optional<Candidate> chosen = choose(trip, i, window, windowsByTrack, rotation);
+			boolean waiting = waitsOnPlatform(trip, i, next);
+			double shortEnd = waiting ? window(trip.via(trip.fromSidings(), true), i, next)[1] : window[1];
+			if (waiting && !isPlaced(chosen, windowsByTrack, window)) {
+				double[] shortStay = { window[0], shortEnd };
+				Optional<Candidate> cleared = choose(trip, i, shortStay, windowsByTrack, rotation);
+				if (isPlaced(cleared, windowsByTrack, shortStay)) {
+					window = shortStay;
+					chosen = cleared;
+					waiting = false;
+					sentToSidings.add(trip.tripId());
+					broughtFromSidings.add(next.tripId());
+				}
+			}
+			if (!isPlaced(chosen, windowsByTrack, window)) {
+				Optional<Layover> cleared = clearATrack(trip, i, window, call.stopId(), layovers, windowsByTrack, rotation);
+				if (cleared.isPresent()) {
+					sentToSidings.add(cleared.get().trip());
+					broughtFromSidings.add(cleared.get().nextTrip());
+					chosen = choose(trip, i, window, windowsByTrack, rotation);
+				}
+			}
+			if (chosen.isEmpty()) {
+				continue;
+			}
+			Candidate candidate = chosen.get();
+			if (!isFree(windowsByTrack, candidate.trackId(), window)) {
+				conflicts++;
+				conflictsByStation.merge(call.stopId(), 1, Integer::sum);
+			} else if (waiting) {
+				layovers.add(new Layover(call.stopId(), window, shortEnd, trip.tripId(), next.tripId()));
+			}
+			windowsByTrack.computeIfAbsent(candidate.trackId(), key -> new ArrayList<>()).add(window);
+			ofTrip.put(i, MicroIds.platformLink(candidate.trackId(), candidate.group(), candidate.track(),
+				travelAt(trip, i).orElse(null)));
 		}
+		chains.forEach(chain -> chain.forEach(trip -> platforms.computeIfAbsent(trip.tripId(), key -> new HashMap<>())));
 		if (conflicts > 0) {
 			LOG.warn("{} platform calls could not be placed on a free track of their preferred groups: {}", conflicts,
 				conflictsByStation);
 		}
-		return new Plan(platforms, conflicts);
+		return new Plan(platforms, conflicts, Set.copyOf(sentToSidings), Set.copyOf(broughtFromSidings));
+	}
+
+	/** The calls at detailed stations, by the time their platform is first needed; ties keep the order of the chains. */
+	private List<PlannedCall> inOrderOfTime(List<List<TripCalls>> chains) {
+		List<PlannedCall> calls = new ArrayList<>();
+		for (int c = 0; c < chains.size(); c++) {
+			List<TripCalls> chain = chains.get(c);
+			for (int t = 0; t < chain.size(); t++) {
+				TripCalls trip = chain.get(t);
+				TripCalls next = t + 1 < chain.size() ? chain.get(t + 1) : null;
+				for (int i = 0; i < trip.calls().size(); i++) {
+					if (nodeByStation.containsKey(trip.calls().get(i).stopId())) {
+						calls.add(new PlannedCall(c, t, i, window(trip, i, next)[0]));
+					}
+				}
+			}
+		}
+		calls.sort(java.util.Comparator.comparingDouble(PlannedCall::start));
+		return calls;
+	}
+
+	/** The platform a trip starts from because its train waited there since the previous trip, or null. */
+	private static Id<Link> inherited(TripCalls previous, Call first, Map<String, Map<Integer, Id<Link>>> platforms,
+			Set<String> sentToSidings) {
+		int last = previous.calls().size() - 1;
+		boolean waited = !previous.toSidings() && !sentToSidings.contains(previous.tripId())
+			&& previous.calls().get(last).stopId().equals(first.stopId());
+		return waited ? platforms.getOrDefault(previous.tripId(), Map.of()).get(last) : null;
+	}
+
+	/**
+	 * Sends to the sidings a train standing at the station, the one due to
+	 * leave last, so that the call finds a free track.
+	 *
+	 * @return the layover that was ended, or empty when ending none of them frees a track for the call
+	 */
+	private Optional<Layover> clearATrack(TripCalls trip, int callIndex, double[] window, String station,
+			List<Layover> layovers, Map<String, List<double[]>> windowsByTrack, Map<String, Integer> rotation) {
+		List<Layover> standing = layovers.stream().filter(layover -> layover.station().equals(station))
+			.sorted(java.util.Comparator.comparingDouble((Layover layover) -> layover.window()[1]).reversed()).toList();
+		for (Layover layover : standing) {
+			double end = layover.window()[1];
+			layover.window()[1] = layover.shortEnd();
+			Map<String, Integer> trial = new HashMap<>(rotation);
+			if (isPlaced(choose(trip, callIndex, window, windowsByTrack, trial), windowsByTrack, window)) {
+				layovers.remove(layover);
+				return Optional.of(layover);
+			}
+			layover.window()[1] = end;
+		}
+		return Optional.empty();
+	}
+
+	/** Whether the train stands on the platform of the trip's last call until its next trip leaves from there. */
+	private static boolean waitsOnPlatform(TripCalls trip, int callIndex, TripCalls next) {
+		Call call = trip.calls().get(callIndex);
+		return callIndex == trip.calls().size() - 1 && !trip.toSidings() && next != null
+			&& next.calls().getFirst().stopId().equals(call.stopId());
+	}
+
+	private static boolean isPlaced(Optional<Candidate> chosen, Map<String, List<double[]>> windowsByTrack, double[] window) {
+		return chosen.isPresent() && isFree(windowsByTrack, chosen.get().trackId(), window);
 	}
 
 	/**
