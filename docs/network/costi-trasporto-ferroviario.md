@@ -37,6 +37,46 @@ ammortamento ≈ 1,6 + pedaggio 2,5 ≈ **11 €/treno·km** diretti; col person
 non viaggiante, pulizie, assicurazioni e overhead si arriva alla banda macro
 15–19 €/treno·km. La scomposizione è quindi internamente plausibile.
 
+## Costo previsto e costo simulato
+
+Ogni run calcola le stesse sei voci due volte e le salva in `costs.json`: il
+costo **da orario** e, nel blocco `simulated`, il costo **della giornata
+simulata**. Il costo di un run mostrato nell'elenco e nel confronto è quello
+simulato; quello da orario resta accanto (`plannedCost` nel manifest).
+
+| Voce | Da orario | Simulato |
+|---|---|---|
+| Personale | ore d'orario × 140 €/treno-ora | ore effettive delle corse completate, ritardi compresi |
+| Elettricità | treni-km elettrici × 1,7 €/km | kWh presi dalla rete × 0,10 €/kWh |
+| Gasolio | treni-km diesel × 3,0 €/km | litri consumati × 0,95 €/l |
+| Manutenzione | treni-km × 2,5 €/km | treni-km × 2,5 €/km |
+| Accesso alla rete | treni-km × 2,5 €/km | treni-km × 2,5 €/km |
+| Materiale rotabile | flotta minima teorica × 650 €/giorno | treni usati dalla simulazione × 650 €/giorno |
+
+Regole del costo simulato:
+
+- I kWh sono quelli presi dalle sottostazioni, quindi già al netto
+  dell'energia di frenata riusata da altri treni; l'energia rigenerata non è
+  venduta né accreditata. Calcolo in `modello-energetico.md`.
+- Una corsa interrotta o mai partita è contata al valore d'orario: ore e km
+  dell'orario, e per l'energia il consumo medio per km delle corse della
+  stessa trazione che sono arrivate. Uno scenario che si blocca non risulta
+  quindi più economico di uno che funziona.
+- La flotta minima teorica è il massimo di corse contemporanee per tipo di
+  treno; i treni usati sono quelli dei giri treno costruiti dall'orario, che
+  sono di più perché ogni linea ha il proprio parco.
+- La trazione di un treno viene dalla scheda del tipo nella flotta. In
+  precedenza era diesel il solo ATR 125 e l'ATR 803 era contato come
+  elettrico.
+
+| Prezzo | Valore | Nota |
+|---|---|---|
+| Energia di trazione | 0,10 €/kWh | prezzo medio, applicato all'energia presa dalla rete al netto del recupero |
+| Gasolio | 0,95 €/l | prezzo agevolato per la trazione ferroviaria |
+
+I prezzi si modificano dalle impostazioni dell'applicazione
+(`config/costs.json`, voci `traction_energy` e `diesel_fuel`).
+
 ## Cosa NON modelliamo (fuori scope dichiarato)
 
 - Ricavi tariffari e impatto sugli utenti (l'idea «di quanto aumentano i
