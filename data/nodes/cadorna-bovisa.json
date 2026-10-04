@@ -40,7 +40,7 @@
 					"groups": ["cadorna_asso", "cadorna_shared", "cadorna_s3"]}
 			],
 			"sharedStock": [["R22", "RE1"]],
-			"sidings": {"tracks": 8, "note": "binari di ricovero esterni alla stazione; regola in sidings.json"},
+			"sidings": {"tracks": 40, "note": "ricovero fittizio collegato a Cadorna, comune a tutte le linee che vi terminano: somma degli 8 binari di ricovero esterni alla stazione (rilievo 2026-09-13) e dei depositi Ferrovienord piu' a nord, fra cui l'impianto di Novate Milanese. Capienza volutamente non vincolante: a meta' giornata l'orario lascia fermi a Cadorna fino a 18 treni, che nella realta' raggiungono quei depositi; il tragitto fino al deposito non e' simulato. Regola in sidings.json"},
 			"notes": "rilievo 2026-09-13: 1 fisso MXP; 2-5 Saronno; 6-7 Asso; 8-9 variabili; 10 quasi sempre S3. Il documento del 2026-08-05 dava 1-5 sul fascio f1 e 6-10 sul fascio f2: i binari 8-10 raggiungono entrambi i fasci"
 		},
 		{
