@@ -4,7 +4,7 @@
 	"status": "bozza con ricerca e conferma del 2026-09-15",
 	"detailLevel": "binari nominati con assegnazione per linea e per verso: stazione di diramazione verso Milano (via Monza e via Carnate), Bergamo, Molteno e Sondrio",
 	"sources": [
-		"Wikipedia, Stazione di Lecco (https://it.wikipedia.org/wiki/Stazione_di_Lecco): 5 binari passanti e un tronco per i treni da sud; uso tipico tronco S7, 1 RE8 verso Tirano, 2 R7 da/per Bergamo, 3 S8 da/per Carnate, 4 RE8 verso Milano, 5 R13 da/per Sondrio; confermato da Fabio 2026-09-15",
+		"Wikipedia, Stazione di Lecco (https://it.wikipedia.org/wiki/Stazione_di_Lecco): 5 binari passanti e un tronco per i treni da sud; uso tipico tronco S7, 1 RE8 verso Tirano, 2 R7 da/per Bergamo, 3 S8 da/per Carnate, 4 RE8 verso Milano, 5 R13 da/per Sondrio; confermato da rilievo diretto, 2026-09-15",
 		"rilievo diretto 2026-09-15: binari di ricovero, 4 per i treni che arrivano da sud e 15 per quelli che arrivano da nord",
 		"GTFS Trenord orari_trenord, conteggio 2026-09-15: si attestano S8 74, S7 36, R7 31, R13 26, R18 7, RE8 6 corse; transitano RE8 36",
 		"rete meso: lato sud S01322 Monza (collegamento diretto), S01522 Lecco Maggianico (Carnate), S01523 Vercurago e S01524 Calolziocorte (Bergamo), S01463 Valmadrera e S01460 Oggiono (Molteno); lato nord S01415 Mandello e S01416 Abbadia (Sondrio)"

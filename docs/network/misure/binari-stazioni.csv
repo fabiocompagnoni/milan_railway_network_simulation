@@ -1,4 +1,4 @@
-stop_id,nome,corse_giorno,banchine_OSM_da_correggere,linee,binari_reali_Fabio,fonte
+stop_id,nome,corse_giorno,banchine_OSM_da_correggere,linee,binari_reali,fonte
 S01066,Milano Cadorna,483,7,"R16,R17,R22,R27,RE1,RE54,RE7,S3,S4"
 S01645,Milano Porta Garibaldi,332,3,"R14,R21,R23,R34,R6,RE2,RE5,RE6,S11,S5,S6,S7,S8,S9"
 S01700,Milano Centrale,299,8,"R4,RE11,RE13,RE2,RE4,RE51,RE6,RE8,RE80,S11,S8"

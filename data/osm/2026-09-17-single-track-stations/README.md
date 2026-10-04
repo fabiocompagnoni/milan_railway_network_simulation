@@ -3,7 +3,7 @@
 `generate_nodes.py` scrive i file `data/nodes/<linea>.json` per le 140
 stazioni di incrocio che toccano una tratta a binario unico, a partire dal
 censimento `docs/network/misure/stazioni-binario-unico.csv` (binari da
-Wikipedia, stima OpenStreetMap, rilievo di Fabio quando compilato) e dai vicini
+Wikipedia, stima OpenStreetMap, rilievo diretto quando compilato) e dai vicini
 di ogni stazione nella rete meso `scenarios/milan/network.xml`.
 
 Regole di generazione, tutte dichiarate nelle note dei file:

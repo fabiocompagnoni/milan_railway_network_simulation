@@ -4,7 +4,7 @@
 	"status": "bozza con ricerca e conferma del 2026-09-15",
 	"detailLevel": "gruppi di binari: stazione sul quadruplicamento Ferrovienord Milano-Saronno, capolinea della S13",
 	"sources": [
-		"Wikipedia, Stazione di Garbagnate Milanese (https://it.wikipedia.org/wiki/Stazione_di_Garbagnate_Milanese): 4 binari passanti e i tronchi del capolinea S13, costruiti nel 2023-24 al posto dello scalo merci (la voce indica 2 e poi 3 tronchi); confermato da Fabio 2026-09-15",
+		"Wikipedia, Stazione di Garbagnate Milanese (https://it.wikipedia.org/wiki/Stazione_di_Garbagnate_Milanese): 4 binari passanti e i tronchi del capolinea S13, costruiti nel 2023-24 al posto dello scalo merci (la voce indica 2 e poi 3 tronchi); confermato da rilievo diretto, 2026-09-15",
 		"GTFS Trenord orari_trenord, conteggio 2026-09-15: si attesta S13 48 corse; transitano S3 76, S1 61",
 		"rete meso: lato sud S01071 Bollate Centro (verso Milano); lato nord S01073 Garbagnate Parco delle Groane, S01075 Cesate"
 	],

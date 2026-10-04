@@ -107,7 +107,7 @@ Criticità**.
 - **Binario unico — blocchi e precedenze**: le tratte monobinario si riservano
   **in blocco** tra due punti d'incrocio (stazioni con più binari); le
   precedenze avvengono in quelle stazioni. Caso reale di riferimento (fonte:
-  Fabio): **Malnate ↔ Varese Nord** — tratto unico su linea altrimenti doppia,
+  rilievo diretto): **Malnate ↔ Varese Nord** — tratto unico su linea altrimenti doppia,
   incroci gestiti nelle due stazioni ai capi. Nel modello: catene di link a
   capacità 1 tra punti d'incrocio condividono un unico `railsimResourceId`;
   arbitraggio FCFS del `TrainDisposition` (politiche di precedenza = leva
@@ -123,7 +123,7 @@ Criticità**.
   raccordi e comunicazioni, entro 250 m dal punto della stazione, raggruppati
   per distanza dall'asse della linea); `binari_wikipedia` e
   `incrocio_wikipedia` dalla voce "Stazione di …" di it.wikipedia, con il link
-  in `fonte_wikipedia`; `binari_reali_Fabio` per il rilievo diretto, che
+  in `fonte_wikipedia`; `binari_reali` per il rilievo diretto, che
   prevale. Risultato: 93 fermate a un solo binario dove l'incrocio è
   impossibile, 140 stazioni con due o più binari. Il valore provvisorio usato
   fino a quel giorno era 2 per tutte: ogni fermata sembrava una stazione di
@@ -211,8 +211,8 @@ Criticità**.
   soglia di `sidings.json` (60 min, oltre va nel ricovero). Su un binario
   passante si ferma solo il tempo della fermata: una corsa che inverte in una
   stazione senza binari di testa per la sua linea passa dal ricovero
-  qualunque sia la sosta (`TransitScheduleBuilder.longLayover`). Regola data
-  da Fabio il 2026-09-17: nella simulazione una S12 attestata sul binario 7 di
+  qualunque sia la sosta (`TransitScheduleBuilder.longLayover`). Regola fissata
+  il 2026-09-17: nella simulazione una S12 attestata sul binario 7 di
   Bovisa, binario di corsa del Passante, lo teneva per 51 minuti e accodava
   23 treni da Dateo a Lancetti.
 
@@ -223,8 +223,8 @@ Criticità**.
   i gruppi collegati sia alla stazione da cui arriva sia a quella verso cui
   riparte, nel suo verso di marcia (`TransitScheduleBuilder.platformFacility`,
   `PlatformPlanner.groupsConnecting`). È il sorpasso reale: un RE1 supera un
-  R22 in ritardo a Saronno dove il piazzale lo consente (osservazione di Fabio
-  come passeggero), mentre a Bovisa i binari del Passante e quelli per Cadorna
+  R22 in ritardo a Saronno dove il piazzale lo consente (osservazione diretta
+  da passeggero), mentre a Bovisa i binari del Passante e quelli per Cadorna
   portano in direzioni diverse e non si scambiano. Motivo: nella simulazione
   del 2026-09-18 RE51 e RE54 a Saronno avevano un solo binario ammesso per
   verso; un treno in sosta oltre l'orario fermava tutti quelli dietro.
@@ -390,7 +390,7 @@ Per la correttezza del fenomeno servono anche:
 
 Cioè il traffico **eterogeneo** completo sui segmenti condivisi.
 
-### Parco rotabile reale (fonte: Fabio, 2026-08-05; sigle verificate su fonti pubbliche)
+### Parco rotabile reale (fonte: osservazione diretta, 2026-08-05; sigle verificate su fonti pubbliche)
 
 - **Suburbani**: **TAF** e soprattutto **TSR**; su alcune linee stanno entrando i **Caravaggio** (Hitachi); su **S9 e S19** anche **ETR 245** (Alstom Coradia Meridian, 5 casse, 82,2 m, 230 posti, vmax 160 km/h).
 - **Regionali**: principalmente **Caravaggio**; in alcuni orari anche ETR 245, TSR e TAF. **Donizetti** (ETR 204, Alstom Coradia Stream) solo su alcune linee, es. quella per **Pavia**.
@@ -406,11 +406,11 @@ Fonte: `https://www.trenord.it/chi-siamo/la-flotta/`.
 |---|---|
 | **TSR** | elettrotreno 2 piani, modulare 3–6 casse, **298–640 posti**, vmax **140 km/h**, dal 2007 su **S1, S2, S5, S6, S13 del Passante** + regionali; «**accelerazioni simili a quelle di una metropolitana**» |
 | **TAF** | elettrotreno 2 piani, composizione fissa **4 casse, 467 posti**, vmax **140 km/h**, fine anni '90; doppia composizione possibile (8 casse); «buone prestazioni in accelerazione» |
-| **Caravaggio ETR 421** | 2 piani, **4 casse, 109,6 m, 466 posti** (infobox Wikipedia; altre fonti 443–479), vmax **160 km/h**, accel. max **1,10 m/s²**, 3400 kW — **Malpensa Express** in config. aeroportuale da marzo 2025 + regionali (fonte: Fabio + Wikipedia it `Elettrotreno_FS_ETR_421/521/521_S1/621`, 2026-08-05) |
+| **Caravaggio ETR 421** | 2 piani, **4 casse, 109,6 m, 466 posti** (infobox Wikipedia; altre fonti 443–479), vmax **160 km/h**, accel. max **1,10 m/s²**, 3400 kW — **Malpensa Express** in config. aeroportuale da marzo 2025 + regionali (fonte: osservazione diretta + Wikipedia it `Elettrotreno_FS_ETR_421/521/521_S1/621`, 2026-08-05) |
 | **Caravaggio ETR 521** | 2 piani, **5 casse, 136,8 m, 598 posti** (pagina flotta Trenord: 563), vmax **160 km/h**, accel. max **1,10 m/s²** — **S11** (limite sagoma: attestato a Como S.G.) e **Milano–Saronno–Varese–Laveno (RE1)** da set. 2022 + regionali; 70 unità 521 S1 |
 | **Donizetti** | vmax **160 km/h**, >300 posti (4 casse), >200 (3 casse) |
 | **ETR 425 Coradia Meridian** | regionale, vmax **160 km/h** |
-| **ETR 245 Coradia Meridian** | **5 casse, 82,2 m, 230 posti**, vmax **160 km/h**, dal 2011, doppia composizione possibile (la pagina lo associa al Malpensa Express; oggi su MXP girano i nuovi Caravaggio e gli ETR 245 anche su S9/S19 — fonte: Fabio) |
+| **ETR 245 Coradia Meridian** | **5 casse, 82,2 m, 230 posti**, vmax **160 km/h**, dal 2011, doppia composizione possibile (la pagina lo associa al Malpensa Express; oggi su MXP girano i nuovi Caravaggio e gli ETR 245 anche su S9/S19 — fonte: osservazione diretta) |
 | **ATR 125** (GTW 4/12 «Besanino») | diesel-elettrico Stadler, **4 casse, 231 posti**, su **Milano–Molteno–Lecco (S7)**; vmax **140 km/h** |
 | **ATR 115** (GTW 2/6) | diesel-elettrico Stadler, **2 casse, 104 posti**, su Brescia–Iseo–Edolo e Como–Lecco; vmax **140 km/h** |
 | **ALn 668** | automotrice diesel, 68 posti, vmax 95–130 km/h |
@@ -419,17 +419,17 @@ Fonte: `https://www.trenord.it/chi-siamo/la-flotta/`.
 - **FLIRT TSI** (TILO RABe 524, per RE80): 6 casse, **105 m, 244 posti**, vmax
   **160 km/h**, 2.600 kW (trainswiss/Wikipedia/sguggiari.ch, 2026-08-05). Il
   RE80 usa Flirt TSI + Flirt 4/6; la v1 modella **solo il Flirt TSI**
-  (semplificazione dichiarata, fonte: Fabio).
+  (semplificazione dichiarata).
 - **Mancano dalla fonte ufficiale**: accelerazione/decelerazione in m/s²
   (`railsimAcceleration`/`railsimDeceleration`) e lunghezze di
   TSR/TAF/Caravaggio/Donizetti → da schede tecniche costruttori, con fonte
   citata e approvazione prima dell'uso.
 
-#### Assegnazione rotta→tipo v1 (fonte: Fabio, 2026-08-05)
+#### Assegnazione rotta→tipo v1 (fonte: osservazione diretta, 2026-08-05)
 
 - **Suburbani** (S1–S13 tranne S7/S11, incluse S9/S19): sempre **TSR o TAF**,
   con **alternanza per corsa** al **70% TSR / 30% TAF** (stima di dominio,
-  fonte: Fabio 2026-08-05 — i TAF sono in dismissione; parametro di scenario
+  2026-08-05 — i TAF sono in dismissione; parametro di scenario
   regolabile); l'ETR 245 appare solo saltuariamente su S9/S19 (non
   modellato in v1). Su S3 anche Caravaggio (non dominante).
 - **S11**: `caravaggio_521` (attestato Como S.G.). **S7**: `atr125`.

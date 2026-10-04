@@ -2,7 +2,7 @@
 	"node": "valtellina",
 	"title": "Stazioni di incrocio sul binario unico: Abbadia Lariana, Ardenno Masino, Bellano Tartavalle Terme, Castione Andevenno, Cosio Traona, Delebio, Dervio, Lierna, Mandello Del Lario, Piona, Ponte In Valtellina, S.Pietro Berbenno, Sondrio, Tirano, Tresenda-Aprica-Teglio, Varenna Esino",
 	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
-	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo diretto) e i lati dalla geografia; senza gole ne' assegnazione per linea",
 	"sources": [
 		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
 		"Abbadia Lariana: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Abbadia_Lariana; stima OSM 4",

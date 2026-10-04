@@ -4,8 +4,8 @@
 	"status": "bozza con ricerca e conferma del 2026-09-15",
 	"detailLevel": "gruppi di binari: stazioni di incrocio e attestamento sulle linee a binario unico Lecco-Colico, Colico-Sondrio e Colico-Chiavenna",
 	"sources": [
-		"Wikipedia, Stazione di Colico (https://it.wikipedia.org/wiki/Stazione_di_Colico): 3 binari passanti, 2 tronchi lato Chiavenna, 10 binari di servizio; R11 per Chiavenna dai tronchi, RE8 e R13 sui passanti; confermato da Fabio 2026-09-15",
-		"Wikipedia, Stazione di Morbegno (https://it.wikipedia.org/wiki/Stazione_di_Morbegno): 2 binari viaggiatori, 5 tronchi di cui 2 fuori uso e gli altri usati di rado; confermato da Fabio 2026-09-15",
+		"Wikipedia, Stazione di Colico (https://it.wikipedia.org/wiki/Stazione_di_Colico): 3 binari passanti, 2 tronchi lato Chiavenna, 10 binari di servizio; R11 per Chiavenna dai tronchi, RE8 e R13 sui passanti; confermato da rilievo diretto, 2026-09-15",
+		"Wikipedia, Stazione di Morbegno (https://it.wikipedia.org/wiki/Stazione_di_Morbegno): 2 binari viaggiatori, 5 tronchi di cui 2 fuori uso e gli altri usati di rado; confermato da rilievo diretto, 2026-09-15",
 		"GTFS Trenord orari_trenord, conteggio 2026-09-15: a Colico si attestano R11 32, R13 8, RE8 2 corse; transitano RE8 34, R13 20; a Morbegno transitano RE8 34, R13 22",
 		"rete meso: Colico lato Lecco S01406 Piona, S01408 Dervio, S01409 Bellano (collegamenti diretti), lato opposto S01405 Dubino (Chiavenna), S01422 Delebio e S01425 Morbegno (Sondrio); Morbegno lato Colico S01420, S01424 Cosio Traona, lato Sondrio S01426 Talamona, S01430 Sondrio"
 	],

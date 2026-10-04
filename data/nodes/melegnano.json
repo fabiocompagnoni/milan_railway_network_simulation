@@ -4,7 +4,7 @@
 	"status": "bozza con ricerca e conferma del 2026-09-15",
 	"detailLevel": "binari nominati con assegnazione per linea e per verso: capolinea della S12 sulla linea Milano-Lodi a doppio binario",
 	"sources": [
-		"Wikipedia, Stazione di Melegnano (https://it.wikipedia.org/wiki/Stazione_di_Melegnano): 3 binari viaggiatori; 1 treni verso sud (S1 verso Lodi), 2 verso Milano; la S12 si attesta sul 3, usato anche per le precedenze; vecchio tronco rimosso nel 2014, scalo smantellato; confermato da Fabio 2026-09-15",
+		"Wikipedia, Stazione di Melegnano (https://it.wikipedia.org/wiki/Stazione_di_Melegnano): 3 binari viaggiatori; 1 treni verso sud (S1 verso Lodi), 2 verso Milano; la S12 si attesta sul 3, usato anche per le precedenze; vecchio tronco rimosso nel 2014, scalo smantellato; confermato da rilievo diretto, 2026-09-15",
 		"GTFS Trenord orari_trenord, conteggio 2026-09-15: si attesta S12 60 corse; transita S1 74",
 		"rete meso: lato sud S01821 S.Giuliano Milanese (verso Milano), lato nord S01823 S.Zenone al Lambro"
 	],

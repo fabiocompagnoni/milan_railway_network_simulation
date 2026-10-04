@@ -24,8 +24,8 @@ class CostParametersTest {
 	void loadsCategoriesWithUnitAndSource() throws IOException {
 		Path file = write("""
 			{"currency": "EUR", "categories": {
-				"staff": {"unitCost": 140.0, "unit": "train_hour", "source": "stima Fabio 2026-09"},
-				"diesel": {"unitCost": 3.2, "unit": "train_km", "source": "stima Fabio 2026-09"}
+				"staff": {"unitCost": 140.0, "unit": "train_hour", "source": "stima 2026-09"},
+				"diesel": {"unitCost": 3.2, "unit": "train_km", "source": "stima 2026-09"}
 			}}""");
 		CostParameters parameters = CostParameters.load(file);
 		assertEquals("EUR", parameters.currency());
@@ -63,7 +63,7 @@ class CostParametersTest {
 
 	@Test
 	void zeroCostLoadsButIsNotUsable() throws IOException {
-		// the committed config ships zeros until Fabio fills real estimates
+		// a category may be listed before its cost is estimated
 		Path file = write("""
 			{"currency": "EUR", "categories": {
 				"staff": {"unitCost": 0.0, "unit": "train_hour", "source": "da stimare"}
