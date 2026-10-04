@@ -166,7 +166,8 @@ public final class ResultsView extends BorderPane {
 		tabs.getTabs().addAll(new Tab("Sintesi", summaryTab()), new Tab("Linee", linesTab()),
 			new Tab("Stazioni", DelayTabs.stations(results, labels)),
 			new Tab("Treni", DelayTabs.trains(results, labels)), new Tab("Corse", visitsTab()),
-			new Tab("Energia", EnergyTab.of(results)), new Tab("Costi", costsTab()));
+			new Tab("Energia", EnergyTab.of(results)), new Tab("Costi", costsTab()),
+			new Tab("Scenario", ScenarioTab.of(results.dir())));
 		VBox.setVgrow(tabs, Priority.ALWAYS);
 		VBox column = new VBox(16, header, headline, tabs);
 		body.getChildren().setAll(column);
