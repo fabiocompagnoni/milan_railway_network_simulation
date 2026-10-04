@@ -305,7 +305,9 @@ public final class MapCanvas extends Region {
 		for (NetworkMap.Track track : network.tracks()) {
 			List<NetworkMap.Line> suburban = suburbanLines(track);
 			if (suburban.isEmpty()) {
-				boolean lit = allLines(track).stream().anyMatch(highlighted::contains) || track.lineIds().contains(highlightedLine);
+				// an immutable list refuses to be asked for null, which is what no highlighted line is
+				boolean lit = allLines(track).stream().anyMatch(highlighted::contains)
+					|| highlightedLine != null && track.lineIds().contains(highlightedLine);
 				g.setStroke(lit ? palette.label() : palette.mutedTrack());
 				g.setLineWidth(lit ? HIGHLIGHT_WIDTH_PX : MUTED_TRACK_WIDTH_PX);
 				strokePolyline(g, track.polyline(), 0);
