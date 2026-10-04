@@ -206,6 +206,17 @@ public final class PunctualityAnalysis
 		return List.copyOf(all);
 	}
 
+	/** A call of the timetable: the planned stop of a trip, with the station the trip ends at. */
+	public record PlannedCall(String line, String trip, String stop, String destination, double plannedArrival) {
+	}
+
+	/** Every call of the timetable, whether it took place or not. */
+	public List<PlannedCall> plannedCalls() {
+		return plannedTrips.stream().flatMap(trip -> trip.stops().stream())
+			.map(stop -> new PlannedCall(stop.line(), stop.trip(), stop.stop(), stop.destination(), stop.plannedArrival()))
+			.toList();
+	}
+
 	/**
 	 * Every trip of the timetable with its outcome, in order of planned
 	 * departure. A trip counts as departed once the train has left its first

@@ -75,6 +75,9 @@ public final class AnalyzeRun {
 		archive.writeLines("trips.csv", tripsCsv(trips));
 		archive.writeLines("indicators_by_line.csv", indicatorsByLineCsv(trips, visits));
 		archive.writeJson("indicators.json", indicatorsJson(indicators));
+		archive.writeLines("stations.csv", stationsCsv(visits));
+		archive.writeLines("stations_hourly.csv", stationsHourlyCsv(data.punctuality().plannedCalls(), visits));
+		archive.writeLines("trains.csv", trainsCsv(visits));
 		archive.writeLines("unfinished.csv", unfinishedCsv(unfinished));
 
 		request.progress().accept("Analisi: costi");
@@ -150,6 +153,39 @@ public final class AnalyzeRun {
 				decimal(of.punctualityAtDestinationPercent()), decimal(of.punctualityAtStopsPercent()),
 				format(of.meanDelaySeconds()), format(of.meanDeviationSeconds()),
 				format(of.medianDelaySeconds()), format(of.p95DelaySeconds()))));
+		return lines;
+	}
+
+	private static List<String> stationsCsv(List<PunctualityAnalysis.StopVisit> visits) {
+		List<String> lines = new ArrayList<>();
+		lines.add("station,observations,mean_delay_s,p95_delay_s,max_delay_s,late_pct");
+		for (StationTables.StationRow row : StationTables.byStation(visits, ServiceIndicators.ON_TIME_THRESHOLD_SECONDS)) {
+			lines.add(String.join(",", row.station(), Integer.toString(row.observations()),
+				format(row.meanDelaySeconds()), format(row.p95DelaySeconds()), format(row.maxDelaySeconds()),
+				decimal(row.latePercent())));
+		}
+		return lines;
+	}
+
+	private static List<String> stationsHourlyCsv(List<PunctualityAnalysis.PlannedCall> planned,
+			List<PunctualityAnalysis.StopVisit> visits) {
+		List<String> lines = new ArrayList<>();
+		lines.add("station,direction,hour,trains_planned,trains_called,mean_delay_s,p95_delay_s,punctuality_pct");
+		for (StationTables.HourRow row : StationTables.hourly(planned, visits, ServiceIndicators.ON_TIME_THRESHOLD_SECONDS)) {
+			lines.add(String.join(",", row.station(), row.direction(), Integer.toString(row.hour()),
+				Integer.toString(row.trainsPlanned()), Integer.toString(row.trainsCalled()),
+				format(row.meanDelaySeconds()), format(row.p95DelaySeconds()), decimal(row.punctualityPercent())));
+		}
+		return lines;
+	}
+
+	private static List<String> trainsCsv(List<PunctualityAnalysis.StopVisit> visits) {
+		List<String> lines = new ArrayList<>();
+		lines.add("vehicle,line,stops,mean_delay_s,max_delay_s,final_delay_s");
+		for (StationTables.TrainRow row : StationTables.byTrain(visits)) {
+			lines.add(String.join(",", row.vehicle(), row.line(), Integer.toString(row.stops()),
+				format(row.meanDelaySeconds()), format(row.maxDelaySeconds()), format(row.finalDelaySeconds())));
+		}
 		return lines;
 	}
 
