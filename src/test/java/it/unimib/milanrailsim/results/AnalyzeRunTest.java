@@ -56,7 +56,9 @@ class AnalyzeRunTest {
 
 		List<String> trips = Files.readAllLines(archived.resolve("trips.csv"));
 		assertEquals(2, trips.size(), "header and the one trip");
-		assertTrue(trips.get(1).startsWith("t1,S1,S1_1,t1,A,B,") && trips.get(1).endsWith(",2,2,completed"), trips.get(1));
+		assertTrue(trips.get(1).startsWith("t1,S1,S1_1,t1,A,B,") && trips.get(1).endsWith(",2,2,completed,,,,"),
+			"no energy columns for a run read back from its output: " + trips.get(1));
+		assertFalse(Files.exists(archived.resolve("energy.json")));
 		assertEquals(2, Files.readAllLines(archived.resolve("indicators_by_line.csv")).size());
 		assertEquals(3, Files.readAllLines(archived.resolve("stations.csv")).size(), "header, A and B");
 		assertEquals(2, Files.readAllLines(archived.resolve("trains.csv")).size());

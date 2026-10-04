@@ -45,6 +45,34 @@ public final class EnergyLedger {
 	public record TripEnergy(String line, boolean electric, double drawnKilowattHours, double receivedKilowattHours,
 			double regeneratedKilowattHours, double givenKilowattHours, double lostKilowattHours, double litres,
 			double kilometres, double tonneKilometres) {
+
+		/** What the trip would have drawn had no braking energy been reused, by itself or by others. */
+		public double demandKilowattHours() {
+			return drawnKilowattHours + receivedKilowattHours + regeneratedKilowattHours - givenKilowattHours - lostKilowattHours;
+		}
+
+		TripEnergy plus(TripEnergy other) {
+			return new TripEnergy(line, electric, drawnKilowattHours + other.drawnKilowattHours,
+				receivedKilowattHours + other.receivedKilowattHours, regeneratedKilowattHours + other.regeneratedKilowattHours,
+				givenKilowattHours + other.givenKilowattHours, lostKilowattHours + other.lostKilowattHours,
+				litres + other.litres, kilometres + other.kilometres, tonneKilometres + other.tonneKilometres);
+		}
+	}
+
+	/**
+	 * Sums of trips. Electric and diesel trips are kept apart because a
+	 * kilometre or a tonne-kilometre of one says nothing of the other.
+	 */
+	public record Totals(TripEnergy electric, TripEnergy diesel) {
+
+		private static final TripEnergy NO_ELECTRIC = new TripEnergy("", true, 0, 0, 0, 0, 0, 0, 0, 0);
+		private static final TripEnergy NO_DIESEL = new TripEnergy("", false, 0, 0, 0, 0, 0, 0, 0, 0);
+
+		static Totals of(java.util.Collection<TripEnergy> trips) {
+			TripEnergy electric = trips.stream().filter(TripEnergy::electric).reduce(NO_ELECTRIC, TripEnergy::plus);
+			TripEnergy diesel = trips.stream().filter(trip -> !trip.electric()).reduce(NO_DIESEL, TripEnergy::plus);
+			return new Totals(electric, diesel);
+		}
 	}
 
 	/**
@@ -65,6 +93,19 @@ public final class EnergyLedger {
 		/** The minute with the highest mean power drawn from the substations. */
 		public Optional<Minute> peak() {
 			return profile.stream().max(Comparator.comparingDouble(Minute::lineKilowatt));
+		}
+
+		public Totals totals() {
+			return Totals.of(byTrip.values());
+		}
+
+		/** The totals of each line, by line id. */
+		public Map<String, Totals> byLine() {
+			Map<String, List<TripEnergy>> trips = new TreeMap<>();
+			byTrip.values().forEach(trip -> trips.computeIfAbsent(trip.line(), key -> new ArrayList<>()).add(trip));
+			Map<String, Totals> totals = new TreeMap<>();
+			trips.forEach((line, ofLine) -> totals.put(line, Totals.of(ofLine)));
+			return totals;
 		}
 	}
 

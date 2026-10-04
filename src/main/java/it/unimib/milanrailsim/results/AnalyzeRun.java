@@ -72,13 +72,20 @@ public final class AnalyzeRun {
 		ServiceIndicators indicators = ServiceIndicators.of(trips, visits, ServiceIndicators.ON_TIME_THRESHOLD_SECONDS);
 		archive.writeLines("punctuality.csv", punctualityCsv(visits));
 		archive.writeLines("punctuality_by_line.csv", byLineCsv(visits));
-		archive.writeLines("trips.csv", tripsCsv(trips));
+		archive.writeLines("trips.csv", tripsCsv(trips, data.energy().map(EnergyLedger.Use::byTrip).orElse(Map.of())));
 		archive.writeLines("indicators_by_line.csv", indicatorsByLineCsv(trips, visits));
 		archive.writeJson("indicators.json", indicatorsJson(indicators));
 		archive.writeLines("stations.csv", stationsCsv(visits));
 		archive.writeLines("stations_hourly.csv", stationsHourlyCsv(data.punctuality().plannedCalls(), visits));
 		archive.writeLines("trains.csv", trainsCsv(visits));
 		archive.writeLines("unfinished.csv", unfinishedCsv(unfinished));
+
+		data.energy().ifPresent(energy -> {
+			request.progress().accept("Analisi: energia");
+			archive.writeJson("energy.json", EnergyReport.json(energy));
+			archive.writeLines("energy_by_line.csv", EnergyReport.byLineCsv(energy));
+			archive.writeLines("power_profile.csv", EnergyReport.profileCsv(energy));
+		});
 
 		request.progress().accept("Analisi: costi");
 		CostModel.Breakdown costs = new CostModel(data.schedule(), data.vehicles(), data.network(),
@@ -125,16 +132,23 @@ public final class AnalyzeRun {
 		return lines;
 	}
 
-	private static List<String> tripsCsv(List<PunctualityAnalysis.TripOutcome> trips) {
+	/** @param energy the energy of the trips that were measured, by trip id; the columns stay empty for the others */
+	private static List<String> tripsCsv(List<PunctualityAnalysis.TripOutcome> trips,
+			Map<String, EnergyLedger.TripEnergy> energy) {
 		List<String> lines = new ArrayList<>();
 		lines.add("trip,line,route,vehicle,origin,destination,planned_departure_s,planned_arrival_s,"
-			+ "actual_arrival_s,arrival_delay_s,stops_planned,stops_served,status");
+			+ "actual_arrival_s,arrival_delay_s,stops_planned,stops_served,status,km,drawn_kwh,regenerated_kwh,litres");
 		for (PunctualityAnalysis.TripOutcome trip : trips) {
+			EnergyLedger.TripEnergy used = energy.get(trip.trip());
 			lines.add(String.join(",", trip.trip(), trip.line(), trip.route(), trip.vehicle(), trip.origin(),
 				trip.destination(), format(trip.plannedDeparture()), format(trip.plannedArrival()),
 				format(trip.actualArrival()), format(trip.arrivalDelaySeconds()),
 				Integer.toString(trip.stopsPlanned()), Integer.toString(trip.stopsServed()),
-				trip.status().name().toLowerCase(java.util.Locale.ROOT)));
+				trip.status().name().toLowerCase(java.util.Locale.ROOT),
+				used == null ? "" : EnergyReport.number(used.kilometres()),
+				used == null || !used.electric() ? "" : EnergyReport.number(used.drawnKilowattHours()),
+				used == null || !used.electric() ? "" : EnergyReport.number(used.regeneratedKilowattHours()),
+				used == null || used.electric() ? "" : EnergyReport.number(used.litres())));
 		}
 		return lines;
 	}
