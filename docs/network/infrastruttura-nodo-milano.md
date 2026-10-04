@@ -272,6 +272,93 @@ Criticità**.
   farebbe MATSim; nel manifest `simulatedEndSeconds` è ora l'ultimo secondo
   simulato davvero, non il tetto.
 
+### Correzioni e aggiunte di ottobre 2026
+
+Modifiche alla rete, alle stazioni e alle regole fatte fra il 2 e il 4
+ottobre 2026, dopo i run dell'orario reale e degli scenari. I dati sono in
+`data/nodes` e in `data/osm/2026-09-30-track-counts`; la rete di dettaglio e
+i file della mappa sono rigenerati da `scenarios/milan/network.xml`.
+
+#### Rete
+
+| Modifica | Che cosa cambia | Fonte |
+|---|---|---|
+| Numero di binari delle tratte | 6 tratte passano a binario unico, 7 a doppio binario; elenco in `data/osm/2026-09-30-track-counts/README.md` | rilievo diretto, 2026-09-30 e 2026-10-02 |
+| Tratte spezzate dove cambia il numero di binari | 5 tratte divise in una parte a binario unico e una a doppio, con un nodo nuovo: Ceriano Laghetto Groane, P.M. Bevera, P.P. Induno, bivio Cadenazzo Ovest, Bivio Pozzolo F. | stesso rilievo |
+| Linea R15 Seregno – Carnate | aggiunta, con le sue tre tratte | servizio aperto da Trenord il 7 settembre 2026 |
+| Como Camerlata | le due stazioni dell'orario di luglio 2026 (RFI e Ferrovienord) sono una sola, di 5 binari (1–3 Ferrovienord, 4–5 RFI) e 2 di sosta | unificazione di Trenord; rilievo diretto, 2026-10-02 |
+
+Un nodo senza fermata riceve due binari, come ogni stazione al confine fra
+binario unico e doppio, ed è quindi un punto di incrocio. La lunghezza della
+tratta e il tempo minimo di percorrenza sono divisi in proporzione alla
+distanza del nodo dalle due stazioni.
+
+L'orario di base resta quello di luglio 2026: le variazioni temporanee per
+lavori non entrano nella simulazione.
+
+#### Treni in comune fra due linee
+
+Di norma ogni linea ha i propri treni: a un capolinea un treno riparte solo
+con una corsa della stessa linea. Dove nella realtà due linee si scambiano i
+treni, la stazione lo dichiara nel campo `sharedStock`, e le corse delle due
+linee sono concatenate come se fossero una (`TripChains.Termini`).
+
+| Stazione | Linee | Motivo |
+|---|---|---|
+| Bergamo | R1, R5 | la linea per Brescia arriva su un solo binario tronco: un treno che attendesse la corsa della propria linea lo terrebbe occupato e bloccherebbe gli arrivi (15 treni mai arrivati nel run del 2026-10-02) |
+| Milano Cadorna | R22, RE1 | stesso materiale e stesso fascio di binari; senza lo scambio un R22 restava fermo e ripartiva con 270 minuti di ritardo |
+
+#### Binario unico: attesa prima del blocco
+
+Un treno non entra in una tratta a binario unico se l'unico binario che può
+raggiungere all'altro capo è occupato o già prenotato da un altro treno: si
+ferma nella stazione prima (`SingleTrackDeadlockAvoidance`). Senza questa
+regola due treni si fermavano uno di fronte all'altro e la tratta restava
+bloccata fino a fine giornata.
+
+#### Milano Cadorna: binari e ricovero
+
+| Binari | Uso | Linee |
+|---|---|---|
+| 1 | fisso | Malpensa Express (RE54) |
+| 2–5 | regionali verso Saronno | RE1, RE7, R17, R22, R27 |
+| 6–10 | suburbani e ramo di Asso | S3, S4, R16 |
+
+Dentro ciascun gruppo il binario varia da un giorno all'altro; il modello
+assegna quello libero. Fonte: rilievo diretto del tabellone, 2026-10-04 (R17
+al 2, R22 al 3, RE1 al 4, S4 al 6, regionale per Asso al 9, S3 al 10).
+
+Il ricovero di Cadorna è modellato come un fascio fittizio di 40 binari
+collegato alla stazione, comune a tutte le linee che vi terminano. Rappresenta
+la somma degli 8 binari di ricovero esterni alla stazione e dei depositi
+Ferrovienord più a nord, fra cui l'impianto di Novate Milanese. La capienza
+è volutamente non vincolante: a metà giornata l'orario lascia fermi a
+Cadorna fino a 18 treni, che nella realtà raggiungono quei depositi. Il
+tragitto fino al deposito non è simulato.
+
+#### Assegnazione dei binari ai capolinea
+
+`PlatformPlanner` assegna i binari scorrendo le corse in ordine di tempo, non
+più una turnazione alla volta: a ogni arrivo sceglie un binario libero fra
+quelli ammessi per la linea. Se nessuno è libero, manda al ricovero il treno
+in sosta che ripartirà per ultimo e lo richiama 4 minuti prima della sua
+partenza. Con l'assegnazione per turnazione due treni ricevevano lo stesso
+binario negli stessi minuti, perché ciascuna turnazione ignorava le altre.
+
+Esito sul giorno feriale del 5 ottobre 2026, orario reale: regolarità 100%,
+puntualità a destinazione 94,0%, ritardo medio 48 s.
+
+#### Limiti noti
+
+- 131 assegnazioni di binario restano forzate (due treni ravvicinati sullo
+  stesso binario di transito): Milano Porta Garibaldi 34, Bovisa 30,
+  Garibaldi Passante 30, Milano Rogoredo 17, Domodossola 13, altre 7.
+- Le linee dell'area di Brescia (RE3, R3, R4, S31) hanno ritardi massimi fra
+  19 e 32 minuti nel run reale.
+- Nei dati la S3 non può usare i binari 6 e 7 di Cadorna.
+- La soglia di 60 minuti oltre la quale un treno in sosta va al ricovero è
+  una stima.
+
 ### 3. Trunk FNM Cadorna–Bovisa–Saronno — 4 binari, 2 fasci fissi
 
 - **Ruolo**: dorsale FNM da Cadorna verso il nord-ovest.
