@@ -427,12 +427,55 @@ public final class ResultsView extends BorderPane {
 		if (results.costs().isEmpty()) {
 			return partial("Dati costi non disponibili per questo run: l'analisi non li ha prodotti.");
 		}
-		RunResults.Costs costs = results.costs().get();
+		RunResults.Costs planned = results.costs().get();
+		if (planned.simulated().isEmpty()) {
+			return plannedCosts(planned);
+		}
+		RunResults.Costs simulated = planned.simulated().get();
+		HBox figures = new HBox(32,
+			metric("Costo della giornata simulata", RunLibraryView.euro(simulated.total()),
+				"da orario " + RunLibraryView.euro(planned.total()) + " · " + signedEuro(simulated.total() - planned.total()), false),
+			metric("Per treno-km", String.format(Locale.ITALY, "%.2f €", simulated.total() / simulated.trainKm()),
+				String.format(Locale.ITALY, "%,.0f treni-km", simulated.trainKm()), false),
+			metric("Treni-ora", String.format(Locale.ITALY, "%,.0f", simulated.trainHours()),
+				String.format(Locale.ITALY, "da orario %,.0f", planned.trainHours()), false),
+			metric("Treni impiegati", String.valueOf(simulated.fleetSize()),
+				"minimo teorico da orario " + planned.fleetSize(), false));
+		GridPane table = new GridPane();
+		table.setHgap(24);
+		table.setVgap(6);
+		table.addRow(0, muted("Categoria"), muted("Simulato"), muted("Quota"), muted("Da orario"), muted("Differenza"));
+		int row = 1;
+		for (Map.Entry<String, Double> category : simulated.byCategory().entrySet()) {
+			double fromTimetable = planned.byCategory().getOrDefault(category.getKey(), 0.0);
+			Label amount = new Label(RunLibraryView.euro(category.getValue()));
+			amount.getStyleClass().add("metric");
+			table.addRow(row++, new Label(categoryLabel(category.getKey())), amount,
+				new Label(simulated.total() == 0 ? "—" : Columns.percent(100 * category.getValue() / simulated.total())),
+				new Label(RunLibraryView.euro(fromTimetable)), new Label(signedEuro(category.getValue() - fromTimetable)));
+		}
+		HBox content = new HBox(32, chart(RunResults.COST_BREAKDOWN, 420), table);
+		content.setAlignment(Pos.TOP_LEFT);
+		Label note = muted("Simulato: personale sulle ore effettive, ritardi compresi; energia e gasolio misurati nel run per il loro"
+			+ " prezzo; un costo giornaliero per ogni treno usato. Una corsa interrotta o mai partita è contata al valore"
+			+ " d'orario. Da orario: quantità dell'orario per i costi unitari a treno-km, con la flotta minima teorica.");
+		note.setWrapText(true);
+		VBox column = new VBox(16, figures, content, note);
+		column.setPadding(new Insets(16, 0, 0, 0));
+		return column;
+	}
+
+	private static String signedEuro(double amount) {
+		return (amount < 0 ? "−" : "+") + RunLibraryView.euro(Math.abs(amount));
+	}
+
+	/** The cost tab of a run analysed before the simulated costs existed. */
+	private Node plannedCosts(RunResults.Costs costs) {
 		HBox figures = new HBox(32,
 			metric("Treni-km", String.format(Locale.ITALY, "%,.0f", costs.trainKm()), null, false),
 			metric("Treni-ora", String.format(Locale.ITALY, "%,.0f", costs.trainHours()), null, false),
 			metric("Flotta impiegata", String.valueOf(costs.fleetSize()), null, false),
-			metric("Totale", RunLibraryView.euro(costs.total()), null, false));
+			metric("Totale da orario", RunLibraryView.euro(costs.total()), null, false));
 		GridPane table = new GridPane();
 		table.setHgap(24);
 		table.setVgap(6);
