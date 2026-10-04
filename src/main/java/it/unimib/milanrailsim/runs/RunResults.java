@@ -18,7 +18,19 @@ import java.util.Optional;
  * optional: an interrupted run may have produced only some of them.
  */
 public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List<VisitRow>> visits,
-		Optional<List<UnfinishedRow>> unfinished, Optional<Costs> costs) {
+		Optional<List<UnfinishedRow>> unfinished, Optional<Costs> costs, Optional<Indicators> indicators,
+		Optional<Map<String, Indicators>> indicatorsByLine) {
+
+	/**
+	 * Quality of service as the analysis measured it (see
+	 * {@code results.ServiceIndicators}); percentages and delays are NaN where
+	 * there was nothing to measure. Absent in runs analysed before it was recorded.
+	 */
+	public record Indicators(int tripsScheduled, int tripsCompleted, int tripsInterrupted, int tripsNeverDeparted,
+			double regularityPercent, int stopsPlanned, int stopsServed, double punctualityAtDestinationPercent,
+			double punctualityAtStopsPercent, double meanDelay, double meanDeviation, double medianDelay,
+			double p95Delay) {
+	}
 
 	public record LineRow(String line, int observations, double meanDelay, double medianDelay, double p95Delay,
 			double maxDelay) {
@@ -48,7 +60,43 @@ public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List
 			optional(dir.resolve("punctuality_by_line.csv"), RunResults::readByLine),
 			optional(dir.resolve("punctuality.csv"), RunResults::readVisits),
 			optional(dir.resolve("unfinished.csv"), RunResults::readUnfinished),
-			optional(dir.resolve("costs.json"), RunResults::readCosts));
+			optional(dir.resolve("costs.json"), RunResults::readCosts),
+			optional(dir.resolve("indicators.json"), RunResults::readIndicators),
+			optional(dir.resolve("indicators_by_line.csv"), RunResults::readIndicatorsByLine));
+	}
+
+	private static Indicators readIndicators(Path json) {
+		try {
+			JsonNode root = new ObjectMapper().readTree(json.toFile());
+			return new Indicators(root.path("tripsScheduled").asInt(), root.path("tripsCompleted").asInt(),
+				root.path("tripsInterrupted").asInt(), root.path("tripsNeverDeparted").asInt(),
+				measured(root, "regularityPercent"), root.path("stopsPlanned").asInt(),
+				root.path("stopsServed").asInt(), measured(root, "punctualityAtDestinationPercent"),
+				measured(root, "punctualityAtStopsPercent"), measured(root, "meanDelaySeconds"),
+				measured(root, "meanDeviationSeconds"), measured(root, "medianDelaySeconds"),
+				measured(root, "p95DelaySeconds"));
+		} catch (IOException e) {
+			throw new UncheckedIOException("Cannot read " + json, e);
+		}
+	}
+
+	/** An indicator with nothing to measure is written as null. */
+	private static double measured(JsonNode root, String field) {
+		return root.hasNonNull(field) ? root.get(field).asDouble() : Double.NaN;
+	}
+
+	private static Map<String, Indicators> readIndicatorsByLine(Path csv) {
+		Map<String, Indicators> byLine = new LinkedHashMap<>();
+		for (Map<String, String> row : CsvTable.read(csv)) {
+			byLine.put(row.get("line"), new Indicators(Integer.parseInt(row.get("trips_scheduled")),
+				Integer.parseInt(row.get("trips_completed")), Integer.parseInt(row.get("trips_interrupted")),
+				Integer.parseInt(row.get("trips_never_departed")), number(row.get("regularity_pct")),
+				Integer.parseInt(row.get("stops_planned")), Integer.parseInt(row.get("stops_served")),
+				number(row.get("punctuality_destination_pct")), number(row.get("punctuality_stops_pct")),
+				number(row.get("mean_delay_s")), number(row.get("mean_deviation_s")),
+				number(row.get("median_delay_s")), number(row.get("p95_delay_s"))));
+		}
+		return byLine;
 	}
 
 	public Optional<Path> chart(String name) {

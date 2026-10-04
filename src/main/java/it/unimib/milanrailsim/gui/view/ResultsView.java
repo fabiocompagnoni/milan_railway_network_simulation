@@ -43,6 +43,7 @@ import javafx.stage.DirectoryChooser;
 
 import java.io.File;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -59,7 +60,6 @@ import java.util.stream.Collectors;
 public final class ResultsView extends BorderPane {
 
 	private static final double ON_TIME_THRESHOLD_S = 300;
-	private static final double SEVERE_THRESHOLD_S = 900;
 	private static final DateTimeFormatter STAMP = DateTimeFormatter.ofPattern("d MMM yyyy HH:mm", Locale.ITALY);
 	private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -188,23 +188,48 @@ public final class ResultsView extends BorderPane {
 		RunLibrary.Manifest manifest = entry.manifest().orElseThrow();
 		boolean delta = compare.isSelected() && baseline != null;
 		RunLibrary.Manifest base = delta ? baseline.manifest().orElseThrow() : null;
-		headline.getChildren().setAll(
-			metric("Ritardo medio all'arrivo", RunLibraryView.minutesSeconds(manifest.meanArrivalDelaySeconds()),
+		Optional<RunResults.Indicators> baseIndicators = delta ? baselineResults.indicators() : Optional.empty();
+		List<Node> figures = new ArrayList<>();
+		results.indicators().ifPresentOrElse(indicators -> {
+			figures.add(metric("Regolarità", Columns.percent(indicators.regularityPercent()),
+				indicators.tripsCompleted() + " corse su " + indicators.tripsScheduled() + " · "
+					+ indicators.tripsInterrupted() + " interrotte, " + indicators.tripsNeverDeparted() + " mai partite",
+				indicators.tripsCompleted() < indicators.tripsScheduled()));
+			figures.add(metric("Puntualità a destinazione (5 min)", Columns.percent(indicators.punctualityAtDestinationPercent()),
+				baseIndicators.map(b -> points(indicators.punctualityAtDestinationPercent() - b.punctualityAtDestinationPercent()))
+					.orElse(null), false));
+			figures.add(metric("Puntualità su tutte le fermate (5 min)", Columns.percent(indicators.punctualityAtStopsPercent()),
+				baseIndicators.map(b -> points(indicators.punctualityAtStopsPercent() - b.punctualityAtStopsPercent()))
+					.orElse(null), false));
+			figures.add(metric("Ritardo medio (anticipo = 0)", RunLibraryView.minutesSeconds(indicators.meanDelay()),
+				"scostamento con segno " + RunLibraryView.minutesSeconds(indicators.meanDeviation())
+					+ baseIndicators.map(b -> " · Δ " + RunLibraryView.minutesSeconds(indicators.meanDelay() - b.meanDelay())).orElse(""),
+				baseIndicators.map(b -> indicators.meanDelay() > b.meanDelay()).orElse(false)));
+			figures.add(metric("Fermate servite", indicators.stopsServed() + " su " + indicators.stopsPlanned(), null,
+				indicators.stopsServed() < indicators.stopsPlanned()));
+		}, () -> {
+			figures.add(metric("Scostamento medio all'arrivo", RunLibraryView.minutesSeconds(manifest.meanArrivalDelaySeconds()),
 				delta ? RunLibraryView.minutesSeconds(manifest.meanArrivalDelaySeconds() - base.meanArrivalDelaySeconds()) : null,
-				delta && manifest.meanArrivalDelaySeconds() > base.meanArrivalDelaySeconds()),
-			metric("Puntualità (entro 5 min)", results.punctuality(ON_TIME_THRESHOLD_S).map(Columns::percent).orElse("—"),
+				delta && manifest.meanArrivalDelaySeconds() > base.meanArrivalDelaySeconds()));
+			figures.add(metric("Puntualità su tutte le fermate (5 min)",
+				results.punctuality(ON_TIME_THRESHOLD_S).map(Columns::percent).orElse("—"),
 				delta ? baselineResults.punctuality(ON_TIME_THRESHOLD_S).flatMap(b -> results.punctuality(ON_TIME_THRESHOLD_S)
-					.map(v -> String.format(Locale.ITALY, "%+.1f punti", v - b))).orElse(null) : null, false),
-			metric("Arrivi oltre 15 min", results.punctuality(SEVERE_THRESHOLD_S).map(v -> Columns.percent(100 - v)).orElse("—"),
-				null, results.punctuality(SEVERE_THRESHOLD_S).map(v -> 100 - v > 5).orElse(false)),
+					.map(v -> points(v - b))).orElse(null) : null, false));
+			figures.add(metric("Fermate osservate", String.valueOf(manifest.stopVisits()), null, false));
+		});
+		figures.addAll(List.of(
 			metric("Treni non arrivati", String.valueOf(manifest.unfinishedTrains()),
 				manifest.unfinishedTrains() > 0 ? "vedi la scheda Treni" : null, manifest.unfinishedTrains() > 0),
 			metric("Costo totale", RunLibraryView.euro(manifest.totalCost()),
 				delta ? String.format(Locale.ITALY, "%+,.0f €", manifest.totalCost() - base.totalCost()) : null,
 				delta && manifest.totalCost() > base.totalCost()),
-			metric("Fermate osservate", String.valueOf(manifest.stopVisits()), null, false),
 			metric("Anomalie", String.valueOf(manifest.anomalies()),
-				manifest.anomalies() > 0 ? "corse fuori orario rispetto al programma" : null, manifest.anomalies() > 0));
+				manifest.anomalies() > 0 ? "corse fuori orario rispetto al programma" : null, manifest.anomalies() > 0)));
+		headline.getChildren().setAll(figures);
+	}
+
+	private static String points(double difference) {
+		return String.format(Locale.ITALY, "%+.1f punti", difference);
 	}
 
 	private static Node metric(String label, String value, String note, boolean warn) {
@@ -287,9 +312,20 @@ public final class ResultsView extends BorderPane {
 		table.getStyleClass().add("data-table");
 		table.getColumns().add(Columns.text("Linea", 90, LineRow::line));
 		table.getColumns().add(Columns.number("Fermate osservate", 130, row -> (double) row.observations(), Columns::count));
-		table.getColumns().add(Columns.number("Puntualità (5 min)", 130,
+		results.indicatorsByLine().ifPresent(byLine -> {
+			table.getColumns().add(Columns.number("Corse", 80,
+				row -> byLine.containsKey(row.line()) ? (double) byLine.get(row.line()).tripsScheduled() : Double.NaN, Columns::count));
+			table.getColumns().add(Columns.number("Regolarità", 100,
+				row -> byLine.containsKey(row.line()) ? byLine.get(row.line()).regularityPercent() : Double.NaN, Columns::percent));
+			table.getColumns().add(Columns.number("Puntualità a destinazione", 170,
+				row -> byLine.containsKey(row.line()) ? byLine.get(row.line()).punctualityAtDestinationPercent() : Double.NaN,
+				Columns::percent));
+		});
+		table.getColumns().add(Columns.number("Puntualità fermate", 130,
 			row -> RunResults.punctuality(visitsByLine.getOrDefault(row.line(), List.of()), ON_TIME_THRESHOLD_S), Columns::percent));
-		table.getColumns().add(Columns.number("Ritardo medio", 120, LineRow::meanDelay, RunLibraryView::minutesSeconds));
+		results.indicatorsByLine().ifPresent(byLine -> table.getColumns().add(Columns.number("Ritardo medio", 120,
+			row -> byLine.containsKey(row.line()) ? byLine.get(row.line()).meanDelay() : Double.NaN, RunLibraryView::minutesSeconds)));
+		table.getColumns().add(Columns.number("Scostamento medio", 130, LineRow::meanDelay, RunLibraryView::minutesSeconds));
 		table.getColumns().add(Columns.number("Mediana", 100, LineRow::medianDelay, RunLibraryView::minutesSeconds));
 		table.getColumns().add(Columns.number("95° percentile", 120, LineRow::p95Delay, RunLibraryView::minutesSeconds));
 		table.getColumns().add(Columns.number("Massimo", 100, LineRow::maxDelay, RunLibraryView::minutesSeconds));
