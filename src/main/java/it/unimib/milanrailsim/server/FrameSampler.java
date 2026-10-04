@@ -12,7 +12,9 @@ import org.matsim.api.core.v01.events.VehicleAbortsEvent;
 import org.matsim.api.core.v01.events.handler.PersonArrivalEventHandler;
 import org.matsim.api.core.v01.events.handler.TransitDriverStartsEventHandler;
 import org.matsim.api.core.v01.events.handler.VehicleAbortsEventHandler;
+import org.matsim.core.api.experimental.events.VehicleArrivesAtFacilityEvent;
 import org.matsim.core.api.experimental.events.VehicleDepartsAtFacilityEvent;
+import org.matsim.core.api.experimental.events.handler.VehicleArrivesAtFacilityEventHandler;
 import org.matsim.core.api.experimental.events.handler.VehicleDepartsAtFacilityEventHandler;
 import org.matsim.pt.transitSchedule.api.Departure;
 import org.matsim.pt.transitSchedule.api.TransitLine;
@@ -23,6 +25,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 
 /**
@@ -41,7 +44,7 @@ import java.util.function.Consumer;
  */
 public final class FrameSampler
 		implements RailsimTrainStateEventHandler, TransitDriverStartsEventHandler, PersonArrivalEventHandler,
-		VehicleAbortsEventHandler, VehicleDepartsAtFacilityEventHandler {
+		VehicleAbortsEventHandler, VehicleDepartsAtFacilityEventHandler, VehicleArrivesAtFacilityEventHandler {
 
 	private static final String CIRCULATION_INFIX = "_circ_";
 
@@ -88,6 +91,13 @@ public final class FrameSampler
 		}
 	}
 
+	/** The arrivals of a line at its stops so far, an early one counting as on time. */
+	private static final class Arrivals {
+		private double delaySeconds;
+		private int count;
+	}
+
+	private final Map<String, Arrivals> arrivalsByLine = new HashMap<>();
 	private final double interval;
 	private final Timetable timetable;
 	private final Consumer<Frame> sink;
@@ -161,10 +171,18 @@ public final class FrameSampler
 		}
 	}
 
+	@Override
+	public void handleEvent(VehicleArrivesAtFacilityEvent event) {
+		Arrivals arrivals = arrivalsByLine.computeIfAbsent(line(event.getVehicleId().toString()), key -> new Arrivals());
+		arrivals.delaySeconds += Math.max(0, event.getDelay());
+		arrivals.count++;
+	}
+
 	/** Called once per simulation step of a run that meters no energy; emits a frame whenever the sampling interval has elapsed. */
 	public void onSimStep(double time) {
 		if (isFrameDue(time)) {
-			sink.accept(new Frame(time, latest.values().stream().map(state -> onItsTrip(state, Map.of())).toList()));
+			sink.accept(new Frame(time, latest.values().stream().map(state -> onItsTrip(state, Map.of())).toList(), null,
+				meanDelayByLine()));
 		}
 	}
 
@@ -173,8 +191,14 @@ public final class FrameSampler
 		if (isFrameDue(time)) {
 			sink.accept(new Frame(time, latest.values().stream().map(state -> onItsTrip(state, energy.kilowattByVehicle())).toList(),
 				new Protocol.Energy(Math.round(energy.totals().lineKilowatt()), Math.round(energy.totals().drawnKilowattHours()),
-					Math.round(energy.totals().litres()))));
+					Math.round(energy.totals().litres())), meanDelayByLine()));
 		}
+	}
+
+	private Map<String, Integer> meanDelayByLine() {
+		Map<String, Integer> means = new TreeMap<>();
+		arrivalsByLine.forEach((line, arrivals) -> means.put(line, (int) Math.round(arrivals.delaySeconds / arrivals.count)));
+		return means;
 	}
 
 	private boolean isFrameDue(double time) {

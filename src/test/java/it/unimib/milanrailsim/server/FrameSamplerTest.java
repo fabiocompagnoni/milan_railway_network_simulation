@@ -4,6 +4,7 @@ import ch.sbb.matsim.contrib.railsim.events.RailsimTrainStateEvent;
 import it.unimib.milanrailsim.results.EnergyLedger;
 import it.unimib.milanrailsim.results.EnergyMeter;
 import it.unimib.milanrailsim.server.Protocol.Frame;
+import org.matsim.core.api.experimental.events.VehicleArrivesAtFacilityEvent;
 import org.matsim.core.api.experimental.events.VehicleDepartsAtFacilityEvent;
 import org.matsim.pt.transitSchedule.api.TransitStopFacility;
 import org.junit.jupiter.api.Test;
@@ -104,10 +105,17 @@ class FrameSamplerTest {
 		assertEquals(-240, frame.trains().getFirst().power());
 		assertEquals(new Protocol.Energy(1500, 321, 12), frame.energy());
 
+		// 90 s late at B, then early at C: an early arrival counts as on time
+		sampler.handleEvent(new VehicleArrivesAtFacilityEvent(6, Id.create("S1_circ_1", Vehicle.class),
+			Id.create("B", TransitStopFacility.class), 90));
+		sampler.handleEvent(new VehicleArrivesAtFacilityEvent(7, Id.create("S1_circ_1", Vehicle.class),
+			Id.create("C", TransitStopFacility.class), -30));
+
 		sampler.handleEvent(driverArrives(8, "S1_circ_1"));
 		sampler.onSimStep(10);
 		assertNull(frames.get(2).trains().getFirst().destination(), "between two trips");
 		assertNull(frames.get(2).energy());
+		assertEquals(Map.of("S1", 45), frames.get(2).meanDelayByLine());
 	}
 
 	@Test

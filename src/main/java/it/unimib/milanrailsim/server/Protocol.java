@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.UncheckedIOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Wire format between the simulation process and its client: one JSON object per line, discriminated by {@code type}. Fields that do not apply are absent.
@@ -69,13 +70,15 @@ public final class Protocol {
 	/**
 	 * Every train active at simulated {@code time}, in seconds since midnight.
 	 *
-	 * @param energy absent when the run meters no energy, and in older recordings
+	 * @param energy          absent when the run meters no energy, and in older recordings
+	 * @param meanDelayByLine seconds of delay per line, averaged over the arrivals at a stop since the start
+	 *                        of the day, an early arrival counting as zero; absent in older recordings
 	 */
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public record Frame(double time, List<TrainState> trains, Energy energy) {
+	public record Frame(double time, List<TrainState> trains, Energy energy, Map<String, Integer> meanDelayByLine) {
 
 		public Frame(double time, List<TrainState> trains) {
-			this(time, trains, null);
+			this(time, trains, null, null);
 		}
 	}
 
