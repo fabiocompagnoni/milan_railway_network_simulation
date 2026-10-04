@@ -38,13 +38,45 @@ public final class Protocol {
 
 	public static final double UNTHROTTLED = -1;
 
-	/** Position and motion of one train at the frame's time; {@code position} is metres from the start of {@code link}. */
+	/**
+	 * Position and motion of one train at the frame's time; {@code position} is metres from the start of {@code link}.
+	 *
+	 * @param destination station the trip in progress ends at; absent between trips and in older recordings
+	 * @param nextStop    station of the next call of the trip
+	 * @param power       kW an electric train exchanges with the line, negative when braking; absent for
+	 *                    diesel trains and between trips
+	 */
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	public record TrainState(String id, String line, String link, double position, double speed, double acceleration,
-			double delay) {
+			double delay, String destination, String nextStop, Double power) {
+
+		public TrainState(String id, String line, String link, double position, double speed, double acceleration,
+				double delay) {
+			this(id, line, link, position, speed, acceleration, delay, null, null, null);
+		}
 	}
 
-	/** Every train active at simulated {@code time}, in seconds since midnight. */
-	public record Frame(double time, List<TrainState> trains) {
+	/**
+	 * The energy of the day at a frame's time.
+	 *
+	 * @param lineKilowatt  power drawn from the substations
+	 * @param kilowattHours energy drawn from the substations since the start of the day
+	 * @param litres        fuel burnt since the start of the day
+	 */
+	public record Energy(double lineKilowatt, double kilowattHours, double litres) {
+	}
+
+	/**
+	 * Every train active at simulated {@code time}, in seconds since midnight.
+	 *
+	 * @param energy absent when the run meters no energy, and in older recordings
+	 */
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	public record Frame(double time, List<TrainState> trains, Energy energy) {
+
+		public Frame(double time, List<TrainState> trains) {
+			this(time, trains, null);
+		}
 	}
 
 	/**

@@ -1,7 +1,11 @@
 package it.unimib.milanrailsim.server;
 
 import ch.sbb.matsim.contrib.railsim.events.RailsimTrainStateEvent;
+import it.unimib.milanrailsim.results.EnergyLedger;
+import it.unimib.milanrailsim.results.EnergyMeter;
 import it.unimib.milanrailsim.server.Protocol.Frame;
+import org.matsim.core.api.experimental.events.VehicleDepartsAtFacilityEvent;
+import org.matsim.pt.transitSchedule.api.TransitStopFacility;
 import org.junit.jupiter.api.Test;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.events.PersonArrivalEvent;
@@ -22,7 +26,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class FrameSamplerTest {
 
 	private final List<Frame> frames = new ArrayList<>();
-	private final FrameSampler sampler = new FrameSampler(5, Map.of("S1_circ_1", 2, "RE4_circ_2", 1), frames::add);
+	private final FrameSampler sampler = new FrameSampler(5, new FrameSampler.Timetable(
+		Map.of("S1_circ_1", 2, "RE4_circ_2", 1), Map.of("d1", List.of("A", "B", "C"))), frames::add);
 
 	private static RailsimTrainStateEvent state(double time, String vehicle, String link, double position, double speed) {
 		return new RailsimTrainStateEvent(time, time, Id.create(vehicle, Vehicle.class), Id.createLinkId(link),
@@ -80,6 +85,29 @@ class FrameSamplerTest {
 		assertEquals(0, sampler.activeTrains());
 		assertEquals(1, sampler.arrivedTrains());
 		assertEquals(0, sampler.abortedTrains());
+	}
+
+	@Test
+	void aTrainOnATripCarriesItsDestinationItsNextCallAndItsPower() {
+		sampler.handleEvent(state(0, "S1_circ_1", "A_B", 10, 10));
+		sampler.onSimStep(0);
+		assertNull(frames.getFirst().trains().getFirst().destination(), "no trip started yet");
+
+		sampler.handleEvent(tripStarts(1, "S1_circ_1", "d1"));
+		sampler.handleEvent(new VehicleDepartsAtFacilityEvent(2, Id.create("S1_circ_1", Vehicle.class),
+			Id.create("A", TransitStopFacility.class), 0));
+		sampler.onSimStep(5, new EnergyMeter.Reading(new EnergyLedger.Live(1500.4, 320.6, 12.2), Map.of("S1_circ_1", -240.3)));
+
+		Frame frame = frames.get(1);
+		assertEquals("C", frame.trains().getFirst().destination());
+		assertEquals("B", frame.trains().getFirst().nextStop(), "it has left A");
+		assertEquals(-240, frame.trains().getFirst().power());
+		assertEquals(new Protocol.Energy(1500, 321, 12), frame.energy());
+
+		sampler.handleEvent(driverArrives(8, "S1_circ_1"));
+		sampler.onSimStep(10);
+		assertNull(frames.get(2).trains().getFirst().destination(), "between two trips");
+		assertNull(frames.get(2).energy());
 	}
 
 	@Test
