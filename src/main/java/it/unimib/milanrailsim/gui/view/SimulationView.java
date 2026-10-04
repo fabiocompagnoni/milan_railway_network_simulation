@@ -6,7 +6,6 @@ import it.unimib.milanrailsim.gui.map.NetworkMap;
 import it.unimib.milanrailsim.gui.sim.Session;
 import it.unimib.milanrailsim.gui.sim.TrainPositions;
 import it.unimib.milanrailsim.server.Protocol;
-import it.unimib.milanrailsim.server.Protocol.TrainState;
 import javafx.animation.AnimationTimer;
 import javafx.beans.binding.BooleanBinding;
 import javafx.concurrent.Task;
@@ -14,32 +13,26 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Full-bleed map of the network. With a live session it shows the trains as
  * the engine moves them, with a control bar (pause, speed, simulated clock)
- * and a drawer holding the line legend and the selected train. Once the
+ * and a {@link SimulationPanel} with the energy, the lines and the train followed. Once the
  * simulated day is over the bar follows the engine through the writing and
  * analysis phases; the application opens the results when they are ready.
  */
@@ -51,7 +44,6 @@ public final class SimulationView extends BorderPane {
 
 	private final AppModel model;
 	private final StackPane stack = new StackPane();
-	private final Set<String> hiddenLines = new HashSet<>();
 	private MapCanvas map;
 	private NetworkMap network;
 	private AnimationTimer animation;
@@ -120,6 +112,8 @@ public final class SimulationView extends BorderPane {
 		map.setTrains(List.of());
 		map.setOnTrainSelected(state -> {
 		});
+		map.follow(null);
+		map.setHighlightedLine(null);
 		stack.getChildren().removeIf(node -> node != map);
 		stack.getChildren().add(idleBar());
 	}
@@ -159,7 +153,6 @@ public final class SimulationView extends BorderPane {
 		clock.getStyleClass().add("clock");
 		Label status = new Label();
 		status.getStyleClass().add("text-muted");
-		VBox detail = new VBox(4);
 
 		ToggleButton pause = new ToggleButton();
 		pause.setGraphic(new FontIcon("mdmz-pause"));
@@ -207,9 +200,11 @@ public final class SimulationView extends BorderPane {
 		speeds.disableProperty().bind(wrappingUp);
 		stop.disableProperty().bind(session.finished());
 
-		VBox drawer = drawer(session, detail);
+		SimulationPanel panel = new SimulationPanel(network, map, session.runDir().getFileName().toString());
+		StackPane.setAlignment(panel, Pos.TOP_RIGHT);
+		StackPane.setMargin(panel, new Insets(16, 16, 80, 0));
 		stack.getChildren().removeIf(node -> node != map);
-		stack.getChildren().addAll(controls, drawer, workBanner(session));
+		stack.getChildren().addAll(controls, panel, workBanner(session));
 		setOnKeyPressed(event -> {
 			if (event.getCode() == javafx.scene.input.KeyCode.SPACE && !pause.isDisabled()) {
 				pause.setSelected(!pause.isSelected());
@@ -220,7 +215,6 @@ public final class SimulationView extends BorderPane {
 		session.activeTrains().addListener(observable -> status.setText(phaseText(session)));
 		session.error().addListener((observable, previous, error) -> showError(error));
 		status.setText(phaseText(session));
-		map.setOnTrainSelected(state -> showTrain(detail, state));
 
 		animation = new AnimationTimer() {
 			@Override
@@ -229,6 +223,7 @@ public final class SimulationView extends BorderPane {
 				if (playback != null) {
 					clock.setText(clock(playback.time()));
 					map.setTrains(positions.between(playback.from(), playback.to(), playback.fraction()));
+					panel.show(playback.to());
 				}
 			}
 		};
@@ -342,63 +337,6 @@ public final class SimulationView extends BorderPane {
 		StackPane.setAlignment(banner, Pos.TOP_CENTER);
 		StackPane.setMargin(banner, new Insets(16, 0, 0, 0));
 		stack.getChildren().add(banner);
-	}
-
-	private VBox drawer(Session session, VBox detail) {
-		Label legendTitle = new Label("Linee");
-		legendTitle.getStyleClass().add("section-title");
-		VBox legend = new VBox(4);
-		for (NetworkMap.Line line : network.lines()) {
-			CheckBox box = new CheckBox(line.id());
-			box.setSelected(true);
-			box.setGraphic(new Circle(5, line.color()));
-			box.selectedProperty().addListener((observable, was, shown) -> {
-				if (shown) {
-					hiddenLines.remove(line.id());
-				} else {
-					hiddenLines.add(line.id());
-				}
-				map.setHiddenLines(hiddenLines);
-			});
-			legend.getChildren().add(box);
-		}
-		ScrollPane legendScroll = new ScrollPane(legend);
-		legendScroll.getStyleClass().add("plain-scroll");
-		legendScroll.setFitToWidth(true);
-		VBox.setVgrow(legendScroll, Priority.ALWAYS);
-
-		Label detailTitle = new Label("Treno selezionato");
-		detailTitle.getStyleClass().add("section-title");
-		detail.getChildren().setAll(muted("Clicca un treno sulla mappa."));
-
-		Label runTitle = new Label(session.runDir().getFileName().toString());
-		runTitle.getStyleClass().add("card-title");
-		VBox drawer = new VBox(12, runTitle, legendTitle, legendScroll, detailTitle, detail);
-		drawer.getStyleClass().add("drawer");
-		drawer.setPrefWidth(220);
-		drawer.setMaxWidth(220);
-		drawer.setMaxHeight(Region.USE_PREF_SIZE);
-		StackPane.setAlignment(drawer, Pos.TOP_RIGHT);
-		StackPane.setMargin(drawer, new Insets(16, 16, 80, 0));
-		return drawer;
-	}
-
-	private void showTrain(VBox detail, TrainState state) {
-		if (state == null) {
-			detail.getChildren().setAll(muted("Clicca un treno sulla mappa."));
-			return;
-		}
-		NetworkMap.Line line = network.line(state.line());
-		Label id = new Label(state.id());
-		id.getStyleClass().add("metric");
-		Label delay = new Label(String.format(Locale.ITALY, "Ritardo %s", RunLibraryView.minutesSeconds(state.delay())));
-		if (state.delay() > 300) {
-			delay.getStyleClass().add("finding-blocking");
-		}
-		detail.getChildren().setAll(id,
-			muted(line == null ? state.line() : line.id() + " · " + line.name()),
-			muted(String.format(Locale.ITALY, "%.0f km/h · tratta %s", state.speed() * 3.6, state.link())),
-			delay);
 	}
 
 	private static String phaseText(Session session) {
