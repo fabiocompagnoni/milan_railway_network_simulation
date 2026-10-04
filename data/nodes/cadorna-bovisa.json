@@ -7,7 +7,8 @@
 		"docs/network/infrastruttura-nodo-milano.md (Bovisa, Cadorna, trunk FNM, regole di circolazione; rilievo 2026-08-05)",
 		"docs/network/misure/trunk-cadorna-saronno.md (OSM 2026-07-30: lunghezze e maxspeed per binario, cluster di scambi, way per binario)",
 		"rilievo diretto 2026-09-13: binari di Bovisa per gruppo e direzione, uso dei binari di Cadorna e Domodossola, Malpensa Express, RE51, R16, S3 su 5-6, ricovero di Cadorna",
-		"data/osm/2026-09-13-micro-nodes/platform_ways.csv: way OSM (railway:track_ref) dei binari di Domodossola e Bovisa; Cadorna senza tag"
+		"data/osm/2026-09-13-micro-nodes/platform_ways.csv: way OSM (railway:track_ref) dei binari di Domodossola e Bovisa; Cadorna senza tag",
+		"rilievo diretto 2026-10-04: a Cadorna R22 (Milano-Varese) e RE1 (Milano-Varese-Laveno) usano gli stessi treni (sharedStock). Con i treni separati per linea le soste superavano l'ora, i treni in attesa del ricovero erano fino a 16 contro 8 binari e un R22 e' rimasto in coda sei ore (run reale del 2026-10-05)"
 	],
 
 	"stations": [
@@ -38,6 +39,7 @@
 				{"id": "cadorna_throat_f2", "side": "north", "resource": "cadorna_throat_f2", "lengthM": 650, "speedKmh": 30, "switches": 28,
 					"groups": ["cadorna_asso", "cadorna_shared", "cadorna_s3"]}
 			],
+			"sharedStock": [["R22", "RE1"]],
 			"sidings": {"tracks": 8, "note": "binari di ricovero esterni alla stazione; regola in sidings.json"},
 			"notes": "rilievo 2026-09-13: 1 fisso MXP; 2-5 Saronno; 6-7 Asso; 8-9 variabili; 10 quasi sempre S3. Il documento del 2026-08-05 dava 1-5 sul fascio f1 e 6-10 sul fascio f2: i binari 8-10 raggiungono entrambi i fasci"
 		},
