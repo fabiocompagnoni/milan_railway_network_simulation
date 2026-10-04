@@ -104,6 +104,7 @@ public final class AppModel {
 			case REAL -> {
 			}
 		}
+		keepPlan(files.energyModel(), runDir.resolve(RailsimJob.ENERGY_MODEL));
 		RailsimJob.Inputs inputs = new RailsimJob.Inputs(runDir, files.engineConfig(),
 			files.engineNetwork(), gtfsDir(), paths.fleetTypesFile(), paths.lineAssignmentsFile(), paths.costsFile(),
 			Files.exists(files.stationTracks()) ? files.stationTracks() : null,
