@@ -97,7 +97,7 @@ public final class MilanRailSimApp extends Application {
 		navigation.addFooter(themeToggle);
 
 		stage.setTitle("Milan RailSim");
-		stage.getIcons().setAll(Logo.mark());
+		stage.getIcons().setAll(Logo.windowIcon());
 		stage.setMinWidth(720);
 		stage.setMinHeight(480);
 		stage.setScene(scene);
