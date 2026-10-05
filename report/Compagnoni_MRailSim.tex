@@ -1,0 +1,142 @@
+\documentclass[11pt,a4paper]{article}
+
+\newcommand{\titolo}{Simulazione della rete ferroviaria Lombarda}
+\newcommand{\sottotitolo}{Sviluppo del progetto Milan RailSim}
+\newcommand{\autore}{Fabio Compagnoni}
+\newcommand{\matricola}{944954}
+\newcommand{\corso}{Sistemi Complessi: Modelli e Simulazione}
+\newcommand{\corsodilaurea}{Corso di Laurea Magistrale in Informatica}
+\newcommand{\ateneo}{Università degli Studi di Milano-Bicocca}
+\newcommand{\dipartimento}{Dipartimento di Informatica, Sistemistica e Comunicazione}
+\newcommand{\annoaccademico}{2025/2026}
+
+% ---------------------------------------------------------------------------
+% Lingua e caratteri
+% ---------------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{csquotes}
+\usepackage{eurosym}
+
+% ---------------------------------------------------------------------------
+% Pagina
+% ---------------------------------------------------------------------------
+\usepackage[a4paper,margin=2.5cm,headheight=14pt]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\autore}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\parskip}{0.4em}
+
+% ---------------------------------------------------------------------------
+% Figure e tabelle
+% ---------------------------------------------------------------------------
+\usepackage{graphicx}
+\graphicspath{{img/}}
+\usepackage{float}
+\usepackage[font=small,labelfont=bf,labelsep=period]{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{xcolor}
+
+% ---------------------------------------------------------------------------
+% Numeri e unità di misura, con la virgola decimale
+% ---------------------------------------------------------------------------
+\usepackage{amsmath}
+\usepackage{siunitx}
+\sisetup{
+	locale=IT,
+	group-separator={\,},
+	group-minimum-digits=5,
+	per-mode=symbol,
+	detect-all
+}
+\DeclareSIUnit{\euro}{\text{\euro}}
+\DeclareSIUnit{\trenokm}{treno\text{-}km}
+\DeclareSIUnit{\litro}{l}
+
+\usepackage[backend=biber,style=numeric,sorting=none,maxbibnames=6]{biblatex}
+\addbibresource{bibliografia.bib}
+
+\usepackage[hidelinks]{hyperref}
+\usepackage[italian,nameinlink]{cleveref}
+\hypersetup{pdftitle={\titolo},pdfauthor={\autore}}
+
+\begin{document}
+
+% ---------------------------------------------------------------------------
+% Frontespizio
+% ---------------------------------------------------------------------------
+\begin{titlepage}
+	\centering
+	{\large\textsc{\ateneo}\par}
+	\vspace{0.3cm}
+	{\dipartimento\par}
+	{\corsodilaurea\par}
+	\vfill
+	\IfFileExists{img/logo_extended.pdf}{%
+		\includegraphics[width=0.75\textwidth]{logo_extended.pdf}\par
+	}{}
+	\vspace{1.5cm}
+	{\LARGE\bfseries\titolo\par}
+	\vspace{0.6cm}
+	{\large\sottotitolo\par}
+	\vspace{0.3cm}
+	{\large Corso di \emph{\corso}\par}
+	\vfill
+	\begin{flushright}
+		\autore\\
+		Matricola \matricola
+	\end{flushright}
+	\vspace{1cm}
+	{Anno accademico \annoaccademico\par}
+\end{titlepage}
+
+\begin{abstract}
+\end{abstract}
+
+\tableofcontents
+\clearpage
+% Contentuo %
+
+\section{Introduzione}
+\include{parti/introduzione}
+
+\section{Strumenti e alternative}
+\include{parti/strumenti_alternative}
+
+\section{Modello di simulazione}
+\include{parti/modello}
+
+\section{Dati e costruzione della rete}
+\include{parti/dati_rete}
+
+\section{Orari}
+\include{parti/orari}
+
+\section{Dettagli micro della rete}
+\include{parti/dettagli_rete}
+
+\section{Scenari di simulazione}
+\include{parti/scenari}
+
+\section{Costi e risultati}
+\include{parti/costi}
+
+\section{Analisi dei risultati}
+\include{parti/analisi_risultati}
+
+\section{Limiti, sviluppi futuri e conclusioni}
+\include{parti/limiti_sviluppi_conclusione}
+
+\printbibliography[heading=bibintoc]
+
+\end{document}
