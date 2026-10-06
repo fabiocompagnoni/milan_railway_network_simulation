@@ -18,9 +18,7 @@ Infine è sviluppato dalle Ferrovie Federali Svizzere (SBB CHF), il che ne garan
 Lo strumento ha anche due limiti, noti fin dall'inizio. È recente e poco documentato, tanto che per conoscerne il comportamento è stato necessario leggerne il sorgente. Inoltre non costruisce la rete e non stabilisce il livello di dettaglio, che restano a carico di chi lo usa.\\
 Nel progetto la rete è stata generata prima a livello mesoscopico, e poi i nodi e i punti più delicati sono stati in seguito descritti a livello microscopico, come illustrato nelle sezioni successive.
 
-\subsection{Railsim}
-Come anticipato nell'introduzione, per l'implementazione del modello, il lavoro si è basato sull'utilizzo di \textit{railsim}~\cite{kaddoura2024railsim}, un'estensione ferroviaria della piattaforma di simulazione ad agenti MATSim.\\
-\subsubsection{MATSim}
+\subsection{MATSim}
 % BOZZA: testo di partenza, da rivedere e riscrivere.
 MATSim (\textit{Multi-Agent Transport Simulation}) è un ambiente di simulazione ad agenti per i sistemi di trasporto, scritto in Java e distribuito con licenza libera~\cite{horni2016matsim}. Il progetto nasce alla fine degli anni Novanta dal lavoro di Kai Nagel, allora al Politecnico federale di Zurigo, a cui si è unito Kay W. Axhausen. È pensato per scenari di grande scala, con milioni di agenti, e per questo ogni suo modello è ridotto all'essenziale.
 
@@ -37,3 +35,207 @@ Il supporto al trasporto pubblico è stato aggiunto in un secondo momento~\cite{
 MATSim è costruito come un insieme di moduli sostituibili, collegati fra loro con un meccanismo di iniezione delle dipendenze: chi lo estende può sostituire un componente con una propria implementazione senza modificare il codice esistente. Le estensioni mantenute insieme al nucleo sono chiamate \textit{contrib}, e railsim è una di queste.
 
 Il modello a code è nato per il traffico stradale. Applicato ai treni, non rappresenta ciò che determina la capacità di una ferrovia: l'uso esclusivo di un binario, la distanza di sicurezza fra due treni, i tempi di accelerazione e di frenata, l'incrocio sul binario unico. Per questo railsim sostituisce, per i soli treni, il modo in cui i veicoli si muovono sulla rete, lasciando invariato tutto il resto di MATSim~\cite{kaddoura2024railsim}.
+
+\subsection{Railsim}
+Come anticipato nell'introduzione, per l'implementazione del modello, il lavoro si è basato sull'utilizzo di \textit{railsim}~\cite{kaddoura2024railsim}, un'estensione ferroviaria della piattaforma di simulazione ad agenti MATSim.\\
+% BOZZA da qui in poi: testo di partenza, da rivedere e riscrivere.
+
+\subsubsection{Obiettivi}
+Gli scopi dichiarati di railsim sono tre: verificare se un orario è eseguibile su una data infrastruttura, individuare conflitti e colli di bottiglia, e fare da base per lo studio delle perturbazioni e delle strategie di gestione della circolazione~\cite{kaddoura2024railsim}. 
+
+\subsubsection{Integrazione con MATSim}
+railsim non modifica il nucleo di MATSim: aggiunge al motore QSim un motore proprio, che prende in carico i veicoli di un modo di trasporto prefissato, per impostazione predefinita \texttt{rail}. Questi veicoli sono esclusi dal modello a code e si muovono secondo le regole di railsim; tutto il resto resta invariato~\cite{kaddoura2024railsim}. \\
+I treni sono quindi veicoli del trasporto pubblico di MATSim: le corse, le fermate, i tempi e il veicolo assegnato a ogni corsa sono letti dall'orario, e ogni treno è guidato da un agente conducente, che railsim sostituisce con una propria versione. 
+Lo stesso veicolo può effettuare più corse nella giornata e in questo caso resta sulla rete fra una corsa e la successiva.\\
+
+Tre caratteristiche distinguono il moto di un treno da quello di un veicolo stradale. La prima è l'estensione nello spazio: un treno può occupare più link contemporaneamente, con la testa su uno e la coda su un altro, e un link torna disponibile solo dopo il passaggio della coda. La seconda è la dinamica: il tempo di percorrenza di un link non è fisso, ma dipende dall'accelerazione e dalla frenata del treno. La terza è la prenotazione: un treno può avanzare solo sui tratti di infrastruttura che gli sono stati assegnati, e due treni non possono ottenere lo stesso tratto.
+
+\subsubsection{Infrastruttura: link e risorse}
+La rete resta quella di MATSim, un grafo di nodi e link a senso unico, ma gli attributi stradali di capacità e numero di corsie non vengono usati. La velocità massima di un link è l'attributo ordinario di velocità libera; gli altri dati sono attributi propri di railsim, riassunti nella \cref{tab:railsim-link}.
+
+\begin{table}[H]
+	\centering
+	\caption{Attributi dei link usati da railsim.}
+	\label{tab:railsim-link}
+	\begin{tabularx}{\textwidth}{lX}
+		\toprule
+		Attributo & Significato \\
+		\midrule
+		\texttt{railsimTrainCapacity} & Numero di treni che possono trovarsi insieme sul link. Se manca vale 1. \\
+		\texttt{railsimResourceId} & Identificativo della risorsa a cui il link appartiene. I link con lo stesso identificativo si prenotano insieme. \\
+		\texttt{railsimMinimumTime} & Tempo minimo fra due treni successivi sul deviatoio alla fine del link. Se manca vale 0. \\
+		\texttt{railsimEntry} & Link di ingresso di una stazione: qui il treno può chiedere un percorso alternativo. \\
+		\texttt{railsimExit} & Link di uscita di una stazione: è la destinazione del percorso alternativo. \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Gli attributi si scrivono dentro l'elemento del link, nel file della rete. Il \cref{lst:railsim-capacita} mostra un link che può contenere tre treni insieme.
+
+\begin{lstlisting}[language=XML,caption={Link con capienza di tre treni.},label={lst:railsim-capacita}]
+<link id="A" from="A" to="A0" length="500" freespeed="2.77"
+      capacity="3600.0" permlanes="1" oneway="1" modes="rail">
+  <attributes>
+    <attribute name="railsimTrainCapacity"
+               class="java.lang.Integer">3</attribute>
+  </attributes>
+</link>
+\end{lstlisting}
+
+Il concetto centrale è quello di \textit{risorsa}. La capacità non è una proprietà del singolo link ma della risorsa, che è formata da uno o più link e ha una capienza pari alla minima fra quelle dei suoi link; un link senza identificativo è una risorsa a sé. Con le risorse si descrivono le situazioni tipiche della ferrovia. Un binario percorribile nei due sensi è una coppia di link di verso opposto con la stessa risorsa: un treno che ne occupa uno blocca anche l'altro. Una sezione di blocco fisso è una sequenza di link con la stessa risorsa e capienza 1. Il blocco mobile si ottiene con link corti, ognuno con la propria risorsa. Un'intersezione fra due binari è protetta dal nodo comune, che resta bloccato finché un treno lo impegna.
+
+Il \cref{lst:railsim-binario-unico} mostra il caso del binario unico: due link di verso opposto fra gli stessi nodi, con lo stesso identificativo di risorsa.
+
+\begin{lstlisting}[language=XML,caption={Binario unico percorribile nei due sensi.},label={lst:railsim-binario-unico}]
+<link id="A_B" from="A" to="B" length="200.0" freespeed="50"
+      capacity="3600.0" permlanes="1" oneway="1" modes="rail">
+  <attributes>
+    <attribute name="railsimResourceId"
+               class="java.lang.String">AB</attribute>
+  </attributes>
+</link>
+<link id="B_A" from="B" to="A" length="200.0" freespeed="50"
+      capacity="3600.0" permlanes="1" oneway="1" modes="rail">
+  <attributes>
+    <attribute name="railsimResourceId"
+               class="java.lang.String">AB</attribute>
+  </attributes>
+</link>
+\end{lstlisting}
+
+Senza l'attributo, i due link sono risorse distinte e descrivono un doppio binario, uno per senso di marcia.
+
+L'infrastruttura può essere descritta a due livelli di dettaglio, che differiscono per ciò che un link rappresenta. \\
+railsim è in grado di gestirli entrambi utilizzando lo stesso motore.
+
+Nella descrizione microscopica ogni link è un singolo binario e ogni risorsa ha capienza 1: su un binario può trovarsi un solo treno alla volta. È il livello in cui si distinguono le sezioni di blocco, i singoli binari di una stazione e i collegamenti fra di essi. Una stazione microscopica è formata da un link per ogni binario di banchina, ciascuno con la propria fermata. Tutte le fermate appartengono alla stessa area di fermata, e in questo modo railsim sa che si tratta di binari alternativi della stessa stazione; i link che portano alla stazione e quelli che ne escono sono marcati come ingresso e uscita.
+
+Nella descrizione mesoscopica un link rappresenta un fascio di binari paralleli, e la sua capienza indica quanti treni possono percorrerlo insieme. La disposizione dei binari non è descritta: ne resta solo il numero. Un link mesoscopico può iniziare o finire soltanto in un punto in cui un treno può effettivamente cambiare binario. Una stazione mesoscopica è una risorsa con capienza pari al numero dei suoi binari: railsim sa quanti treni può contenere, ma non su quale binario si trova ciascuno.
+
+I due livelli hanno costi diversi. Quello microscopico richiede la disposizione esatta dei binari e più tempo di calcolo; a quello mesoscopico bastano le lunghezze e il numero dei binari. Possono essere usati insieme nella stessa rete, descrivendo in dettaglio l'area di interesse e in modo mesoscopico il resto~\cite{kaddoura2024railsim}.
+
+In entrambi i casi railsim si limita a simulare la rete che riceve: non la costruisce e non fornisce i dati dei binari. Nel progetto la rete mesoscopica è stata generata a partire dall'orario e dalle misure dei tracciati, mentre la descrizione microscopica delle stazioni principali, binario per binario, è stata costruita appositamente, come illustrato nelle sezioni successive.
+
+Il \cref{lst:railsim-meso} mostra una tratta mesoscopica che ammette due treni per senso di marcia, e il \cref{lst:railsim-uscita} un link di uscita da una stazione.
+
+\begin{lstlisting}[language=XML,caption={Tratta mesoscopica con capienza di due treni per senso.},label={lst:railsim-meso}]
+<link id="l_bc_F" from="n_b2" to="n_c1" length="4000"
+      freespeed="27.777" capacity="3600.0" permlanes="1" modes="rail">
+  <attributes>
+    <attribute name="railsimTrainCapacity"
+               class="java.lang.Integer">2</attribute>
+  </attributes>
+</link>
+<link id="l_bc_R" from="n_c1" to="n_b2" length="4000"
+      freespeed="27.777" capacity="3600.0" permlanes="1" modes="rail">
+  <attributes>
+    <attribute name="railsimTrainCapacity"
+               class="java.lang.Integer">2</attribute>
+  </attributes>
+</link>
+\end{lstlisting}
+
+\begin{lstlisting}[language=XML,caption={Link di uscita da una stazione.},label={lst:railsim-uscita}]
+<link id="hl" from="H" to="L" length="3000" freespeed="25"
+      capacity="3600.0" permlanes="1" modes="rail">
+  <attributes>
+    <attribute name="railsimExit"
+               class="java.lang.Boolean">true</attribute>
+  </attributes>
+</link>
+\end{lstlisting}
+
+\subsubsection{Treni e dinamica del moto}
+Ogni tipo di treno è descritto dalla lunghezza, dalla velocità massima, dalla capienza e da due attributi propri di railsim: l'accelerazione e la decelerazione, in metri al secondo quadrato. Se mancano, valgono i valori predefiniti della configurazione. 
+Il \cref{lst:railsim-treno} mostra la definizione di un tipo di treno nel file dei veicoli: il modo di trasporto \texttt{rail} è quello che lo affida al motore di railsim.
+
+\begin{lstlisting}[language=XML,caption={Definizione di un tipo di treno.},label={lst:railsim-treno}]
+<vehicleType id="fvDosto">
+  <attributes>
+    <attribute name="railsimAcceleration"
+               class="java.lang.Double">0.4</attribute>
+    <attribute name="railsimDeceleration"
+               class="java.lang.Double">0.5</attribute>
+  </attributes>
+  <capacity seats="606" standingRoomInPersons="0"/>
+  <length meter="200.0"/>
+  <width meter="1.435"/>
+  <maximumVelocity meterPerSecond="55.556"/>
+  <networkMode networkMode="rail"/>
+</vehicleType>
+\end{lstlisting}
+
+La velocità di un treno risulta da quattro elementi: le sue prestazioni, la sua velocità massima, la velocità massima dei link e la disponibilità dell'infrastruttura davanti a lui. \\
+\begin{itemize}
+    \item Un treno accelera finché i tratti successivi sono liberi e non ha raggiunto la velocità consentita.
+    \item Frena quando una risorsa che ha richiesto è occupata da un altro treno, oppure quando su un link successivo la velocità consentita è inferiore alla sua.
+    \item La velocità da mantenere è deciso dal \textit{profilo di velocità}. 
+    \begin{itemize}
+        \item Il profilo predefinito porta il treno alla massima velocità
+        \item Un secondo profilo regola la velocità in base alla posizione del treno e all'orario del prossimo arrivo.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Prenotazione del percorso}
+Un treno non occupa solo i link corrente ma anche l'infrastruttura davanti a sé. \\
+La lunghezza del tratto prenotato è calcolata a ogni aggiornamento ed è pari allo spazio che serve al treno per fermarsi alla velocità corrente. \\
+Con velocità $v$ e decelerazione $d$ vale
+\begin{equation}
+	s = \frac{v^2}{2d}
+\end{equation}
+Il tratto prenotato non va mai oltre la fermata successiva finché il treno non riparte, la prenotazione si interrompe alla stazione. \\
+Se una risorsa richiesta non è disponibile, il treno riceve un permesso più corto, rallenta fino a fermarsi prima del tratto occupato e ripete la richiesta dopo un intervallo fisso. In questo modo la distanza di sicurezza fra due treni non è un parametro, ma nasce dalla velocità e dalla capacità di frenata di chi segue.
+
+\subsubsection{Gestione della circolazione}
+Le decisioni su chi può prenotare che cosa sono affidate a due componenti, definiti come interfacce e sostituibili da chi estende lo strumento. \\
+Il primo, \texttt{TrainDisposition}, riceve le richieste di prenotazione dei treni e risponde con la distanza concessa e la velocità consentita. \\
+La versione predefinita concede le risorse nell'ordine in cui vengono chieste, senza priorità fra i treni. Si occupa anche delle deviazioni: quando un treno raggiunge un link di ingresso e uno dei link che dovrebbe percorrere fino al primo link di uscita è occupato e senza capienza residua, viene cercato un percorso alternativo fra l'ingresso e l'uscita. È il meccanismo che permette a un treno di fermarsi a un binario diverso da quello previsto nella stessa stazione.\\
+Il secondo componente, \texttt{DeadlockAvoidance}, serve a evitare gli stalli, cioè le situazioni in cui due o più treni aspettano ciascuno una risorsa tenuta dall'altro. La versione predefinita, secondo la sua stessa documentazione, evita molti casi ma non garantisce l'assenza di stalli. \\
+La documentazione di railsim distingue un caso locale, due treni di verso opposto su una tratta con capienza condivisa, e un caso globale, in cui lo stallo nasce da una sequenza di tratte con capienze diverse, e descrive il secondo come un problema ancora aperto. Gli stessi autori indicano le strategie di gestione della circolazione come la parte più difficile e ancora in sviluppo~\cite{kaddoura2024railsim}.
+
+\subsubsection{Eventi}
+Per restare compatibile con MATSim, railsim produce gli eventi ordinari, come l'ingresso di un veicolo in un link, e ne aggiunge quattro propri, elencati nella \cref{tab:railsim-eventi}.
+
+\begin{table}[H]
+	\centering
+	\caption{Eventi aggiunti da railsim.}
+	\label{tab:railsim-eventi}
+	\begin{tabularx}{\textwidth}{lX}
+		\toprule
+		Evento & Contenuto \\
+		\midrule
+		\texttt{RailsimTrainLeavesLinkEvent} & La coda del treno ha lasciato un link. \\
+		\texttt{RailsimLinkStateChangeEvent} & Un link è passato da libero a occupato o viceversa, con il treno che lo occupa. \\
+		\texttt{RailsimTrainStateEvent} & Stato del treno: posizione della testa e della coda, velocità, velocità obiettivo, accelerazione. È prodotto a ogni cambiamento di stato e a intervalli regolari. \\
+		\texttt{RailsimDetourEvent} & Il treno è stato deviato, con la parte di percorso modificata. \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\subsubsection{Configurazione}
+I parametri generali di railsim sono riportati nella \cref{tab:railsim-config}, con i valori predefiniti.
+
+\begin{table}[H]
+	\centering
+	\caption{Parametri di configurazione di railsim.}
+	\label{tab:railsim-config}
+	\begin{tabularx}{\textwidth}{llX}
+		\toprule
+		Parametro & Predefinito & Significato \\
+		\midrule
+		\texttt{networkModes} & \texttt{rail} & Modi di trasporto gestiti dal motore di railsim. \\
+		\texttt{accelerationDefault} & \SI{0,5}{\metre\per\second\squared} & Accelerazione usata se il tipo di treno non la indica. \\
+		\texttt{decelerationDefault} & \SI{0,5}{\metre\per\second\squared} & Decelerazione usata se il tipo di treno non la indica. \\
+		\texttt{pollInterval} & \SI{10}{\second} & Attesa prima di ripetere una richiesta di prenotazione respinta. \\
+		\texttt{updateInterval} & \SI{10}{\second} & Intervallo massimo fra due eventi di stato di un treno. \\
+		\texttt{speedProfile} & \texttt{maxSpeed} & Profilo di velocità: \texttt{maxSpeed}, \texttt{adaptive} oppure \texttt{custom}. \\
+		\texttt{vehicleCirculation} & \texttt{yes} & Circolazione dello stesso veicolo su più corse. \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\subsubsection{Che cosa resta a carico di chi lo usa}
+railsim simula il moto e i conflitti dei treni su una rete e con un orario che riceve già pronti. Non costruisce la rete e non stabilisce quale treno effettua ogni corsa né su quale binario ferma, perché legge queste informazioni dall'orario. \\
+Non prevede depositi o binari di ricovero: un treno fermo fra due corse occupa il binario su cui si trova. \\
+Non calcola indicatori di puntualità né il consumo di energia, e non introduce guasti o perturbazioni casuali, per cui lo stesso scenario produce sempre lo stesso risultato. \\
+Come si è visto, infine, la prevenzione degli stalli è solo parziale. Le sezioni che seguono descrivono come il progetto ha affrontato ciascuno di questi punti.
