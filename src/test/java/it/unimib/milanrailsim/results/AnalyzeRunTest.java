@@ -62,6 +62,14 @@ class AnalyzeRunTest {
 		assertEquals(2, Files.readAllLines(archived.resolve("indicators_by_line.csv")).size());
 		assertEquals(3, Files.readAllLines(archived.resolve("stations.csv")).size(), "header, A and B");
 		assertEquals(2, Files.readAllLines(archived.resolve("trains.csv")).size());
+		assertEquals(List.of("vehicle,type,line,trips", "t1,tsr,S1,1"), Files.readAllLines(archived.resolve("fleet.csv")));
+		assertEquals(List.of("type,name,trains", "tsr,tsr,1", "total,Totale,1"),
+			Files.readAllLines(archived.resolve("fleet_by_type.csv")), "a type with no recorded name keeps its id");
+		assertEquals(List.of("line,type,trains", "S1,tsr,1"), Files.readAllLines(archived.resolve("fleet_by_line.csv")));
+		assertEquals(List.of("hour,type,peak,active", "8,tsr,1,1", "8,total,1,1"),
+			Files.readAllLines(archived.resolve("trains_by_hour.csv")));
+		assertTrue(Files.size(archived.resolve("charts/trains_by_hour.png")) > 1000);
+		assertTrue(Files.size(archived.resolve("charts/fleet_by_type.png")) > 1000);
 		List<String> hourly = Files.readAllLines(archived.resolve("stations_hourly.csv"));
 		assertTrue(hourly.contains("A,B,8,1,1,30,30,100.0"), hourly.toString());
 		String indicators = Files.readString(archived.resolve("indicators.json"));

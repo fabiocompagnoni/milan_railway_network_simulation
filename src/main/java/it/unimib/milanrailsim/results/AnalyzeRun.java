@@ -81,6 +81,14 @@ public final class AnalyzeRun {
 		archive.writeLines("trains.csv", trainsCsv(visits));
 		archive.writeLines("unfinished.csv", unfinishedCsv(unfinished));
 
+		request.progress().accept("Analisi: flotta");
+		FleetUse fleet = FleetUse.of(trips, FleetReport.typeOfVehicle(data.vehicles()));
+		Map<String, String> typeNames = FleetReport.typeNames(data.vehicles());
+		archive.writeLines("fleet.csv", FleetReport.trainsCsv(fleet));
+		archive.writeLines("fleet_by_type.csv", FleetReport.byTypeCsv(fleet, typeNames));
+		archive.writeLines("fleet_by_line.csv", FleetReport.byLineCsv(fleet));
+		archive.writeLines("trains_by_hour.csv", FleetReport.byHourCsv(fleet));
+
 		data.energy().ifPresent(energy -> {
 			request.progress().accept("Analisi: energia");
 			archive.writeJson("energy.json", EnergyReport.json(energy));
@@ -103,6 +111,8 @@ public final class AnalyzeRun {
 		RunCharts.delayHistogram(visits, archive.chart("delay_histogram"));
 		RunCharts.delayByHour(visits, archive.chart("delay_by_hour"));
 		RunCharts.trainsRunning(trips, archive.chart("trains_running"));
+		RunCharts.trainsByHour(fleet, typeNames, archive.chart("trains_by_hour"));
+		RunCharts.fleetByType(fleet, typeNames, archive.chart("fleet_by_type"));
 		RunCharts.spaceTime(trajectories(data.timeDistanceCsv(), request.spaceTimeLine()), archive.chart("space_time"));
 		RunCharts.costBreakdown(simulatedCosts.orElse(costs), archive.chart("cost_breakdown"));
 
