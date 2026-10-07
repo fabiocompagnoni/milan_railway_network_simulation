@@ -111,6 +111,15 @@ public final class RunLibrary {
 		return new Entry(folder.getFileName().toString(), folder, status, spec, manifest);
 	}
 
+	/** {@code base} itself when no run has that name, else the first free {@code base_2}, {@code base_3}, … */
+	public String freeName(String base) {
+		String candidate = base;
+		for (int attempt = 2; Files.exists(runsDir.resolve(candidate)); attempt++) {
+			candidate = base + "_" + attempt;
+		}
+		return candidate;
+	}
+
 	public void delete(Entry entry) {
 		try {
 			Files.walkFileTree(entry.dir(), new SimpleFileVisitor<>() {

@@ -16,6 +16,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.nio.file.Path;
+import java.util.Optional;
 
 /**
  * One run driven from the application: the engine process, its client and
@@ -23,14 +24,13 @@ import java.nio.file.Path;
  * one plus its arrival instant, so the map can extrapolate between them.
  * All properties change on the JavaFX thread.
  */
-public final class LiveSession {
+public final class LiveSession implements Session {
 
 	/** Default heap share for the engine: the simulation is the memory-hungry part. */
 	private static final int ENGINE_HEAP_PERCENT = 60;
 
 	private final Path runDir;
 	private final ObjectProperty<Frame> frame = new SimpleObjectProperty<>();
-	private final DoubleProperty simulatedTime = new SimpleDoubleProperty();
 	private final IntegerProperty activeTrains = new SimpleIntegerProperty();
 	private final StringProperty phase = new SimpleStringProperty("Avvio del motore");
 	private final DoubleProperty speed = new SimpleDoubleProperty();
@@ -64,15 +64,11 @@ public final class LiveSession {
 					previousArrivalNanos = frameArrivalNanos;
 					frameArrivalNanos = arrival;
 					frame.set(message.frame());
-					simulatedTime.set(message.frame().time());
 					activeTrains.set(message.frame().trains().size());
 				});
 			}
 			case Message.PROGRESS -> Platform.runLater(() -> {
 				phase.set(message.phase());
-				if (message.time() > 0) {
-					simulatedTime.set(message.time());
-				}
 				activeTrains.set(message.activeTrains());
 			});
 			case Message.DONE -> Platform.runLater(() -> {
@@ -97,20 +93,13 @@ public final class LiveSession {
 		});
 	}
 
-	/** The two frames the map is moving between and how far it has got, 0 to 1. */
-	public record Playback(Frame from, Frame to, double fraction) {
-
-		public double time() {
-			return from == null ? to.time() : from.time() + (to.time() - from.time()) * fraction;
-		}
-	}
-
 	/**
 	 * What to draw now: the previous frame advanced towards the latest one in
 	 * proportion to the real time elapsed since it arrived, measured against the
 	 * interval between the two arrivals. Frames are shown one interval late, so
 	 * the map never has to guess where a train will be.
 	 */
+	@Override
 	public Playback playback() {
 		Frame current = frame.get();
 		if (current == null) {
@@ -124,50 +113,66 @@ public final class LiveSession {
 		return new Playback(previousFrame, current, fraction);
 	}
 
+	@Override
 	public void setSpeed(double factor) {
 		speed.set(factor);
 		client.setSpeed(factor);
 	}
 
 	/** Asks the engine to stop; the run stays archived as interrupted. */
+	@Override
 	public void stop() {
 		client.stop();
 	}
 
+	@Override
 	public void close() {
 		client.close();
 		engine.destroy();
 	}
 
+	@Override
 	public Path runDir() {
 		return runDir;
 	}
 
-	public ObjectProperty<Frame> frame() {
-		return frame;
-	}
-
-	public DoubleProperty simulatedTime() {
-		return simulatedTime;
-	}
-
+	@Override
 	public IntegerProperty activeTrains() {
 		return activeTrains;
 	}
 
+	@Override
 	public StringProperty phase() {
 		return phase;
 	}
 
+	@Override
+	public String runningPhase() {
+		return RailsimJob.SIMULATING;
+	}
+
+	@Override
+	public String preparationTitle() {
+		return "Preparo la simulazione";
+	}
+
+	@Override
 	public DoubleProperty speed() {
 		return speed;
 	}
 
+	@Override
 	public BooleanProperty finished() {
 		return finished;
 	}
 
+	@Override
 	public StringProperty error() {
 		return error;
+	}
+
+	@Override
+	public Optional<Timeline> timeline() {
+		return Optional.empty();
 	}
 }

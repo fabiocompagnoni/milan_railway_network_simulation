@@ -28,6 +28,16 @@ class RunLibraryTest {
 	}
 
 	@Test
+	void aFreeNameIsTheBaseOrTheFirstNumberedVariantNotTaken() throws IOException {
+		RunLibrary library = new RunLibrary(runs);
+		assertEquals("reale", library.freeName("reale"));
+
+		run("reale");
+		run("reale_2");
+		assertEquals("reale_3", library.freeName("reale"));
+	}
+
+	@Test
 	void emptyOrMissingFolderYieldsNoRuns() {
 		assertTrue(new RunLibrary(runs.resolve("absent")).scan().isEmpty());
 		assertTrue(new RunLibrary(runs).scan().isEmpty());

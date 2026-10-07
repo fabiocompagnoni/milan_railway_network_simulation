@@ -4,7 +4,9 @@ import it.unimib.milanrailsim.gui.app.AppModel;
 import it.unimib.milanrailsim.runs.RunLibrary.Entry;
 import it.unimib.milanrailsim.runs.RunLibrary.Status;
 import it.unimib.milanrailsim.runs.RunLibrary;
+import it.unimib.milanrailsim.runs.ScenarioSpec;
 import it.unimib.milanrailsim.runs.ScenarioSpec.SimulationType;
+import it.unimib.milanrailsim.server.FrameRecorder;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -24,6 +26,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -34,20 +37,34 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-/** Every archived run at a glance, with open, export and delete. */
+/** Every archived run at a glance, with open, replay, repeat, export and delete. */
 public final class RunLibraryView extends BorderPane {
+
+	/**
+	 * What the application does with a run chosen here.
+	 *
+	 * @param open   show its results
+	 * @param replay play its recording back on the map
+	 * @param repeat prepare a new run from its scenario
+	 * @param create prepare a new run from scratch
+	 */
+	public record Actions(Consumer<Entry> open, Consumer<Entry> replay, BiConsumer<Entry, ScenarioSpec> repeat,
+			Runnable create) {
+	}
 
 	private static final DateTimeFormatter STAMP = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
 	private final AppModel model;
-	private final Consumer<Entry> onOpen;
+	private final Actions actions;
 	private final ObservableList<Entry> entries = FXCollections.observableArrayList();
 	private final FilteredList<Entry> filtered = new FilteredList<>(entries);
 	private final TableView<Entry> table = new TableView<>();
@@ -56,16 +73,16 @@ public final class RunLibraryView extends BorderPane {
 	private final StackPane body = new StackPane();
 	private final Label state = new Label();
 
-	public RunLibraryView(AppModel model, Consumer<Entry> onOpen, Runnable onNew) {
+	public RunLibraryView(AppModel model, Actions actions) {
 		this.model = model;
-		this.onOpen = onOpen;
+		this.actions = actions;
 		getStyleClass().add("content");
 
 		Label title = new Label("Archivio");
 		title.getStyleClass().add("title");
 		Button create = new Button("+ Nuova simulazione");
 		create.getStyleClass().add("primary");
-		create.setOnAction(event -> onNew.run());
+		create.setOnAction(event -> actions.create().run());
 		Region spacer = new Region();
 		HBox.setHgrow(spacer, Priority.ALWAYS);
 		HBox header = new HBox(12, title, spacer, create);
@@ -107,7 +124,7 @@ public final class RunLibraryView extends BorderPane {
 			} else if (event.getCode() == KeyCode.F && event.isControlDown()) {
 				search.requestFocus();
 			} else if (event.getCode() == KeyCode.N && event.isControlDown()) {
-				onNew.run();
+				actions.create().run();
 			}
 		});
 		reload();
@@ -153,6 +170,12 @@ public final class RunLibraryView extends BorderPane {
 	private Node actions() {
 		Button open = new Button("Apri risultati");
 		open.setOnAction(event -> selected().ifPresent(this::open));
+		Button replay = new Button("Rivedi");
+		replay.setTooltip(new Tooltip("Riproduce sulla mappa la simulazione già eseguita"));
+		replay.setOnAction(event -> selected().ifPresent(actions.replay()));
+		Button repeat = new Button("Ripeti");
+		repeat.setTooltip(new Tooltip("Nuova simulazione con lo stesso scenario"));
+		repeat.setOnAction(event -> selected().ifPresent(entry -> entry.spec().ifPresent(spec -> actions.repeat().accept(entry, spec))));
 		Button export = new Button("Esporta…");
 		export.setOnAction(event -> selected().ifPresent(this::export));
 		Button delete = new Button("Elimina");
@@ -163,16 +186,21 @@ public final class RunLibraryView extends BorderPane {
 			int size = table.getSelectionModel().getSelectedItems().size();
 			count.setText(size == 0 ? "" : size == 1 ? "1 selezionato" : size + " selezionati");
 			boolean single = size == 1;
-			open.setDisable(!single || table.getSelectionModel().getSelectedItem().status() != Status.COMPLETED);
+			Entry entry = table.getSelectionModel().getSelectedItem();
+			open.setDisable(!single || entry.status() != Status.COMPLETED);
+			replay.setDisable(!single || !hasRecording(entry));
+			repeat.setDisable(!single || entry.spec().isEmpty());
 			export.setDisable(!single);
 			delete.setDisable(size == 0);
 		});
 		open.setDisable(true);
+		replay.setDisable(true);
+		repeat.setDisable(true);
 		export.setDisable(true);
 		delete.setDisable(true);
 		Region spacer = new Region();
 		HBox.setHgrow(spacer, Priority.ALWAYS);
-		HBox bar = new HBox(8, count, spacer, open, export, delete);
+		HBox bar = new HBox(8, count, spacer, open, replay, repeat, export, delete);
 		bar.setAlignment(Pos.CENTER_LEFT);
 		bar.setPadding(new Insets(12, 0, 0, 0));
 		return bar;
@@ -211,8 +239,13 @@ public final class RunLibraryView extends BorderPane {
 
 	private void open(Entry entry) {
 		if (entry.status() == Status.COMPLETED) {
-			onOpen.accept(entry);
+			actions.open().accept(entry);
 		}
+	}
+
+	/** An interrupted run recorded its frames up to the interruption: it can be replayed too. */
+	private static boolean hasRecording(Entry entry) {
+		return entry.status() != Status.RUNNING && Files.exists(entry.dir().resolve(FrameRecorder.FILE_NAME));
 	}
 
 	private void export(Entry entry) {

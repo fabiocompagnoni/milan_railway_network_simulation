@@ -42,6 +42,7 @@ public final class FrameSampler
 	private final Map<String, String> vehicleOfDriver = new HashMap<>();
 	private final Map<String, Integer> startedTrips = new HashMap<>();
 	private double nextFrameTime;
+	private double simulatedTime;
 	private int arrived;
 	private int aborted;
 
@@ -91,6 +92,7 @@ public final class FrameSampler
 
 	/** Called once per simulation step; emits a frame whenever the sampling interval has elapsed. */
 	public void onSimStep(double time) {
+		simulatedTime = time;
 		if (time < nextFrameTime) {
 			return;
 		}
@@ -100,6 +102,11 @@ public final class FrameSampler
 
 	public int activeTrains() {
 		return latest.size();
+	}
+
+	/** The last simulated second seen: where the day ended, once the mobsim is over. */
+	public double simulatedTime() {
+		return simulatedTime;
 	}
 
 	/** Trains that completed their circulation. */

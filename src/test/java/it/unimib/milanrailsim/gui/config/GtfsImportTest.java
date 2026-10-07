@@ -73,5 +73,19 @@ class GtfsImportTest {
 
 		assertThrows(IllegalArgumentException.class, () -> GtfsImport.install(zip, target));
 		assertTrue(Files.exists(target.resolve("keep.txt")));
+		assertFalse(Files.exists(dir.resolve("gtfs.new")), "the rejected feed is cleaned up");
+	}
+
+	@Test
+	void theSwapLeavesNoWorkingFoldersBehind() throws IOException {
+		Path target = Files.createDirectories(dir.resolve("gtfs"));
+		Files.writeString(target.resolve("stale.txt"), "old");
+		Files.createDirectories(dir.resolve("gtfs.old"));
+
+		GtfsImport.install(MINIMAL, target);
+
+		assertTrue(Files.exists(target.resolve("routes.txt")));
+		assertFalse(Files.exists(dir.resolve("gtfs.new")));
+		assertFalse(Files.exists(dir.resolve("gtfs.old")), "a leftover of an earlier interrupted install goes too");
 	}
 }

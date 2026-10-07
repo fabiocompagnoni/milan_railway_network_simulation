@@ -23,7 +23,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
@@ -101,9 +100,7 @@ public final class ResultsView extends BorderPane {
 
 	private void load(Entry selected) {
 		entry = selected;
-		ProgressIndicator spinner = new ProgressIndicator();
-		spinner.setMaxSize(32, 32);
-		VBox loading = new VBox(12, spinner, muted("Carico i risultati del run…"));
+		VBox loading = new VBox(12, new LoadingRing(32), muted("Carico i risultati del run…"));
 		loading.setAlignment(Pos.CENTER);
 		body.getChildren().setAll(loading);
 		Task<RunResults> task = new Task<>() {

@@ -41,7 +41,7 @@ class CreateTransitScheduleFromFeedTest {
 
 		Vehicles vehicles = VehicleUtils.createVehiclesContainer();
 		new MatsimVehicleReader(vehicles).readFile(out.resolve("transitVehicles.xml").toString());
-		assertEquals(8, vehicles.getVehicleTypes().size());
+		assertEquals(9, vehicles.getVehicleTypes().size());
 		assertEquals(2, vehicles.getVehicles().size());
 
 		Network network = NetworkUtils.readNetwork(out.resolve("network-with-stations.xml").toString());

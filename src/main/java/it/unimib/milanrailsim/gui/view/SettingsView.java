@@ -47,7 +47,6 @@ import java.util.function.Supplier;
 public final class SettingsView extends BorderPane {
 
 	private static final DateTimeFormatter DAY = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	private static final Path DEFAULT_COSTS = Path.of("config", "costs.json");
 
 	private final AppModel model;
 	private final Consumer<Path> openFolder;
@@ -174,7 +173,7 @@ public final class SettingsView extends BorderPane {
 	}
 
 	private Node costsSection() {
-		CostsTable table = new CostsTable(model.paths().costsFile(), DEFAULT_COSTS);
+		CostsTable table = new CostsTable(model.paths().costsFile(), model.files().defaultCosts());
 		return panelColumn(sectionTitle("Costi"), table,
 			muted("Valori unitari usati dal computo economico dei run. Le fonti sono documentate nel repository "
 				+ "e si aggiornano lì, non da qui."));
@@ -206,7 +205,7 @@ public final class SettingsView extends BorderPane {
 		Task<List<Map<String, String>>> task = new Task<>() {
 			@Override
 			protected List<Map<String, String>> call() {
-				return CsvTable.read(Path.of("data", "osm", "2026-08-05-network-sweep", "link_measures.csv"));
+				return CsvTable.read(model.files().linkMeasures());
 			}
 		};
 		task.setOnSucceeded(event -> table.getItems().setAll(task.getValue()));

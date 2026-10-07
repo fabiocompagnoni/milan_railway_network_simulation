@@ -53,6 +53,7 @@ public record FleetConfig(List<TrainType> types) {
 	private static final String TRENORD_FLEET = "Trenord, La flotta, trenord.it (consultato il 5 agosto 2026)";
 	private static final String WIKIPEDIA_CARAVAGGIO = "Wikipedia, Elettrotreno FS ETR 421/521 (consultato il 5 agosto 2026)";
 	private static final String TILO_SOURCES = "Schede RABe 524 FLIRT TSI: trainswiss.ch, sguggiari.ch, Wikipedia (consultati il 5 agosto 2026)";
+	private static final String WIKIPEDIA_ATR_803 = "Wikipedia, Autotreno ATR 803 (consultato il 23 settembre 2026)";
 	private static final double ESTIMATED_DECELERATION = 0.5;
 
 	public FleetConfig {
@@ -63,7 +64,7 @@ public record FleetConfig(List<TrainType> types) {
 		}
 	}
 
-	/** The eight types of the v1 model with the sources recorded in the infrastructure notes. */
+	/** The nine types of the v1 model with the sources recorded in the infrastructure notes. */
 	public static FleetConfig defaults() {
 		return new FleetConfig(List.of(
 			type("tsr", "TSR", 104.98, 436, 140, 1.0, Traction.ELECTRIC,
@@ -91,6 +92,11 @@ public record FleetConfig(List<TrainType> types) {
 				Set.of("length", "acceleration", "deceleration")),
 			type("tilo_flirt_tsi", "FLIRT TSI (TILO)", 105.0, 244, 160, 1.0, Traction.ELECTRIC,
 				Map.of("length", TILO_SOURCES, "seats", TILO_SOURCES, "vmax", TILO_SOURCES),
+				Set.of("acceleration", "deceleration")),
+			// acceleration: Trenord states "+20% in accelerazione" over the current diesel fleet, applied to the ATR 125
+			type("atr803", "Colleoni ATR 803", 66.8, 168, 140, 0.72, Traction.DIESEL,
+				Map.of("length", WIKIPEDIA_ATR_803, "seats", WIKIPEDIA_ATR_803 + ", 151 posti più 17 strapuntini",
+					"vmax", WIKIPEDIA_ATR_803, "acceleration", TRENORD_FLEET + ", +20% sull'ATR 125"),
 				Set.of("acceleration", "deceleration"))));
 	}
 

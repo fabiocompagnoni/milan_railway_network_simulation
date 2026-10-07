@@ -252,6 +252,17 @@ Criticità**.
   binario da cui sono arrivati** (inversione banco). Nel modello: il binario
   terminale è una risorsa con ingresso e uscita dallo stesso lato, occupata per
   l'intera sosta di capolinea.
+- **Fine della giornata simulata**: la simulazione termina quando l'ultimo
+  treno ha concluso la sua turnazione; il tetto (ultimo arrivo pianificato
+  dell'orario + 3 ore) resta solo per i treni che non arrivano mai. Motivo
+  (run del 23 settembre): railsim, all'arrivo dall'ultima corsa, mette il
+  macchinista in un'attività senza fine ma non lo riconsegna al motore delle
+  attività di MATSim (`RailsimEngine`, arrivo a destinazione), che è dove un
+  agente viene tolto dal conteggio dei vivi; il conteggio non scendeva mai e
+  il QSim girava a rete vuota fino al tetto, 28 ore per un giorno feriale.
+  `FinishedTrainRetirement` ritira i macchinisti a fine turnazione come
+  farebbe MATSim; nel manifest `simulatedEndSeconds` è ora l'ultimo secondo
+  simulato davvero, non il tetto.
 
 ### 3. Trunk FNM Cadorna–Bovisa–Saronno — 4 binari, 2 fasci fissi
 
@@ -395,7 +406,7 @@ Fonte: `https://www.trenord.it/chi-siamo/la-flotta/`.
 | **ATR 125** (GTW 4/12 «Besanino») | diesel-elettrico Stadler, **4 casse, 231 posti**, su **Milano–Molteno–Lecco (S7)**; vmax **140 km/h** |
 | **ATR 115** (GTW 2/6) | diesel-elettrico Stadler, **2 casse, 104 posti**, su Brescia–Iseo–Edolo e Como–Lecco; vmax **140 km/h** |
 | **ALn 668** | automotrice diesel, 68 posti, vmax 95–130 km/h |
-| **Colleoni** | diesel nuova generazione, 3 casse, **168 posti**; «+20% in accelerazione» rispetto alla flotta attuale |
+| **Colleoni ATR 803** | diesel-elettrico con batterie (Stadler), **3 casse, 66,8 m, 168 posti** (151 + 17 strapuntini), vmax **140 km/h**; Trenord: «+20% in accelerazione» rispetto alla flotta attuale → nel modello 0,72 m/s² (ATR 125 × 1,2, stima). In servizio dal 12/9/2022 su **Brescia–Parma (R8)**, Pavia–Codogno, Vercelli–Pavia, Pavia–Alessandria al posto delle ALn 668 (Wikipedia it `Autotreno_ATR_803`, 2026-09-23). Nel modello assegnato a R8, R35, R36, R37 |
 
 - **FLIRT TSI** (TILO RABe 524, per RE80): 6 casse, **105 m, 244 posti**, vmax
   **160 km/h**, 2.600 kW (trainswiss/Wikipedia/sguggiari.ch, 2026-08-05). Il
@@ -415,10 +426,11 @@ Fonte: `https://www.trenord.it/chi-siamo/la-flotta/`.
   modellato in v1). Su S3 anche Caravaggio (non dominante).
 - **S11**: `caravaggio_521` (attestato Como S.G.). **S7**: `atr125`.
 - **RE1** (Laveno): `caravaggio_521`. **RE54/MXP**: `caravaggio_421`.
-- **Linee per Pavia** (R34…): `donizetti`. **Altri R/RE**: `caravaggio_521`
+- **RE13, R34** (Pavia): `donizetti`. **Altri R/RE**: `caravaggio_521`
   (dominante dichiarato: "regionali principalmente Caravaggio").
 - **TILO S10/S30/S40/S50: esclusi dalla v1** (non confluiscono sulla rete
   suburbana); **RE80 incluso** con tipo `tilo_flirt_tsi`.
+- **R8** (Brescia–Parma), **R35, R36, R37** (Pavia–Alessandria, Pavia–Vercelli, Pavia–Codogno): `atr803` (Colleoni, dal 2022 al posto delle ALn 668; Wikipedia 2026-09-23).
 
 ### Assi di eterogeneità (per i `vehicleType` railsim)
 

@@ -3,12 +3,13 @@ package it.unimib.milanrailsim.gui.app;
 import it.unimib.milanrailsim.gui.config.AppPaths;
 import it.unimib.milanrailsim.gui.config.ScenarioFiles;
 import it.unimib.milanrailsim.gui.sim.LiveSession;
+import it.unimib.milanrailsim.gui.sim.ReplaySession;
+import it.unimib.milanrailsim.gui.sim.Session;
 import it.unimib.milanrailsim.network.FleetConfig;
 import it.unimib.milanrailsim.network.GtfsFeed;
 import it.unimib.milanrailsim.runs.RunLibrary;
 import it.unimib.milanrailsim.runs.ScenarioSpec;
 import it.unimib.milanrailsim.server.RailsimJob;
-import it.unimib.milanrailsim.schedule.CreateTransitScheduleFromFeed;
 import it.unimib.milanrailsim.schedule.LineAssignments;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -18,14 +19,13 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /** State shared by every view: folders, scenario files, theme and the timetable, loaded once in the background. */
 public final class AppModel {
-
-	private static final Path DEFAULT_COSTS = Path.of("config", "costs.json");
 
 	private final AppPaths paths;
 	private final ScenarioFiles files;
@@ -34,7 +34,8 @@ public final class AppModel {
 	private final ObjectProperty<FleetConfig> fleet = new SimpleObjectProperty<>();
 	private final ObjectProperty<LineAssignments> assignments = new SimpleObjectProperty<>();
 	private final ObjectProperty<RunLibrary.Entry> selectedRun = new SimpleObjectProperty<>();
-	private final ObjectProperty<LiveSession> session = new SimpleObjectProperty<>();
+	private final ObjectProperty<Session> session = new SimpleObjectProperty<>();
+	private final ObjectProperty<ScenarioSpec> draft = new SimpleObjectProperty<>();
 	private final CompletableFuture<Set<String>> networkStops;
 
 	public AppModel(AppPaths paths, ScenarioFiles files) {
@@ -64,17 +65,38 @@ public final class AppModel {
 	}
 
 	/** The run being simulated now, if any; views observe it to show the live map. */
-	public ObjectProperty<LiveSession> session() {
+	public ObjectProperty<Session> session() {
 		return session;
+	}
+
+	/** Plays an archived run back from its recording on the map. */
+	public ReplaySession startReplay(RunLibrary.Entry entry) {
+		ReplaySession replay = ReplaySession.open(entry.dir());
+		session.set(replay);
+		return replay;
+	}
+
+	/**
+	 * A scenario the new-simulation form starts from instead of its defaults:
+	 * an archived run to repeat, under a name not yet taken. Consumed on read.
+	 */
+	public void draftFrom(RunLibrary.Entry entry, ScenarioSpec spec) {
+		draft.set(spec.named(runs().freeName(entry.name())));
+	}
+
+	public Optional<ScenarioSpec> takeDraft() {
+		Optional<ScenarioSpec> taken = Optional.ofNullable(draft.get());
+		draft.set(null);
+		return taken;
 	}
 
 	/** Writes the scenario into its run folder and spawns the engine on it. */
 	public LiveSession startRun(ScenarioSpec spec, double initialSpeed) {
 		Path runDir = paths.runs().resolve(spec.name());
 		spec.write(runDir.resolve("scenario.json"));
-		RailsimJob.Inputs inputs = new RailsimJob.Inputs(runDir, Path.of("scenarios", "milan", "config.xml"),
+		RailsimJob.Inputs inputs = new RailsimJob.Inputs(runDir, files.engineConfig(),
 			files.engineNetwork(), gtfsDir(), paths.fleetTypesFile(), paths.lineAssignmentsFile(), paths.costsFile(),
-			Files.exists(CreateTransitScheduleFromFeed.STATION_TRACKS) ? CreateTransitScheduleFromFeed.STATION_TRACKS : null,
+			Files.exists(files.stationTracks()) ? files.stationTracks() : null,
 			Files.isDirectory(files.microNodes()) ? files.microNodes() : null);
 		LiveSession started = LiveSession.start(inputs, initialSpeed);
 		session.set(started);
@@ -137,12 +159,12 @@ public final class AppModel {
 	/** The user's cost parameters start as a copy of the repository defaults. */
 	private void seedCosts() {
 		Path costs = paths.costsFile();
-		if (Files.exists(costs) || !Files.exists(DEFAULT_COSTS)) {
+		if (Files.exists(costs) || !Files.exists(files.defaultCosts())) {
 			return;
 		}
 		try {
 			Files.createDirectories(costs.getParent());
-			Files.copy(DEFAULT_COSTS, costs);
+			Files.copy(files.defaultCosts(), costs);
 		} catch (IOException e) {
 			throw new UncheckedIOException("Cannot seed " + costs, e);
 		}

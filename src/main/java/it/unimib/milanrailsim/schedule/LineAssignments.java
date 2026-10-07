@@ -37,9 +37,9 @@ public record LineAssignments(Map<String, List<Share>> byLine) {
 		Map.entry("S11", "caravaggio_521"), Map.entry("RE1", "caravaggio_521"),
 		Map.entry("RE54", "caravaggio_421"), Map.entry("RE51", "caravaggio_421"),
 		Map.entry("RE13", "donizetti"), Map.entry("R34", "donizetti"),
-		Map.entry("R35", "donizetti"), Map.entry("R36", "donizetti"),
-		Map.entry("R37", "donizetti"),
-		Map.entry("RE80", "tilo_flirt_tsi"));
+		Map.entry("RE80", "tilo_flirt_tsi"),
+		Map.entry("R8", "atr803"), Map.entry("R35", "atr803"),
+		Map.entry("R36", "atr803"), Map.entry("R37", "atr803"));
 
 	public LineAssignments {
 		byLine.forEach((line, shares) -> {
