@@ -45,6 +45,14 @@ final class EnergyTab {
 			ResultsView.metric("Gasolio", String.format(Locale.ITALY, "%,.0f l", energy.litres()),
 				String.format(Locale.ITALY, "%.2f l/treno-km", energy.litresPerTrainKilometre()), false));
 		VBox column = new VBox(16, electric);
+		if (energy.tripsNotMetered() > 0) {
+			Label warning = new Label(energy.tripsNotMetered() + " corse completate non hanno consumo misurato: il modello"
+				+ " energetico non ha la massa del loro tipo di treno. Energia e gasolio qui sopra sono quindi sottostimati;"
+				+ " nei costi a queste corse è attribuito il consumo medio delle altre.");
+			warning.getStyleClass().add("finding-blocking");
+			warning.setWrapText(true);
+			column.getChildren().add(warning);
+		}
 		results.chart(RunResults.POWER_PROFILE).ifPresent(file -> {
 			ImageView chart = new ImageView(new Image(file.toUri().toString()));
 			chart.setPreserveRatio(true);
