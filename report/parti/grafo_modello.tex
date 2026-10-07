@@ -1,0 +1,91 @@
+% Grafo di esempio dell'ambiente del modello: due stazioni descritte binario per binario,
+% una linea a doppio binario mesoscopica e una tratta a binario unico, con tre treni.
+% Incluso da modello.tex dentro un ambiente figure.
+\begin{tikzpicture}[x=0.95cm, y=0.95cm, >=Stealth,
+	nodo/.style={circle, draw, fill=white, inner sep=1.4pt},
+	link/.style={->, line width=0.7pt},
+	bidi/.style={<->, line width=0.7pt},
+	risorsa/.style={draw=black!55, dashed, rounded corners=3pt},
+	treno/.style={line width=3.2pt, line cap=round, color=red!75!black},
+	prenotato/.style={line width=3.2pt, color=red!75!black, opacity=0.3},
+	etichetta/.style={font=\scriptsize, align=center}]
+
+	% risorse
+	\draw[risorsa] (1.45,0.5) rectangle (2.95,1.1);
+	\draw[risorsa] (1.45,-1.1) rectangle (2.95,-0.5);
+	\draw[risorsa] (9.45,0.5) rectangle (10.95,1.1);
+	\draw[risorsa] (9.45,-1.1) rectangle (10.95,-0.5);
+	\draw[risorsa] (12.45,-0.35) rectangle (15.75,0.35);
+
+	% nodi
+	\node[nodo] (a0) at (0,0) {};
+	\node[nodo] (a1u) at (1.2,0.8) {};
+	\node[nodo] (a2u) at (3.2,0.8) {};
+	\node[nodo] (a1d) at (1.2,-0.8) {};
+	\node[nodo] (a2d) at (3.2,-0.8) {};
+	\node[nodo] (a3) at (4.4,0) {};
+	\node[nodo] (b0) at (8.2,0) {};
+	\node[nodo] (b1u) at (9.2,0.8) {};
+	\node[nodo] (b2u) at (11.2,0.8) {};
+	\node[nodo] (b1d) at (9.2,-0.8) {};
+	\node[nodo] (b2d) at (11.2,-0.8) {};
+	\node[nodo] (b3) at (12.2,0) {};
+	\node[nodo] (c0) at (16,0) {};
+
+	% stazione A: un verso per binario
+	\draw[link] (a0) -- (a1u);
+	\draw[link] (a1u) -- (a2u);
+	\draw[link] (a2u) -- (a3);
+	\draw[link] (a3) -- (a2d);
+	\draw[link] (a2d) -- (a1d);
+	\draw[link] (a1d) -- (a0);
+
+	% linea a doppio binario, mesoscopica
+	\draw[link] ([yshift=3pt]a3.east) -- node[above, etichetta] {capienza 2} ([yshift=3pt]b0.west);
+	\draw[link] ([yshift=-3pt]b0.west) -- node[below, etichetta] {capienza 2} ([yshift=-3pt]a3.east);
+
+	% stazione B: binari percorribili nei due versi
+	\draw[bidi] (b0) -- (b1u);
+	\draw[bidi] (b1u) -- (b2u);
+	\draw[bidi] (b2u) -- (b3);
+	\draw[bidi] (b0) -- (b1d);
+	\draw[bidi] (b1d) -- (b2d);
+	\draw[bidi] (b2d) -- (b3);
+
+	% binario unico
+	\draw[bidi] (b3) -- node[below=11pt, etichetta] {capienza 1} (c0);
+
+	% treni
+	\draw[treno] (1.7,0.8) -- (2.7,0.8);
+	\begin{scope}[yshift=3pt]
+		\draw[prenotato] (5.9,0) -- (7.6,0);
+		\draw[treno] (4.9,0) -- (5.9,0);
+	\end{scope}
+	\draw[treno] (9.7,-0.8) -- (10.7,-0.8);
+	\draw[prenotato] (12.6,0) -- (13.7,0);
+	\draw[treno] (13.7,0) -- (14.7,0);
+
+	% etichette
+	\node[etichetta] at (2.2,2.15) {Stazione A\\(microscopica)};
+	\node[etichetta] at (6.3,2.15) {Linea a doppio binario\\(mesoscopica)};
+	\node[etichetta] at (10.2,2.15) {Stazione B\\(microscopica)};
+	\node[etichetta] at (14.1,2.15) {Binario unico\\(un blocco)};
+	\node[etichetta] at (2.2,1.35) {binario 1};
+	\node[etichetta] at (2.2,-1.4) {binario 2};
+	\node[etichetta] at (10.2,1.35) {binario 1};
+	\node[etichetta] at (10.2,-1.4) {binario 2};
+
+	% legenda
+	\begin{scope}[yshift=-2.3cm]
+		\node[nodo] at (0.3,0) {};
+		\node[etichetta, anchor=west] at (0.5,0) {nodo};
+		\draw[link] (2.0,0) -- (2.9,0);
+		\node[etichetta, anchor=west] at (3.0,0) {link};
+		\draw[risorsa] (4.4,-0.2) rectangle (5.3,0.2);
+		\node[etichetta, anchor=west] at (5.4,0) {risorsa};
+		\draw[treno] (7.4,0) -- (8.2,0);
+		\node[etichetta, anchor=west] at (8.4,0) {treno};
+		\draw[prenotato] (10.2,0) -- (11.0,0);
+		\node[etichetta, anchor=west] at (11.2,0) {tratto prenotato};
+	\end{scope}
+\end{tikzpicture}
