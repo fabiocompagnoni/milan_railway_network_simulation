@@ -505,7 +505,7 @@
 				<attribute name="gtfsStopName" class="java.lang.String">Villanova D'Ardenghi</attribute>
 			</attributes>
 		</node>
-		<node id="S00278_S00279.entry.a" x="505235.54112484807" y="4999327.041533887" >
+		<node id="S00278_S00279.entry.a" x="505208.0161410264" y="4999190.516950695" >
 		</node>
 		<node id="S00279" x="505507.8291303853" y="4999201.108051284" >
 			<attributes>
@@ -513,60 +513,66 @@
 				<attribute name="microNode" class="java.lang.String">pavia-alessandria</attribute>
 			</attributes>
 		</node>
-		<node id="S00279.north.S00278.in" x="505235.54112484807" y="4999327.041533887" >
+		<node id="S00279.north.S00278.in" x="505208.0161410264" y="4999190.516950695" >
 		</node>
-		<node id="S00279.north.S00278.out" x="505233.4422334714" y="4999322.503400462" >
+		<node id="S00279.north.S00278.out" x="505208.19265936955" y="4999185.520067539" >
 		</node>
-		<node id="S00279.north.sidings.in" x="505248.1344731084" y="4999354.270334441" >
+		<node id="S00279.north.S00400.in" x="505208.3691777127" y="4999180.523184383" >
 		</node>
-		<node id="S00279.north.sidings.out" x="505246.03558173164" y="4999349.732201016" >
+		<node id="S00279.north.S00400.out" x="505208.54569605587" y="4999175.526301227" >
 		</node>
-		<node id="S00279.p1.a.in" x="505598.5917988977" y="4999159.13022375" >
+		<node id="S00279.north.sidings.in" x="505206.9570309675" y="4999220.49824963" >
 		</node>
-		<node id="S00279.p1.a.out" x="505598.5917988977" y="4999159.13022375" >
+		<node id="S00279.north.sidings.out" x="505207.1335493107" y="4999215.501366475" >
 		</node>
-		<node id="S00279.p1.b.in" x="505417.0664618729" y="4999243.085878818" >
+		<node id="S00279.p1.a.in" x="505607.76679350494" y="4999204.638418147" >
 		</node>
-		<node id="S00279.p1.b.out" x="505417.0664618729" y="4999243.085878818" >
+		<node id="S00279.p1.a.out" x="505607.76679350494" y="4999204.638418147" >
 		</node>
-		<node id="S00279.p2.a.in" x="505596.492907521" y="4999154.5920903245" >
+		<node id="S00279.p1.b.in" x="505407.89146726567" y="4999197.577684421" >
 		</node>
-		<node id="S00279.p2.a.out" x="505596.492907521" y="4999154.5920903245" >
+		<node id="S00279.p1.b.out" x="505407.89146726567" y="4999197.577684421" >
 		</node>
-		<node id="S00279.p2.b.in" x="505414.9675704962" y="4999238.547745393" >
+		<node id="S00279.p2.a.in" x="505607.9433118481" y="4999199.641534992" >
 		</node>
-		<node id="S00279.p2.b.out" x="505414.9675704962" y="4999238.547745393" >
+		<node id="S00279.p2.a.out" x="505607.9433118481" y="4999199.641534992" >
 		</node>
-		<node id="S00279.p3.a.in" x="505594.3940161443" y="4999150.053956899" >
+		<node id="S00279.p2.b.in" x="505408.0679856088" y="4999192.580801265" >
 		</node>
-		<node id="S00279.p3.a.out" x="505594.3940161443" y="4999150.053956899" >
+		<node id="S00279.p2.b.out" x="505408.0679856088" y="4999192.580801265" >
 		</node>
-		<node id="S00279.p3.b.in" x="505412.86867911945" y="4999234.009611967" >
+		<node id="S00279.p3.a.in" x="505608.11983019125" y="4999194.644651836" >
 		</node>
-		<node id="S00279.p3.b.out" x="505412.86867911945" y="4999234.009611967" >
+		<node id="S00279.p3.a.out" x="505608.11983019125" y="4999194.644651836" >
 		</node>
-		<node id="S00279.sidings.a" x="505656.56648141425" y="4999165.370110537" >
+		<node id="S00279.p3.b.in" x="505408.244503952" y="4999187.58391811" >
 		</node>
-		<node id="S00279.sidings.b" x="505384.278475877" y="4999291.303593139" >
+		<node id="S00279.p3.b.out" x="505408.244503952" y="4999187.58391811" >
 		</node>
-		<node id="S00279.south.S01860.in" x="505780.11713592254" y="4999075.174568681" >
+		<node id="S00279.sidings.a" x="505656.6765150059" y="4999236.384900514" >
 		</node>
-		<node id="S00279.south.S01860.out" x="505778.01824454585" y="4999070.636435255" >
+		<node id="S00279.sidings.b" x="505356.863525647" y="4999225.793799926" >
 		</node>
-		<node id="S00279.south.sidings.in" x="505792.71048418287" y="4999102.403369235" >
+		<node id="S00279.south.S01860.in" x="505807.6421197442" y="4999211.699151874" >
 		</node>
-		<node id="S00279.south.sidings.out" x="505790.6115928061" y="4999097.865235809" >
+		<node id="S00279.south.S01860.out" x="505807.81863808737" y="4999206.702268718" >
 		</node>
-		<node id="S00279_S00278.exit.b" x="505233.4422334714" y="4999322.503400462" >
+		<node id="S00279.south.sidings.in" x="505806.58300968533" y="4999241.680450809" >
+		</node>
+		<node id="S00279.south.sidings.out" x="505806.7595280285" y="4999236.683567653" >
+		</node>
+		<node id="S00279_S00278.exit.b" x="505208.19265936955" y="4999185.520067539" >
 		</node>
 		<node id="S00279_S01860.entry.a" x="511239.44909646193" y="5003664.836679325" >
 		</node>
-		<node id="S00279_S01860.exit.b" x="505778.01824454585" y="4999070.636435255" >
+		<node id="S00279_S01860.exit.b" x="505807.81863808737" y="4999206.702268718" >
 		</node>
 		<node id="S00400" x="502377.1137536277" y="4997813.170526072" >
 			<attributes>
 				<attribute name="gtfsStopName" class="java.lang.String">Sairano Zinasco</attribute>
 			</attributes>
+		</node>
+		<node id="S00400_S00279.entry.a" x="505208.3691777127" y="4999180.523184383" >
 		</node>
 		<node id="S00401" x="499979.31652628764" y="4996783.923005414" >
 			<attributes>
@@ -11177,7 +11183,7 @@
 		</node>
 		<node id="S01860.south.sidings.out" x="511494.8556788815" y="5004210.5403330205" >
 		</node>
-		<node id="S01860_S00279.entry.a" x="505780.11713592254" y="4999075.174568681" >
+		<node id="S01860_S00279.entry.a" x="505807.6421197442" y="4999211.699151874" >
 		</node>
 		<node id="S01860_S00279.exit.b" x="511243.76525692176" y="5003662.312643097" >
 		</node>
@@ -17597,6 +17603,24 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
+		<link id="S00279.p1.north.S00400.in" from="S00279.north.S00400.in" to="S00279.p1.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">pavia-alessandria</attribute>
+				<attribute name="microStation" class="java.lang.String">S00279</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S00279.p1.north.S00400.out" from="S00279.p1.b.out" to="S00279.north.S00400.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">pavia-alessandria</attribute>
+				<attribute name="microStation" class="java.lang.String">S00279</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
 		<link id="S00279.p1.north.sidings.in" from="S00279.north.sidings.in" to="S00279.p1.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -17709,6 +17733,24 @@
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
 			</attributes>
 		</link>
+		<link id="S00279.p2.north.S00400.in" from="S00279.north.S00400.in" to="S00279.p2.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">pavia-alessandria</attribute>
+				<attribute name="microStation" class="java.lang.String">S00279</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S00279.p2.north.S00400.out" from="S00279.p2.b.out" to="S00279.north.S00400.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">pavia-alessandria</attribute>
+				<attribute name="microStation" class="java.lang.String">S00279</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
 		<link id="S00279.p2.north.sidings.in" from="S00279.north.sidings.in" to="S00279.p2.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
@@ -17813,6 +17855,24 @@
 			</attributes>
 		</link>
 		<link id="S00279.p3.north.S00278.out" from="S00279.p3.b.out" to="S00279.north.S00278.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">pavia-alessandria</attribute>
+				<attribute name="microStation" class="java.lang.String">S00279</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S00279.p3.north.S00400.in" from="S00279.north.S00400.in" to="S00279.p3.b.in" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+				<attribute name="microNode" class="java.lang.String">pavia-alessandria</attribute>
+				<attribute name="microStation" class="java.lang.String">S00279</attribute>
+				<attribute name="railsimNonBlockingArea" class="java.lang.Boolean">true</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+			</attributes>
+		</link>
+		<link id="S00279.p3.north.S00400.out" from="S00279.p3.b.out" to="S00279.north.S00400.out" length="100.0" freespeed="8.333333333333334" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
 				<attribute name="microNode" class="java.lang.String">pavia-alessandria</attribute>
@@ -17978,13 +18038,21 @@
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
 		</link>
-		<link id="S00400_S00279" from="S00400" to="S00279" length="3351.7" freespeed="36.11111111111111" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+		<link id="S00400_S00279" from="S00400" to="S00400_S00279.entry.a" length="3151.7" freespeed="36.11111111111111" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="gtfsDailyTrips" class="java.lang.Integer">1</attribute>
 				<attribute name="gtfsMinTravelTimeSeconds" class="java.lang.Integer">180</attribute>
 				<attribute name="gtfsRoutes" class="java.lang.String">R35</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">62060352 1278047254 1278047257 1278047258 1278047259 1278047260 1278047261 1278047267 1278047275 1278047276 1362334506</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">S00279_S00400</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
+			</attributes>
+		</link>
+		<link id="S00400_S00279.entry" from="S00400_S00279.entry.a" to="S00279.north.S00400.in" length="200.0" freespeed="36.11111111111111" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
+			<attributes>
+				<attribute name="railsimEntry" class="java.lang.Boolean">true</attribute>
 				<attribute name="railsimResourceId" class="java.lang.String">S00279_S00400</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
