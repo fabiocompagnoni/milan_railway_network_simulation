@@ -2,7 +2,7 @@
 """Writes one micro-node file per line for the crossing stations on single track.
 
 Input: docs/network/misure/stazioni-binario-unico.csv (survey of 2026-09-17: tracks from
-Wikipedia, OSM estimate, Fabio's own count when filled) and the mesoscopic network
+Wikipedia, OSM estimate, the direct survey when filled) and the mesoscopic network
 scenarios/milan/network.xml for each station's neighbours.
 
 A station becomes one group of bidirectional tracks, numbered 1..n, connected to every
@@ -73,7 +73,7 @@ def main():
 		stations, lines_terminal, lines_through, sources = [], {}, {}, []
 		for r in sorted(group, key=lambda r: r['nome']):
 			sid = r['stop_id']
-			tracks = int(r['binari_reali_Fabio'] or r['binari_wikipedia'])
+			tracks = int(r['binari_reali'] or r['binari_wikipedia'])
 			terminus = r['ruolo'] == 'capolinea binario unico'
 			sx, sy = xy(sid)
 			nbs = sorted(neighbours[sid], key=lambda n: math.dist(xy(n), (0, 0)))
@@ -104,12 +104,12 @@ def main():
 			lines_terminal[sid] = [gid]
 			lines_through[sid] = [gid]
 			sources.append(f"{r['nome']}: {r['binari_wikipedia']} binari secondo {r['fonte_wikipedia']}; stima OSM {r['binari_OSM']}"
-				+ (f"; rilievo Fabio {r['binari_reali_Fabio']}" if r['binari_reali_Fabio'] else ''))
+				+ (f"; rilievo diretto {r['binari_reali']}" if r['binari_reali'] else ''))
 		node = {
 			'node': name,
 			'title': f"Stazioni di incrocio sul binario unico: {', '.join(s['name'] for s in stations)}",
 			'status': 'generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi',
-			'detailLevel': 'un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne\' assegnazione per linea',
+			'detailLevel': 'un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo diretto) e i lati dalla geografia; senza gole ne\' assegnazione per linea',
 			'sources': ['docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)'] + sources,
 			'stations': stations,
 			'segments': [],

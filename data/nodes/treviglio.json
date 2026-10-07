@@ -4,7 +4,7 @@
 	"status": "bozza con ricerca e conferma del 2026-09-15",
 	"detailLevel": "gruppi di binari: stazione di diramazione verso Milano, Bergamo, Brescia, Cremona e Crema; capolinea di S5, S6, R2 e R6",
 	"sources": [
-		"Wikipedia, Stazione di Treviglio (https://it.wikipedia.org/wiki/Stazione_di_Treviglio): 2 binari di corsa della Milano-Venezia storica, 2 dell'interconnessione alta velocita', 4 binari di precedenza e incrocio davanti al fabbricato, 2 tronchi lato Milano; confermato da Fabio 2026-09-15",
+		"Wikipedia, Stazione di Treviglio (https://it.wikipedia.org/wiki/Stazione_di_Treviglio): 2 binari di corsa della Milano-Venezia storica, 2 dell'interconnessione alta velocita', 4 binari di precedenza e incrocio davanti al fabbricato, 2 tronchi lato Milano; confermato da rilievo diretto, 2026-09-15",
 		"GTFS Trenord orari_trenord, conteggio 2026-09-15: si attestano S5 74, R2 35, R6 23, S6 22 corse; transitano RE6 43, R4 33, R6 13",
 		"rete meso: lato Milano S01703 Pioltello, S01701 Lambrate, S01707 Cassano d'Adda, S01601 Treviglio Ovest (Bergamo); lato opposto S01709 Vidalengo, S01711 Romano, S09999 Brescia (Brescia), S01602 Caravaggio (Cremona), S01605 Crema"
 	],

@@ -1,4 +1,4 @@
-stop_id,nome,linee,ruolo,tratte_binario_unico,tratte_doppio_binario,binari_OSM,di_cui_sidings_OSM,passenger_lines_OSM,binari_wikipedia,incrocio_wikipedia,fonte_wikipedia,binari_reali_Fabio,note
+stop_id,nome,linee,ruolo,tratte_binario_unico,tratte_doppio_binario,binari_OSM,di_cui_sidings_OSM,passenger_lines_OSM,binari_wikipedia,incrocio_wikipedia,fonte_wikipedia,binari_reali,note
 S01111,Colmegna,,intermedia,2,0,4,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Colmegna,,"fermata, binario unico"
 S05410,Gerra,,intermedia,2,0,2,0,1,1,no,https://it.wikipedia.org/wiki/Stazione_di_Gerra_(Gambarogno),,"fermata, binario unico"
 S05406,Magadino-Vira,,intermedia,2,0,2,0,2,2,si,https://it.wikipedia.org/wiki/Stazione_di_Magadino-Vira,,2 passanti con banchina piu' 2 tronchi merci
