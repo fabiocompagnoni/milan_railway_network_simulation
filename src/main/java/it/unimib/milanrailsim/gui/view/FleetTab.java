@@ -14,6 +14,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
@@ -45,9 +46,8 @@ final class FleetTab {
 	private record LineRow(String line, String type, int trains) {
 	}
 
-	private record HourRow(int hour, String type, int peak, int active) {
-	}
-
+	private static final String PEAK = "Massimo in corsa nello stesso istante";
+	private static final String ACTIVE = "Treni attivi nell'ora";
 	private static final String COMPARISON_FILE = "fleet_vs_baseline.csv";
 	private static final String COMPARISON_CHART = "charts/fleet_vs_baseline.png";
 	private static final String TOTAL = "Totale";
@@ -190,21 +190,20 @@ final class FleetTab {
 		return table;
 	}
 
+	/** One row per hour and one column per train type, for the measure chosen above the table. */
 	private static Node hourTable(RunFleet run) {
-		List<HourRow> rows = new ArrayList<>();
-		for (FleetUse.Hour hour : run.use().hours()) {
-			rows.add(new HourRow(hour.hour(), TOTAL, hour.peak(), hour.active()));
-			for (String type : inCatalogueOrder(hour.activeByType())) {
-				rows.add(new HourRow(hour.hour(), run.typeName(type), hour.peakByType().getOrDefault(type, 0),
-					hour.activeByType().get(type)));
-			}
+		ComboBox<String> measure = new ComboBox<>(FXCollections.observableArrayList(PEAK, ACTIVE));
+		measure.setValue(PEAK);
+		TableView<FleetUse.Hour> table = table(run.use().hours());
+		table.getColumns().add(Columns.number("Ora", 70, hour -> (double) hour.hour(), Columns::count));
+		table.getColumns().add(Columns.number(TOTAL, 90,
+			hour -> (double) (PEAK.equals(measure.getValue()) ? hour.peak() : hour.active()), Columns::count));
+		for (String type : inCatalogueOrder(run.use().byType())) {
+			table.getColumns().add(Columns.number(run.typeName(type), 150, hour -> (double) (PEAK.equals(measure.getValue())
+				? hour.peakByType() : hour.activeByType()).getOrDefault(type, 0), Columns::count));
 		}
-		TableView<HourRow> table = table(rows);
-		table.getColumns().add(Columns.number("Ora", 70, row -> (double) row.hour(), Columns::count));
-		table.getColumns().add(Columns.text("Tipo di treno", 220, HourRow::type));
-		table.getColumns().add(Columns.number("Massimo insieme", 140, row -> (double) row.peak(), Columns::count));
-		table.getColumns().add(Columns.number("Attivi nell'ora", 140, row -> (double) row.active(), Columns::count));
-		return table;
+		measure.valueProperty().addListener((observable, previous, chosen) -> table.refresh());
+		return new VBox(8, measure, table);
 	}
 
 	/** Leaves the comparison in the folder of the run, next to its other tables and charts. */
