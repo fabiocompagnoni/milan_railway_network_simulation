@@ -19,8 +19,9 @@
         <javafx.version>26.0.2</javafx.version>
         <exec.mainClass>it.unimib.milanrailsim.RunMilanRailsim</exec.mainClass>
         <gui.mainClass>it.unimib.milanrailsim.gui.app.Launcher</gui.mainClass>
-        <!-- jpackage refuses -SNAPSHOT: the packaged application carries the plain version -->
-        <dist.version>0.1.0</dist.version>
+        <!-- jpackage refuses -SNAPSHOT, and on macOS a version starting with zero:
+             the packaged application carries a plain version of its own -->
+        <dist.version>1.0.0</dist.version>
         <dist.input>${project.build.directory}/dist/input</dist.input>
     </properties>
 
