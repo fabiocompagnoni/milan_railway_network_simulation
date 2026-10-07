@@ -53,6 +53,8 @@ public record FleetConfig(List<TrainType> types) {
 	private static final String TRENORD_FLEET = "Trenord, La flotta, trenord.it (consultato il 5 agosto 2026)";
 	private static final String WIKIPEDIA_CARAVAGGIO = "Wikipedia, Elettrotreno FS ETR 421/521 (consultato il 5 agosto 2026)";
 	private static final String TILO_SOURCES = "Schede RABe 524 FLIRT TSI: trainswiss.ch, sguggiari.ch, Wikipedia (consultati il 5 agosto 2026)";
+	private static final String WIKIPEDIA_CORADIA_MERIDIAN =
+		"Wikipedia, Elettrotreno Alstom Coradia Meridian ETR 324, 425 e 526 (consultato il 7 ottobre 2026)";
 	private static final String WIKIPEDIA_ATR_803 = "Wikipedia, Autotreno ATR 803 (consultato il 23 settembre 2026)";
 	private static final double ESTIMATED_DECELERATION = 0.5;
 
@@ -64,7 +66,7 @@ public record FleetConfig(List<TrainType> types) {
 		}
 	}
 
-	/** The nine types of the v1 model with the sources recorded in the infrastructure notes. */
+	/** The ten types of the model with the sources recorded in the infrastructure notes. */
 	public static FleetConfig defaults() {
 		return new FleetConfig(List.of(
 			type("tsr", "TSR", 104.98, 436, 140, 1.0, Traction.ELECTRIC,
@@ -86,6 +88,10 @@ public record FleetConfig(List<TrainType> types) {
 				Set.of("length", "seats", "acceleration", "deceleration")),
 			type("etr245", "ETR 245 Coradia Meridian", 82.2, 230, 160, 1.0, Traction.ELECTRIC,
 				Map.of("length", TRENORD_FLEET, "seats", TRENORD_FLEET, "vmax", TRENORD_FLEET),
+				Set.of("acceleration", "deceleration")),
+			type("etr425", "ETR 425 Coradia Meridian", 82.2, 290, 160, 1.0, Traction.ELECTRIC,
+				Map.of("length", WIKIPEDIA_CORADIA_MERIDIAN, "seats", WIKIPEDIA_CORADIA_MERIDIAN + ", da 290 a 309 secondo la versione",
+					"vmax", WIKIPEDIA_CORADIA_MERIDIAN),
 				Set.of("acceleration", "deceleration")),
 			type("atr125", "ATR 125 Stadler GTW", 77.33, 231, 140, 0.6, Traction.DIESEL,
 				Map.of("seats", TRENORD_FLEET, "vmax", TRENORD_FLEET),
