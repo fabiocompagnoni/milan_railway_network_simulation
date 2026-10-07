@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -30,6 +31,16 @@ final class ScenarioTab {
 	private record AddedRow(String line, int trips, double firstDeparture, double lastDeparture) {
 	}
 
+	/**
+	 * One added trip and what became of it in the run.
+	 *
+	 * @param relation the relation of the scenario the trip belongs to; blank for a line upgrade
+	 * @param vehicle  the train that ran it; blank when the engine could not schedule the trip
+	 */
+	private record AddedTrip(String trip, String relation, double departure, String from, String to, String copiedTrip,
+			String vehicle, double plannedArrival, double arrivalDelay, String status) {
+	}
+
 	private record SkippedRow(String relation, String line, double planned, String reason) {
 	}
 
@@ -40,8 +51,11 @@ final class ScenarioTab {
 	private ScenarioTab() {
 	}
 
-	static Node of(Path runDir) {
+	/** @param labels names of the stations, for the ends of the added trips */
+	static Node of(Path runDir, StopLabels labels) {
 		Path scenario = runDir.resolve("scenario");
+		Map<String, Map<String, String>> outcomes = new HashMap<>();
+		rows(runDir.resolve("trips.csv")).forEach(trip -> outcomes.put(trip.get("trip"), trip));
 		List<Map<String, String>> added = rows(scenario.resolve(RailsimJob.ADDED_TRIPS));
 		List<Map<String, String>> skipped = rows(scenario.resolve(RailsimJob.SKIPPED_TRIPS));
 		List<Map<String, String>> unscheduled = rows(scenario.resolve(RailsimJob.UNSCHEDULED_ADDED_TRIPS));
@@ -60,7 +74,7 @@ final class ScenarioTab {
 			ResultsView.metric("Passaggi ravvicinati in galleria", String.valueOf(tunnel.size()),
 				"corse aggiunte sotto l'intervallo minimo", !tunnel.isEmpty())));
 		if (!added.isEmpty()) {
-			column.getChildren().addAll(section("Corse aggiunte per linea"), addedTable(added));
+			column.getChildren().addAll(section("Corse aggiunte per linea"), addedTable(added, outcomes, labels));
 		}
 		if (!skipped.isEmpty()) {
 			column.getChildren().addAll(section("Corse rinunciate"), skippedTable(skipped));
@@ -78,7 +92,8 @@ final class ScenarioTab {
 		return Files.exists(csv) ? CsvTable.read(csv) : List.of();
 	}
 
-	private static Node addedTable(List<Map<String, String>> added) {
+	/** The lines that got trips; selecting one lists its added trips below, each with what became of it in the run. */
+	private static Node addedTable(List<Map<String, String>> added, Map<String, Map<String, String>> outcomes, StopLabels labels) {
 		Map<String, List<Double>> departures = new TreeMap<>();
 		added.forEach(row -> departures.computeIfAbsent(row.get("line"), key -> new ArrayList<>())
 			.add(Double.parseDouble(row.get("departure_s"))));
@@ -91,7 +106,57 @@ final class ScenarioTab {
 		table.getColumns().add(Columns.number("Corse aggiunte", 130, row -> (double) row.trips(), Columns::count));
 		table.getColumns().add(Columns.number("Prima partenza", 130, AddedRow::firstDeparture, Columns::clock));
 		table.getColumns().add(Columns.number("Ultima partenza", 130, AddedRow::lastDeparture, Columns::clock));
+
+		Label hint = muted("Seleziona una linea per vedere le sue corse aggiunte.");
+		VBox detail = new VBox(8, hint);
+		table.getSelectionModel().selectedItemProperty().addListener((observable, previous, line) -> {
+			if (line == null) {
+				detail.getChildren().setAll(hint);
+				return;
+			}
+			List<AddedTrip> trips = added.stream().filter(row -> row.get("line").equals(line.line()))
+				.map(row -> addedTrip(row, outcomes.get(row.get("trip")), labels)).toList();
+			detail.getChildren().setAll(section("Corse aggiunte sulla linea " + line.line()), addedTripsTable(trips));
+		});
+		return new VBox(8, table, detail);
+	}
+
+	private static AddedTrip addedTrip(Map<String, String> row, Map<String, String> outcome, StopLabels labels) {
+		// a trip the engine could not schedule has no outcome
+		return new AddedTrip(row.get("trip"), row.getOrDefault("relation", ""), Double.parseDouble(row.get("departure_s")),
+			labels.station(row.get("from")), labels.station(row.get("to")), row.get("copied_trip"),
+			outcome == null ? "" : outcome.get("vehicle"),
+			outcome == null ? Double.NaN : number(outcome.get("planned_arrival_s")),
+			outcome == null ? Double.NaN : number(outcome.get("arrival_delay_s")),
+			outcome == null ? "non simulata" : status(outcome.get("status")));
+	}
+
+	private static Node addedTripsTable(List<AddedTrip> trips) {
+		TableView<AddedTrip> table = table(trips);
+		table.getColumns().add(Columns.number("Partenza", 100, AddedTrip::departure, Columns::clock));
+		table.getColumns().add(Columns.text("Da", 190, AddedTrip::from));
+		table.getColumns().add(Columns.text("A", 190, AddedTrip::to));
+		table.getColumns().add(Columns.number("Arrivo previsto", 120, AddedTrip::plannedArrival, Columns::clock));
+		table.getColumns().add(Columns.number("Ritardo all'arrivo", 140, AddedTrip::arrivalDelay, RunLibraryView::minutesSeconds));
+		table.getColumns().add(Columns.text("Esito", 110, AddedTrip::status));
+		table.getColumns().add(Columns.text("Treno", 120, AddedTrip::vehicle));
+		table.getColumns().add(Columns.text("Relazione", 160, AddedTrip::relation));
+		table.getColumns().add(Columns.text("Corsa copiata", 170, AddedTrip::copiedTrip));
+		table.getColumns().add(Columns.text("Corsa", 190, AddedTrip::trip));
 		return table;
+	}
+
+	private static String status(String status) {
+		return switch (status) {
+			case "completed" -> "completata";
+			case "interrupted" -> "interrotta";
+			case "never_departed" -> "mai partita";
+			default -> status;
+		};
+	}
+
+	private static double number(String value) {
+		return value == null || value.isBlank() ? Double.NaN : Double.parseDouble(value);
 	}
 
 	private static Node skippedTable(List<Map<String, String>> skipped) {
