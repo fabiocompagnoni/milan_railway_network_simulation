@@ -37,6 +37,12 @@ class RailVehicleTypesTest {
 	}
 
 	@Test
+	void everyTypeCarriesTheNameOfTheCatalogue() {
+		assertEquals("Caravaggio ETR 521", byId().get("caravaggio_521").getAttributes().getAttribute(RailVehicleTypes.NAME_ATTRIBUTE));
+		assertEquals("Colleoni ATR 803", byId().get("atr803").getAttributes().getAttribute(RailVehicleTypes.NAME_ATTRIBUTE));
+	}
+
+	@Test
 	void sourcedCaravaggioAccelerationIsNotMarkedEstimated() {
 		VehicleType caravaggio = byId().get("caravaggio_521");
 		assertEquals(1.10, (Double) caravaggio.getAttributes().getAttribute("railsimAcceleration"), 1e-9);
