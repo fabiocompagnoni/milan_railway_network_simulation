@@ -11,14 +11,16 @@ inputs:
 runs:
   using: composite
   steps:
+    # The cache stores paths relative to the workspace. The home directory is
+    # on another drive on Windows, so a cache of ~/.m2 saved on Linux is
+    # restored there to the wrong place: the artifacts are cached from a
+    # folder of the workspace and copied to and from the Maven repository.
     - name: Restore the MATSim artifacts
       id: cache
       uses: actions/cache@v4
       with:
-        path: |
-          ~/.m2/repository/org/matsim
-          ~/.m2/repository/ch/sbb
-        key: matsim-libs-${{ inputs.commit }}
+        path: .matsim-repository
+        key: matsim-repository-${{ inputs.commit }}
         enableCrossOsArchive: true
 
     - name: Fetch the pinned matsim-libs commit
@@ -35,3 +37,18 @@ runs:
       shell: bash
       working-directory: matsim-libs
       run: mvn -B -ntp -DskipTests -Dmaven.javadoc.skip=true install -pl contribs/railsim -am
+
+    - name: Copy the built artifacts to the cached folder
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        mkdir -p .matsim-repository/org .matsim-repository/ch
+        cp -r ~/.m2/repository/org/matsim .matsim-repository/org/
+        cp -r ~/.m2/repository/ch/sbb .matsim-repository/ch/
+
+    - name: Copy the restored artifacts to the Maven repository
+      if: steps.cache.outputs.cache-hit == 'true'
+      shell: bash
+      run: |
+        mkdir -p ~/.m2/repository
+        cp -r .matsim-repository/. ~/.m2/repository/
