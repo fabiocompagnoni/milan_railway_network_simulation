@@ -1,0 +1,72 @@
+{
+	"node": "milano-mortara-incroci",
+	"title": "Stazioni di incrocio sul binario unico: Parona Lomellina",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Parona Lomellina: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Parona_Lomellina; stima OSM 2"
+	],
+	"stations": [
+		{
+			"id": "S01060",
+			"name": "Parona Lomellina",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "parona_lomellina",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01061"
+						],
+						"north": [
+							"meso:S00034"
+						]
+					},
+					"notes": "2 binari (stazione passante, 2 binari con banchina); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Vigevano, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01060": [
+					"parona_lomellina"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01060": [
+					"parona_lomellina"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

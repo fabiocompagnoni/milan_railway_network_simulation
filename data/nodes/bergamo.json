@@ -1,0 +1,45 @@
+{
+	"node": "bergamo",
+	"title": "Bergamo",
+	"status": "bozza con ricerca e conferma del 2026-09-15",
+	"detailLevel": "gruppi di binari: stazione ridotta a 3 tronchi durante i lavori della nuova stazione e del raddoppio (dal febbraio 2024)",
+	"sources": [
+		"Wikipedia, Stazione di Bergamo (https://it.wikipedia.org/wiki/Stazione_di_Bergamo): dal febbraio 2024 la stazione e' ridotta a 3 binari tronchi, 2 per la linea per Milano (via Treviglio/Verdello) e 1 per la linea per Brescia; confermato da Fabio 2026-09-15",
+		"RFI, punto sui lavori nel territorio di Bergamo, 2025-12-10 (https://www.rfi.it/it/news-e-media/comunicati-stampa-e-news/2025/12/10/rfi---lombardia--il-punto-sui-lavori-nel-territorio-di-bergamo.html): lavori ancora in corso",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15: si attestano RE2 55, R1 38, R2 35, R5 2 corse; nessun transito",
+		"rete meso: lato Milano S01600 Verdello Dalmine, S01612 Stezzano; lato Brescia S01533 Seriate, S01535 Montello Gorlago, S01537 Grumello del Monte"
+	],
+
+	"stations": [
+		{
+			"id": "S01529",
+			"name": "Bergamo",
+			"kind": "terminal",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "bergamo_milano", "kind": "terminal", "capacity": 2, "otherOperatorsShare": 0,
+					"connections": {"south": ["meso:S01600", "meso:S01612"]},
+					"notes": "2 tronchi della linea per Milano"},
+				{"id": "bergamo_brescia", "kind": "terminal", "capacity": 1, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01533", "meso:S01535", "meso:S01537"]},
+					"notes": "tronco della linea per Brescia"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "da rilevare: valore provvisorio del simulatore"}
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"R2": {"bundle": null, "stations": {"S01529": ["bergamo_milano"]}},
+		"RE2": {"bundle": null, "stations": {"S01529": ["bergamo_milano"]}},
+		"R1": {"bundle": null, "stations": {"S01529": ["bergamo_brescia"]}},
+		"R5": {"bundle": null, "stations": {"S01529": ["bergamo_brescia"]}},
+		"*terminal": {"bundle": null, "stations": {"S01529": ["bergamo_milano", "bergamo_brescia"]}}
+	},
+
+	"openQuestions": [
+		"Ricovero durante i lavori: dove sostano i treni?"
+	]
+}

@@ -1,0 +1,366 @@
+package it.unimib.milanrailsim.railsim;
+
+import ch.sbb.matsim.contrib.railsim.qsimengine.TrainPosition;
+import ch.sbb.matsim.contrib.railsim.qsimengine.resources.RailLink;
+import ch.sbb.matsim.contrib.railsim.qsimengine.resources.RailResource;
+import ch.sbb.matsim.contrib.railsim.qsimengine.resources.RailResourceManager;
+import ch.sbb.matsim.contrib.railsim.qsimengine.resources.RailResourceTestSupport;
+import ch.sbb.matsim.contrib.railsim.qsimengine.resources.ResourceState;
+import ch.sbb.matsim.contrib.railsim.qsimengine.resources.ResourceType;
+import org.junit.jupiter.api.Test;
+import org.matsim.api.core.v01.Coord;
+import org.matsim.api.core.v01.Id;
+import org.matsim.api.core.v01.network.Link;
+import org.matsim.api.core.v01.network.Network;
+import org.matsim.api.core.v01.network.Node;
+import org.matsim.core.mobsim.framework.MobsimDriverAgent;
+import org.matsim.core.events.EventsUtils;
+import org.matsim.core.network.NetworkUtils;
+
+import java.lang.reflect.Proxy;
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class SingleTrackDeadlockAvoidanceTest {
+
+	private record StubResource(Id<RailResource> id, List<RailLink> links) implements RailResource {
+		@Override
+		public Id<RailResource> getId() {
+			return id;
+		}
+
+		@Override
+		public ResourceType getType() {
+			return ResourceType.fixedBlock;
+		}
+
+		@Override
+		public List<RailLink> getLinks() {
+			return links;
+		}
+
+		@Override
+		public int getTotalCapacity() {
+			return 1;
+		}
+
+		@Override
+		public ResourceState getState(RailLink link) {
+			return ResourceState.EMPTY;
+		}
+	}
+
+	private record StubManager(Collection<RailResource> resources) implements RailResourceManager {
+		@Override
+		public Collection<RailResource> getResources() {
+			return resources;
+		}
+
+		@Override
+		public RailLink getLink(Id<Link> id) {
+			return null;
+		}
+
+		@Override
+		public double tryBlockLink(double time, RailLink link, int track, TrainPosition position) {
+			return 0;
+		}
+
+		@Override
+		public boolean hasCapacity(double time, Id<Link> link, int track, TrainPosition position) {
+			return true;
+		}
+
+		@Override
+		public void setCapacity(Id<Link> link, int newCapacity) {
+		}
+
+		@Override
+		public boolean isBlockedBy(RailLink link, TrainPosition position) {
+			return false;
+		}
+
+		@Override
+		public void releaseLink(double time, RailLink link, MobsimDriverAgent driver) {
+		}
+
+		@Override
+		public boolean checkReroute(double time, RailLink start, RailLink end, List<RailLink> subRoute,
+				List<RailLink> detour, TrainPosition position) {
+			return true;
+		}
+	}
+
+	/** A train on a fixed route, standing at its first link. */
+	private static TrainPosition train(RailLink... route) {
+		MobsimDriverAgent driver = (MobsimDriverAgent) Proxy.newProxyInstance(MobsimDriverAgent.class.getClassLoader(),
+			new Class<?>[] { MobsimDriverAgent.class }, (proxy, method, args) -> switch (method.getName()) {
+				case "hashCode" -> System.identityHashCode(proxy);
+				case "equals" -> proxy == args[0];
+				case "toString" -> "driver";
+				default -> null;
+			});
+		return new TrainPosition() {
+			@Override
+			public MobsimDriverAgent getDriver() {
+				return driver;
+			}
+
+			@Override
+			public ch.sbb.matsim.contrib.railsim.qsimengine.RailsimTransitDriverAgent getPt() {
+				return null;
+			}
+
+			@Override
+			public ch.sbb.matsim.contrib.railsim.qsimengine.TrainInfo getTrain() {
+				return null;
+			}
+
+			@Override
+			public Id<Link> getHeadLink() {
+				return route[0].getLinkId();
+			}
+
+			@Override
+			public Id<Link> getTailLink() {
+				return route[0].getLinkId();
+			}
+
+			@Override
+			public double getHeadPosition() {
+				return 0;
+			}
+
+			@Override
+			public double getTailPosition() {
+				return 0;
+			}
+
+			@Override
+			public double getDelay() {
+				return 0;
+			}
+
+			@Override
+			public int getRouteIndex() {
+				return 1;
+			}
+
+			@Override
+			public int getRouteSize() {
+				return route.length;
+			}
+
+			@Override
+			public RailLink getRoute(int idx) {
+				return route[idx];
+			}
+
+			@Override
+			public List<RailLink> getRoute(int from, int to) {
+				return List.of(route).subList(from, to);
+			}
+
+			@Override
+			public List<RailLink> getRouteUntilNextStop() {
+				return List.of(route);
+			}
+
+			@Override
+			public boolean isStop(Id<Link> link) {
+				return false;
+			}
+
+			@Override
+			public org.matsim.pt.transitSchedule.api.TransitStopFacility getNextStop() {
+				return null;
+			}
+		};
+	}
+
+	@Test
+	void aTrainEntersASingleTrackBlockOnlyIfTheCrossingStationKeepsATrackForTheMeet() {
+		// W -single- S -single- E: S is the crossing station with two tracks
+		Network network = NetworkUtils.createNetwork();
+		Node w = NetworkUtils.createAndAddNode(network, Id.createNodeId("W"), new Coord(0, 0));
+		Node s = NetworkUtils.createAndAddNode(network, Id.createNodeId("S"), new Coord(1000, 0));
+		Node e = NetworkUtils.createAndAddNode(network, Id.createNodeId("E"), new Coord(2000, 0));
+		Link stopW = loop(network, w, "stop_W", 2);
+		Link stopS = loop(network, s, "stop_S", 2);
+		Link stopE = loop(network, e, "stop_E", 2);
+		Link ws = NetworkUtils.createAndAddLink(network, Id.createLinkId("W_S"), w, s, 1000, 10, 1, 1);
+		Link sw = NetworkUtils.createAndAddLink(network, Id.createLinkId("S_W"), s, w, 1000, 10, 1, 1);
+		Link se = NetworkUtils.createAndAddLink(network, Id.createLinkId("S_E"), s, e, 1000, 10, 1, 1);
+		Link es = NetworkUtils.createAndAddLink(network, Id.createLinkId("E_S"), e, s, 1000, 10, 1, 1);
+		singleTrack(ws, sw, "block_W_S");
+		singleTrack(se, es, "block_S_E");
+		RailLink atW = new RailLink(stopW, null);
+		RailLink atS = new RailLink(stopS, null);
+		RailLink atE = new RailLink(stopE, null);
+		RailLink east1 = new RailLink(ws, sw);
+		RailLink west1 = new RailLink(sw, ws);
+		RailLink east2 = new RailLink(se, es);
+		RailLink west2 = new RailLink(es, se);
+		RailResource blockWS = RailResourceTestSupport.fixedBlock("block_W_S", List.of(east1, west1));
+		RailResourceTestSupport.fixedBlock("block_S_E", List.of(east2, west2));
+		RailResource stationS = RailResourceTestSupport.fixedBlock("stop_S", List.of(atS));
+		RailResourceTestSupport.fixedBlock("stop_W", List.of(atW));
+		RailResourceTestSupport.fixedBlock("stop_E", List.of(atE));
+		SingleTrackDeadlockAvoidance avoidance = new SingleTrackDeadlockAvoidance(network, EventsUtils.createEventsManager());
+		TrainPosition first = train(atW, east1, atS, east2, atE);
+		TrainPosition second = train(atW, east1, atS, east2, atE);
+		TrainPosition opposing = train(atE, west2, atS, west1, atW);
+
+		assertTrue(avoidance.checkLink(0, east1, first), "an empty crossing station admits the first train");
+		avoidance.onReserve(0, blockWS, first);
+		assertTrue(avoidance.checkLink(1, east1, first), "a train holding the block is never held back in it");
+		avoidance.onReserve(1, stationS, first);
+		avoidance.onRelease(2, blockWS, first.getDriver());
+
+		assertFalse(avoidance.checkLink(3, east1, second),
+			"a second train of the same direction would fill the station and leave no track for the meet");
+		assertTrue(avoidance.checkLink(3, west2, opposing), "the opposing train takes the free track and the meet happens");
+
+		avoidance.onRelease(4, stationS, first.getDriver());
+		assertTrue(avoidance.checkLink(5, east1, second), "once the first train left, the second may follow");
+
+		// a train holding the block towards S already counts at S: a train out of S's yard may not take the last track
+		avoidance.onReserve(6, blockWS, second);
+		TrainPosition fromYard = train(atS, east2, atE);
+		assertFalse(avoidance.checkLink(7, atS, fromYard), "the committed train needs that track; the yard train is no meet partner");
+		assertTrue(avoidance.checkLinks(7, List.of(west2, atS), opposing), "a whole segment is checked link by link");
+	}
+
+	@Test
+	void theStationItselfKeepsATrackForTheMeetWhateverLinkTheTrainComesInThrough() {
+		// D =double= S -single- E: S is entered over double track from D, so no block rule holds trains back there
+		Network network = NetworkUtils.createNetwork();
+		Node d = NetworkUtils.createAndAddNode(network, Id.createNodeId("D"), new Coord(0, 0));
+		Node s = NetworkUtils.createAndAddNode(network, Id.createNodeId("S"), new Coord(1000, 0));
+		Node e = NetworkUtils.createAndAddNode(network, Id.createNodeId("E"), new Coord(2000, 0));
+		Link stopS = loop(network, s, "stop_S", 2);
+		Link ds = NetworkUtils.createAndAddLink(network, Id.createLinkId("D_S"), d, s, 1000, 10, 1, 1);
+		Link se = NetworkUtils.createAndAddLink(network, Id.createLinkId("S_E"), s, e, 1000, 10, 1, 1);
+		Link es = NetworkUtils.createAndAddLink(network, Id.createLinkId("E_S"), e, s, 1000, 10, 1, 1);
+		singleTrack(se, es, "block_S_E");
+		RailLink atS = new RailLink(stopS, null);
+		RailLink fromD = new RailLink(ds, null);
+		RailLink east = new RailLink(se, es);
+		RailLink west = new RailLink(es, se);
+		RailResourceTestSupport.fixedBlock("D_S", List.of(fromD));
+		RailResourceTestSupport.fixedBlock("block_S_E", List.of(east, west));
+		RailResource stationS = RailResourceTestSupport.fixedBlock("stop_S", List.of(atS));
+		SingleTrackDeadlockAvoidance avoidance = new SingleTrackDeadlockAvoidance(network, EventsUtils.createEventsManager());
+		TrainPosition first = train(fromD, atS, east);
+		TrainPosition second = train(fromD, atS, east);
+		TrainPosition opposing = train(west, atS);
+
+		assertTrue(avoidance.checkLink(0, atS, first));
+		avoidance.onReserve(0, stationS, first);
+		assertTrue(avoidance.checkLink(1, atS, first), "a train holding the station is not questioned again");
+		assertFalse(avoidance.checkLink(2, atS, second), "a second train from the same side would leave no track for the meet");
+		assertTrue(avoidance.checkLink(2, atS, opposing), "the opposing train gets the free track");
+	}
+
+	/** Both directions of a section under one resource, as the network enricher marks single track. */
+	private static void singleTrack(Link there, Link back, String resource) {
+		there.getAttributes().putAttribute("railsimResourceId", resource);
+		back.getAttributes().putAttribute("railsimResourceId", resource);
+	}
+
+	private static Link loop(Network network, Node node, String id, int tracks) {
+		Link link = NetworkUtils.createAndAddLink(network, Id.createLinkId(id), node, node, 50, 10, 1, 1);
+		link.getAttributes().putAttribute("railsimTrainCapacity", tracks);
+		return link;
+	}
+
+	@Test
+	void aDetailedCrossingStationCountsItsPlatformsTogether() {
+		// station S with two platform tracks p1, p2 reached from W over single track: two trains from W must not take both
+		Network network = NetworkUtils.createNetwork();
+		for (String id : List.of("W", "S.south.W.in", "S.p1.b", "S.p1.a", "S.p2.b", "S.p2.a", "E")) {
+			NetworkUtils.createAndAddNode(network, Id.createNodeId(id), new Coord(0, 0));
+		}
+		Link ws = NetworkUtils.createAndAddLink(network, Id.createLinkId("W_S"), network.getNodes().get(Id.createNodeId("W")),
+			network.getNodes().get(Id.createNodeId("S.south.W.in")), 1000, 10, 1, 1);
+		Link sw = NetworkUtils.createAndAddLink(network, Id.createLinkId("S_W"), network.getNodes().get(Id.createNodeId("S.south.W.in")),
+			network.getNodes().get(Id.createNodeId("W")), 1000, 10, 1, 1);
+		singleTrack(ws, sw, "block_W_S");
+		RailLink[] platforms = new RailLink[2];
+		RailLink[] approaches = new RailLink[2];
+		for (int i = 1; i <= 2; i++) {
+			Link approach = NetworkUtils.createAndAddLink(network, Id.createLinkId("S.p" + i + ".south.W.in"),
+				network.getNodes().get(Id.createNodeId("S.south.W.in")), network.getNodes().get(Id.createNodeId("S.p" + i + ".b")), 100, 10, 1, 1);
+			Link platform = NetworkUtils.createAndAddLink(network, Id.createLinkId("S.p" + i + ".north"),
+				network.getNodes().get(Id.createNodeId("S.p" + i + ".b")), network.getNodes().get(Id.createNodeId("S.p" + i + ".a")), 200, 10, 1, 1);
+			platform.getAttributes().putAttribute("microStation", "S");
+			platform.getAttributes().putAttribute("microTrack", String.valueOf(i));
+			platform.getAttributes().putAttribute("railsimResourceId", "S.p" + i);
+			// a two-sided bidirectional track: the turnback shares the resource and comes first in its link list
+			Link turn = NetworkUtils.createAndAddLink(network, Id.createLinkId("S.p" + i + ".a.turn"),
+				network.getNodes().get(Id.createNodeId("S.p" + i + ".a")), network.getNodes().get(Id.createNodeId("S.p" + i + ".a")), 1, 10, 1, 1);
+			turn.getAttributes().putAttribute("microStation", "S");
+			turn.getAttributes().putAttribute("railsimResourceId", "S.p" + i);
+			approaches[i - 1] = new RailLink(approach, null);
+			platforms[i - 1] = new RailLink(platform, null);
+			RailResourceTestSupport.fixedBlock("S.p" + i, List.of(new RailLink(turn, null), platforms[i - 1]));
+			RailResourceTestSupport.fixedBlock("S.p" + i + ".south.W.in", List.of(approaches[i - 1]));
+		}
+		RailLink east = new RailLink(ws, sw);
+		RailLink west = new RailLink(sw, ws);
+		RailResource block = RailResourceTestSupport.fixedBlock("block_W_S", List.of(east, west));
+		SingleTrackDeadlockAvoidance avoidance = new SingleTrackDeadlockAvoidance(network, EventsUtils.createEventsManager());
+		TrainPosition first = train(east, approaches[0], platforms[0]);
+		TrainPosition second = train(east, approaches[1], platforms[1]);
+
+		assertTrue(avoidance.checkLink(0, east, first), "the block may be entered: the station is empty");
+		avoidance.onReserve(0, block, first);
+		avoidance.onReserve(1, platforms[0].getResource(), first);
+		avoidance.onRelease(2, block, first.getDriver());
+
+		assertFalse(avoidance.checkLink(3, east, second), "a second train from W would fill the station: no track for the meet");
+		assertFalse(avoidance.checkLink(3, platforms[1], second), "nor may it take the second platform itself");
+
+		// a train ending its trip on p2 holds the block: p2 is claimed for it, whoever else asks, however many tracks are free
+		avoidance.onRelease(4, platforms[0].getResource(), first.getDriver());
+		TrainPosition ending = train(east, approaches[1], platforms[1]);
+		avoidance.onReserve(5, block, ending);
+		TrainPosition fromYard = train(platforms[1], approaches[1]);
+		assertFalse(avoidance.checkLink(6, platforms[1], fromYard), "p2 is claimed by the terminating train in the block");
+		assertTrue(avoidance.checkLink(6, platforms[1], ending), "the claimant itself takes it");
+		avoidance.onReserve(7, platforms[1].getResource(), ending);
+		Link out = NetworkUtils.createAndAddLink(network, Id.createLinkId("S.p1.south.W.out"),
+			network.getNodes().get(Id.createNodeId("S.p1.a")), network.getNodes().get(Id.createNodeId("S.south.W.in")), 100, 10, 1, 1);
+		TrainPosition towardsW = train(platforms[0], new RailLink(out, null), west);
+		assertTrue(avoidance.checkLink(8, platforms[0], towardsW), "p1 is free, and a train leaving towards W is the partner of the one that came from W");
+		assertEquals("W", SingleTrackDeadlockAvoidance.neighbourBehind(Id.createLinkId("S.p2.south.W.in")));
+		assertEquals("W", SingleTrackDeadlockAvoidance.neighbourBehind(Id.createLinkId("W_S.entry")));
+	}
+
+	@Test
+	void keepsOnlyResourcesHoldingBothDirectionsOfALink() {
+		Network network = NetworkUtils.createNetwork();
+		Node a = NetworkUtils.createAndAddNode(network, Id.createNodeId("a"), new Coord(0, 0));
+		Node b = NetworkUtils.createAndAddNode(network, Id.createNodeId("b"), new Coord(100, 0));
+		Node c = NetworkUtils.createAndAddNode(network, Id.createNodeId("c"), new Coord(200, 0));
+		Link there = NetworkUtils.createAndAddLink(network, Id.createLinkId("a_b"), a, b, 100, 10, 1, 1);
+		Link back = NetworkUtils.createAndAddLink(network, Id.createLinkId("b_a"), b, a, 100, 10, 1, 1);
+		Link oneWay = NetworkUtils.createAndAddLink(network, Id.createLinkId("b_c"), b, c, 100, 10, 1, 1);
+		Link approach = NetworkUtils.createAndAddLink(network, Id.createLinkId("c_a"), c, a, 100, 10, 1, 1);
+		RailResource singleTrack = new StubResource(Id.create("block", RailResource.class),
+			List.of(new RailLink(there, back), new RailLink(back, there)));
+		RailResource section = new StubResource(Id.create("b_c", RailResource.class), List.of(new RailLink(oneWay, null)));
+		RailResource throat = new StubResource(Id.create("throat", RailResource.class),
+			List.of(new RailLink(approach, null), new RailLink(oneWay, null)));
+
+		RailResourceManager view = SingleTrackDeadlockAvoidance.twoWayOnly(
+			new StubManager(List.of(singleTrack, section, throat)), network);
+
+		assertEquals(List.of(singleTrack), List.copyOf(view.getResources()));
+		assertTrue(SingleTrackDeadlockAvoidance.isTwoWay(singleTrack, network));
+		assertFalse(SingleTrackDeadlockAvoidance.isTwoWay(section, network));
+		assertFalse(SingleTrackDeadlockAvoidance.isTwoWay(throat, network));
+	}
+}

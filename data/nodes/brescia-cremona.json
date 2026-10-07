@@ -1,0 +1,301 @@
+{
+	"node": "brescia-cremona",
+	"title": "Stazioni di incrocio sul binario unico: Bagnolo Mella, Manerbio, Olmeneta, Robecco-Pontevico, S.Zeno Folzano, Verolanuova",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Bagnolo Mella: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Bagnolo_Mella; stima OSM 2",
+		"Manerbio: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Manerbio; stima OSM 3",
+		"Olmeneta: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Olmeneta; stima OSM 5",
+		"Robecco-Pontevico: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Robecco-Pontevico; stima OSM 5",
+		"S.Zeno Folzano: 4 binari secondo https://it.wikipedia.org/wiki/Stazione_di_San_Zeno-Folzano; stima OSM 4",
+		"Verolanuova: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Verolanuova; stima OSM 5"
+	],
+	"stations": [
+		{
+			"id": "S01901",
+			"name": "Bagnolo Mella",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "bagnolo_mella",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01902"
+						],
+						"north": [
+							"meso:S01900"
+						]
+					},
+					"notes": "2 binari (binario di corsa piu' raddoppio); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Manerbio, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01902",
+			"name": "Manerbio",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "manerbio",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01903"
+						],
+						"north": [
+							"meso:S01901"
+						]
+					},
+					"notes": "2 binari (binario di corsa piu' raddoppio); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Verolanuova, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01905",
+			"name": "Olmeneta",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "olmeneta",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01609"
+						],
+						"north": [
+							"meso:S01904",
+							"meso:S01915"
+						]
+					},
+					"notes": "3 binari (diramazione: bin.1 linea Treviglio, bin.3 linea Brescia, bin.2 incroci di entrambe); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Casalbuttano, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01904",
+			"name": "Robecco-Pontevico",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "robecco_pontevico",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01905"
+						],
+						"north": [
+							"meso:S01903"
+						]
+					},
+					"notes": "2 binari (stazione passante, 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Olmeneta, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01900",
+			"name": "S.Zeno Folzano",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "s_zeno_folzano",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						},
+						{
+							"ref": "4",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01901",
+							"meso:S01840"
+						],
+						"north": [
+							"meso:S09999"
+						]
+					},
+					"notes": "4 binari (diramazione Brescia-Cremona / Brescia-Parma, 3 binari viaggiatori piu' 1 merci); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Bagnolo Mella, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01903",
+			"name": "Verolanuova",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "verolanuova",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01904"
+						],
+						"north": [
+							"meso:S01902"
+						]
+					},
+					"notes": "2 binari (stazione passante, 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Robecco-Pontevico, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01901": [
+					"bagnolo_mella"
+				],
+				"S01902": [
+					"manerbio"
+				],
+				"S01905": [
+					"olmeneta"
+				],
+				"S01904": [
+					"robecco_pontevico"
+				],
+				"S01900": [
+					"s_zeno_folzano"
+				],
+				"S01903": [
+					"verolanuova"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01901": [
+					"bagnolo_mella"
+				],
+				"S01902": [
+					"manerbio"
+				],
+				"S01905": [
+					"olmeneta"
+				],
+				"S01904": [
+					"robecco_pontevico"
+				],
+				"S01900": [
+					"s_zeno_folzano"
+				],
+				"S01903": [
+					"verolanuova"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

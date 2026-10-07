@@ -1,18 +1,27 @@
 package it.unimib.milanrailsim.schedule;
 
 import it.unimib.milanrailsim.network.GtfsFeed;
+import it.unimib.milanrailsim.network.micro.MicroNode;
+import it.unimib.milanrailsim.network.micro.MicroNodeBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.matsim.core.network.NetworkUtils;
+import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.pt.transitSchedule.api.Departure;
 import org.matsim.pt.transitSchedule.api.TransitLine;
 import org.matsim.pt.transitSchedule.api.TransitRoute;
+import org.matsim.pt.transitSchedule.api.TransitStopFacility;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,7 +38,7 @@ class TransitScheduleBuilderTest {
 
 	private TransitScheduleBuilder.Result build() {
 		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-minimal"));
-		return new TransitScheduleBuilder(feed, network, DATE, new RouteVehicleAssignment()).build();
+		return new TransitScheduleBuilder(feed, network, DATE, RouteVehicleAssignment.defaults()).build();
 	}
 
 	@Test
@@ -75,5 +84,160 @@ class TransitScheduleBuilderTest {
 		assertNotNull(result.vehicles().getVehicles().get(Id.createVehicleId("T1")));
 		assertNotNull(result.vehicles().getVehicles().get(Id.createVehicleId("TN")));
 		assertEquals(8, result.vehicles().getVehicleTypes().size());
+	}
+
+	@Test
+	void timeWindowKeepsTripsByFirstDeparture() {
+		// TN departs at 24:01 and falls outside 07:00–09:00; T1 at 08:01 stays
+		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-minimal"));
+		TransitScheduleBuilder.Result result = new TransitScheduleBuilder(feed, network, DATE,
+			RouteVehicleAssignment.defaults()).withWindow(7 * 3600, 9 * 3600).build();
+
+		int departures = result.schedule().getTransitLines().values().stream()
+			.flatMap(line -> line.getRoutes().values().stream())
+			.mapToInt(route -> route.getDepartures().size()).sum();
+		assertEquals(1, departures);
+	}
+
+	private static final String MICRO_NODE = """
+		{
+			"node": "fixture", "title": "Fixture node",
+			"stations": [
+				{"id": "S1", "name": "S1", "kind": "terminal", "platformLengthM": null,
+					"groups": [{"id": "s1_main", "kind": "terminal", "tracks": [{"ref": "1", "direction": null}, {"ref": "2", "direction": null}],
+						"connections": {"north": ["segment:S1_S2:f1"]}}], "throats": []},
+				{"id": "S2", "name": "S2", "kind": "through", "platformLengthM": null,
+					"groups": [{"id": "s2_f1", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
+						"connections": {"south": ["segment:S1_S2:f1"], "north": ["meso:S3"]}},
+						{"id": "s2_passing", "kind": "through", "tracks": [{"ref": "3", "direction": "north"}],
+						"connections": {"south": ["segment:S1_S2:f1"], "north": ["meso:S3"]}},
+						{"id": "s2_branch", "kind": "through", "tracks": [{"ref": "4", "direction": "north"}],
+						"connections": {"south": ["segment:S1_S2:f1"], "north": ["meso:X"]}}], "throats": []}
+			],
+			"segments": [{"from": "S1", "to": "S2", "bundles": {"f1": {
+				"north": {"wayIds": [], "lengthM": 2000}, "south": {"wayIds": [], "lengthM": 2000}, "speedProfile": []}}}],
+			"lines": {"S1": {"bundle": "f1", "stations": {"S1": ["s1_main"], "S2": ["s2_f1"]}}}
+		}
+		""";
+
+	@Test
+	void microStationsGetPlatformFacilitiesAndRoutesThroughTheirTracks(@TempDir Path dir) throws IOException {
+		Path file = dir.resolve("fixture.json");
+		Files.writeString(file, MICRO_NODE);
+		List<MicroNode> nodes = List.of(MicroNode.read(file));
+		new MicroNodeBuilder(network).splice(nodes);
+		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-minimal"));
+
+		TransitScheduleBuilder.Result result = new TransitScheduleBuilder(feed, network, DATE, RouteVehicleAssignment.defaults())
+			.withMicroNodes(nodes).build();
+
+		TransitLine line = result.schedule().getTransitLines().get(Id.create("S1", TransitLine.class));
+		TransitRoute t1Route = line.getRoutes().values().stream()
+			.filter(r -> r.getStops().size() == 3).findFirst().orElseThrow();
+		List<Id<Link>> chain = new java.util.ArrayList<>();
+		chain.add(t1Route.getRoute().getStartLinkId());
+		chain.addAll(t1Route.getRoute().getLinkIds());
+		chain.add(t1Route.getRoute().getEndLinkId());
+		// the first trip of the day comes out of S1's sidings, in time to be on its platform at the timetable departure
+		assertEquals(List.of("S1.sidings", "S1.sidings.north.leave", "S1.p1.north.sidings.in", "S1.p1.in", "S1.p1.out",
+				"S1.p1.north.S1_S2.f1.out", "S1_S2.f1.north.exit", "S1_S2.f1.north", "S1_S2.f1.north.entry",
+				"S2.p1.south.S1_S2.f1.in", "S2.p1", "S2.p1.north.S3.out", "S2_S3.exit", "S2_S3", "stop_S3"),
+			chain.stream().map(Id::toString).toList());
+		Departure departure = t1Route.getDepartures().values().iterator().next();
+		assertEquals(8 * 3600 + 60 - PlatformPlanner.POSITIONING_SECONDS, departure.getDepartureTime());
+		assertEquals(PlatformPlanner.POSITIONING_SECONDS + 300, t1Route.getStops().get(1).getArrivalOffset().seconds());
+
+		TransitStopFacility first = t1Route.getStops().getFirst().getStopFacility();
+		// one-sided terminal tracks have no direction; the area of a through call carries the platform's
+		assertEquals("S1.p1.in|S1|S1|terminal", first.getId().toString());
+		assertEquals("S1|S1|terminal", first.getStopAreaId().toString());
+		assertEquals("S1", first.getName());
+		assertNotNull(result.schedule().getFacilities().get(Id.create("S1.p2.in|S1|S1|terminal", TransitStopFacility.class)),
+			"every platform of the area is a facility");
+		TransitStopFacility second = t1Route.getStops().get(1).getStopFacility();
+		assertEquals("S2|S1|through|north", second.getStopAreaId().toString());
+		assertNull(result.schedule().getFacilities().get(Id.create("S2.p2|S2|S1|through|north", TransitStopFacility.class)),
+			"a southbound-only platform is no alternative for a northbound call");
+		assertNotNull(result.schedule().getFacilities().get(Id.create("S2.p3|S2|S1|through|north", TransitStopFacility.class)),
+			"a track of another group connected to both neighbours lets the train be overtaken there");
+		assertNull(result.schedule().getFacilities().get(Id.create("S2.p4|S2|S1|through|north", TransitStopFacility.class)),
+			"a track leading to another line is no alternative");
+		assertEquals("S3", t1Route.getStops().getLast().getStopFacility().getId().toString());
+	}
+
+	@Test
+	void aTurnbackOnAThroughTrackGoesThroughTheSidingsWhateverTheLayover(@TempDir Path dir) throws IOException {
+		Path file = dir.resolve("fixture.json");
+		Files.writeString(file, MICRO_NODE);
+		List<MicroNode> nodes = List.of(MicroNode.read(file));
+		new MicroNodeBuilder(network).splice(nodes);
+		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-turnback"));
+
+		// one circulation: S1 -> S2 (08:07), 23 min at S2, back to S1 (08:37), 34 min at S1, out again; layovers under an hour
+		TransitScheduleBuilder.Result result = new TransitScheduleBuilder(feed, network, DATE, RouteVehicleAssignment.defaults())
+			.withMicroNodes(nodes).withCirculations(10 * 60, stop -> 3600).build();
+
+		TransitLine line = result.schedule().getTransitLines().get(Id.create("S1", TransitLine.class));
+		Map<String, TransitRoute> byFirstDeparture = new java.util.HashMap<>();
+		for (TransitRoute route : line.getRoutes().values()) {
+			route.getDepartures().values().forEach(d -> byFirstDeparture.put(String.valueOf((int) d.getDepartureTime()), route));
+		}
+		TransitRoute out = byFirstDeparture.get(String.valueOf(8 * 3600 + 60 - PlatformPlanner.POSITIONING_SECONDS));
+		TransitRoute back = byFirstDeparture.get(String.valueOf(8 * 3600 + 31 * 60 - PlatformPlanner.POSITIONING_SECONDS));
+		assertEquals("S2.sidings", out.getRoute().getEndLinkId().toString(), "S2 has only through tracks: the layover is spent in the sidings");
+		assertEquals("S2.sidings", back.getRoute().getStartLinkId().toString());
+		assertTrue(byFirstDeparture.containsKey(String.valueOf(9 * 3600 + 11 * 60)),
+			"S1 is a terminal track: the 34 min layover stays on the platform and the next trip departs from it");
+		assertTrue(back.getRoute().getEndLinkId().toString().matches("S1\\.p\\d\\.in"), "the trip ends on a platform, not in the sidings");
+	}
+
+	@Test
+	void aTrainPassingACrossingStationOnSingleTrackRunsOverItsStationTrack() {
+		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-express"));
+		// S1 -> S3 without calling at S2; the S2 -> S3 section is single track and S2 has two station tracks
+		for (String id : List.of("S2_S3", "S3_S2")) {
+			Link link = network.getLinks().get(Id.createLinkId(id));
+			if (link == null) {
+				link = network.getFactory().createLink(Id.createLinkId(id), network.getNodes().get(Id.createNodeId("S3")),
+					network.getNodes().get(Id.createNodeId("S2")));
+				link.setLength(2000);
+				link.setFreespeed(30);
+				link.setAllowedModes(java.util.Set.of("rail"));
+				network.addLink(link);
+			}
+			link.getAttributes().putAttribute("railsimResourceId", "S2_S3");
+		}
+		StationStopLinks.addStopLinks(network, it.unimib.milanrailsim.network.StationTracks.empty());
+		network.getLinks().get(Id.createLinkId("stop_S2")).getAttributes().putAttribute("railsimTrainCapacity", 2);
+
+		TransitScheduleBuilder.Result result = new TransitScheduleBuilder(feed, network, DATE, RouteVehicleAssignment.defaults()).build();
+
+		TransitRoute route = result.schedule().getTransitLines().get(Id.create("S1", TransitLine.class)).getRoutes().values().iterator().next();
+		assertEquals(List.of("S1_S2", "stop_S2", "S2_S3"), route.getRoute().getLinkIds().stream().map(Id::toString).toList());
+		assertEquals(2, route.getStops().size(), "S2 is run through, not called at");
+	}
+
+	@Test
+	void tripsCallingOutsideTheNetworkAreSkipped() {
+		// a network without S3: T1 (S1-S2-S3) is dropped, TN (S1-S2) survives
+		Network twoStations = NetworkUtils.createNetwork();
+		for (String station : List.of("S1", "S2")) {
+			twoStations.addNode(twoStations.getFactory().createNode(Id.createNodeId(station), new Coord(0, 0)));
+		}
+		Link link = twoStations.getFactory().createLink(Id.createLinkId("S1_S2"),
+			twoStations.getNodes().get(Id.createNodeId("S1")), twoStations.getNodes().get(Id.createNodeId("S2")));
+		link.setLength(1000);
+		link.setFreespeed(20);
+		link.setAllowedModes(java.util.Set.of("rail"));
+		twoStations.addLink(link);
+		GtfsFeed feed = GtfsFeed.load(Path.of("src/test/resources/gtfs-minimal"));
+
+		TransitScheduleBuilder.Result result = new TransitScheduleBuilder(feed, twoStations, DATE,
+			RouteVehicleAssignment.defaults()).build();
+
+		int departures = result.schedule().getTransitLines().values().stream()
+			.flatMap(line -> line.getRoutes().values().stream())
+			.mapToInt(route -> route.getDepartures().size()).sum();
+		assertEquals(1, departures);
 	}
 }

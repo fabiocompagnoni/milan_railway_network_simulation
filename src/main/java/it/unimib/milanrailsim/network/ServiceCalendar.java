@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.NavigableSet;
+import java.util.TreeSet;
 
 /**
  * Resolves which GTFS services run on a given date. The Trenord feed defines
@@ -17,6 +19,17 @@ public final class ServiceCalendar {
 	private static final DateTimeFormatter GTFS_DATE = DateTimeFormatter.BASIC_ISO_DATE;
 
 	private ServiceCalendar() {
+	}
+
+	/** Every date on which at least one service is added, in order: the days a feed can simulate. */
+	public static NavigableSet<LocalDate> availableDates(List<Map<String, String>> calendarDateRows) {
+		NavigableSet<LocalDate> dates = new TreeSet<>();
+		for (Map<String, String> row : calendarDateRows) {
+			if ("1".equals(row.get("exception_type"))) {
+				dates.add(LocalDate.parse(row.get("date"), GTFS_DATE));
+			}
+		}
+		return dates;
 	}
 
 	public static Set<String> activeServiceIds(List<Map<String, String>> calendarDateRows, LocalDate date) {

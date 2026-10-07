@@ -1,0 +1,3 @@
+service_id,date,exception_type
+SVC_WEEKDAY,20260916,1
+SVC_OTHERDAY,20260917,1

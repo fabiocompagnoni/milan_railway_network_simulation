@@ -1,0 +1,248 @@
+{
+	"node": "brescia-iseo",
+	"title": "Stazioni di incrocio sul binario unico: Borgonato-Adro, Bornato-Calino, Brescia Borgo San Giovanni, Castegnato, Passirano",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Borgonato-Adro: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Borgonato-Adro; stima OSM 2",
+		"Bornato-Calino: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Bornato-Calino; stima OSM 4",
+		"Brescia Borgo San Giovanni: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Brescia_Borgo_San_Giovanni; stima OSM 3",
+		"Castegnato: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Castegnato; stima OSM 2",
+		"Passirano: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Passirano; stima OSM 3"
+	],
+	"stations": [
+		{
+			"id": "S01788",
+			"name": "Borgonato-Adro",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "borgonato_adro",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01789"
+						],
+						"north": [
+							"meso:S01787"
+						]
+					},
+					"notes": "2 binari (corsa piu' raddoppio 212 m); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Bornato-Calino, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01789",
+			"name": "Bornato-Calino",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "bornato_calino",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01788"
+						],
+						"north": [
+							"meso:S01793"
+						]
+					},
+					"notes": "3 binari (diramazione: bin.1 raccordo Rovato, bin.2 corsa, bin.3 raddoppio); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Borgonato-Adro, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01797",
+			"name": "Brescia Borgo San Giovanni",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "brescia_borgo_san_giovanni",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S17451"
+						],
+						"north": [
+							"meso:S09999"
+						]
+					},
+					"notes": "2 binari (bin.1 raddoppio 139 m, bin.2 corsa); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Brescia Violino, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01795",
+			"name": "Castegnato",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "castegnato",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01794"
+						],
+						"north": [
+							"meso:S17451"
+						]
+					},
+					"notes": "2 binari (corsa piu' raddoppio 107 m, piu' scalo); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Paderno Franciacorta, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01793",
+			"name": "Passirano",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "passirano",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01789"
+						],
+						"north": [
+							"meso:S01794"
+						]
+					},
+					"notes": "2 binari (bin.1 raddoppio 210 m, bin.2 corsa); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Bornato-Calino, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01788": [
+					"borgonato_adro"
+				],
+				"S01789": [
+					"bornato_calino"
+				],
+				"S01797": [
+					"brescia_borgo_san_giovanni"
+				],
+				"S01795": [
+					"castegnato"
+				],
+				"S01793": [
+					"passirano"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01788": [
+					"borgonato_adro"
+				],
+				"S01789": [
+					"bornato_calino"
+				],
+				"S01797": [
+					"brescia_borgo_san_giovanni"
+				],
+				"S01795": [
+					"castegnato"
+				],
+				"S01793": [
+					"passirano"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

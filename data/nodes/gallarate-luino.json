@@ -1,0 +1,369 @@
+{
+	"node": "gallarate-luino",
+	"title": "Stazioni di incrocio sul binario unico: Besozzo, Gallarate, Laveno Mombello, Luino, Mornago Cimbro, Porto Valtravaglia, Ternate Varano Borghi",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Besozzo: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Besozzo; stima OSM 2",
+		"Gallarate: 5 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Gallarate; stima OSM 11",
+		"Laveno Mombello: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Laveno-Mombello; stima OSM 8",
+		"Luino: 4 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Luino; stima OSM 9",
+		"Mornago Cimbro: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Mornago-Cimbro; stima OSM 2",
+		"Porto Valtravaglia: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Porto_Valtravaglia; stima OSM 3",
+		"Ternate Varano Borghi: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Ternate-Varano_Borghi; stima OSM 4"
+	],
+	"stations": [
+		{
+			"id": "S01141",
+			"name": "Besozzo",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "besozzo",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01143",
+							"meso:S01142"
+						],
+						"north": [
+							"meso:S01140"
+						]
+					},
+					"notes": "2 binari (2 passanti con banchina); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Ternate Varano Borghi, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01030",
+			"name": "Gallarate",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "gallarate",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						},
+						{
+							"ref": "4",
+							"direction": null
+						},
+						{
+							"ref": "5",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01039",
+							"meso:S01035",
+							"meso:S01033",
+							"meso:S01031"
+						],
+						"north": [
+							"meso:S01210",
+							"meso:S01029",
+							"meso:S01145",
+							"meso:S01146",
+							"meso:S01205",
+							"meso:S01026"
+						]
+					},
+					"notes": "5 binari (stazione di diramazione, 5 binari con banchina); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Rho Fiera Milano, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01118",
+			"name": "Laveno Mombello",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "laveno_mombello",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01141",
+							"meso:S01140"
+						],
+						"north": [
+							"meso:S01117",
+							"meso:S01113"
+						]
+					},
+					"notes": "3 binari (stazione di diramazione, 3 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Besozzo, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01113",
+			"name": "Luino",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "luino",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						},
+						{
+							"ref": "4",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01118",
+							"meso:S01116"
+						],
+						"north": [
+							"meso:S01111"
+						]
+					},
+					"notes": "4 binari (stazione di confine, 4 binari viaggiatori); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Laveno Mombello, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01144",
+			"name": "Mornago Cimbro",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "mornago_cimbro",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01030",
+							"meso:S01145"
+						],
+						"north": [
+							"meso:S01143"
+						]
+					},
+					"notes": "2 binari (2 passanti con banchina); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Gallarate, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01116",
+			"name": "Porto Valtravaglia",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "porto_valtravaglia",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01118",
+							"meso:S01117"
+						],
+						"north": [
+							"meso:S01113"
+						]
+					},
+					"notes": "2 binari (2 passanti con banchina); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Laveno Mombello, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01143",
+			"name": "Ternate Varano Borghi",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "ternate_varano_borghi",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01030",
+							"meso:S01144"
+						],
+						"north": [
+							"meso:S01142"
+						]
+					},
+					"notes": "2 binari (2 passanti con banchina piu' 1 tronco); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Gallarate, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01141": [
+					"besozzo"
+				],
+				"S01030": [
+					"gallarate"
+				],
+				"S01118": [
+					"laveno_mombello"
+				],
+				"S01113": [
+					"luino"
+				],
+				"S01144": [
+					"mornago_cimbro"
+				],
+				"S01116": [
+					"porto_valtravaglia"
+				],
+				"S01143": [
+					"ternate_varano_borghi"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01141": [
+					"besozzo"
+				],
+				"S01030": [
+					"gallarate"
+				],
+				"S01118": [
+					"laveno_mombello"
+				],
+				"S01113": [
+					"luino"
+				],
+				"S01144": [
+					"mornago_cimbro"
+				],
+				"S01116": [
+					"porto_valtravaglia"
+				],
+				"S01143": [
+					"ternate_varano_borghi"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

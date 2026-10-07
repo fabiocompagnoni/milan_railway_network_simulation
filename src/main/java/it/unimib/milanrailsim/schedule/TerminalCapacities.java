@@ -87,7 +87,8 @@ public final class TerminalCapacities {
 		log.info("Raised {} terminal stop links to their timetable-derived capacity", raised);
 	}
 
-	private static int peakOverlap(List<double[]> windows) {
+	/** Maximum number of {@code [start, end]} windows open at the same instant. */
+	static int peakOverlap(List<double[]> windows) {
 		List<double[]> events = new ArrayList<>();
 		for (double[] window : windows) {
 			events.add(new double[] { window[0], 1 });

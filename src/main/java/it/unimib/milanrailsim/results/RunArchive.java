@@ -25,10 +25,13 @@ public final class RunArchive {
 	}
 
 	public static RunArchive create(Path baseDir, String scenario) {
-		Path runDir = baseDir.resolve(LocalDateTime.now().format(RUN_STAMP) + "-" + scenario);
+		return at(baseDir.resolve(LocalDateTime.now().format(RUN_STAMP) + "-" + scenario));
+	}
+
+	/** Archives into an existing run folder, e.g. one the application launched the run from. */
+	public static RunArchive at(Path runDir) {
 		try {
 			Files.createDirectories(runDir.resolve("charts"));
-			Files.createDirectories(runDir.resolve("raw"));
 		} catch (IOException e) {
 			throw new UncheckedIOException("Cannot create run archive " + runDir, e);
 		}
@@ -60,8 +63,15 @@ public final class RunArchive {
 		}
 	}
 
-	/** Copies the simulation outputs (root artifacts and iteration files) into raw/. */
+	/**
+	 * Copies the simulation outputs (root artifacts and iteration files) into
+	 * raw/, unless they already lie inside this archive, as they do for runs the
+	 * application drives: hundreds of megabytes copied next to themselves.
+	 */
 	public void copyRaw(Path sourceRunDir) {
+		if (sourceRunDir.toAbsolutePath().normalize().startsWith(runDir.toAbsolutePath().normalize())) {
+			return;
+		}
 		copyMatching(sourceRunDir, "*.output_*");
 		copyMatching(sourceRunDir.resolve("ITERS/it.0"), "*");
 	}
@@ -71,12 +81,12 @@ public final class RunArchive {
 			return;
 		}
 		try (Stream<Path> files = Files.list(sourceDir)) {
+			Path raw = Files.createDirectories(runDir.resolve("raw"));
 			for (Path file : files.filter(Files::isRegularFile)
 					.filter(file -> sourceDir.getFileSystem()
 						.getPathMatcher("glob:" + glob).matches(file.getFileName()))
 					.toList()) {
-				Files.copy(file, runDir.resolve("raw").resolve(file.getFileName()),
-					StandardCopyOption.REPLACE_EXISTING);
+				Files.copy(file, raw.resolve(file.getFileName()), StandardCopyOption.REPLACE_EXISTING);
 			}
 		} catch (IOException e) {
 			throw new UncheckedIOException("Cannot copy raw files from " + sourceDir, e);

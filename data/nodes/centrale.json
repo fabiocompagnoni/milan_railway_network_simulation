@@ -1,0 +1,48 @@
+{
+	"node": "centrale",
+	"title": "Milano Centrale",
+	"status": "bozza con il rilievo del 2026-09-15",
+	"detailLevel": "gruppi di binari: stazione di testa usata soprattutto da Trenitalia e dall'alta velocita', di cui non abbiamo gli orari; fisso per Trenord solo il binario 1 del Malpensa Express, gli altri assegnati di volta in volta secondo l'occupazione di tutta la stazione",
+	"sources": [
+		"rilievo diretto 2026-09-15: 24 binari tronchi; binario 1 fisso per il Malpensa Express; gli altri molto variabili; almeno un centinaio di binari di sosta e fermata nell'impianto",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15, corse che si attestano e vicino da cui arrivano: RE51 (Malpensa Express Gallarate-Malpensa-Centrale) 78 da Garibaldi; RE6 41, RE2 38, RE11 25, RE13 13 da Lambrate; RE8 37 e RE80 38 da Monza; RE4 26 da Rho Fiera; S8, S11 1 da Greco Pirelli; R4 1 da Lambrate",
+		"rete meso: tutti i vicini sullo stesso lato, S01645 Garibaldi, S01326 Greco Pirelli, S01701 Lambrate, S01322 Monza (collegamento diretto), S01039 Rho Fiera (collegamento diretto)"
+	],
+
+	"stations": [
+		{
+			"id": "S01700",
+			"name": "Milano Centrale",
+			"kind": "terminal",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "centrale_mxp", "kind": "terminal", "tracks": [{"ref": "1", "direction": null}],
+					"connections": {"north": ["meso:S01645", "meso:S01326", "meso:S01701", "meso:S01322", "meso:S01039"]},
+					"notes": "binario 1, fisso per il Malpensa Express (RE51)"},
+				{"id": "centrale_tronchi", "kind": "terminal", "capacity": 23, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01645", "meso:S01326", "meso:S01701", "meso:S01322", "meso:S01039"]},
+					"notes": "binari 2-24, assegnati a Trenord di volta in volta; la quota occupata da Trenitalia e alta velocita' non e' nota e per ora non riduce la capacita' (provvisorio)"}
+			],
+			"throats": [
+				{"id": "centrale_throat", "side": "north", "resource": "centrale_throat", "lengthM": null, "speedKmh": null, "switches": null,
+					"groups": ["centrale_mxp", "centrale_tronchi"], "notes": "unica gola verso Garibaldi, Greco, Lambrate; da rilevare"}
+			],
+			"sidings": {"tracks": 100, "note": "almeno un centinaio di binari di sosta e deposito nell'impianto, condivisi con gli altri operatori (rilievo 2026-09-15)"},
+			"notes": "stazione di testa: north indica solo l'unico lato dei binari, verso l'uscita dalla stazione"
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"RE51": {"bundle": null, "stations": {"S01700": ["centrale_mxp/1", "centrale_tronchi"]}, "notes": "Malpensa Express: binario 1; un altro binario solo se il primo e' occupato"},
+		"*terminal": {"bundle": null, "stations": {"S01700": ["centrale_tronchi"]}, "notes": "ogni altra corsa: binari 2-24 senza assegnazione fissa"}
+	},
+
+	"openQuestions": [
+		"Quanti dei binari 2-24 sono in media disponibili per Trenord nelle ore di punta?",
+		"Il Malpensa Express puo' usare altri binari quando il binario 1 e' occupato, o aspetta?",
+		"Il collegamento Garibaldi-Centrale ha davvero un solo binario per verso, come nella rete attuale?",
+		"Gola: lunghezza, velocita' e numero di scambi"
+	]
+}

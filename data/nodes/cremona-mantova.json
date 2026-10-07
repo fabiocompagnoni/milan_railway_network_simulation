@@ -1,0 +1,202 @@
+{
+	"node": "cremona-mantova",
+	"title": "Stazioni di incrocio sul binario unico: Bozzolo, Gazzo Pieve S.Giacomo, Torre De' Picenardi, Villetta Malagnino",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Bozzolo: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Bozzolo; stima OSM 5",
+		"Gazzo Pieve S.Giacomo: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Gazzo-Pieve_San_Giacomo; stima OSM 5",
+		"Torre De' Picenardi: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Torre_de%27_Picenardi; stima OSM 3",
+		"Villetta Malagnino: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Villetta_Malagnino; stima OSM 2"
+	],
+	"stations": [
+		{
+			"id": "S01920",
+			"name": "Bozzolo",
+			"kind": "terminal",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "bozzolo",
+					"kind": "terminal",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01919"
+						]
+					},
+					"notes": "3 binari (stazione 3 binari, capolinea provvisorio); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Piadena, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01917",
+			"name": "Gazzo Pieve S.Giacomo",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "gazzo_pieve_s_giacomo",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01916"
+						],
+						"north": [
+							"meso:S01918"
+						]
+					},
+					"notes": "2 binari (stazione passante 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Villetta Malagnino, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01918",
+			"name": "Torre De' Picenardi",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "torre_de_picenardi",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01917"
+						],
+						"north": [
+							"meso:S01919"
+						]
+					},
+					"notes": "2 binari (stazione passante 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Gazzo Pieve S.Giacomo, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01916",
+			"name": "Villetta Malagnino",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "villetta_malagnino",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01915"
+						],
+						"north": [
+							"meso:S01917"
+						]
+					},
+					"notes": "2 binari (stazione passante 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Cremona, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01920": [
+					"bozzolo"
+				],
+				"S01917": [
+					"gazzo_pieve_s_giacomo"
+				],
+				"S01918": [
+					"torre_de_picenardi"
+				],
+				"S01916": [
+					"villetta_malagnino"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01920": [
+					"bozzolo"
+				],
+				"S01917": [
+					"gazzo_pieve_s_giacomo"
+				],
+				"S01918": [
+					"torre_de_picenardi"
+				],
+				"S01916": [
+					"villetta_malagnino"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

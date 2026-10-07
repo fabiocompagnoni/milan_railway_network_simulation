@@ -1,0 +1,56 @@
+{
+	"node": "forlanini",
+	"title": "Milano Forlanini",
+	"status": "bozza rivista con i rilievi del 2026-09-13",
+	"detailLevel": "binari nominati per fascio: Passante (1-2), cintura (3-4), transito merci (5-6)",
+	"sources": [
+		"rilievo diretto 2026-09-13: 6 binari; 1-2 fra Bivio Lambro e Porta Vittoria; 3-4 fra Lambrate e Rogoredo; 5-6 transito puro (cintura merci, da nord e da est) usabili anche dalle regionali in transito",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-13: S5 259, S6 157, S9 95, S1 69, R38 57, RE13 30, RE8 5 corse/giorno; Scalo Romana S9 105, S19 62, R31 50",
+		"rete meso: vicini S01632 Scalo Romana, S01633 Porta Vittoria, S01701 Lambrate, S01715 Segrate, S01820 Rogoredo"
+	],
+
+	"stations": [
+		{
+			"id": "S01492",
+			"name": "Milano Forlanini",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "forlanini_passante", "kind": "through", "tracks": [{"ref": "1", "direction": "south"}, {"ref": "2", "direction": "north"}],
+					"connections": {"north": ["meso:S01715"], "south": ["meso:S01633"]},
+					"notes": "S5, S6 (ramo Pioltello del Passante): nord = Bivio Lambro/Segrate, sud = Porta Vittoria; numero per verso da confermare"},
+				{"id": "forlanini_cintura", "kind": "through", "tracks": [{"ref": "3", "direction": "south"}, {"ref": "4", "direction": "north"}],
+					"connections": {"north": ["meso:S01701"], "south": ["meso:S01820", "meso:S01632"]},
+					"notes": "S9, corse di superficie S1, R38, RE13, RE8: nord = Lambrate, sud = Rogoredo o Porta Romana"},
+				{"id": "forlanini_transit", "kind": "through", "tracks": [{"ref": "5", "direction": "south"}, {"ref": "6", "direction": "north"}],
+					"connections": {"north": ["meso:S01701", "meso:S01715"], "south": ["meso:S01820", "meso:S01632"]},
+					"notes": "cintura merci, non indicati in stazione; le regionali Lambrate <-> Rogoredo senza fermata a Forlanini possono usare 3-4 o 5-6"}
+			],
+			"throats": [
+				{"id": "forlanini_junction_south", "side": "south", "resource": "forlanini_junction_south", "lengthM": null, "speedKmh": null, "switches": null,
+					"groups": ["forlanini_cintura", "forlanini_transit"],
+					"notes": "bivio a sud verso Porta Romana o Rogoredo: posizione e se a raso o a salto da rilevare"}
+			],
+			"notes": "i fasci 1-2 e 3-4 hanno origini diverse a nord e destinazioni diverse a sud: nessun conflitto fra loro. Cintura di Milano: 4 binari da Lambrate che non entrano nelle stazioni intermedie, una parte verso Verona, una parte verso Rogoredo; nel modello i binari 5-6 di transito"
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"S5": {"bundle": null, "stations": {"S01492": ["forlanini_passante"]}},
+		"S6": {"bundle": null, "stations": {"S01492": ["forlanini_passante"]}},
+		"S9": {"bundle": null, "stations": {"S01492": ["forlanini_cintura"]}},
+		"S1": {"bundle": null, "stations": {"S01492": ["forlanini_cintura"]}},
+		"R38": {"bundle": null, "stations": {"S01492": ["forlanini_cintura", "forlanini_transit"]}},
+		"RE13": {"bundle": null, "stations": {"S01492": ["forlanini_cintura", "forlanini_transit"]}},
+		"RE8": {"bundle": null, "stations": {"S01492": ["forlanini_cintura", "forlanini_transit"]}},
+		"*transit": {"bundle": null, "stations": {"S01492": ["forlanini_cintura", "forlanini_transit"]}, "notes": "RE2, RE6, RE11, R4, R6, R34: transito Lambrate <-> Rogoredo senza fermata"}
+	},
+
+	"openQuestions": [
+		"Bivio Porta Romana / Rogoredo: posizione e se e' a raso (conflitto fra le due direzioni) o a salto",
+		"Numerazione reale dei binari per verso (circolazione a sinistra)",
+		"Lunghezza banchine"
+	]
+}

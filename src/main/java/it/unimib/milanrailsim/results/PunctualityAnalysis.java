@@ -92,14 +92,53 @@ public final class PunctualityAnalysis
 			return;
 		}
 		PlannedStop next = plan.peek();
-		if (next == null || !next.stop().equals(event.getFacilityId().toString())) {
-			anomaly("unexpected stop " + event.getFacilityId() + " for vehicle " + event.getVehicleId());
-			return;
+		if (next == null || !sameStation(next.stop(), event.getFacilityId().toString())) {
+			int skipped = skipTo(plan, event.getFacilityId().toString());
+			if (skipped < 0) {
+				anomaly("unexpected stop " + event.getFacilityId() + " for vehicle " + event.getVehicleId());
+				return;
+			}
+			anomaly(skipped + " planned stops missed before " + event.getFacilityId() + " by vehicle " + event.getVehicleId());
+			next = plan.peek();
 		}
 		plan.poll();
 		openVisits.put(event.getVehicleId(), new StopVisit(event.getVehicleId().toString(),
-			next.line(), next.route(), next.stop(),
+			next.line(), next.route(), event.getFacilityId().toString(),
 			next.plannedArrival(), event.getTime(), next.plannedDeparture(), Double.NaN));
+	}
+
+	/**
+	 * Advances the plan to its next call at the given station, within the
+	 * current trip, dropping the calls in between: a train that ran through a
+	 * station keeps its plan aligned at the next one it does stop at.
+	 *
+	 * @return how many calls were dropped, or -1 when the station is not ahead in this trip
+	 */
+	private static int skipTo(Deque<PlannedStop> plan, String facilityId) {
+		String route = plan.isEmpty() ? null : plan.peek().route();
+		int skipped = 0;
+		for (PlannedStop candidate : plan) {
+			if (!candidate.route().equals(route)) {
+				return -1;
+			}
+			if (sameStation(candidate.stop(), facilityId)) {
+				for (int i = 0; i < skipped; i++) {
+					plan.poll();
+				}
+				return skipped;
+			}
+			skipped++;
+		}
+		return -1;
+	}
+
+	/**
+	 * The planned facility is one platform of a station; railsim may divert the
+	 * train to another platform of the same stop area, which is still the
+	 * planned stop.
+	 */
+	private static boolean sameStation(String plannedFacility, String actualFacility) {
+		return StopFacilities.stationOf(plannedFacility).equals(StopFacilities.stationOf(actualFacility));
 	}
 
 	@Override
@@ -124,6 +163,32 @@ public final class PunctualityAnalysis
 		List<StopVisit> all = new ArrayList<>(visits);
 		all.addAll(openVisits.values());
 		return List.copyOf(all);
+	}
+
+	/** A vehicle that did not reach every planned stop: where it got to and how many stops were left. */
+	public record Unfinished(String vehicle, String line, String route, String lastStop, int remainingStops) {
+	}
+
+	/**
+	 * Vehicles whose plan was not completed when the events ended, ordered by
+	 * id. Punctuality alone hides them, since a train that never arrives leaves
+	 * no visit to be late.
+	 */
+	public List<Unfinished> unfinished() {
+		Map<String, String> lastStops = new HashMap<>();
+		for (StopVisit visit : visits()) {
+			lastStops.put(visit.vehicle(), visit.stop());
+		}
+		List<Unfinished> result = new ArrayList<>();
+		planByVehicle.forEach((vehicle, plan) -> {
+			if (!plan.isEmpty()) {
+				PlannedStop next = plan.peek();
+				result.add(new Unfinished(vehicle.toString(), next.line(), next.route(),
+					lastStops.getOrDefault(vehicle.toString(), ""), plan.size()));
+			}
+		});
+		result.sort(Comparator.comparing(Unfinished::vehicle));
+		return List.copyOf(result);
 	}
 
 	public int anomalyCount() {

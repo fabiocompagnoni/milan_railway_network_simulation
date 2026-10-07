@@ -1,0 +1,57 @@
+{
+	"node": "colico-morbegno",
+	"title": "Colico e Morbegno",
+	"status": "bozza con ricerca e conferma del 2026-09-15",
+	"detailLevel": "gruppi di binari: stazioni di incrocio e attestamento sulle linee a binario unico Lecco-Colico, Colico-Sondrio e Colico-Chiavenna",
+	"sources": [
+		"Wikipedia, Stazione di Colico (https://it.wikipedia.org/wiki/Stazione_di_Colico): 3 binari passanti, 2 tronchi lato Chiavenna, 10 binari di servizio; R11 per Chiavenna dai tronchi, RE8 e R13 sui passanti; confermato da Fabio 2026-09-15",
+		"Wikipedia, Stazione di Morbegno (https://it.wikipedia.org/wiki/Stazione_di_Morbegno): 2 binari viaggiatori, 5 tronchi di cui 2 fuori uso e gli altri usati di rado; confermato da Fabio 2026-09-15",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15: a Colico si attestano R11 32, R13 8, RE8 2 corse; transitano RE8 34, R13 20; a Morbegno transitano RE8 34, R13 22",
+		"rete meso: Colico lato Lecco S01406 Piona, S01408 Dervio, S01409 Bellano (collegamenti diretti), lato opposto S01405 Dubino (Chiavenna), S01422 Delebio e S01425 Morbegno (Sondrio); Morbegno lato Colico S01420, S01424 Cosio Traona, lato Sondrio S01426 Talamona, S01430 Sondrio"
+	],
+
+	"stations": [
+		{
+			"id": "S01420",
+			"name": "Colico",
+			"kind": "mixed",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "colico_passanti", "kind": "through", "capacity": 3, "otherOperatorsShare": 0,
+					"connections": {"south": ["meso:S01406", "meso:S01408", "meso:S01409"], "north": ["meso:S01405", "meso:S01422", "meso:S01425"]},
+					"notes": "3 binari passanti, usati per gli incroci; south = verso Lecco, north = verso Chiavenna e Sondrio"},
+				{"id": "colico_tronchi", "kind": "terminal", "capacity": 2, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01405"]},
+					"notes": "2 tronchi lato Chiavenna, per la R11"}
+			],
+			"throats": [],
+			"sidings": {"tracks": 10, "note": "10 binari di servizio (Wikipedia)"}
+		},
+		{
+			"id": "S01425",
+			"name": "Morbegno",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "morbegno", "kind": "through", "capacity": 2, "otherOperatorsShare": 0,
+					"connections": {"south": ["meso:S01420", "meso:S01424"], "north": ["meso:S01426", "meso:S01430"]},
+					"notes": "2 binari viaggiatori, stazione di incrocio; south = verso Colico"}
+			],
+			"throats": [],
+			"sidings": {"tracks": 3, "note": "tronchi usati di rado, esclusi i 2 fuori uso (Wikipedia)"}
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"R11": {"bundle": null, "stations": {"S01420": ["colico_tronchi", "colico_passanti"]}},
+		"*terminal": {"bundle": null, "stations": {"S01420": ["colico_passanti"]}, "notes": "R13 e RE8 limitate a Colico"},
+		"*through": {"bundle": null, "stations": {"S01420": ["colico_passanti"], "S01425": ["morbegno"]}}
+	},
+
+	"openQuestions": [
+		"Numerazione dei binari e lato dei tronchi rispetto al fabbricato di Colico",
+		"Quale binario usa ciascuna direzione a Morbegno"
+	]
+}

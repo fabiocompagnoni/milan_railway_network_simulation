@@ -1,0 +1,569 @@
+{
+	"node": "valcamonica",
+	"title": "Stazioni di incrocio sul binario unico: Breno, Capo Di Ponte, Cedegolo, Cividate-Malegno, Cogno-Esine, Darfo-Corna, Edolo, Malonno, Marone-Zone, Pian Camuno-Gratacasolo, Pisogne, Sale Marasino",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Breno: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Breno; stima OSM 2",
+		"Capo Di Ponte: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Capo_di_Ponte; stima OSM 6",
+		"Cedegolo: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Cedegolo; stima OSM 2",
+		"Cividate-Malegno: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Cividate-Malegno; stima OSM 5",
+		"Cogno-Esine: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Cogno-Esine; stima OSM 1",
+		"Darfo-Corna: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Darfo-Corna; stima OSM 2",
+		"Edolo: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Edolo; stima OSM 2",
+		"Malonno: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Malonno; stima OSM 2",
+		"Marone-Zone: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Marone-Zone; stima OSM 4",
+		"Pian Camuno-Gratacasolo: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Piancamuno-Gratacasolo; stima OSM 1",
+		"Pisogne: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Pisogne; stima OSM 4",
+		"Sale Marasino: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Sale_Marasino; stima OSM 2"
+	],
+	"stations": [
+		{
+			"id": "S01005",
+			"name": "Breno",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "breno",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01778",
+							"meso:S01774"
+						],
+						"north": [
+							"meso:S01772",
+							"meso:S01771"
+						]
+					},
+					"notes": "3 binari (corsa piu' 2 raddoppi, piu' scalo); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Boario Terme, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01771",
+			"name": "Capo Di Ponte",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "capo_di_ponte",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01005",
+							"meso:S01772"
+						],
+						"north": [
+							"meso:S01769"
+						]
+					},
+					"notes": "2 binari (corsa piu' raddoppio 216 m); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Breno, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01769",
+			"name": "Cedegolo",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "cedegolo",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01771"
+						],
+						"north": [
+							"meso:S01767"
+						]
+					},
+					"notes": "2 binari (corsa piu' raddoppio 190 m); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Capo Di Ponte, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01774",
+			"name": "Cividate-Malegno",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "cividate_malegno",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01775"
+						],
+						"north": [
+							"meso:S01005"
+						]
+					},
+					"notes": "3 binari (3 binari di corsa e raddoppio piu' scalo); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Cogno-Esine, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01775",
+			"name": "Cogno-Esine",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "cogno_esine",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01776"
+						],
+						"north": [
+							"meso:S01774"
+						]
+					},
+					"notes": "2 binari (corsa piu' raddoppio 204 m); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Pian Di Borno, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01006",
+			"name": "Darfo-Corna",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "darfo_corna",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01014",
+							"meso:S01780"
+						],
+						"north": [
+							"meso:S01778"
+						]
+					},
+					"notes": "3 binari (corsa piu' 2 raddoppi); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Pisogne, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01002",
+			"name": "Edolo",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "edolo",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01767"
+						],
+						"north": [
+							"meso:S01766"
+						]
+					},
+					"notes": "2 binari (capolinea di testa, 2 binari viaggiatori piu' 2 scalo); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Malonno, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01767",
+			"name": "Malonno",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "malonno",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01769"
+						],
+						"north": [
+							"meso:S01002",
+							"meso:S01766"
+						]
+					},
+					"notes": "2 binari (corsa piu' raddoppio); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Cedegolo, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01783",
+			"name": "Marone-Zone",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "marone_zone",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01782",
+							"meso:S01014"
+						],
+						"north": [
+							"meso:S01784"
+						]
+					},
+					"notes": "2 binari (corsa piu' raddoppio 254 m); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Vello, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01780",
+			"name": "Pian Camuno-Gratacasolo",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "pian_camuno_gratacasolo",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01014"
+						],
+						"north": [
+							"meso:S01006"
+						]
+					},
+					"notes": "2 binari (corsa piu' raddoppio 158 m); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Pisogne, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01014",
+			"name": "Pisogne",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "pisogne",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01783",
+							"meso:S01781"
+						],
+						"north": [
+							"meso:S01780",
+							"meso:S01006"
+						]
+					},
+					"notes": "3 binari (corsa piu' 2 raddoppi, piu' 2 di scalo); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Marone-Zone, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01784",
+			"name": "Sale Marasino",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "sale_marasino",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01785"
+						],
+						"north": [
+							"meso:S01783"
+						]
+					},
+					"notes": "2 binari (corsa piu' raddoppio 169 m); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Sulzano, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01005": [
+					"breno"
+				],
+				"S01771": [
+					"capo_di_ponte"
+				],
+				"S01769": [
+					"cedegolo"
+				],
+				"S01774": [
+					"cividate_malegno"
+				],
+				"S01775": [
+					"cogno_esine"
+				],
+				"S01006": [
+					"darfo_corna"
+				],
+				"S01002": [
+					"edolo"
+				],
+				"S01767": [
+					"malonno"
+				],
+				"S01783": [
+					"marone_zone"
+				],
+				"S01780": [
+					"pian_camuno_gratacasolo"
+				],
+				"S01014": [
+					"pisogne"
+				],
+				"S01784": [
+					"sale_marasino"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01005": [
+					"breno"
+				],
+				"S01771": [
+					"capo_di_ponte"
+				],
+				"S01769": [
+					"cedegolo"
+				],
+				"S01774": [
+					"cividate_malegno"
+				],
+				"S01775": [
+					"cogno_esine"
+				],
+				"S01006": [
+					"darfo_corna"
+				],
+				"S01002": [
+					"edolo"
+				],
+				"S01767": [
+					"malonno"
+				],
+				"S01783": [
+					"marone_zone"
+				],
+				"S01780": [
+					"pian_camuno_gratacasolo"
+				],
+				"S01014": [
+					"pisogne"
+				],
+				"S01784": [
+					"sale_marasino"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

@@ -1,0 +1,297 @@
+{
+	"node": "treviglio-cremona",
+	"title": "Stazioni di incrocio sul binario unico: Caravaggio, Casalbuttano, Casaletto Vaprio, Castelleone, Crema, Soresina",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Caravaggio: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Caravaggio; stima OSM 2",
+		"Casalbuttano: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Casalbuttano; stima OSM 2",
+		"Casaletto Vaprio: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Casaletto_Vaprio; stima OSM 5",
+		"Castelleone: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Castelleone; stima OSM 2",
+		"Crema: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Crema; stima OSM 4",
+		"Soresina: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Soresina; stima OSM 6"
+	],
+	"stations": [
+		{
+			"id": "S01602",
+			"name": "Caravaggio",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "caravaggio",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01708"
+						],
+						"north": [
+							"meso:S01603"
+						]
+					},
+					"notes": "2 binari (2 binari passanti); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Treviglio, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01609",
+			"name": "Casalbuttano",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "casalbuttano",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01607"
+						],
+						"north": [
+							"meso:S01905"
+						]
+					},
+					"notes": "2 binari (bin.2 deviato per precedenze); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Soresina, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01604",
+			"name": "Casaletto Vaprio",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "casaletto_vaprio",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01603"
+						],
+						"north": [
+							"meso:S01605"
+						]
+					},
+					"notes": "2 binari (bin.2 deviato per precedenze); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Capralba, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01606",
+			"name": "Castelleone",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "castelleone",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01605",
+							"meso:S01610"
+						],
+						"north": [
+							"meso:S01607"
+						]
+					},
+					"notes": "2 binari (2 binari passanti); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Crema, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01605",
+			"name": "Crema",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "crema",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01708",
+							"meso:S01604"
+						],
+						"north": [
+							"meso:S01610"
+						]
+					},
+					"notes": "3 binari (2 passanti piu' 1 per precedenze); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Treviglio, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01607",
+			"name": "Soresina",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "soresina",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01606"
+						],
+						"north": [
+							"meso:S01609"
+						]
+					},
+					"notes": "3 binari (binario di raddoppio presente); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Castelleone, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01602": [
+					"caravaggio"
+				],
+				"S01609": [
+					"casalbuttano"
+				],
+				"S01604": [
+					"casaletto_vaprio"
+				],
+				"S01606": [
+					"castelleone"
+				],
+				"S01605": [
+					"crema"
+				],
+				"S01607": [
+					"soresina"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01602": [
+					"caravaggio"
+				],
+				"S01609": [
+					"casalbuttano"
+				],
+				"S01604": [
+					"casaletto_vaprio"
+				],
+				"S01606": [
+					"castelleone"
+				],
+				"S01605": [
+					"crema"
+				],
+				"S01607": [
+					"soresina"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

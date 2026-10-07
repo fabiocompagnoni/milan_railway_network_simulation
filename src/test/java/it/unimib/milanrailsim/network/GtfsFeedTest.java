@@ -21,6 +21,8 @@ class GtfsFeedTest {
 		assertEquals(45.50, feed.stopsById().get("S1").lat());
 		assertEquals(2, feed.routesById().get("SX").type());
 		assertEquals(3, feed.routesById().get("BUS").type());
+		assertEquals("ffffff", feed.routesById().get("SX").color());
+		assertEquals("Alfa-Gamma", feed.routesById().get("SX").longName());
 		assertEquals("SVC_WEEKDAY", feed.tripsById().get("T1").serviceId());
 	}
 

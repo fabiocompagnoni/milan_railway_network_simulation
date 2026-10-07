@@ -1,0 +1,49 @@
+{
+	"node": "pavia",
+	"title": "Pavia",
+	"status": "bozza con ricerca e conferma del 2026-09-15",
+	"detailLevel": "binari nominati con assegnazione per linea e per verso: stazione di diramazione verso Milano, Voghera, Mortara/Vercelli, Valenza/Alessandria e Codogno",
+	"sources": [
+		"Wikipedia, Stazione di Pavia (https://it.wikipedia.org/wiki/Stazione_di_Pavia): 6 binari passanti e un tronco; tronco regionali per Codogno/Cremona, 1 precedenze dispari e capolinea S13, 2 fermate verso Genova, 3 fermate verso Milano, 4 precedenze pari e capolinea S13, 5 capolinea per Alessandria, 6 capolinea per Vercelli; confermato da Fabio 2026-09-15",
+		"rilievo diretto 2026-09-15: 6 binari e molti binari di ricovero, una ventina",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15: si attestano S13 74, R36 29, R35 29, R37 26 corse; transitano R34 26, RE13 15",
+		"rete meso: lato sud S01803 Certosa di Pavia e S01820 Rogoredo (verso Milano); lato nord S01807 Voghera, S01806 Lungavilla, S01804 S.Martino Cava, S00279 Cava Carbonara (Mortara/Vercelli), S00408 Sairano (Valenza), S01861 Pavia Porta Garibaldi (Codogno)"
+	],
+
+	"stations": [
+		{
+			"id": "S01860",
+			"name": "Pavia",
+			"kind": "mixed",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "pavia", "kind": "through", "tracks": [{"ref": "1", "direction": null}, {"ref": "2", "direction": "north"}, {"ref": "3", "direction": "south"}, {"ref": "4", "direction": null}, {"ref": "5", "direction": null}, {"ref": "6", "direction": null}],
+					"connections": {"south": ["meso:S01803", "meso:S01820"], "north": ["meso:S01807", "meso:S01806", "meso:S01804", "meso:S00279", "meso:S00408", "meso:S01861"]},
+					"notes": "2 e 3 corretto tracciato Milano-Genova (north = verso Genova); 1 e 4 precedenze e capolinea S13; 5 e 6 capolinea per Alessandria e Vercelli. Le linee per Mortara, Valenza e Codogno sono messe tutte sul lato opposto a Milano (ipotesi)"},
+				{"id": "pavia_tronco", "kind": "terminal", "tracks": [{"ref": "tronco", "direction": null}],
+					"connections": {"north": ["meso:S01861"]},
+					"notes": "tronco dei regionali per Codogno e Cremona"}
+			],
+			"throats": [],
+			"sidings": {"tracks": 20, "note": "una ventina di binari di ricovero (rilievo 2026-09-15)"}
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"S13": {"bundle": null, "stations": {"S01860": ["pavia/1", "pavia/4", "pavia"]}},
+		"R35": {"bundle": null, "stations": {"S01860": ["pavia/5", "pavia"]}},
+		"R36": {"bundle": null, "stations": {"S01860": ["pavia/6", "pavia"]}},
+		"R37": {"bundle": null, "stations": {"S01860": ["pavia_tronco/tronco", "pavia"]}},
+		"R34": {"bundle": null, "stations": {"S01860": {"from_south": ["pavia/2", "pavia"], "from_north": ["pavia/3", "pavia"]}}},
+		"RE13": {"bundle": null, "stations": {"S01860": {"from_south": ["pavia/2", "pavia"], "from_north": ["pavia/3", "pavia"]}}},
+		"*terminal": {"bundle": null, "stations": {"S01860": ["pavia"]}},
+		"*through": {"bundle": null, "stations": {"S01860": {"from_south": ["pavia/2", "pavia"], "from_north": ["pavia/3", "pavia"]}}}
+	},
+
+	"openQuestions": [
+		"Da quale lato della stazione partono le linee per Mortara, Valenza e Codogno?",
+		"Lato del ricovero"
+	]
+}

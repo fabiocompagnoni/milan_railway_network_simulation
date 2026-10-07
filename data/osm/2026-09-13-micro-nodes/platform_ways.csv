@@ -1,0 +1,22 @@
+station,station_name,ref,way_id,osm_name
+S01067,Milano Domodossola,1,907147568,Ferrovia Milano-Saronno
+S01067,Milano Domodossola,2,907147567,Ferrovia Milano-Saronno
+S01067,Milano Domodossola,3,907147566,Ferrovia Milano-Saronno/Milano-Asso
+S01067,Milano Domodossola,4,907147565,Ferrovia Milano-Saronno/Milano-Asso
+S01642,Milano Bovisa Politecnico,1,139099946,Passante Porta Garibaldi-Bovisa
+S01642,Milano Bovisa Politecnico,2,900179794,Passante Porta Garibaldi-Bovisa
+S01642,Milano Bovisa Politecnico,3,139099942,Ferrovia Milano-Saronno
+S01642,Milano Bovisa Politecnico,4,139099944,Ferrovia Milano-Saronno
+S01642,Milano Bovisa Politecnico,5,372064066,Ferrovia Milano-Saronno/Milano-Asso
+S01642,Milano Bovisa Politecnico,6,139089343,Ferrovia Milano-Saronno/Milano-Asso
+S01642,Milano Bovisa Politecnico,7,139089345,Passante ferroviario di Milano (ramo Bovisa)
+S01642,Milano Bovisa Politecnico,8,139089334,Passante ferroviario di Milano (ramo Bovisa)
+S01933,Saronno,1,900184102,Ferrovia Saronno-Como
+S01933,Saronno,2,900184103,Ferrovia Saronno-Como
+S01933,Saronno,3,900528147,Ferrovia Saronno-Laveno
+S01933,Saronno,4,372123777,Ferrovia Saronno-Laveno
+S01933,Saronno,5,900175100,Ferrovia Saronno-Novara
+S01933,Saronno,6,900175101,Ferrovia Saronno-Novara
+S01933,Saronno,7,372119852,Ferrovia Saronno-Seregno
+S01933,Saronno,1 Tr,951200635,Ferrovia Milano-Saronno
+S01933,Saronno,2 Tr,951200636,Ferrovia Milano-Saronno

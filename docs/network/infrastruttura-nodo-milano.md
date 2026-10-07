@@ -115,6 +115,135 @@ Criticità**.
   spaziatura tra stazioni (es. ponti) sono invisibili alla granularità meso,
   trattabili spezzando il link se rilevanti.
 
+- **Binario unico — binari delle stazioni**: i binari di ogni stazione meso
+  che tocca una tratta a binario unico sono censiti in
+  `docs/network/misure/stazioni-binario-unico.csv` (236 stazioni, rilievo del
+  2026-09-17). Per ciascuna: `binari_OSM`, stima automatica dai dati
+  OpenStreetMap del 2026-08-05 (binari paralleli `railway=rail`, esclusi scali,
+  raccordi e comunicazioni, entro 250 m dal punto della stazione, raggruppati
+  per distanza dall'asse della linea); `binari_wikipedia` e
+  `incrocio_wikipedia` dalla voce "Stazione di …" di it.wikipedia, con il link
+  in `fonte_wikipedia`; `binari_reali_Fabio` per il rilievo diretto, che
+  prevale. Risultato: 93 fermate a un solo binario dove l'incrocio è
+  impossibile, 140 stazioni con due o più binari. Il valore provvisorio usato
+  fino a quel giorno era 2 per tutte: ogni fermata sembrava una stazione di
+  incrocio e i bivi con tre tratte, come San Zeno Folzano (3 binari) e
+  Olmeneta (3), ne avevano meno che nella realtà. La tabella è la fonte dei
+  nodi e dei binari di stazione, non viene letta direttamente dal simulatore.
+
+- **Segnale di protezione davanti a ogni stazione dettagliata**: ogni tratta
+  meso che entra in una stazione dettagliata termina 200 m prima della gola in
+  un tratto di ingresso (`<tratta>.entry`), e ogni tratta che ne esce comincia
+  con un tratto di uscita (`<tratta>.exit`); i due tratti hanno la risorsa e la
+  capacità della tratta, quindi un blocco di binario unico li attraversa
+  intero. Motivo: railsim decide una deviazione sul tratto di ingresso e la
+  chiude sul primo tratto di uscita che incontra; fra due stazioni dettagliate
+  la stessa tratta era ingresso dell'una e uscita dell'altra, railsim leggeva
+  solo l'ingresso e non chiudeva mai la deviazione: fra Bagnolo Mella e
+  Manerbio, e in ogni altra coppia di stazioni di incrocio, un treno aspettava
+  il binario occupato con l'altro libero (run del 2026-09-17 sera, 84 treni
+  bloccati). Con il tratto di ingresso la deviazione è inoltre decisa a 200 m
+  dalla stazione, con l'occupazione reale dei binari, e non chilometri prima.
+
+- **Binario unico — consenso anche nelle stazioni dettagliate, e l'ultimo
+  binario per l'incrocio**: la regola del consenso conta insieme i binari di
+  una stazione dettagliata (i binari con `microTrack` della stessa
+  `microStation`) e i treni che li tengono o vi sono diretti, ciascuno con la stazione da cui arriva e quella verso cui riparte. L'ultimo binario libero di una stazione di incrocio può prenderlo solo il partner di un treno già presente, cioè un treno che arriva dalla tratta da cui l'altro riparte o riparte verso quella da cui l'altro è arrivato: i due si scambiano le tratte. Chiunque altro, compreso un treno che esce dal ricovero, aspetta dietro. Vale solo nelle stazioni che toccano una tratta a binario unico.
+  Motivi: a Villasanta due S7 dello stesso verso occupavano i due binari e l'S7 opposto restava nel blocco (run del 2026-09-17 sera); a Varese Nord tre treni per Malnate, uno uscito dal ricovero, riempivano i tre binari mentre il RE1 da Malnate aspettava nella tratta che tutti dovevano usare (run del 2026-09-18). Inoltre un treno che finisce la corsa su un binario di testa occupato non può essere deviato (la corsa non ha un tratto di uscita):
+  aspetta prima del blocco, altrimenti chi sta sul binario non potrebbe più partire (Cremona, R5, run del 2026-09-18).
+  Due dettagli di railsim rendevano la regola inefficace nelle stazioni
+  dettagliate (run `reale_2026-09-17_3`, coda da Malnate a Tradate): railsim
+  riserva gola e binario di una stazione dettagliata come un solo segmento e
+  chiede alla protezione anti-stallo un parere sul segmento intero, favorevole
+  per default (`checkLinks`); ora il parere è chiesto binario per binario. E un
+  treno che ha ottenuto il blocco verso una stazione vi conta già come
+  presente, altrimenti un treno uscito dal ricovero prendeva l'ultimo binario
+  mentre l'altro era in viaggio nella tratta unica. Infine il binario di testa a cui un treno in viaggio nel blocco è destinato resta prenotato per lui, perché non può essere deviato altrove: nel run `reale_2026-09-17_5` un R22 uscito dal ricovero di Varese Nord prendeva proprio il binario 2 verso cui arrivava l'R22 da Malnate, lasciandogli libero l'1, che non poteva usare.
+
+- **Binario unico — transiti nelle stazioni di incrocio**: un treno che non
+  ferma in una stazione di incrocio ci passa comunque sopra un binario di
+  stazione e, se deve, lì aspetta il treno opposto. Nel modello meso le tratte
+  si toccano nel nodo della stazione e il binario di stazione (`stop_<id>`) era
+  percorso solo da chi fermava: il percorso ora lo attraversa anche in
+  transito quando almeno una delle due tratte è a binario unico e la stazione
+  ha almeno due binari (`TransitScheduleBuilder.throughCrossingStations`).
+  Motivo: nella simulazione del 2026-09-17 sera un R3 e un RE3 in transito a
+  Borgo San Giovanni, con i due binari della stazione liberi, aspettavano ognuno
+  il blocco dell'altro per tutto il giorno; stesso stallo a Dervio (RE8) e
+  Olmeneta (R6).
+
+- **Binario unico — consenso all'ingresso nel blocco**: oltre alla
+  serializzazione del blocco, un treno entra in una tratta a binario unico solo
+  se la stazione di incrocio all'altro capo ha un binario per lui e, quando lì
+  c'è già (o sta arrivando) un treno del suo stesso verso, un ulteriore binario
+  libero per il treno opposto: così l'incrocio resta possibile. È il consenso
+  che il dirigente movimento dà prima di licenziare un treno sul binario unico.
+  Nel modello: `SingleTrackDeadlockAvoidance.crossingTrackFree`, che tiene il
+  conto dei treni presenti o diretti in ogni stazione meso con il lato da cui
+  arrivano. Motivo: nella simulazione del 2026-09-18 due S7 nello stesso verso
+  riempivano Villasanta (2 binari) e l'S7 opposto, già nel blocco successivo,
+  non poteva più entrare: stallo per tutta la giornata (79 treni su 274
+  bloccati su tratte a binario unico). Lo stesso consenso vale all'ingresso
+  della stazione di incrocio da qualunque lato, anche da una tratta a doppio
+  binario dove non c'è blocco: Villasanta si riempiva lo stesso di treni dello
+  stesso verso arrivati da Monza Sobborghi (simulazione del 2026-09-17 sera).
+  Limite: la regola vale per le stazioni meso (un anello con più binari);
+  nelle stazioni dettagliate decidono la gola e i binari.
+
+- **Doppio binario — distanziamento a blocco automatico**: una tratta a doppio
+  binario non tiene un solo treno per verso ma uno per sezione di blocco. Sulle
+  linee RFI e Ferrovienord il blocco automatico (BAcc) ha sezioni da 900 a
+  1350 m e ammette il treno seguente appena la sezione dietro al primo è libera
+  (fonti: Wikipedia, "Blocco elettrico automatico a correnti codificate";
+  Ferrovienord, "Istruzione per l'esercizio con sistema di blocco elettrico
+  automatico", ed. 2019). Nel modello (`MesoNetworkEnricher`): capacità per
+  verso = binari per verso × ⌊lunghezza / 2,7 km⌋, minimo 1, cioè un treno
+  ogni due sezioni da 1350 m (quella occupata e quella di distanziamento).
+  Motivo: con un treno per verso, tratte da 30–50 km (Treviglio–Brescia,
+  Monza–Lecco) fermavano in stazione il secondo treno, che occupava il binario
+  e accodava tutta la linea (simulazione del 2026-09-18: 112 treni su 274
+  bloccati per questo). Valore provvisorio: le lunghezze reali delle sezioni
+  per linea non sono state rilevate. Le tratte sotto i 2,7 km (Passante,
+  Garibaldi–Centrale) restano a un treno per verso.
+
+- **Sosta fra due corse**: solo sui binari di testa (`kind: terminal` nei
+  nodi) un treno può aspettare in banchina la corsa successiva, fino alla
+  soglia di `sidings.json` (60 min, oltre va nel ricovero). Su un binario
+  passante si ferma solo il tempo della fermata: una corsa che inverte in una
+  stazione senza binari di testa per la sua linea passa dal ricovero
+  qualunque sia la sosta (`TransitScheduleBuilder.longLayover`). Regola data
+  da Fabio il 2026-09-17: nella simulazione una S12 attestata sul binario 7 di
+  Bovisa, binario di corsa del Passante, lo teneva per 51 minuti e accodava
+  23 treni da Dateo a Lancetti.
+
+- **Binario di stazione e sorpassi**: ogni corsa ha il binario abituale del
+  piano di utilizzo (`data/nodes/*.json`, assegnato dal `PlatformPlanner`). Se
+  all'arrivo quel binario è occupato, railsim può deviare il treno su un altro
+  binario della stazione, ma solo fra quelli che il treno può fisicamente usare:
+  i gruppi collegati sia alla stazione da cui arriva sia a quella verso cui
+  riparte, nel suo verso di marcia (`TransitScheduleBuilder.platformFacility`,
+  `PlatformPlanner.groupsConnecting`). È il sorpasso reale: un RE1 supera un
+  R22 in ritardo a Saronno dove il piazzale lo consente (osservazione di Fabio
+  come passeggero), mentre a Bovisa i binari del Passante e quelli per Cadorna
+  portano in direzioni diverse e non si scambiano. Motivo: nella simulazione
+  del 2026-09-18 RE51 e RE54 a Saronno avevano un solo binario ammesso per
+  verso; un treno in sosta oltre l'orario fermava tutti quelli dietro.
+  La deviazione è accettata solo se raggiunge un binario dell'area di fermata
+  della corsa (`StationTrackResources.keepsStops`), altrimenti il treno
+  salterebbe la fermata. Un binario appartiene a un'area per ogni linea e
+  verso che lo usano (a Mortara il binario 1 ne ha sette): fino alla
+  simulazione del 2026-09-17 sera il controllo ne ricordava una sola, e la
+  deviazione veniva rifiutata quasi sempre; i treni aspettavano il binario
+  occupato con quello accanto libero. Un secondo limite di railsim: una
+  deviazione decisa una stazione prima (mentre il treno va ancora verso la
+  fermata precedente) conosce solo la fermata successiva, quindi può
+  sostituire il binario del capolinea con uno su cui il treno non ferma e
+  proseguire fino al ricovero senza servire la fermata (310 casi nel run del
+  17 sera: nessun arrivo registrato al capolinea, ritardi apparenti di ore
+  nell'analisi di puntualità). Il controllo ora conosce tutte le fermate
+  della giornata del veicolo dall'orario e rifiuta ogni deviazione che ne
+  attraversi una senza fermarsi.
+
 - **Circolazione a SINISTRA**: i treni tengono la sinistra (contrario delle
   auto). Determina l'assegnazione binario→direzione in ogni fascio a doppio
   binario.

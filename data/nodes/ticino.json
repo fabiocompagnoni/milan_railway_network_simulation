@@ -1,0 +1,302 @@
+{
+	"node": "ticino",
+	"title": "Stazioni di incrocio sul binario unico: Cadenazzo, Locarno, Magadino-Vira, Pino-Tronzano, S.Nazzaro, Tenero",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Cadenazzo: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Cadenazzo; stima OSM 6",
+		"Locarno: 5 binari secondo https://de.wikipedia.org/wiki/Bahnhof_Locarno; stima OSM 3",
+		"Magadino-Vira: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Magadino-Vira; stima OSM 2",
+		"Pino-Tronzano: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Pino-Tronzano; stima OSM 2",
+		"S.Nazzaro: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_San_Nazzaro; stima OSM 2",
+		"Tenero: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Tenero; stima OSM 2"
+	],
+	"stations": [
+		{
+			"id": "S05404",
+			"name": "Cadenazzo",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "cadenazzo",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S05415"
+						],
+						"north": [
+							"meso:S05405",
+							"meso:S05412"
+						]
+					},
+					"notes": "3 binari (stazione di diramazione e incrocio); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di S.Antonino, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S05400",
+			"name": "Locarno",
+			"kind": "terminal",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "locarno",
+					"kind": "terminal",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						},
+						{
+							"ref": "4",
+							"direction": null
+						},
+						{
+							"ref": "5",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S05417"
+						]
+					},
+					"notes": "5 binari (capolinea di testa, 5 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Minusio, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S05406",
+			"name": "Magadino-Vira",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "magadino_vira",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S05405"
+						],
+						"north": [
+							"meso:S05407"
+						]
+					},
+					"notes": "2 binari (2 passanti con banchina piu' 2 tronchi merci); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Quartino, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01110",
+			"name": "Pino-Tronzano",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "pino_tronzano",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01111"
+						],
+						"north": [
+							"meso:S05408"
+						]
+					},
+					"notes": "2 binari (2 passanti con banchina piu' 1 tronco); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Colmegna, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S05407",
+			"name": "S.Nazzaro",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "s_nazzaro",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S05408",
+							"meso:S05410"
+						],
+						"north": [
+							"meso:S05406"
+						]
+					},
+					"notes": "2 binari (stazione passante, 2 binari con banchina); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Ranzo-S. Abbondio, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S05401",
+			"name": "Tenero",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "tenero",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S05402"
+						],
+						"north": [
+							"meso:S05417"
+						]
+					},
+					"notes": "2 binari (stazione di incrocio, binari 2 e 3 con banchina); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Gordola, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S05404": [
+					"cadenazzo"
+				],
+				"S05400": [
+					"locarno"
+				],
+				"S05406": [
+					"magadino_vira"
+				],
+				"S01110": [
+					"pino_tronzano"
+				],
+				"S05407": [
+					"s_nazzaro"
+				],
+				"S05401": [
+					"tenero"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S05404": [
+					"cadenazzo"
+				],
+				"S05400": [
+					"locarno"
+				],
+				"S05406": [
+					"magadino_vira"
+				],
+				"S01110": [
+					"pino_tronzano"
+				],
+				"S05407": [
+					"s_nazzaro"
+				],
+				"S05401": [
+					"tenero"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

@@ -1,0 +1,56 @@
+{
+	"node": "malnate-varese",
+	"title": "Malnate e Varese Nord",
+	"status": "rilievo di Fabio del 2026-09-17",
+	"detailLevel": "binari nominati con verso e assegnazione per linea: fine del doppio binario a Malnate, tratta unica Malnate-Varese Nord, capolinea di Varese Nord",
+	"sources": [
+		"rilievo diretto 2026-09-17: Vedano Olona-Malnate a doppio binario, Malnate-Varese Nord a binario unico; Malnate 3 binari, 1 verso Milano, 2 verso Varese, 3 per sorpassi, incroci prima del binario unico e attestamenti; Varese Nord 3 binari, i capolinea si attestano sul 2 e sul 3, 6 binari di sosta dietro e vicino alla stazione",
+		"Wikipedia, Stazione di Malnate (https://it.wikipedia.org/wiki/Stazione_di_Malnate): 3 binari, passaggio da doppio a singolo binario verso Varese",
+		"Wikipedia, Stazione di Varese Nord (https://it.wikipedia.org/wiki/Stazione_di_Varese_Nord): 3 binari di transito, tronchi e deposito",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15: a Varese Nord si attestano 54 corse (R22, RE1); R22 e RE1 in transito verso Laveno",
+		"rete meso: Malnate lato Milano S01736 Vedano Olona e S01729 Tradate (collegamento diretto), lato Varese S01738; Varese Nord lato Malnate S01737, lato Laveno S01739 Varese Casbeno"
+	],
+
+	"stations": [
+		{
+			"id": "S01737",
+			"name": "Malnate",
+			"kind": "mixed",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "malnate", "kind": "through", "tracks": [{"ref": "1", "direction": "south"}, {"ref": "2", "direction": "north"}, {"ref": "3", "direction": null}],
+					"connections": {"south": ["meso:S01736", "meso:S01729"], "north": ["meso:S01738"]},
+					"notes": "1 verso Milano (south), 2 verso Varese (north), 3 bidirezionale per sorpassi, incroci prima del binario unico e attestamenti (rilievo 2026-09-17)"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "da rilevare: valore provvisorio del simulatore"}
+		},
+		{
+			"id": "S01738",
+			"name": "Varese Nord",
+			"kind": "mixed",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "varese_nord", "kind": "terminal", "tracks": [{"ref": "1", "direction": null}, {"ref": "2", "direction": null}, {"ref": "3", "direction": null}],
+					"connections": {"south": ["meso:S01737"], "north": ["meso:S01739"]},
+					"notes": "3 binari bidirezionali, su binario unico da entrambi i lati; i capolinea si attestano sul 2 e sul 3 e vi aspettano la corsa successiva (gruppo di testa), i transiti verso Laveno usano l'1 (rilievo 2026-09-17)"}
+			],
+			"throats": [],
+			"sidings": {"tracks": 6, "note": "6 binari di sosta dietro e vicino alla stazione (rilievo 2026-09-17)"}
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"R22": {"bundle": null, "stations": {"S01737": {"from_south": ["malnate/2", "malnate/3"], "from_north": ["malnate/1", "malnate/3"]}}},
+		"RE1": {"bundle": null, "stations": {"S01737": {"from_south": ["malnate/2", "malnate/3"], "from_north": ["malnate/1", "malnate/3"]}}},
+		"*terminal": {"bundle": null, "stations": {"S01737": ["malnate/3", "malnate"], "S01738": ["varese_nord/2", "varese_nord/3", "varese_nord"]}},
+		"*through": {"bundle": null, "stations": {"S01737": {"from_south": ["malnate/2", "malnate/3"], "from_north": ["malnate/1", "malnate/3"]}, "S01738": ["varese_nord/1", "varese_nord"]}}
+	},
+
+	"openQuestions": [
+		"Malnate: esiste un binario di sosta?",
+		"Varese Nord: il binario 1 e' davvero quello dei transiti?"
+	]
+}

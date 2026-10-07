@@ -1,0 +1,69 @@
+{
+	"node": "garibaldi",
+	"title": "Nodo Milano Porta Garibaldi (superficie e Passante)",
+	"status": "bozza; dettaglio volutamente inferiore a Cadorna",
+	"detailLevel": "gruppi di binari con capacita', senza assegnazione fissa per linea: stazione FS con traffico Trenitalia, Italo e operatori esteri di cui non abbiamo gli orari (rilievo 2026-09-13)",
+	"sources": [
+		"docs/network/infrastruttura-nodo-milano.md (22 binari; rilievo 2026-08-05)",
+		"GTFS Trenord orari_trenord: corse per linea a S01647 (Passante) e S01645 (superficie), conteggio 2026-09-13",
+		"rilievo diretto 2026-09-13: 1-12 tronchi condivisi da tutti i capolinea; 13-20 passanti fra Villapizzone/Bovisa e Centrale/Greco; Passante sotterraneo con binario dato dalla direzione"
+	],
+
+	"stations": [
+		{
+			"id": "S01647",
+			"name": "Milano Porta Garibaldi Passante",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "garibaldi_passante", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
+					"connections": {"north": ["meso:S01643"], "south": ["meso:S01648"]},
+					"notes": "2 binari, uno per direzione, condivisi da tutte le linee del Passante: S5 259, S6 157, S1 129, S13 122, S2 64, S12 60 corse/giorno (GTFS); north = verso Lancetti/Bovisa, south = verso Repubblica"}
+			],
+			"throats": [],
+			"notes": "stazione separata dalla superficie: nessun binario in comune"
+		},
+		{
+			"id": "S01645",
+			"name": "Milano Porta Garibaldi",
+			"kind": "mixed",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "garibaldi_terminal", "kind": "terminal", "capacity": 12, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01639", "meso:S01642", "meso:S01039"], "south": ["meso:S01700", "meso:S01326", "meso:S01701"]},
+					"notes": "binari 1-12: tutte le linee con capolinea Garibaldi, indistintamente; quota altri operatori da stimare"},
+				{"id": "garibaldi_through", "kind": "through", "capacity": 8, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01639", "meso:S01642", "meso:S01039"], "south": ["meso:S01700", "meso:S01326", "meso:S01701"]},
+					"notes": "binari 13-20: transiti e fermate di ogni tipo, ovest verso Villapizzone (linea Torino) o Bovisa, est verso Centrale o Greco Pirelli; ripartizione per direzione da definire (ipotesi 4 + 4)"}
+			],
+			"throats": [
+				{"id": "garibaldi_throat_west", "side": "north", "resource": "garibaldi_throat_west", "lengthM": null, "speedKmh": null, "switches": null,
+					"groups": ["garibaldi_terminal", "garibaldi_through"], "notes": "lato Villapizzone/Bovisa; da rilevare"},
+				{"id": "garibaldi_throat_east", "side": "south", "resource": "garibaldi_throat_east", "lengthM": null, "speedKmh": null, "switches": null,
+					"groups": ["garibaldi_terminal", "garibaldi_through"], "notes": "lato Centrale/Greco/Lambrate, con confluenza 4->2 verso Greco; da rilevare"}
+			],
+			"sidings": {"tracks": null, "note": "da rilevare"},
+			"notes": "GTFS superficie: S11 151, RE5 87, RE51 82, S8 76, S5 75, S7 71, S1 69, R23 55, R14 47, R34 38, R13 25, R6 24, RE2 22, R21 14, S6 9, RE6 8, S9 6 corse/giorno. Per i tronchi 'north' e 'south' indicano solo i lati della stazione"
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"S1": {"bundle": null, "stations": {"S01647": ["garibaldi_passante"], "S01645": ["garibaldi_terminal"]}, "notes": "69 corse si attestano in superficie"},
+		"S2": {"bundle": null, "stations": {"S01647": ["garibaldi_passante"]}},
+		"S5": {"bundle": null, "stations": {"S01647": ["garibaldi_passante"], "S01645": ["garibaldi_terminal"]}, "notes": "75 corse si attestano in superficie"},
+		"S6": {"bundle": null, "stations": {"S01647": ["garibaldi_passante"], "S01645": ["garibaldi_terminal"]}},
+		"S12": {"bundle": null, "stations": {"S01647": ["garibaldi_passante"]}},
+		"S13": {"bundle": null, "stations": {"S01647": ["garibaldi_passante"]}},
+		"*terminal": {"bundle": null, "stations": {"S01645": ["garibaldi_terminal"]}, "notes": "ogni corsa che inizia o termina a Garibaldi superficie"},
+		"*through": {"bundle": null, "stations": {"S01645": ["garibaldi_through"]}, "notes": "ogni corsa che transita o ferma senza attestarsi"}
+	},
+
+	"openQuestions": [
+		"Binari 13-20: ripartizione per direzione (est/ovest) e confluenza 4->2 verso Greco: e' fra questi binari o piu' a nord?",
+		"Quota di binari occupata dal traffico non Trenord, per stimare la capacita' effettiva dei due gruppi",
+		"Ricovero: quanti binari e dove?",
+		"Lunghezza banchine (null: default 200 m provvisorio)"
+	]
+}

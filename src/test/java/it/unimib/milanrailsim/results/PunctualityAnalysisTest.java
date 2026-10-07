@@ -24,12 +24,16 @@ class PunctualityAnalysisTest {
 
 	/** Line S1, one route A -> B: A dep +60, B arr +300 dep +360. */
 	private TransitSchedule schedule() {
+		return schedule("A", "B");
+	}
+
+	private TransitSchedule schedule(String firstStop, String lastStop) {
 		TransitScheduleFactory factory = new TransitScheduleFactoryImpl();
 		TransitSchedule schedule = factory.createTransitSchedule();
 		TransitStopFacility a = factory.createTransitStopFacility(
-			Id.create("A", TransitStopFacility.class), new Coord(0, 0), false);
+			Id.create(firstStop, TransitStopFacility.class), new Coord(0, 0), false);
 		TransitStopFacility b = factory.createTransitStopFacility(
-			Id.create("B", TransitStopFacility.class), new Coord(1000, 0), false);
+			Id.create(lastStop, TransitStopFacility.class), new Coord(1000, 0), false);
 		schedule.addStopFacility(a);
 		schedule.addStopFacility(b);
 
@@ -78,6 +82,37 @@ class PunctualityAnalysisTest {
 	}
 
 	@Test
+	void reportsVehiclesThatNeverCompletedTheirPlan() {
+		PunctualityAnalysis analysis = new PunctualityAnalysis(schedule());
+
+		analysis.handleEvent(arrival("V1", DEPARTURE_TIME + 10, "A"));
+		analysis.handleEvent(departure("V1", DEPARTURE_TIME + 70, "A"));
+
+		List<PunctualityAnalysis.Unfinished> unfinished = analysis.unfinished();
+		assertEquals(1, unfinished.size());
+		assertEquals("V1", unfinished.getFirst().vehicle());
+		assertEquals("S1", unfinished.getFirst().line());
+		assertEquals("A", unfinished.getFirst().lastStop());
+		assertEquals(1, unfinished.getFirst().remainingStops());
+
+		analysis.handleEvent(arrival("V1", DEPARTURE_TIME + 400, "B"));
+		assertTrue(analysis.unfinished().isEmpty(), "reaching the terminus completes the plan");
+	}
+
+	@Test
+	void anotherPlatformOfThePlannedStationIsThePlannedStop() {
+		PunctualityAnalysis analysis = new PunctualityAnalysis(schedule("A.p1|A|S1|through", "B"));
+
+		analysis.handleEvent(arrival("V1", DEPARTURE_TIME + 10, "A.p2|A|S1|through"));
+		analysis.handleEvent(departure("V1", DEPARTURE_TIME + 70, "A.p2|A|S1|through"));
+
+		assertEquals(0, analysis.anomalyCount());
+		assertEquals(1, analysis.visits().size());
+		assertEquals("A.p2|A|S1|through", analysis.visits().getFirst().stop(), "the platform actually used");
+		assertEquals(10, analysis.visits().getFirst().arrivalDelaySeconds());
+	}
+
+	@Test
 	void ignoresAndCountsVehiclesOutsideTheSchedule() {
 		PunctualityAnalysis analysis = new PunctualityAnalysis(schedule());
 
@@ -85,6 +120,20 @@ class PunctualityAnalysisTest {
 
 		assertTrue(analysis.visits().isEmpty());
 		assertEquals(1, analysis.anomalyCount());
+	}
+
+	@Test
+	void aMissedStopIsCountedAndThePlanRealignsAtTheNextOne() {
+		PunctualityAnalysis analysis = new PunctualityAnalysis(schedule());
+
+		analysis.handleEvent(arrival("V1", DEPARTURE_TIME + 400, "B"));
+		analysis.handleEvent(departure("V1", DEPARTURE_TIME + 450, "B"));
+
+		assertEquals(1, analysis.anomalyCount(), "A was run through");
+		assertEquals(1, analysis.visits().size());
+		assertEquals("B", analysis.visits().getFirst().stop());
+		assertEquals(100, analysis.visits().getFirst().arrivalDelaySeconds());
+		assertTrue(analysis.unfinished().isEmpty());
 	}
 
 	@Test

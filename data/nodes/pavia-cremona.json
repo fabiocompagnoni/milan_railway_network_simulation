@@ -1,0 +1,383 @@
+{
+	"node": "pavia-cremona",
+	"title": "Stazioni di incrocio sul binario unico: Acquanegra Cremonese, Belgioioso, Casalpusterlengo, Cava Tigozzi, Chignolo Po, Corteolona, Ospedaletto Lodigiano, Pizzighettone",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Acquanegra Cremonese: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Acquanegra_Cremonese; stima OSM 2",
+		"Belgioioso: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Belgioioso; stima OSM 2",
+		"Casalpusterlengo: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Casalpusterlengo; stima OSM 3",
+		"Cava Tigozzi: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Cava_Tigozzi; stima OSM 3",
+		"Chignolo Po: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Chignolo_Po; stima OSM 2",
+		"Corteolona: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Corteolona; stima OSM 2",
+		"Ospedaletto Lodigiano: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Ospedaletto_Lodigiano; stima OSM 2",
+		"Pizzighettone: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Pizzighettone; stima OSM 4"
+	],
+	"stations": [
+		{
+			"id": "S01913",
+			"name": "Acquanegra Cremonese",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "acquanegra_cremonese",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01912"
+						],
+						"north": [
+							"meso:S01914"
+						]
+					},
+					"notes": "2 binari (stazione 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Ponte D'Adda, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01864",
+			"name": "Belgioioso",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "belgioioso",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01863"
+						],
+						"north": [
+							"meso:S01865"
+						]
+					},
+					"notes": "2 binari (stazione passante 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Albuzzano, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01827",
+			"name": "Casalpusterlengo",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "casalpusterlengo",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01825",
+							"meso:S01826",
+							"meso:S01871"
+						],
+						"north": [
+							"meso:S01828"
+						]
+					},
+					"notes": "3 binari (doppio binario piu' binari di precedenza); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Lodi, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01914",
+			"name": "Cava Tigozzi",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "cava_tigozzi",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01913"
+						],
+						"north": [
+							"meso:S01915"
+						]
+					},
+					"notes": "3 binari (stazione con fascio merci); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Acquanegra Cremonese, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01868",
+			"name": "Chignolo Po",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "chignolo_po",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01867"
+						],
+						"north": [
+							"meso:S01869"
+						]
+					},
+					"notes": "2 binari (stazione 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Miradolo Terme, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01865",
+			"name": "Corteolona",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "corteolona",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01864"
+						],
+						"north": [
+							"meso:S01866"
+						]
+					},
+					"notes": "2 binari (corretto tracciato piu' binario di incrocio); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Belgioioso, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01871",
+			"name": "Ospedaletto Lodigiano",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "ospedaletto_lodigiano",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01870"
+						],
+						"north": [
+							"meso:S01827"
+						]
+					},
+					"notes": "2 binari (stazione passante 2 binari); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Orio Litta, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01911",
+			"name": "Pizzighettone",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "pizzighettone",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01910"
+						],
+						"north": [
+							"meso:S01912"
+						]
+					},
+					"notes": "2 binari (2 binari con banchina piu' 1 ex merci); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Maleo, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01913": [
+					"acquanegra_cremonese"
+				],
+				"S01864": [
+					"belgioioso"
+				],
+				"S01827": [
+					"casalpusterlengo"
+				],
+				"S01914": [
+					"cava_tigozzi"
+				],
+				"S01868": [
+					"chignolo_po"
+				],
+				"S01865": [
+					"corteolona"
+				],
+				"S01871": [
+					"ospedaletto_lodigiano"
+				],
+				"S01911": [
+					"pizzighettone"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01913": [
+					"acquanegra_cremonese"
+				],
+				"S01864": [
+					"belgioioso"
+				],
+				"S01827": [
+					"casalpusterlengo"
+				],
+				"S01914": [
+					"cava_tigozzi"
+				],
+				"S01868": [
+					"chignolo_po"
+				],
+				"S01865": [
+					"corteolona"
+				],
+				"S01871": [
+					"ospedaletto_lodigiano"
+				],
+				"S01911": [
+					"pizzighettone"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

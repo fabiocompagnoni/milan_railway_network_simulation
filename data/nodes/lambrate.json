@@ -1,0 +1,64 @@
+{
+	"node": "lambrate",
+	"title": "Milano Lambrate",
+	"status": "bozza",
+	"detailLevel": "gruppi di binari per funzione: stazione FS con traffico misto",
+	"sources": [
+		"rilievo diretto 2026-09-13: 12 binari tutti passanti; 1-2 prevalentemente merci; 3-4 fra Greco Pirelli e Rogoredo (lato sud confermato verso Rogoredo); 5-12 verso Centrale; 9-10 lato sud verso est (Venezia/Verona)",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-13: S9 95, RE13 94, RE2 75, RE11 70, S1 69, RE6 62, R38 58, R34 38, S5 36, R4 36, R6 26, RE8 5 corse/giorno",
+		"rete meso: vicini S01325 Sesto S.Giovanni, S01326 Greco Pirelli, S01492 Forlanini, S01639 Villapizzone, S01640 Certosa, S01645 Garibaldi, S01700 Centrale, S01703 Pioltello, S01708 Treviglio, S01820 Rogoredo"
+	],
+
+	"stations": [
+		{
+			"id": "S01701",
+			"name": "Milano Lambrate",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "lambrate_cintura", "kind": "through", "tracks": [{"ref": "3", "direction": "south"}, {"ref": "4", "direction": "north"}],
+					"connections": {"north": ["meso:S01326", "meso:S01325"], "south": ["meso:S01820", "meso:S01492"]},
+					"notes": "Greco Pirelli <-> Rogoredo/Forlanini (cintura), senza Centrale: S9, corse di superficie S1, R38, RE13; numero per verso dalla posizione in OSM"},
+				{"id": "lambrate_centrale_est", "kind": "through", "tracks": [{"ref": "9", "direction": "north"}, {"ref": "10", "direction": "south"}],
+					"connections": {"north": ["meso:S01700"], "south": ["meso:S01703", "meso:S01708"]},
+					"notes": "Centrale <-> est (Venezia/Verona): RE2, RE6, R4, R6"},
+				{"id": "lambrate_centrale_altri", "kind": "through", "capacity": 6, "otherOperatorsShare": 0,
+					"connections": {"north": ["meso:S01700", "meso:S01645", "meso:S01639", "meso:S01640"], "south": ["meso:S01820", "meso:S01492", "meso:S01703", "meso:S01708"]},
+					"notes": "binari 5-8 e 11-12 verso Centrale; lato sud da confermare (Rogoredo?): RE11, RE13, RE8, R34 e Trenitalia"}
+			],
+			"throats": [
+				{"id": "lambrate_throat_north", "side": "north", "resource": "lambrate_throat_north", "lengthM": null, "speedKmh": null, "switches": null,
+					"groups": ["lambrate_cintura", "lambrate_centrale_est", "lambrate_centrale_altri"], "notes": "da rilevare"},
+				{"id": "lambrate_throat_south", "side": "south", "resource": "lambrate_throat_south", "lengthM": null, "speedKmh": null, "switches": null,
+					"groups": ["lambrate_cintura", "lambrate_centrale_est", "lambrate_centrale_altri"], "notes": "bivio verso Forlanini e verso Bivio Lambro (est); da rilevare"}
+			],
+			"notes": "12 binari; 1-2 prevalentemente merci, esclusi dalla simulazione; quota altri operatori da stimare"
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"S9": {"bundle": null, "stations": {"S01701": ["lambrate_cintura"]}},
+		"S1": {"bundle": null, "stations": {"S01701": ["lambrate_cintura"]}},
+		"R38": {"bundle": null, "stations": {"S01701": ["lambrate_cintura", "lambrate_centrale_altri"]}},
+		"RE2": {"bundle": null, "stations": {"S01701": ["lambrate_centrale_est"]}},
+		"RE6": {"bundle": null, "stations": {"S01701": ["lambrate_centrale_est"]}},
+		"R4": {"bundle": null, "stations": {"S01701": ["lambrate_centrale_est"]}},
+		"R6": {"bundle": null, "stations": {"S01701": ["lambrate_centrale_est"]}},
+		"S5": {"bundle": null, "stations": {"S01701": ["lambrate_centrale_est", "lambrate_centrale_altri"]}, "notes": "36 corse; tratto da verificare"},
+		"RE11": {"bundle": null, "stations": {"S01701": ["lambrate_centrale_altri"]}},
+		"RE13": {"bundle": null, "stations": {"S01701": ["lambrate_centrale_altri", "lambrate_cintura"]}},
+		"RE8": {"bundle": null, "stations": {"S01701": ["lambrate_centrale_altri"]}},
+		"R34": {"bundle": null, "stations": {"S01701": ["lambrate_centrale_altri"]}},
+		"*through": {"bundle": null, "stations": {"S01701": ["lambrate_centrale_altri"]}, "notes": "ogni altra corsa che transita o ferma a Lambrate"}
+	},
+
+	"openQuestions": [
+		"Assegnazione delle linee ai gruppi ricavata dagli itinerari GTFS, da confermare",
+		"5-8 e 11-12: lato sud dove vanno (Rogoredo, est, entrambi)? quanti per direzione?",
+		"Da quali binari partono i 4 della Cintura di Milano che saltano Forlanini (vedi forlanini.json)?",
+		"Quota altri operatori",
+		"Lunghezza banchine"
+	]
+}

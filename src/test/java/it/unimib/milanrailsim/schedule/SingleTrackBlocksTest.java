@@ -75,6 +75,16 @@ class SingleTrackBlocksTest {
 	}
 
 	@Test
+	void oneTrackStationsInsideABlockBelongToIt() {
+		SingleTrackBlocks.apply(network);
+
+		assertEquals(resource("A_B"), resource("stop_B"));
+		assertNull(resource("stop_A"), "crossing points keep their own stop resources");
+		assertNull(resource("stop_C"));
+		assertNull(resource("stop_D"), "a boundary at the end of single track too");
+	}
+
+	@Test
 	void doubleTrackLinksAreUntouched() {
 		SingleTrackBlocks.apply(network);
 
@@ -95,5 +105,115 @@ class SingleTrackBlocksTest {
 				&& l.getAttributes().getAttribute("stationLink") == null
 				&& !l.getFromNode().getId().equals(l.getToNode().getId()))
 			.map(l -> l.getId().toString()).toList());
+	}
+
+	@Test
+	void aSingleTrackJunctionStationGetsASecondStopTrack() {
+		for (String[] station : new String[][] { { "J", "1" }, { "F", "2" }, { "G", "2" }, { "H", "2" } }) {
+			addStation(station[0], Integer.parseInt(station[1]));
+		}
+		addPair("J", "F", 1, true);
+		addPair("J", "G", 1, true);
+		addPair("J", "H", 1, true);
+
+		SingleTrackBlocks.apply(network);
+
+		Link junction = network.getLinks().get(Id.createLinkId("stop_J"));
+		assertEquals(2, junction.getAttributes().getAttribute("railsimTrainCapacity"));
+		assertEquals("provisional", junction.getAttributes().getAttribute("dataStatus"));
+		assertEquals(1, network.getLinks().get(Id.createLinkId("stop_D")).getAttributes().getAttribute("railsimTrainCapacity"),
+			"an end of single track with two neighbours is no junction");
+	}
+
+	@Test
+	void doubleTrackWithOneTrainPerDirectionIsNotSingleTrack() {
+		// two tracks give one train per direction, with no shared resource: never a block
+		addStation("P", 2);
+		addStation("Q", 2);
+		addPair("P", "Q", 1, false);
+
+		SingleTrackBlocks.apply(network);
+
+		assertNull(resource("P_Q"));
+		assertNull(resource("Q_P"));
+	}
+
+	@Test
+	void theHomeSignalBeforeADetailedStationDoesNotEndTheBlock() {
+		// M -single- (signal) -stub- N.in : the stub keeps the section's resource, so the block runs through the signal
+		for (String id : List.of("M.north.N.out", "M_N.entry.a", "N.south.M.in", "N.p1")) {
+			network.addNode(network.getFactory().createNode(Id.createNodeId(id), new Coord(0, 0)));
+		}
+		singleTrack("M_N", "M.north.N.out", "M_N.entry.a");
+		singleTrack("M_N.entry", "M_N.entry.a", "N.south.M.in");
+		Link approach = network.getFactory().createLink(Id.createLinkId("N.p1.south.M.in"),
+			network.getNodes().get(Id.createNodeId("N.south.M.in")), network.getNodes().get(Id.createNodeId("N.p1")));
+		approach.setAllowedModes(Set.of("rail"));
+		approach.getAttributes().putAttribute("railsimTrainCapacity", 1);
+		approach.getAttributes().putAttribute("microNode", "mn");
+		network.addLink(approach);
+
+		singleTrack("N_M.exit", "N.south.M.in", "M_N.entry.a");
+		singleTrack("N_M", "M_N.entry.a", "M.north.N.out");
+
+		SingleTrackBlocks.apply(network);
+
+		assertEquals(resource("M_N"), resource("M_N.entry"), "section and entry stub are one block");
+		assertEquals(resource("M_N"), resource("N_M.exit"), "the exit stub of the opposite direction is the same piece of track");
+		assertEquals(resource("M_N"), resource("N_M"));
+	}
+
+	@Test
+	void bothDirectionsBetweenDetailedStationsShareOneBlock() {
+		// between two detailed stations each direction enters and leaves through its own junction
+		// node, so the two links share no node: the opposite must still join the same block
+		for (String id : List.of("M.north.N.out", "N.south.M.in", "N.south.M.out", "M.north.N.in", "M.p1", "N.p1")) {
+			network.addNode(network.getFactory().createNode(Id.createNodeId(id), new Coord(0, 0)));
+		}
+		Link towardsN = singleTrack("M_N", "M.north.N.out", "N.south.M.in");
+		Link towardsM = singleTrack("N_M", "N.south.M.out", "M.north.N.in");
+		for (String[] throat : new String[][] { { "M.p1.north.out", "M.p1", "M.north.N.out" }, { "M.p1.north.in", "M.north.N.in", "M.p1" },
+				{ "N.p1.south.out", "N.p1", "N.south.M.out" }, { "N.p1.south.in", "N.south.M.in", "N.p1" } }) {
+			Link link = network.getFactory().createLink(Id.createLinkId(throat[0]),
+				network.getNodes().get(Id.createNodeId(throat[1])), network.getNodes().get(Id.createNodeId(throat[2])));
+			link.setAllowedModes(Set.of("rail"));
+			link.getAttributes().putAttribute("railsimTrainCapacity", 1);
+			link.getAttributes().putAttribute("microNode", "mn");
+			network.addLink(link);
+		}
+
+		SingleTrackBlocks.apply(network);
+
+		assertEquals(resource("M_N"), resource("N_M"));
+		assertTrue(resource("M_N").startsWith("block_"));
+		assertNotEquals(towardsN.getToNode(), towardsM.getFromNode(), "the fixture really keeps the ends apart");
+	}
+
+	private Link singleTrack(String id, String from, String to) {
+		Link link = network.getFactory().createLink(Id.createLinkId(id),
+			network.getNodes().get(Id.createNodeId(from)), network.getNodes().get(Id.createNodeId(to)));
+		link.setAllowedModes(Set.of("rail"));
+		link.getAttributes().putAttribute("railsimTrainCapacity", 1);
+		link.getAttributes().putAttribute("railsimResourceId", "M_N");
+		network.addLink(link);
+		return link;
+	}
+
+	@Test
+	void microNodeLinksKeepTheirOwnResources() {
+		// a throat link of a micro station carries the shared throat resource, never a block
+		network.addNode(network.getFactory().createNode(Id.createNodeId("E.north"), new Coord(0, 0)));
+		network.addNode(network.getFactory().createNode(Id.createNodeId("E.p1.b"), new Coord(0, 0)));
+		Link throat = network.getFactory().createLink(Id.createLinkId("E.p1.north.in"),
+			network.getNodes().get(Id.createNodeId("E.north")), network.getNodes().get(Id.createNodeId("E.p1.b")));
+		throat.setAllowedModes(Set.of("rail"));
+		throat.getAttributes().putAttribute("railsimTrainCapacity", 1);
+		throat.getAttributes().putAttribute("railsimResourceId", "e_throat");
+		throat.getAttributes().putAttribute("microNode", "e");
+		network.addLink(throat);
+
+		SingleTrackBlocks.apply(network);
+
+		assertEquals("e_throat", resource("E.p1.north.in"));
 	}
 }

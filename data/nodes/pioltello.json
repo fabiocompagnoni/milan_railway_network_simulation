@@ -1,0 +1,49 @@
+{
+	"node": "pioltello",
+	"title": "Pioltello-Limito",
+	"status": "bozza con ricerca e conferma del 2026-09-15",
+	"detailLevel": "gruppi di binari: stazione sul quadruplicamento Milano-Treviglio, capolinea della S6",
+	"sources": [
+		"Wikipedia, Stazione di Pioltello-Limito (https://it.wikipedia.org/wiki/Stazione_di_Pioltello-Limito): 4 binari di corsa (linea storica e quadruplicamento) e un tronco lato Milano per le corse S5/S6 con capolinea a Pioltello; confermato da Fabio 2026-09-15",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15: si attesta S6 45 corse; transitano S5 74, RE2 54, RE6 38, R4 31, S6 22",
+		"rete meso: lato sud S01715 Segrate e S01701 Lambrate (collegamento diretto); lato nord S01704 Vignate, S01705 Melzo, S01708 Treviglio, S01601 Treviglio Ovest, S01600 Verdello"
+	],
+
+	"stations": [
+		{
+			"id": "S01703",
+			"name": "Pioltello Limito",
+			"kind": "mixed",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "pioltello_lenti", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
+					"connections": {"south": ["meso:S01715", "meso:S01701"], "north": ["meso:S01704", "meso:S01705", "meso:S01708", "meso:S01601", "meso:S01600"]},
+					"notes": "coppia lenta per i treni che fermano (S5, S6, R4); numerazione e verso ipotizzati"},
+				{"id": "pioltello_veloci", "kind": "through", "tracks": [{"ref": "3", "direction": "north"}, {"ref": "4", "direction": "south"}],
+					"connections": {"south": ["meso:S01715", "meso:S01701"], "north": ["meso:S01704", "meso:S01705", "meso:S01708", "meso:S01601", "meso:S01600"]},
+					"notes": "coppia veloce per i regionali (RE2, RE6); numerazione e verso ipotizzati"},
+				{"id": "pioltello_tronco", "kind": "terminal", "tracks": [{"ref": "tronco", "direction": null}],
+					"connections": {"south": ["meso:S01715", "meso:S01701"]},
+					"notes": "tronco lato Milano per le S6 che si attestano"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "nessun deposito noto: valore provvisorio del simulatore"}
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"S6": {"bundle": null, "stations": {"S01703": ["pioltello_tronco", "pioltello_lenti"]}},
+		"S5": {"bundle": null, "stations": {"S01703": ["pioltello_lenti", "pioltello_veloci"]}},
+		"R4": {"bundle": null, "stations": {"S01703": ["pioltello_lenti", "pioltello_veloci"]}},
+		"RE2": {"bundle": null, "stations": {"S01703": ["pioltello_veloci", "pioltello_lenti"]}},
+		"RE6": {"bundle": null, "stations": {"S01703": ["pioltello_veloci", "pioltello_lenti"]}},
+		"*terminal": {"bundle": null, "stations": {"S01703": ["pioltello_tronco", "pioltello_lenti"]}},
+		"*through": {"bundle": null, "stations": {"S01703": ["pioltello_lenti", "pioltello_veloci"]}}
+	},
+
+	"openQuestions": [
+		"Quale coppia di binari e' lenta e quale veloce, e da che lato sta il tronco?"
+	]
+}

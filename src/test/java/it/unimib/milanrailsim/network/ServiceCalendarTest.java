@@ -36,4 +36,15 @@ class ServiceCalendarTest {
 		assertThrows(IllegalArgumentException.class, () -> ServiceCalendar.activeServiceIds(
 			List.of(row("A", "20260916", "3")), LocalDate.of(2026, 9, 16)));
 	}
+
+	@Test
+	void listsTheDatesWithAddedServices() {
+		List<Map<String, String>> rows = List.of(
+			Map.of("service_id", "A", "date", "20260917", "exception_type", "1"),
+			Map.of("service_id", "B", "date", "20260916", "exception_type", "1"),
+			Map.of("service_id", "A", "date", "20260918", "exception_type", "2"));
+
+		assertEquals(List.of(LocalDate.of(2026, 9, 16), LocalDate.of(2026, 9, 17)),
+			List.copyOf(ServiceCalendar.availableDates(rows)));
+	}
 }

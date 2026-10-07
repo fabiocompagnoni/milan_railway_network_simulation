@@ -1,0 +1,40 @@
+{
+	"node": "melegnano",
+	"title": "Melegnano",
+	"status": "bozza con ricerca e conferma del 2026-09-15",
+	"detailLevel": "binari nominati con assegnazione per linea e per verso: capolinea della S12 sulla linea Milano-Lodi a doppio binario",
+	"sources": [
+		"Wikipedia, Stazione di Melegnano (https://it.wikipedia.org/wiki/Stazione_di_Melegnano): 3 binari viaggiatori; 1 treni verso sud (S1 verso Lodi), 2 verso Milano; la S12 si attesta sul 3, usato anche per le precedenze; vecchio tronco rimosso nel 2014, scalo smantellato; confermato da Fabio 2026-09-15",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15: si attesta S12 60 corse; transita S1 74",
+		"rete meso: lato sud S01821 S.Giuliano Milanese (verso Milano), lato nord S01823 S.Zenone al Lambro"
+	],
+
+	"stations": [
+		{
+			"id": "S01822",
+			"name": "Melegnano",
+			"kind": "mixed",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "melegnano", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}, {"ref": "3", "direction": null}],
+					"connections": {"south": ["meso:S01821"], "north": ["meso:S01823"]},
+					"notes": "1 verso Lodi (north), 2 verso Milano (south), 3 percorribile nei due versi per l'attestamento della S12 e le precedenze"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "nessun ricovero noto: scalo smantellato, valore provvisorio del simulatore"}
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"S12": {"bundle": null, "stations": {"S01822": ["melegnano/3", "melegnano"]}},
+		"S1": {"bundle": null, "stations": {"S01822": {"from_south": ["melegnano/1", "melegnano/3"], "from_north": ["melegnano/2", "melegnano/3"]}}},
+		"*terminal": {"bundle": null, "stations": {"S01822": ["melegnano/3", "melegnano"]}},
+		"*through": {"bundle": null, "stations": {"S01822": ["melegnano"]}}
+	},
+
+	"openQuestions": [
+		"Dove sostano le S12 nelle pause lunghe, senza ricovero?"
+	]
+}

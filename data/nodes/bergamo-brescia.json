@@ -1,0 +1,298 @@
+{
+	"node": "bergamo-brescia",
+	"title": "Stazioni di incrocio sul binario unico: Coccaglio, Grumello Del Monte, Montello Gorlago, Palazzolo Sull'Oglio, Rovato, Seriate",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Coccaglio: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Coccaglio; stima OSM 2",
+		"Grumello Del Monte: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Grumello_del_Monte; stima OSM 2",
+		"Montello Gorlago: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Montello-Gorlago; stima OSM 4",
+		"Palazzolo Sull'Oglio: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Palazzolo_sull%27Oglio; stima OSM 16",
+		"Rovato: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Rovato; stima OSM 18",
+		"Seriate: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Seriate; stima OSM 2"
+	],
+	"stations": [
+		{
+			"id": "S01540",
+			"name": "Coccaglio",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "coccaglio",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01539"
+						],
+						"north": [
+							"meso:S01714"
+						]
+					},
+					"notes": "2 binari (stazione passante sulla Milano-Venezia); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Cologne, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01537",
+			"name": "Grumello Del Monte",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "grumello_del_monte",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01536"
+						],
+						"north": [
+							"meso:S01538"
+						]
+					},
+					"notes": "2 binari (bin.1 raddoppio 508 m, bin.2 corsa); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Chiuduno, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01535",
+			"name": "Montello Gorlago",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "montello_gorlago",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01529",
+							"meso:S01534"
+						],
+						"north": [
+							"meso:S01536",
+							"meso:S01537"
+						]
+					},
+					"notes": "2 binari (bin.1 verso Brescia, bin.2 verso Bergamo, terzo non usato); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Bergamo, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01538",
+			"name": "Palazzolo Sull'Oglio",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "palazzolo_sull_oglio",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01529",
+							"meso:S01537"
+						],
+						"north": [
+							"meso:S01539",
+							"meso:S01540"
+						]
+					},
+					"notes": "2 binari (bin.1 corsa piu' bin.2, entrambi viaggiatori, piu' tronchi); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Bergamo, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01714",
+			"name": "Rovato",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "rovato",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01708",
+							"meso:S01713",
+							"meso:S01540"
+						],
+						"north": [
+							"meso:S01716",
+							"meso:S09999"
+						]
+					},
+					"notes": "3 binari (2 binari di corsa Milano-Venezia piu' 1 tronco per Iseo, piu' 3 di ricovero); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Treviglio, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01533",
+			"name": "Seriate",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "seriate",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01529"
+						],
+						"north": [
+							"meso:S01534"
+						]
+					},
+					"notes": "2 binari (bin.1 raddoppio 217 m, bin.2 corsa); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Bergamo, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01540": [
+					"coccaglio"
+				],
+				"S01537": [
+					"grumello_del_monte"
+				],
+				"S01535": [
+					"montello_gorlago"
+				],
+				"S01538": [
+					"palazzolo_sull_oglio"
+				],
+				"S01714": [
+					"rovato"
+				],
+				"S01533": [
+					"seriate"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01540": [
+					"coccaglio"
+				],
+				"S01537": [
+					"grumello_del_monte"
+				],
+				"S01535": [
+					"montello_gorlago"
+				],
+				"S01538": [
+					"palazzolo_sull_oglio"
+				],
+				"S01714": [
+					"rovato"
+				],
+				"S01533": [
+					"seriate"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

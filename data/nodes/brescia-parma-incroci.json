@@ -1,0 +1,293 @@
+{
+	"node": "brescia-parma-incroci",
+	"title": "Stazioni di incrocio sul binario unico: Asola, Canneto Sull'Oglio, Montirone, Remedello Sopra, Viadana Bresciana, Visano",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Asola: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Asola; stima OSM 2",
+		"Canneto Sull'Oglio: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Canneto_sull%27Oglio; stima OSM 2",
+		"Montirone: 3 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Montirone; stima OSM 2",
+		"Remedello Sopra: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Remedello_Sopra; stima OSM 2",
+		"Viadana Bresciana: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Viadana_Bresciana; stima OSM 2",
+		"Visano: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Visano; stima OSM 2"
+	],
+	"stations": [
+		{
+			"id": "S01847",
+			"name": "Asola",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "asola",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01845",
+							"meso:S01846"
+						],
+						"north": [
+							"meso:S01848"
+						]
+					},
+					"notes": "2 binari (corsa piu' raddoppio 505 m); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Remedello Sopra, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01848",
+			"name": "Canneto Sull'Oglio",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "canneto_sull_oglio",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01847"
+						],
+						"north": [
+							"meso:S01919"
+						]
+					},
+					"notes": "2 binari (raddoppio in stazione); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Asola, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01840",
+			"name": "Montirone",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "montirone",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01900"
+						],
+						"north": [
+							"meso:S01841"
+						]
+					},
+					"notes": "3 binari (2 binari con marciapiede piu' 1 per mezzi d'opera); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di S.Zeno Folzano, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01845",
+			"name": "Remedello Sopra",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "remedello_sopra",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01841",
+							"meso:S01844"
+						],
+						"north": [
+							"meso:S01846"
+						]
+					},
+					"notes": "2 binari (bin.1 incroci, bin.2 corsa); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Ghedi, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01842",
+			"name": "Viadana Bresciana",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "viadana_bresciana",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01841"
+						],
+						"north": [
+							"meso:S01843"
+						]
+					},
+					"notes": "2 binari (corsa piu' raddoppio 335 m); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Ghedi, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01844",
+			"name": "Visano",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "visano",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01843"
+						],
+						"north": [
+							"meso:S01845"
+						]
+					},
+					"notes": "2 binari (corsa piu' 1 raddoppio dal 2015); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Calvisano, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01847": [
+					"asola"
+				],
+				"S01848": [
+					"canneto_sull_oglio"
+				],
+				"S01840": [
+					"montirone"
+				],
+				"S01845": [
+					"remedello_sopra"
+				],
+				"S01842": [
+					"viadana_bresciana"
+				],
+				"S01844": [
+					"visano"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01847": [
+					"asola"
+				],
+				"S01848": [
+					"canneto_sull_oglio"
+				],
+				"S01840": [
+					"montirone"
+				],
+				"S01845": [
+					"remedello_sopra"
+				],
+				"S01842": [
+					"viadana_bresciana"
+				],
+				"S01844": [
+					"visano"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

@@ -1,0 +1,43 @@
+{
+	"node": "garbagnate",
+	"title": "Garbagnate Milanese",
+	"status": "bozza con ricerca e conferma del 2026-09-15",
+	"detailLevel": "gruppi di binari: stazione sul quadruplicamento Ferrovienord Milano-Saronno, capolinea della S13",
+	"sources": [
+		"Wikipedia, Stazione di Garbagnate Milanese (https://it.wikipedia.org/wiki/Stazione_di_Garbagnate_Milanese): 4 binari passanti e i tronchi del capolinea S13, costruiti nel 2023-24 al posto dello scalo merci (la voce indica 2 e poi 3 tronchi); confermato da Fabio 2026-09-15",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-15: si attesta S13 48 corse; transitano S3 76, S1 61",
+		"rete meso: lato sud S01071 Bollate Centro (verso Milano); lato nord S01073 Garbagnate Parco delle Groane, S01075 Cesate"
+	],
+
+	"stations": [
+		{
+			"id": "S01074",
+			"name": "Garbagnate Milanese",
+			"kind": "mixed",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "garbagnate_passanti", "kind": "through", "capacity": 4, "otherOperatorsShare": 0,
+					"connections": {"south": ["meso:S01071"], "north": ["meso:S01073", "meso:S01075"]},
+					"notes": "4 binari passanti per S1 e S3"},
+				{"id": "garbagnate_tronchi", "kind": "terminal", "capacity": 2, "otherOperatorsShare": 0,
+					"connections": {"south": ["meso:S01071"]},
+					"notes": "tronchi della S13 lato Milano; 2 secondo la prima indicazione della fonte (da confermare: 2 o 3)"}
+			],
+			"throats": [],
+			"sidings": {"tracks": null, "note": "nessun ricovero noto: valore provvisorio del simulatore"}
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"S13": {"bundle": null, "stations": {"S01074": ["garbagnate_tronchi", "garbagnate_passanti"]}},
+		"*terminal": {"bundle": null, "stations": {"S01074": ["garbagnate_tronchi", "garbagnate_passanti"]}},
+		"*through": {"bundle": null, "stations": {"S01074": ["garbagnate_passanti"]}}
+	},
+
+	"openQuestions": [
+		"I tronchi della S13 sono 2 o 3?",
+		"I passanti sono divisi per verso o per tipo di servizio?"
+	]
+}

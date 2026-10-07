@@ -1,0 +1,177 @@
+stop_id,nome,corse_giorno,banchine_OSM_da_correggere,linee,binari_reali_Fabio,fonte
+S01066,Milano Cadorna,483,7,"R16,R17,R22,R27,RE1,RE54,RE7,S3,S4"
+S01645,Milano Porta Garibaldi,332,3,"R14,R21,R23,R34,R6,RE2,RE5,RE6,S11,S5,S6,S7,S8,S9"
+S01700,Milano Centrale,299,8,"R4,RE11,RE13,RE2,RE4,RE51,RE6,RE8,RE80,S11,S8"
+S09999,Brescia,208,8,"R1,R3,R4,R5,R8,RE3,RE6,S31"
+S01933,Saronno,204,4,"RE51,S1,S3,S9"
+S01520,Lecco,180,3,"R13,R18,R7,RE8,S7,S8"
+S01820,Milano Rogoredo,178,6,"R31,RE8,S1,S19,S2,S9"
+S01860,Pavia,158,4,"R35,R36,R37,S13"
+S01708,Treviglio,154,5,"R2,R6,S5,S6"
+S01529,Bergamo,130,2,"R1,R2,R5,RE2"
+S01059,Albairate,125,3,"S19,S9"
+S01642,Milano Bovisa Politecnico,104,5,"S1,S12,S13,S2"
+S01307,Como S.Giovanni,97,3,"R18,RE80,S11"
+S01915,Cremona,95,5,"R37,R39,R40,R5,R6,RE11"
+S01030,Gallarate,94,3,"R21,RE51,S5"
+S00248,Novara,82,8,"R25,S6"
+S01205,Varese,80,4,"RE5,S5"
+S01146,Malpensa Aeroporto T2,78,2,RE54
+S01528,Ponte S.Pietro,74,2,"R14,R7"
+S01825,Lodi,74,3,S1
+S01326,Milano Greco Pirelli,72,6,"R38,R4,RE13,S9"
+S01765,Como Lago,70,3,"R17,RE7"
+S01822,Melegnano,60,2,S12
+S01925,Seveso,56,3,"R16,S2,S4"
+S05000,Piacenza,55,5,"R34,R38,R41"
+S01738,Varese Nord,54,2,R22
+S00034,Mortara,52,5,"R25,R31,R36"
+S01074,Garbagnate Milanese,48,3,S13
+S01703,Pioltello Limito,45,3,S6
+S01420,Colico,42,5,"R11,R13,RE8"
+S00470,Alessandria,42,7,"R25,R31,R35,RE13"
+S01316,Camnago-Lentate,42,2,S4
+S01747,Laveno Mombello Lago,40,3,"R22,RE1"
+S01101,Asso,37,2,R16
+S00023,Novara Nord,37,2,R27
+S01440,Tirano,34,3,"R12,RE8"
+S01021,Iseo,34,2,"R3,S31"
+S05014,Parma,34,5,R8
+S01200,Porto Ceresio,34,2,RE5
+S05400,Locarno,34,4,RE80
+S02430,Verona Porta Nuova,33,5,RE6
+S01400,Chiavenna,32,3,R11
+S01430,Sondrio,30,2,"R12,R13,RE8"
+S01083,Palazzolo Milanese,30,2,S4
+S01828,Codogno,29,3,"R37,R38,R39,RE11"
+S01037,Rho,29,3,S11
+S01002,Edolo,28,2,"R3,RE3"
+S00245,Vercelli,28,3,R36
+S01920,Bozzolo,28,2,"R40,RE11"
+S01020,Arona,25,4,"R23,RE4"
+S01003,Domodossola,21,5,RE4
+S01113,Luino,19,2,R21
+S01458,Molteno,18,3,"R18,S7"
+S01096,Erba,16,2,R16
+S01945,Stradella,14,2,R34
+S01807,Voghera,13,4,"R41,RE13"
+S00462,Asti,11,5,RE13
+S01640,Milano Certosa,6,6,"R38,R6,S5,S6"
+S01087,Meda,6,2,S2
+S01919,Piadena,5,3,"R40,R8"
+S01005,Breno,4,3,R3
+S01062,Abbiategrasso,4,2,S19
+S01322,Monza,4,4,S7
+S01739,Varese Casbeno,3,2,R22
+S01318,Seregno,3,3,"S11,S9"
+S01089,Mariano Comense,2,2,R16
+S01014,Pisogne,2,3,R3
+S01805,Bressana Bottarone,2,2,RE13
+S04203,Novi Ligure,2,2,RE13
+S02026,Bolzano,2,4,RE6
+S01301,Chiasso,2,2,"RE80,S11"
+S01488,Besana,2,2,S7
+S01630,Milano S.Cristoforo,1,3,R31
+S00039,Torreberetti,1,2,R35
+S01864,Belgioioso,1,2,R37
+S01865,Corteolona,1,2,R37
+S01810,Tortona,1,2,RE13
+S05300,Lugano,1,7,RE80
+S05209,Biasca,1,2,S11
+S05213,Bellinzona,1,3,S11
+S01111,Colmegna,,4,,1,https://it.wikipedia.org/wiki/Stazione_di_Colmegna
+S05410,Gerra,,2,,1,https://it.wikipedia.org/wiki/Stazione_di_Gerra_(Gambarogno)
+S05405,Quartino,,4,,1,https://it.wikipedia.org/wiki/Stazione_di_Quartino
+S05408,Ranzo-S. Abbondio,,2,,1,https://it.wikipedia.org/wiki/Stazione_di_Ranzo-Sant'Abbondio
+S01534,Albano S.Alessandro,,1,"R1,R5",1,https://it.wikipedia.org/wiki/Stazione_di_Albano_Sant'Alessandro
+S01536,Chiuduno,,1,"R1,R5",1,https://it.wikipedia.org/wiki/Stazione_di_Chiuduno
+S01539,Cologne,,1,"R1,R5",1,https://it.wikipedia.org/wiki/Stazione_di_Cologne
+S01417,Prata Camportaccio,,2,R11,1,https://it.wikipedia.org/wiki/Stazione_di_Prata_Camportaccio
+S01401,S.Cassiano Valchiavenna,,2,R11,1,https://it.wikipedia.org/wiki/Stazione_di_San_Cassiano_Valchiavenna
+S01402,Samolaco,,1,R11,1,https://it.wikipedia.org/wiki/Stazione_di_Samolaco
+S01404,Verceia,,2,R11,1,https://it.wikipedia.org/wiki/Stazione_di_Verceia
+S01438,Bianzone,,1,"R12,RE8",1,https://it.wikipedia.org/wiki/Stazione_di_Bianzone
+S01435,Chiuro,,1,"R12,RE8",1,https://it.wikipedia.org/wiki/Stazione_di_Chiuro
+S01433,Poggiridenti-Tresivio-Piateda,,1,"R12,RE8",1,https://it.wikipedia.org/wiki/Stazione_di_Poggiridenti-Tresivio-Piateda
+S01436,S.Giacomo Di Teglio,,1,"R12,RE8",1,https://it.wikipedia.org/wiki/Stazione_di_San_Giacomo_di_Teglio
+S01439,Villa Di Tirano,,1,"R12,RE8",1,https://it.wikipedia.org/wiki/Stazione_di_Villa_di_Tirano
+S01407,Dorio,,1,"R13,RE8",1,https://it.wikipedia.org/wiki/Stazione_di_Dorio
+S01412,Fiumelatte,,3,"R13,RE8",1,https://it.wikipedia.org/wiki/Stazione_di_Fiumelatte
+S01414,Olcio,,1,"R13,RE8",1,https://it.wikipedia.org/wiki/Stazione_di_Olcio
+S01426,Talamona,,0,"R13,RE8",1,https://it.wikipedia.org/wiki/Stazione_di_Talamona
+S01088,Cabiate,,1,R16,1,https://it.wikipedia.org/wiki/Stazione_di_Cabiate
+S01099,Canzo,,2,R16,1,https://it.wikipedia.org/wiki/Stazione_di_Canzo
+S01091,Carugo-Giussano,,1,R16,1,https://it.wikipedia.org/wiki/Stazione_di_Carugo-Giussano
+S01098,Caslino D'Erba,,1,R16,1,https://it.wikipedia.org/wiki/Stazione_di_Caslino_d%27Erba
+S01094,Lambrugo-Lurago D'Erba,,1,R16,1,https://it.wikipedia.org/wiki/Stazione_di_Lambrugo-Lurago
+S01097,Pontelambro-Castelmarte,,2,R16,1,https://it.wikipedia.org/wiki/Stazione_di_Pontelambro-Castelmarte
+S01450,Albate-Trecallo,,1,R18,1,https://it.wikipedia.org/wiki/Stazione_di_Albate-Trecallo
+S01453,Anzano Del Parco,,1,R18,1,https://it.wikipedia.org/wiki/Stazione_di_Anzano_del_Parco
+S01452,Brenna-Alzate,,1,R18,1,https://it.wikipedia.org/wiki/Stazione_di_Brenna-Alzate
+S01457,Casletto-Rogeno,,1,R18,1,https://it.wikipedia.org/wiki/Stazione_di_Casletto-Rogeno
+S01456,Moiana,,1,R18,1,https://it.wikipedia.org/wiki/Stazione_di_Moiana
+S01462,Civate,,2,"R18,S7",1,https://it.wikipedia.org/wiki/Stazione_di_Civate
+S01461,Sala Al Barro-Galbiate,,1,"R18,S7",1,https://it.wikipedia.org/wiki/Stazione_di_Sala_al_Barro-Galbiate
+S01145,Besnate,,1,R21,1,https://it.wikipedia.org/wiki/Stazione_di_Besnate
+S01117,Calde',,1,R21,1,https://it.wikipedia.org/wiki/Stazione_di_Caldè
+S01140,Sangiano,,2,R21,1,https://it.wikipedia.org/wiki/Stazione_di_Sangiano
+S01142,Travedona Biandronno,,1,R21,1,https://it.wikipedia.org/wiki/Stazione_di_Travedona-Biandronno
+S01742,Gavirate,,3,"R22,RE1",1,https://it.wikipedia.org/wiki/Stazione_di_Gavirate
+S01743,Gavirate Verbano,,1,"R22,RE1",1,https://it.wikipedia.org/wiki/Stazione_di_Gavirate_Verbano
+S01745,Gemonio,,1,"R22,RE1",1,https://it.wikipedia.org/wiki/Stazione_di_Gemonio
+S01740,Morosolo Casciago,,2,"R22,RE1",1,https://it.wikipedia.org/wiki/Stazione_di_Morosolo-Casciago
+S01778,Boario Terme,,2,"R3,RE3",1,https://it.wikipedia.org/wiki/Stazione_di_Boario_Terme
+S01772,Ceto-Cerveno,,3,"R3,RE3",1,https://it.wikipedia.org/wiki/Stazione_di_Ceto-Cerveno
+S01776,Pian Di Borno,,1,"R3,RE3",1,https://it.wikipedia.org/wiki/Stazione_di_Pian_di_Borno
+S01786,Pilzone,,1,"R3,RE3",1,https://it.wikipedia.org/wiki/Stazione_di_Pilzone
+S01766,Sonico,,1,"R3,RE3",1,https://it.wikipedia.org/wiki/Stazione_di_Sonico
+S01785,Sulzano,,3,"R3,RE3",1,https://it.wikipedia.org/wiki/Stazione_di_Sulzano
+S01781,Toline,,3,"R3,RE3",1,https://it.wikipedia.org/wiki/Stazione_di_Toline
+S01782,Vello,,5,"R3,RE3",1,https://it.wikipedia.org/wiki/Stazione_di_Vello
+S17451,Brescia Violino,,1,"R3,RE3,S31",1,https://it.wikipedia.org/wiki/Stazione_di_Brescia_Violino
+S01794,Paderno Franciacorta,,1,"R3,RE3,S31",1,https://it.wikipedia.org/wiki/Stazione_di_Paderno_Franciacorta
+S01787,Provaglio-Timoline,,2,"R3,RE3,S31",1,https://it.wikipedia.org/wiki/Stazione_di_Provaglio-Timoline
+S01932,Barbianello,,1,R34,1,https://it.wikipedia.org/wiki/Stazione_di_Barbianello
+S01930,Bressana Argine,,1,R34,1,https://it.wikipedia.org/wiki/Stazione_di_Bressana_Argine
+S00404,Ferrera Lomellina,,1,R35,1,https://it.wikipedia.org/wiki/Stazione_di_Ferrera_Lomellina
+S00406,Mede,,1,R35,1,https://it.wikipedia.org/wiki/Stazione_di_Mede
+S00402,Pieve Albignola,,1,R35,1,https://it.wikipedia.org/wiki/Stazione_di_Pieve_Albignola
+S00408,Sairano,,1,R35,1,https://it.wikipedia.org/wiki/Stazione_di_Sairano
+S00400,Sairano Zinasco,,1,R35,1,https://it.wikipedia.org/wiki/Stazione_di_Sairano-Zinasco
+S00401,Zinasco Nuovo,,1,R35,1,https://it.wikipedia.org/wiki/Stazione_di_Zinasco_Nuovo
+S00274,Gambolo'-Remondo',,1,R36,1,https://it.wikipedia.org/wiki/Stazione_di_Gambol%C3%B2-Remond%C3%B2
+S00277,Gropello Cairoli,,1,R36,1,https://it.wikipedia.org/wiki/Stazione_di_Gropello_Cairoli
+S00273,Nicorvo,,1,R36,1,https://it.wikipedia.org/wiki/Stazione_di_Nicorvo
+S00271,Palestro,,1,R36,1,https://it.wikipedia.org/wiki/Stazione_di_Palestro
+S00275,Tromello,,1,R36,1,https://it.wikipedia.org/wiki/Stazione_di_Tromello
+S00278,Villanova D'Ardenghi,,1,R36,1,https://it.wikipedia.org/wiki/Stazione_di_Villanova_d%27Ardenghi
+S01863,Albuzzano,,1,R37,1,https://it.wikipedia.org/wiki/Stazione_di_Albuzzano
+S01869,Lambrinia,,1,R37,1,https://it.wikipedia.org/wiki/Stazione_di_Lambrinia
+S01867,Miradolo Terme,,1,R37,1,https://it.wikipedia.org/wiki/Stazione_di_Miradolo_Terme
+S01862,Motta S.Damiano,,1,R37,1,https://it.wikipedia.org/wiki/Stazione_di_Motta_San_Damiano
+S01870,Orio Litta,,1,R37,1,https://it.wikipedia.org/wiki/Stazione_di_Orio_Litta
+S01861,Pavia Porta Garibaldi,,3,R37,1,https://it.wikipedia.org/wiki/Stazione_di_Pavia_Porta_Garibaldi
+S01866,S.Cristina E Bissone,,1,R37,1,https://it.wikipedia.org/wiki/Stazione_di_Santa_Cristina_e_Bissone
+S01910,Maleo,,1,"R37,R39,RE11",1,https://it.wikipedia.org/wiki/Stazione_di_Maleo
+S01912,Ponte D'Adda,,2,"R37,R39,RE11",1,https://it.wikipedia.org/wiki/Stazione_di_Ponte_d%27Adda
+S01603,Capralba,,1,R6,1,https://it.wikipedia.org/wiki/Stazione_di_Capralba
+S01610,Madignano,,1,R6,1,https://it.wikipedia.org/wiki/Stazione_di_Madignano
+S01526,Pontida,,3,R7,1,https://it.wikipedia.org/wiki/Stazione_di_Pontida
+S01843,Calvisano,,1,R8,1,https://it.wikipedia.org/wiki/Stazione_di_Calvisano
+S01851,Mezzani Rondani,,1,R8,1,https://it.wikipedia.org/wiki/Ferrovia_Brescia-Parma
+S01846,Remedello Sotto,,1,R8,1,https://it.wikipedia.org/wiki/Stazione_di_Remedello_Sotto
+S01203,Arcisate,,6,RE5,2,https://it.wikipedia.org/wiki/Stazione_di_Arcisate_(2017)
+S01202,Bisuschio Viggiu',,1,RE5,1,https://it.wikipedia.org/wiki/Stazione_di_Bisuschio-Viggi%C3%B9
+S01204,Induno Olona,,2,RE5,2,https://it.wikipedia.org/wiki/Stazione_di_Induno_Olona_(2017)
+S05402,Gordola,,1,RE80,2,https://it.wikipedia.org/wiki/Stazione_di_Gordola
+S05417,Minusio,,2,RE80,1,https://it.wikipedia.org/wiki/Stazione_di_Minusio
+S05412,Riazzino,,2,RE80,2,https://it.wikipedia.org/wiki/Stazione_di_Riazzino
+S01483,Biassono-Lesmo Parco,,1,S7,1,https://it.wikipedia.org/wiki/Stazione_di_Biassono-Lesmo_Parco
+S01482,Buttafava,,1,S7,1,https://it.wikipedia.org/wiki/Stazione_di_Buttafava
+S01486,Carate-Calo',,2,S7,1,https://it.wikipedia.org/wiki/Stazione_di_Carate-Cal%C3%B2
+S01490,Cassago-Nibionno-Bulciago,,1,S7,1,https://it.wikipedia.org/wiki/Stazione_di_Cassago-Nibionno-Bulciago
+S01484,Macherio-Canonica,,3,S7,1,https://it.wikipedia.org/wiki/Stazione_di_Macherio-Canonica
+S01480,Monza Sobborghi,,4,S7,1,https://it.wikipedia.org/wiki/Stazione_di_Monza_Sobborghi
+S01489,Renate-Veduggio,,1,S7,1,https://it.wikipedia.org/wiki/Stazione_di_Renate-Veduggio
+S01487,Villa Raverio,,2,S7,1,https://it.wikipedia.org/wiki/Stazione_di_Villa_Raverio
+S01929,Seveso Baruccana,,2,S9,1,https://it.wikipedia.org/wiki/Stazione_di_Seveso-Baruccana

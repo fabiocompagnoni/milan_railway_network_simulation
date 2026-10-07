@@ -1,0 +1,49 @@
+{
+	"node": "rho-fiera",
+	"title": "Rho Fiera Milano",
+	"status": "bozza rivista con i rilievi del 2026-09-13",
+	"detailLevel": "gruppi di binari per linea ferroviaria: stazione FS con traffico misto (alta velocita', Trenitalia)",
+	"sources": [
+		"rilievo diretto 2026-09-13: 1-2 linea Domodossola-Milano (S5); 3-4 linea Torino-Milano (S6); 5-6 alta velocita'; S11 indifferente",
+		"GTFS Trenord orari_trenord, conteggio 2026-09-13: S5 330, S6 168, RE4 121, RE5 87, R23 51, S11 39, R21 13, RE80 2 corse/giorno",
+		"docs/network/infrastruttura-nodo-milano.md: 6 binari, convergenza ovest ad alta eterogeneita'",
+		"rete meso: vicini S01031 Busto Arsizio, S01033 Legnano, S01037 Rho, S01640 Certosa, S01645 Garibaldi, S01700 Centrale"
+	],
+
+	"stations": [
+		{
+			"id": "S01039",
+			"name": "Rho Fiera Milano",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{"id": "rho_domodossola", "kind": "through", "tracks": [{"ref": "1", "direction": "north"}, {"ref": "2", "direction": "south"}],
+					"connections": {"north": ["meso:S01037", "meso:S01033", "meso:S01031"], "south": ["meso:S01640", "meso:S01645", "meso:S01700"]},
+					"notes": "linea Domodossola-Milano: RE4, RE5, R23, R21, RE80, S5; numero per verso dalla posizione in OSM"},
+				{"id": "rho_torino", "kind": "through", "tracks": [{"ref": "3", "direction": "north"}, {"ref": "4", "direction": "south"}],
+					"connections": {"north": ["meso:S01037"], "south": ["meso:S01640", "meso:S01645", "meso:S01700"]},
+					"notes": "linea Torino-Milano convenzionale: S6 e regionali Trenitalia per Torino (senza orario); quota altri operatori da stimare"}
+			],
+			"throats": [],
+			"notes": "binari 5-6 alta velocita' (Torino-Milano AV/AC): nessun treno Trenord, esclusi dalla simulazione"
+		}
+	],
+
+	"segments": [],
+
+	"lines": {
+		"S5": {"bundle": null, "stations": {"S01039": ["rho_domodossola"]}},
+		"S6": {"bundle": null, "stations": {"S01039": ["rho_torino"]}},
+		"S11": {"bundle": null, "stations": {"S01039": ["rho_domodossola", "rho_torino"]}, "notes": "indifferente fra 1-2 e 3-4"},
+		"RE4": {"bundle": null, "stations": {"S01039": ["rho_domodossola"]}},
+		"RE5": {"bundle": null, "stations": {"S01039": ["rho_domodossola"]}},
+		"R23": {"bundle": null, "stations": {"S01039": ["rho_domodossola"]}},
+		"R21": {"bundle": null, "stations": {"S01039": ["rho_domodossola"]}},
+		"RE80": {"bundle": null, "stations": {"S01039": ["rho_domodossola"]}}
+	},
+
+	"openQuestions": [
+		"Quota dei binari 3-4 occupata dai regionali Trenitalia per Torino",
+		"Lunghezza banchine"
+	]
+}

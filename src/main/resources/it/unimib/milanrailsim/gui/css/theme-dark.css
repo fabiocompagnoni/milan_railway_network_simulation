@@ -1,0 +1,12 @@
+.root {
+	-app-bg: #0F1512;
+	-surface: #182019;
+	-surface-raised: #1F2A22;
+	-border: #2C3A30;
+	-text: #E6EDE8;
+	-text-muted: #9AAAA0;
+	-accent: #3DBE7F;
+	-accent-contrast: #0F1512;
+	-warn: #F2915C;
+	-map-bg: #0B100D;
+}

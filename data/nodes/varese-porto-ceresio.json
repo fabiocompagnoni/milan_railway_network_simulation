@@ -1,0 +1,129 @@
+{
+	"node": "varese-porto-ceresio",
+	"title": "Stazioni di incrocio sul binario unico: Porto Ceresio, Varese",
+	"status": "generato il 2026-09-17 da data/osm/2026-09-17-single-track-stations/generate_nodes.py, da rivedere a mano per i bivi",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione, con il numero di binari da Wikipedia (o dal rilievo di Fabio) e i lati dalla geografia; senza gole ne' assegnazione per linea",
+	"sources": [
+		"docs/network/misure/stazioni-binario-unico.csv (rilievo 2026-09-17)",
+		"Porto Ceresio: 2 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Porto_Ceresio; stima OSM 4",
+		"Varese: 6 binari secondo https://it.wikipedia.org/wiki/Stazione_di_Varese; stima OSM 20"
+	],
+	"stations": [
+		{
+			"id": "S01200",
+			"name": "Porto Ceresio",
+			"kind": "terminal",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "porto_ceresio",
+					"kind": "terminal",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01202"
+						]
+					},
+					"notes": "2 binari (capolinea di testa, 2 binari con banchina); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Bisuschio Viggiu', verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		},
+		{
+			"id": "S01205",
+			"name": "Varese",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "varese",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						},
+						{
+							"ref": "3",
+							"direction": null
+						},
+						{
+							"ref": "4",
+							"direction": null
+						},
+						{
+							"ref": "5",
+							"direction": null
+						},
+						{
+							"ref": "6",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01030",
+							"meso:S01207"
+						],
+						"north": [
+							"meso:S01204"
+						]
+					},
+					"notes": "6 binari (3 passanti piu' 3 tronchi); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Gallarate, verso Milano"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "da rilevare"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01200": [
+					"porto_ceresio"
+				],
+				"S01205": [
+					"varese"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01200": [
+					"porto_ceresio"
+				],
+				"S01205": [
+					"varese"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e uso per linea dei binari",
+		"Nei bivi: quali binari raggiungono quale linea",
+		"Ricoveri"
+	]
+}

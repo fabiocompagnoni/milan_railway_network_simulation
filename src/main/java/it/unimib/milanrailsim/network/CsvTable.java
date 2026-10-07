@@ -14,12 +14,12 @@ import java.util.Map;
  * separated, no quoting. Any quote character fails fast rather than being
  * silently misparsed, in case a future feed version starts quoting fields.
  */
-final class CsvTable {
+public final class CsvTable {
 
 	private CsvTable() {
 	}
 
-	static List<Map<String, String>> read(Path file) {
+	public static List<Map<String, String>> read(Path file) {
 		List<String> lines;
 		try {
 			lines = Files.readAllLines(file);
