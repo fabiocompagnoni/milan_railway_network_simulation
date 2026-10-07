@@ -17,6 +17,8 @@ I numeri fra parentesi quadre rimandano ai [Riferimenti](#riferimenti).
 | TSR | EB 711 + EB 710 | AnsaldoBreda | elettrica, 3 kV c.c. | 4 casse a due piani | 104,97 m | 436 | 222 t | 2720 kW |
 | TAF | EB 760 + EB 990 + EA 761 | AnsaldoBreda | elettrica, 3 kV c.c. | 4 casse a due piani | 103,95 m | 468 | 213 t | 3640 kW |
 | Donizetti | ETR 204 | Alstom | elettrica, 3 kV c.c. | 4 casse a un piano | 84,2 m | 259 | 143,5 t | 2000 kW |
+| Coradia Meridian | ETR 425 | Alstom | elettrica, 3 kV c.c. | 5 casse a un piano | 82,20 m | 290–309 | 160 t | 2052 kW |
+| Coradia Meridian CSA | ETR 245 | Alstom | elettrica, 3 kV c.c. | 5 casse a un piano | 82,2 m | 230 | 160 t ¹ | — |
 | FLIRT TILO | ETR 524 (RABe 524.3) | Stadler | elettrica, 3 kV c.c. e 15 kV 16,7 Hz | 6 casse a un piano | 104,9 m | 244 | 177,5 t | 2600 kW |
 | GTW 4/12 | ATR 125 | Stadler | diesel-elettrica | 4 casse e 2 moduli motore | 77,33 m | 231 | 136 t | 1160 kW alle ruote |
 | Colleoni | ATR 803 | Stadler | diesel-elettrica con batterie | 3 casse e 1 modulo motore | 66,8 m | 151 | 135 t | 1200 kW |
@@ -128,6 +130,28 @@ famiglia Alstom Coradia Stream; è la versione per Ferrovienord del treno
 | Posti a sedere | 259, di cui 16 di prima classe | [2] |
 | Unità consegnate a Ferrovienord | 31 | [2] |
 
+### Coradia Meridian — ETR 425 e ETR 245
+
+Elettrotreni articolati Alstom a un piano. L'ETR 245 è l'allestimento
+aeroportuale (CSA), nato per il Malpensa Express e oggi impiegato sulle linee
+suburbane; ETR 425 (5 casse) ed ETR 526 (6 casse) circolano sulle linee
+regionali. Nel modello sono due tipi distinti: ETR 245 ed ETR 425; l'ETR 526
+non ha un tipo proprio.
+
+| Dato | ETR 425 | ETR 245 | Fonte |
+|---|---|---|---|
+| Casse | 5 | 5 | [16], [17] |
+| Lunghezza | 82,20 m | 82,2 m | [16], [17] |
+| Massa a vuoto | 160 t | 160 t ¹ | [16] |
+| Massa in servizio | 204 t | — | [16] |
+| Potenza | 2052 kW | — | [16] |
+| Velocità massima | 160 km/h | 160 km/h | [16], [17] |
+| Posti a sedere | da 290 a 309 secondo la versione | 230 | [16], [17] |
+
+Per confronto, nella stessa famiglia: ETR 324 a 4 casse, 67,55 m, 136 t a
+vuoto, 202 posti; ETR 526 a 6 casse, 92,85 m, da 282 a 302 posti, massa non
+indicata [16].
+
 ### FLIRT TILO — ETR 524 (RABe 524.3)
 
 Elettrotreno bitensione Stadler FLIRT 3 conforme alle specifiche tecniche di
@@ -212,6 +236,81 @@ Per confronto, la massa a vuoto per metro di lunghezza dei treni a due piani
 con dato pubblicato è 2,1 t/m per il TSR e 2,0 t/m per il TAF; la stima dà
 2,4 t/m per entrambi i Caravaggio.
 
+La massa a vuoto dell'ETR 245 non è stata trovata in una fonte. Si adotta
+quella dell'ETR 425, 160 t [16], convoglio della stessa famiglia con lo
+stesso numero di casse e la stessa lunghezza.
+
+## Flotta in servizio e assegnazione alle linee
+
+### Consistenza
+
+| Treno | Unità | Fonte |
+|---|---|---|
+| Caravaggio (ETR 421 e 521) | 123 a fine 2025; 136 con la commessa di 13 in consegna nel 2026 | [18], [19] |
+| Donizetti (ETR 204) | 61 | [18] |
+| Colleoni (ATR 803) | 30 | [18] |
+| FLIRT TILO acquistati da FNM | 9 | [20] |
+| TSR | 104 consegnati fra il 2007 e il 2018 | [21] |
+| TAF rinnovati (R-TAF) | 34; il bilancio 2025 ne indica 25, di cui 20 ultimati a fine 2025 | rilievo diretto, 2026-10-07; [20] |
+| ETR 425 ed ETR 526 | 54 | rilievo diretto, 2026-10-07 |
+| ETR 245 | 14; la pagina di FERROVIENORD ne indica 6 | rilievo diretto, 2026-10-07; [22] |
+| ATR 125 | 20 (11, 5 e 4 per impianto) | [22] |
+| ATR 115 | 8, non nel modello | [22] |
+| ALn 668 | 17, non nel modello | rilievo diretto, 2026-10-07 |
+
+Totale della flotta al 31 dicembre 2024: 390 treni elettrici, 66 treni
+diesel, 66 locomotive elettriche, 8 locomotive diesel, 311 vetture [23]. Età
+media dei treni circa 12 anni a fine 2025 [20]. In ordine altri 12 Caravaggio
+a quattro casse e 8 Donizetti, in servizio fra la fine del 2027 e l'inizio
+del 2028 [19].
+
+Costo di un treno nuovo: circa 130 milioni di euro per 13 Caravaggio, circa
+170 milioni per 12 Caravaggio e 8 Donizetti [19], cioè fra 8,5 e 10 milioni
+a convoglio.
+
+### Assegnazione alle linee
+
+L'operatore non assegna i treni per linea ma per impianto di manutenzione: le
+linee afferiscono a un impianto e il treno di una corsa dipende dal turno,
+con una composizione che varia da un giorno all'altro. Il modello lo
+approssima con una **quota di tipi per linea** (`schedule/LineAssignments`); il tipo è attribuito al treno, cioè all'intero giro, non alla singola corsa. Le quote sono fissate in modo che i treni di ogni tipo necessari in un giorno feriale restino dentro la consistenza.
+
+| Linee | Quote |
+|---|---|
+| S1, S2, S5, S6, S8, S9, S12, S13, S19 | 60% TSR, 20% Caravaggio, 10% ETR 245, 10% TAF |
+| S3, S4 | 70% Caravaggio, 30% TSR |
+| S11 | Caravaggio a 5 casse |
+| RE51, RE54 (Malpensa Express) | Caravaggio a 4 casse |
+| RE8, R13, R11, R12, R7, R21, R6, RE13, R34 | Donizetti |
+| S7, R18, R3, RE3, R9, S31 | ATR 125 |
+| R8, R35, R36, R37 | Colleoni |
+| RE80 | FLIRT TILO |
+| altre linee regionali e RegioExpress | 60% Caravaggio, 30% TSR, 10% ETR 425 |
+
+Motivi: sulle linee regionali circolano soprattutto i Caravaggio, il resto è
+coperto da TSR e Coradia Meridian; sulle suburbane la maggioranza è di TSR, e
+i TAF, in servizio da più tempo, coprono i vuoti; sulle S3 e S4 prevalgono i
+Caravaggio (rilievo diretto, 2026-10-07). I Donizetti sono sulle linee della
+Valtellina, del Lario, per Luino e sulla Cremona – Treviglio [24], [19].
+
+Treni necessari nel giorno feriale di lunedì 2026-10-05, dagli orari
+generati:
+
+| Treno | Unità | Orario reale | Passante a 15 minuti | Passante a 10 minuti |
+|---|---|---|---|---|
+| Caravaggio | 136 | 119 | 123 | 127 |
+| TSR | 104 | 80 | 85 | 101 |
+| Donizetti | 61 | 57 | 57 | 57 |
+| ETR 425 ed ETR 526 | 54 | 18 | 18 | 18 |
+| ETR 245 | 14 | 9 | 10 | 10 |
+| TAF | 34 | 6 | 6 | 9 |
+| Colleoni | 30 | 22 | 22 | 22 |
+| FLIRT TILO | 9 | 7 | 7 | 7 |
+| ATR 125 | 20 | 25 | 25 | 25 |
+| **Totale** | | **343** | **353** | **376** |
+
+Gli ATR 125 del modello superano la consistenza: sulle stesse linee circolano anche ATR 115 e ALn 668, che il modello non rappresenta. Riserve e treni in manutenzione non sono contati.
+
 ## Differenze rispetto ai parametri del modello
 
 | Treno | Parametro | Nel modello | Nelle fonti |
@@ -270,3 +369,28 @@ con dato pubblicato è 2,1 t/m per il TSR e 2,0 t/m per il TAF; la stima dà
 15. Wikipedia, *Autotreno ATR 803*.
     <https://it.wikipedia.org/wiki/Autotreno_ATR_803>
     (consultato il 3 ottobre 2026).
+16. Wikipedia, *Elettrotreno Alstom Coradia Meridian ETR 324, 425 e 526*.
+    <https://it.wikipedia.org/wiki/Elettrotreno_Alstom_Coradia_Meridian_ETR_324,_425_e_526>
+    (consultato il 7 ottobre 2026).
+17. Trenord, *La flotta*.
+    <https://www.trenord.it/chi-siamo/la-flotta/>
+    (consultato il 5 agosto 2026).
+18. FNM e Trenord, *Completato il piano di rinnovo della flotta: entra in
+    servizio l'ultimo dei 214 treni nuovi*, comunicato stampa, 17 dicembre
+    2025.
+    <https://www.fnmgroup.it/wp-content/uploads/2025/12/Trenord_251212_CS_214treni_def.pdf>
+19. Trenord, *Due nuovi Caravaggio in servizio sulla
+    Milano-Treviglio-Cremona*, comunicato stampa, 5 giugno 2026.
+    <https://www.trenord.it/news/trenord-informa/comunicati-stampa/nuovi-caravaggio-milano-treviglio-cremona/>
+20. Trenord, *Bilancio di Sostenibilità 2025*, 2026.
+21. Wikipedia, *Treno Servizio Regionale*.
+    <https://it.wikipedia.org/wiki/Treno_Servizio_Regionale>
+    (consultato il 7 ottobre 2026).
+22. FERROVIENORD, *Flotta treni*.
+    <https://www.ferrovienord.it/flotta-treni/>
+    (consultato il 7 ottobre 2026).
+23. Trenord, *Carta dei Servizi 2024*.
+    <https://www.trenord.it/fileadmin/contenuti/TRENORD/4-Info_e_assistenza/Informazioni_utili/Carta_della_mobilita/Trenord_-_Carta_dei_Servizi_2024.pdf>
+24. A. Minoia (Trenord), *L'esercizio del nuovo materiale rotabile di
+    Trenord*, Collegio Ingegneri Ferroviari Italiani, Milano, 28 aprile 2021.
+    <https://www.cifi.it/UplDocumenti/Milano28042021/Slide%20Minoia.pdf>

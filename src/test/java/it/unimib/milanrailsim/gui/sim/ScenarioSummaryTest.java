@@ -47,11 +47,11 @@ class ScenarioSummaryTest {
 
 	@Test
 	void fleetSharesFollowTheAssignment() {
-		// S1 runs 70/30 tsr/taf spread through the day: the second departure is the taf
+		// S1 runs mostly tsr with other stock spread through the day: the second departure is a Caravaggio
 		ScenarioSummary summary = ScenarioSummary.of(FEED, RouteVehicleAssignment.defaults(),
 			spec(SimulationType.REAL, null), ALL_STOPS);
 
-		assertEquals(Map.of("tsr", 1, "taf", 1), summary.tripsByVehicleType());
+		assertEquals(Map.of("tsr", 1, "caravaggio_521", 1), summary.tripsByVehicleType());
 	}
 
 	@Test

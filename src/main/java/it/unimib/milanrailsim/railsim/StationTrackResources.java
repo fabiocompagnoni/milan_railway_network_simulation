@@ -172,7 +172,7 @@ public final class StationTrackResources implements RailResourceManager {
 	 * to end there: the platform would be on the route twice, and railsim
 	 * looks for the next stop from the start of the route, so that on the way
 	 * back it would find the stop behind the train and fail
-	 * ({@code TrainState.getRouteUntilNextStop}; seen at Pavia).
+	 * ({@code TrainState.getRouteUntilNextStop}; seen at Pavia). The same holds for a platform that is on the route because an earlier detour put it there.
 	 */
 	boolean keepsStops(List<RailLink> subRoute, List<RailLink> detour, TrainPosition position) {
 		Id<Link> nextStopLink = position.getNextStop() == null ? null : position.getNextStop().getLinkId();
@@ -180,6 +180,11 @@ public final class StationTrackResources implements RailResourceManager {
 		// detour decided one station early cannot drop the terminus behind it (seen at Garibaldi)
 		Set<Id<Link>> calls = callsOfTrip.apply(position);
 		if (detour.stream().anyMatch(link -> calls.contains(link.getLinkId()) && !subRoute.contains(link))) {
+			return false;
+		}
+		// the same failure by another way: a platform the train already ran over on an earlier detour, offered again when it comes back to the station to stop
+		if (detour.stream().anyMatch(link -> areasOfLink.containsKey(link.getLinkId()) && !subRoute.contains(link)
+				&& isOnRoute(position, link.getLinkId()))) {
 			return false;
 		}
 		boolean aroundNextStop = false;
@@ -201,11 +206,12 @@ public final class StationTrackResources implements RailResourceManager {
 
 	static boolean tailOnRoute(TrainPosition position) {
 		Id<Link> tail = position.getTailLink();
-		if (tail == null) {
-			return true;
-		}
+		return tail == null || isOnRoute(position, tail);
+	}
+
+	private static boolean isOnRoute(TrainPosition position, Id<Link> link) {
 		for (int i = 0; i < position.getRouteSize(); i++) {
-			if (position.getRoute(i).getLinkId().equals(tail)) {
+			if (position.getRoute(i).getLinkId().equals(link)) {
 				return true;
 			}
 		}

@@ -19,6 +19,9 @@ public final class RailVehicleTypes {
 	public static final String TRACTION_ATTRIBUTE = "traction";
 	public static final String DIESEL = "diesel";
 
+	/** Vehicle type attribute holding the name the catalogue gives the type, for tables and charts. */
+	public static final String NAME_ATTRIBUTE = "typeName";
+
 	public static List<VehicleType> all() {
 		return from(FleetConfig.defaults());
 	}
@@ -37,6 +40,7 @@ public final class RailVehicleTypes {
 		vehicleType.getAttributes().putAttribute("railsimAcceleration", train.accelerationMps2());
 		vehicleType.getAttributes().putAttribute("railsimDeceleration", train.decelerationMps2());
 		vehicleType.getAttributes().putAttribute(TRACTION_ATTRIBUTE, train.traction().name().toLowerCase(Locale.ROOT));
+		vehicleType.getAttributes().putAttribute(NAME_ATTRIBUTE, train.name());
 		// every unit of the fleet has a cab at both ends, so it reverses on a terminal platform;
 		// the seconds to change ends are a placeholder until surveyed
 		vehicleType.getAttributes().putAttribute("railsimReversible", REVERSING_SECONDS);

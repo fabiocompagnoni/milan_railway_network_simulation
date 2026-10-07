@@ -75,9 +75,9 @@ class VehicleCirculationsTest {
 		Vehicles circulated = VehicleCirculations.apply(result.schedule(), result.vehicles(), result.chains(),
 			RouteVehicleAssignment.defaults());
 
-		// two circulations on a 70/30 line: the first takes the majority type, the second the minority
+		// two circulations on a mixed line: the first takes the majority type, the second the next one owed
 		for (Vehicle vehicle : circulated.getVehicles().values()) {
-			assertTrue(Set.of("tsr", "taf").contains(vehicle.getType().getId().toString()));
+			assertTrue(Set.of("tsr", "caravaggio_521").contains(vehicle.getType().getId().toString()));
 		}
 	}
 

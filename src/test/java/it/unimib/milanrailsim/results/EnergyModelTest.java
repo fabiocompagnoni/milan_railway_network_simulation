@@ -25,7 +25,8 @@ class EnergyModelTest {
 		assertEquals(10_000, MODEL.recoveryRadiusMetres());
 		assertEquals(325, MODEL.train("caravaggio_521").orElseThrow().emptyMassTonnes());
 		assertEquals(5, MODEL.train("caravaggio_521").orElseThrow().cars());
-		assertTrue(MODEL.train("etr245").isEmpty(), "a type without a mass has no consumption");
+		assertEquals(160, MODEL.train("etr245").orElseThrow().emptyMassTonnes());
+		assertTrue(MODEL.train("aln668").isEmpty(), "a type without a mass has no consumption");
 	}
 
 	@Test

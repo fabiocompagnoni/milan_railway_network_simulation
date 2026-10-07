@@ -29,12 +29,13 @@ public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List
 	 * @param drawnKilowattHours  taken from the substations
 	 * @param demandKilowattHours what the trains would have drawn with no braking energy reused
 	 * @param peakMinuteOfDay     minute with the highest mean power drawn, -1 when unknown
+	 * @param tripsNotMetered     completed trips with no energy measured, for lack of the mass of their train type
 	 */
 	public record Energy(double drawnKilowattHours, double demandKilowattHours, double regeneratedKilowattHours,
 			double reusedByOthersKilowattHours, double lostKilowattHours, double electricTrainKilometres,
 			double kilowattHoursPerTrainKilometre, double kilowattHoursPerTonneKilometre,
 			double kilowattHoursPerTonneKilometreWithoutRecovery, double litres, double dieselTrainKilometres,
-			double litresPerTrainKilometre, int peakMinuteOfDay, double peakKilowatt, int peakTrains) {
+			double litresPerTrainKilometre, int peakMinuteOfDay, double peakKilowatt, int peakTrains, int tripsNotMetered) {
 	}
 
 	/** The energy of one line and traction; kWh columns are NaN for diesel, litres for electric. */
@@ -130,7 +131,8 @@ public record RunResults(Path dir, Optional<List<LineRow>> byLine, Optional<List
 				electric.path("kilowattHoursPerTrainKilometre").asDouble(), electric.path("kilowattHoursPerTonneKilometre").asDouble(),
 				electric.path("kilowattHoursPerTonneKilometreWithoutRecovery").asDouble(), diesel.path("litres").asDouble(),
 				diesel.path("trainKilometres").asDouble(), diesel.path("litresPerTrainKilometre").asDouble(),
-				peak.path("minuteOfDay").asInt(-1), peak.path("lineKilowatt").asDouble(), peak.path("trainsInService").asInt());
+				peak.path("minuteOfDay").asInt(-1), peak.path("lineKilowatt").asDouble(), peak.path("trainsInService").asInt(),
+				root.path("completedTripsNotMetered").asInt(0));
 		} catch (IOException e) {
 			throw new UncheckedIOException("Cannot read " + json, e);
 		}

@@ -23,15 +23,21 @@ class RouteVehicleAssignmentTest {
 	}
 
 	@Test
-	void suburbanRoutesRunSeventyThirtyOverTenDepartures() {
-		assertEquals(Map.of("tsr", 7, "taf", 3), countOverDepartures("S1", 10));
-		assertEquals(Map.of("tsr", 70, "taf", 30), countOverDepartures("S19", 100));
+	void suburbanRoutesRunMostlyTsrWithTheOtherStockMixedIn() {
+		assertEquals(Map.of("tsr", 6, "caravaggio_521", 2, "etr245", 1, "taf", 1), countOverDepartures("S1", 10));
+		assertEquals(Map.of("tsr", 60, "caravaggio_521", 20, "etr245", 10, "taf", 10), countOverDepartures("S19", 100));
+	}
+
+	@Test
+	void theTwoSuburbanLinesOfTheAssoAndSaronnoBranchesRunMostlyCaravaggio() {
+		assertEquals(Map.of("caravaggio_521", 7, "tsr", 3), countOverDepartures("S3", 10));
+		assertEquals(Map.of("caravaggio_521", 70, "tsr", 30), countOverDepartures("S4", 100));
 	}
 
 	@Test
 	void minorityStockIsSpreadThroughTheDay() {
 		assertEquals("tsr", assignment.vehicleTypeId("S1", 0));
-		assertEquals("taf", assignment.vehicleTypeId("S1", 1));
+		assertEquals("caravaggio_521", assignment.vehicleTypeId("S1", 1));
 		assertEquals("tsr", assignment.vehicleTypeId("S1", 2));
 	}
 
@@ -42,12 +48,14 @@ class RouteVehicleAssignmentTest {
 		assertEquals("caravaggio_521", assignment.vehicleTypeId("S11", 0));
 		assertEquals("caravaggio_421", assignment.vehicleTypeId("RE54", 5));
 		assertEquals("donizetti", assignment.vehicleTypeId("R34", 0));
+		assertEquals("donizetti", assignment.vehicleTypeId("RE8", 4));
+		assertEquals("donizetti", assignment.vehicleTypeId("R6", 0));
 		assertEquals("tilo_flirt_tsi", assignment.vehicleTypeId("RE80", 0));
 	}
 
 	@Test
-	void regionalDefaultIsDeclared() {
-		assertEquals("caravaggio_521", assignment.vehicleTypeId("R38", 0));
+	void regionalLinesWithNoRuleOfTheirOwnShareTheRegionalMix() {
+		assertEquals(Map.of("caravaggio_521", 60, "tsr", 30, "etr425", 10), countOverDepartures("R38", 100));
 		assertEquals("caravaggio_521", assignment.vehicleTypeId("RE2", 0));
 	}
 

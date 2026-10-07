@@ -2,6 +2,7 @@ package it.unimib.milanrailsim.gui.view;
 
 import it.unimib.milanrailsim.gui.map.MapCanvas;
 import it.unimib.milanrailsim.gui.map.NetworkMap;
+import it.unimib.milanrailsim.runs.RunVehicles;
 import it.unimib.milanrailsim.server.Protocol.Energy;
 import it.unimib.milanrailsim.server.Protocol.Frame;
 import it.unimib.milanrailsim.server.Protocol.TrainState;
@@ -17,12 +18,15 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  * The panel beside the map of a running or replayed simulation: the energy
@@ -47,22 +51,28 @@ final class SimulationPanel extends VBox {
 	private final Label energy = figure();
 	private final Label fuel = figure();
 	private final VBox train = new VBox(4);
+	private final Label running = figure();
+	private final Label runningByType = muted("");
+	private final Path runDir;
+	private Optional<RunVehicles> vehicles = Optional.empty();
 	private String highlightedLine;
 	private String followedTrain;
 	private Frame shown;
 
-	SimulationPanel(NetworkMap network, MapCanvas map, String runName) {
+	SimulationPanel(NetworkMap network, MapCanvas map, Path runDir) {
 		this.network = network;
 		this.map = map;
+		this.runDir = runDir;
 		network.stations().forEach(station -> stationNames.put(station.id(), station.name()));
-		Label title = new Label(runName);
+		Label title = new Label(runDir.getFileName().toString());
 		title.getStyleClass().add("card-title");
 		ScrollPane lines = new ScrollPane(lines());
 		lines.getStyleClass().add("plain-scroll");
 		lines.setFitToWidth(true);
 		VBox.setVgrow(lines, Priority.ALWAYS);
 		setSpacing(12);
-		getChildren().addAll(title, section("Energia"), energyCard(), section("Linee"), linesHeader(), lines,
+		getChildren().addAll(title, section("Energia"), energyCard(), section("Treni in corsa"),
+			new HBox(12, running), runningByType, section("Linee"), linesHeader(), lines,
 			section("Treno seguito"), search(), train);
 		getStyleClass().add("drawer");
 		setPrefWidth(WIDTH_PX);
@@ -78,6 +88,7 @@ final class SimulationPanel extends VBox {
 		}
 		shown = frame;
 		showEnergy(frame.energy());
+		showRunning(frame);
 		showLines(frame);
 		showTrain(frame.trains().stream().filter(state -> state.id().equals(followedTrain)).findFirst());
 	}
@@ -100,6 +111,28 @@ final class SimulationPanel extends VBox {
 		power.setText(String.format(Locale.ITALY, "%.1f MW", reading.lineKilowatt() / 1000));
 		energy.setText(String.format(Locale.ITALY, "%,.1f MWh", reading.kilowattHours() / 1000));
 		fuel.setText(String.format(Locale.ITALY, "%,.0f l", reading.litres()));
+	}
+
+	/**
+	 * The trains on a trip at this instant, and how many of each type. A
+	 * recording made before frames carried the trip of a train cannot tell a
+	 * running train from one standing between two trips: all of them count.
+	 */
+	private void showRunning(Frame frame) {
+		List<TrainState> onATrip = frame.trains().stream().filter(state -> state.destination() != null).toList();
+		List<TrainState> counted = onATrip.isEmpty() ? frame.trains() : onATrip;
+		running.setText(String.valueOf(counted.size()));
+		if (vehicles.isEmpty()) {
+			// the engine writes the vehicles of the day before the first frame
+			vehicles = RunVehicles.read(runDir);
+		}
+		runningByType.setText(vehicles.map(known -> {
+			Map<String, Integer> byType = new TreeMap<>();
+			counted.forEach(state -> byType.merge(known.typeName(known.typeOfVehicle().getOrDefault(state.id(), NOT_AVAILABLE)),
+				1, Integer::sum));
+			return byType.entrySet().stream().map(type -> type.getKey() + " " + type.getValue())
+				.collect(Collectors.joining(" · "));
+		}).orElse(""));
 	}
 
 	private HBox linesHeader() {
