@@ -11,13 +11,9 @@ import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
 import org.matsim.core.mobsim.framework.MobsimDriverAgent;
 import org.matsim.core.mobsim.qsim.QSim;
-import org.matsim.pt.transitSchedule.api.Departure;
-import org.matsim.pt.transitSchedule.api.TransitLine;
-import org.matsim.pt.transitSchedule.api.TransitRoute;
 import org.matsim.pt.transitSchedule.api.TransitSchedule;
 import org.matsim.pt.transitSchedule.api.TransitStopArea;
 import org.matsim.pt.transitSchedule.api.TransitStopFacility;
-import org.matsim.vehicles.Vehicle;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -46,23 +43,23 @@ public final class StationTrackResources implements RailResourceManager {
 	private final Set<Id<Link>> anyTrackLinks;
 	private final Set<Id<Link>> loopLinks;
 	private final Map<Id<Link>, Set<Id<TransitStopArea>>> areasOfLink;
-	private final Map<Id<Vehicle>, Set<Id<Link>>> callsOfVehicle;
+	private final Function<TrainPosition, Set<Id<Link>>> callsOfTrip;
 
 	@Inject
 	public StationTrackResources(RailResourceManagerImpl delegate, QSim qsim) {
 		this(delegate, qsim.getScenario().getNetwork(), stopAreas(qsim.getScenario().getTransitSchedule()),
-			callsOfVehicle(qsim.getScenario().getTransitSchedule()));
+			StationTrackResources::callsOfCurrentTrip);
 	}
 
 	/**
-	 * @param areasOfLink    the stop areas each platform link belongs to, for the links that have any
-	 * @param callsOfVehicle the platform links each vehicle calls at over its day
+	 * @param areasOfLink the stop areas each platform link belongs to, for the links that have any
+	 * @param callsOfTrip the platform links a train calls at on the trip it is running
 	 */
 	StationTrackResources(RailResourceManager delegate, Network network, Map<Id<Link>, Set<Id<TransitStopArea>>> areasOfLink,
-			Map<Id<Vehicle>, Set<Id<Link>>> callsOfVehicle) {
+			Function<TrainPosition, Set<Id<Link>>> callsOfTrip) {
 		this.delegate = delegate;
 		this.areasOfLink = Map.copyOf(areasOfLink);
-		this.callsOfVehicle = Map.copyOf(callsOfVehicle);
+		this.callsOfTrip = callsOfTrip;
 		this.anyTrackLinks = network.getLinks().values().stream()
 			.filter(link -> link.getAttributes().getAttribute("stationLink") != null || ownsItsResource(link))
 			.map(Link::getId)
@@ -84,17 +81,18 @@ public final class StationTrackResources implements RailResourceManager {
 		return areas;
 	}
 
-	private static Map<Id<Vehicle>, Set<Id<Link>>> callsOfVehicle(TransitSchedule schedule) {
-		Map<Id<Vehicle>, Set<Id<Link>>> calls = new HashMap<>();
-		for (TransitLine line : schedule.getTransitLines().values()) {
-			for (TransitRoute route : line.getRoutes().values()) {
-				for (Departure departure : route.getDepartures().values()) {
-					Set<Id<Link>> links = calls.computeIfAbsent(departure.getVehicleId(), vehicle -> new HashSet<>());
-					route.getStops().forEach(stop -> links.add(stop.getStopFacility().getLinkId()));
-				}
-			}
+	/**
+	 * The calls of the trip in progress, not of the vehicle's whole day: a
+	 * platform the vehicle calls at on a later trip is just a track while it
+	 * runs through the station now, and a detour off it must stay possible.
+	 */
+	private static Set<Id<Link>> callsOfCurrentTrip(TrainPosition position) {
+		if (position.getPt() == null) {
+			return Set.of();
 		}
-		return calls;
+		return position.getPt().getTransitRoute().getStops().stream()
+			.map(stop -> stop.getStopFacility().getLinkId())
+			.collect(Collectors.toUnmodifiableSet());
 	}
 
 	/** A link without a declared resource, or whose resource carries its own id, is the only link of that resource. */
@@ -168,12 +166,22 @@ public final class StationTrackResources implements RailResourceManager {
 	 * no platform of its area would drop the next stop itself. Either way the
 	 * train would run through the station: such detours are refused and the
 	 * planned platform is waited for instead.
+	 * <p>
+	 * Refused as well is a detour over a platform the trip calls at later, as
+	 * when a train runs through a station, reverses further on and comes back
+	 * to end there: the platform would be on the route twice, and railsim
+	 * looks for the next stop from the start of the route, so that on the way
+	 * back it would find the stop behind the train and fail
+	 * ({@code TrainState.getRouteUntilNextStop}; seen at Pavia).
 	 */
 	boolean keepsStops(List<RailLink> subRoute, List<RailLink> detour, TrainPosition position) {
 		Id<Link> nextStopLink = position.getNextStop() == null ? null : position.getNextStop().getLinkId();
-		// railsim only knows the next stop; the later calls of the day come from the schedule, so a
+		// railsim only knows the next stop; the later calls of the trip come from its route, so a
 		// detour decided one station early cannot drop the terminus behind it (seen at Garibaldi)
-		Set<Id<Link>> calls = callsOfVehicle.getOrDefault(position.getDriver().getVehicle().getId(), Set.of());
+		Set<Id<Link>> calls = callsOfTrip.apply(position);
+		if (detour.stream().anyMatch(link -> calls.contains(link.getLinkId()) && !subRoute.contains(link))) {
+			return false;
+		}
 		boolean aroundNextStop = false;
 		for (RailLink link : subRoute) {
 			if (link.getLinkId().equals(nextStopLink)) {

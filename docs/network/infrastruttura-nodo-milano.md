@@ -240,9 +240,17 @@ Criticità**.
   sostituire il binario del capolinea con uno su cui il treno non ferma e
   proseguire fino al ricovero senza servire la fermata (310 casi nel run del
   17 sera: nessun arrivo registrato al capolinea, ritardi apparenti di ore
-  nell'analisi di puntualità). Il controllo ora conosce tutte le fermate
-  della giornata del veicolo dall'orario e rifiuta ogni deviazione che ne
-  attraversi una senza fermarsi.
+  nell'analisi di puntualità). Il controllo conosce tutte le fermate della **corsa in corso** e rifiuta ogni deviazione che ne attraversi una senza fermarsi. Le fermate sono quelle della corsa, non della giornata del veicolo: nel run di domenica 20 settembre un RE1 in transito a Varese Casbeno non poteva lasciare il binario 1 occupato per il 2 libero, perché su quel binario avrebbe fermato tre ore dopo con un'altra corsa; restava al segnale tenendo il blocco unico da Varese Nord e il treno opposto, fermo sul binario 1, aspettava quel blocco (10 treni bloccati fra Malnate e Cocquio).
+  Il controllo rifiuta anche la deviazione che porta il treno su un binario in
+  cui la stessa corsa fermerà più avanti. Nel run di lunedì 28 settembre un
+  R35 attraversava Pavia senza fermarsi, invertiva a Cava Carbonara e tornava
+  a Pavia per terminare sul binario 5: deviato dal binario 6 occupato al 5, si
+  trovava quel binario due volte nel percorso. railsim cerca la fermata
+  successiva dall'inizio del percorso e non dalla posizione del treno
+  (`TrainState.getRouteUntilNextStop`): alla ripartenza da Cava Carbonara
+  trovava la fermata alle spalle del treno e la simulazione si interrompeva
+  alle 7:17 con `fromIndex(46) > toIndex(38)`. Il treno ora attende il binario
+  previsto.
 
 - **Circolazione a SINISTRA**: i treni tengono la sinistra (contrario delle
   auto). Determina l'assegnazione binario→direzione in ogni fascio a doppio

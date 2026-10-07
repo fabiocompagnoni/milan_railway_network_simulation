@@ -1,0 +1,72 @@
+{
+	"node": "seregno-carnate",
+	"title": "Stazioni di incrocio sul binario unico: Macherio Sovico",
+	"status": "rilievo diretto del 2026-10-02",
+	"detailLevel": "un gruppo di binari bidirezionali per stazione; senza gole ne' assegnazione per linea",
+	"sources": [
+		"Linea Seregno - Carnate Usmate, a binario unico da capolinea a capolinea, servita dalla R15: rilievo diretto 2026-10-02",
+		"Macherio Sovico: 2 binari, unica stazione di incrocio della linea (rilievo diretto 2026-10-02)",
+		"Lesmo: fermata a un binario, non dichiarata come nodo (rilievo diretto 2026-10-02)",
+		"Tratte misurate su OpenStreetMap: data/osm/2026-09-30-track-counts/new_sections.csv"
+	],
+	"stations": [
+		{
+			"id": "S01500",
+			"name": "Macherio Sovico",
+			"kind": "through",
+			"platformLengthM": null,
+			"groups": [
+				{
+					"id": "macherio_sovico",
+					"kind": "through",
+					"tracks": [
+						{
+							"ref": "1",
+							"direction": null
+						},
+						{
+							"ref": "2",
+							"direction": null
+						}
+					],
+					"connections": {
+						"south": [
+							"meso:S01318"
+						],
+						"north": [
+							"meso:S01501"
+						]
+					},
+					"notes": "2 binari bidirezionali di incrocio; numerazione e uso non rilevati (ipotesi). south = lato di Seregno"
+				}
+			],
+			"throats": [],
+			"sidings": {
+				"tracks": null,
+				"note": "nessun ricovero noto: valore provvisorio del simulatore"
+			}
+		}
+	],
+	"segments": [],
+	"lines": {
+		"*terminal": {
+			"bundle": null,
+			"stations": {
+				"S01500": [
+					"macherio_sovico"
+				]
+			}
+		},
+		"*through": {
+			"bundle": null,
+			"stations": {
+				"S01500": [
+					"macherio_sovico"
+				]
+			}
+		}
+	},
+	"openQuestions": [
+		"Numerazione e verso dei due binari di Macherio Sovico"
+	]
+}

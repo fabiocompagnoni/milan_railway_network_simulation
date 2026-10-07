@@ -142,8 +142,10 @@ public final class TransitScheduleBuilder {
 		Set<String> activeServiceIds = ServiceCalendar.activeServiceIds(feed.calendarDateRows(), serviceDate);
 		Map<String, List<GtfsFeed.Trip>> includedTripsByRoute = includedTripsByRoute(activeServiceIds);
 
-		List<List<TripCalls>> chains = viaSidings(chains(includedTripsByRoute));
-		plan = planner.plan(chains);
+		List<List<TripCalls>> timetabled = viaSidings(chains(includedTripsByRoute));
+		plan = planner.plan(timetabled);
+		List<List<TripCalls>> chains = plan.withSidingsMoves(timetabled);
+		LOG.info("{} layovers moved to the sidings for want of a free platform track", plan.sentToSidings().size());
 		chains.forEach(chain -> chain.forEach(trip -> movements.put(trip.tripId(), trip)));
 
 		for (Map.Entry<String, List<GtfsFeed.Trip>> entry : includedTripsByRoute.entrySet()) {
@@ -207,12 +209,24 @@ public final class TransitScheduleBuilder {
 			journeys.add(new Journey(trip.id(), line, calls.getFirst().stopId(), calls.getLast().stopId(),
 				calls.getFirst().departureSeconds(), calls.getLast().arrivalSeconds()));
 		}));
-		// a detailed station has sidings: a long layover there is spent in them, not by a new vehicle
-		ToDoubleFunction<String> chainLimit = stop -> planner.isMicro(stop) ? Double.POSITIVE_INFINITY
-			: maxLayoverSeconds.applyAsDouble(stop);
-		return TripChains.chain(journeys, turnaroundSeconds, chainLimit).stream()
+		return TripChains.chain(journeys, turnaroundSeconds, new DeclaredTermini()).stream()
 			.map(chain -> chain.stream().map(journey -> callsByTrip.get(journey.tripId())).toList())
 			.toList();
+	}
+
+	/** The termini as the detailed stations declare them. */
+	private final class DeclaredTermini implements TripChains.Termini {
+
+		@Override
+		public double maxLayoverSeconds(String stop) {
+			// a detailed station has sidings: a long layover there is spent in them, not by a new vehicle
+			return planner.isMicro(stop) ? Double.POSITIVE_INFINITY : maxLayoverSeconds.applyAsDouble(stop);
+		}
+
+		@Override
+		public boolean shareStock(String stop, String line, String other) {
+			return planner.nodeOf(stop).map(node -> node.station(stop).sharesStock(line, other)).orElse(false);
+		}
 	}
 
 	/**

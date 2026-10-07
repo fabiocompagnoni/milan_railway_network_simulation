@@ -4,11 +4,18 @@ import it.unimib.milanrailsim.gui.app.AppModel;
 import it.unimib.milanrailsim.gui.sim.Preflight;
 import it.unimib.milanrailsim.gui.sim.ScenarioSummary;
 import it.unimib.milanrailsim.network.GtfsFeed;
+import it.unimib.milanrailsim.network.RouteTracks;
 import it.unimib.milanrailsim.network.ServiceCalendar;
 import it.unimib.milanrailsim.runs.ScenarioSpec.SimulationType;
 import it.unimib.milanrailsim.runs.ScenarioSpec.TimeWindow;
 import it.unimib.milanrailsim.runs.ScenarioSpec;
+import it.unimib.milanrailsim.schedule.DensificationPlan;
+import it.unimib.milanrailsim.schedule.LineUpgrade;
+import it.unimib.milanrailsim.schedule.LineUpgradePlan;
+import it.unimib.milanrailsim.schedule.RegularRoutes;
 import it.unimib.milanrailsim.schedule.RouteVehicleAssignment;
+import it.unimib.milanrailsim.schedule.SchedulePipeline;
+import javafx.collections.FXCollections;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -20,7 +27,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -37,10 +43,12 @@ import javafx.util.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -66,12 +74,9 @@ public final class NewSimulationView extends BorderPane {
 	private final Spinner<Integer> windowEnd = hourSpinner(10);
 	private final ToggleGroup typeGroup = new ToggleGroup();
 	private final StackPane parameters = new StackPane();
-	private final Spinner<Integer> metroHeadway = new Spinner<>(2, 15, 4);
-	private final Spinner<Integer> collapseStart = new Spinner<>(3, 30, 10);
-	private final Spinner<Integer> collapseStep = new Spinner<>(1, 10, 2);
-	private final Spinner<Integer> collapseSteps = new Spinner<>(2, 10, 4);
-	private final Slider dynamicReduction = new Slider(0, 60, 35);
-	private final Label dynamicPreview = new Label();
+	private final Spinner<Integer> metroHeadway = new Spinner<>(FXCollections.observableArrayList(DensificationPlan.CADENCES_MINUTES));
+	private final LineUpgradePlan upgradePlan;
+	private final LineUpgradePanel lineUpgrade;
 
 	private final GridPane summaryGrid = new GridPane();
 	private final FlowPane lineChips = new FlowPane(6, 6);
@@ -83,11 +88,14 @@ public final class NewSimulationView extends BorderPane {
 	private final Map<SimulationType, Node> parameterPanels = new EnumMap<>(SimulationType.class);
 	private GtfsFeed feed;
 	private Set<String> networkStops;
+	private RouteTracks routeTracks;
 	private boolean blocked = true;
 
 	public NewSimulationView(AppModel model, Consumer<ScenarioSpec> onStart) {
 		this.model = model;
 		this.onStart = onStart;
+		this.upgradePlan = LineUpgradePlan.read(model.files().lineUpgradePlan());
+		this.lineUpgrade = new LineUpgradePanel(upgradePlan, line -> !assignment.isExcluded(line), this::scheduleRefresh);
 		getStyleClass().add("content");
 
 		VBox form = new VBox(24, scenarioSection(), typeSection(), summarySection());
@@ -104,8 +112,11 @@ public final class NewSimulationView extends BorderPane {
 			}
 		});
 		showLoading();
-		model.feed().thenCombine(model.networkStops(), Map::entry)
-			.thenAccept(loaded -> Platform.runLater(() -> onFeedLoaded(loaded.getKey(), loaded.getValue())));
+		model.feed().thenCombine(model.networkStops(), Map::entry).thenCombine(model.routeTracks(), Map::entry)
+			.thenAccept(loaded -> Platform.runLater(() -> {
+				routeTracks = loaded.getValue();
+				onFeedLoaded(loaded.getKey().getKey(), loaded.getKey().getValue());
+			}));
 	}
 
 	private Node scenarioSection() {
@@ -182,47 +193,18 @@ public final class NewSimulationView extends BorderPane {
 		Node panel = parameterPanels.computeIfAbsent(type, key -> switch (key) {
 			case REAL -> muted("Orario reale del giorno scelto, senza modifiche.");
 			case METRO_LIKE -> metroPanel();
-			case COLLAPSE -> collapsePanel();
-			case DYNAMIC -> dynamicPanel();
+			case LINE_UPGRADE -> lineUpgrade;
 		});
 		parameters.getChildren().setAll(panel);
 	}
 
 	private Node metroPanel() {
 		metroHeadway.valueProperty().addListener(observable -> scheduleRefresh());
-		HBox row = new HBox(12, new Label("Distanziamento obiettivo sul Passante"), metroHeadway, new Label("minuti"));
+		HBox row = new HBox(12, new Label("Attesa massima nelle ore di punta"), metroHeadway, new Label("minuti"));
 		row.setAlignment(Pos.CENTER_LEFT);
-		return new VBox(8, row, muted("Vale solo per il tratto urbano comune alle linee S del Passante; "
-			+ "il resto della rete resta all'orario reale."));
-	}
-
-	private Node collapsePanel() {
-		for (Spinner<Integer> spinner : List.of(collapseStart, collapseStep, collapseSteps)) {
-			spinner.valueProperty().addListener(observable -> scheduleRefresh());
-		}
-		GridPane grid = new GridPane();
-		grid.setHgap(12);
-		grid.setVgap(8);
-		grid.addRow(0, new Label("Distanziamento iniziale"), collapseStart, new Label("minuti"));
-		grid.addRow(1, new Label("Riduzione a ogni passo"), collapseStep, new Label("minuti"));
-		grid.addRow(2, new Label("Numero di passi"), collapseSteps);
-		return new VBox(8, grid, muted("Una campagna di run, uno per passo, finché il servizio degrada."));
-	}
-
-	private Node dynamicPanel() {
-		dynamicReduction.setShowTickMarks(true);
-		dynamicReduction.setShowTickLabels(true);
-		dynamicReduction.setMajorTickUnit(10);
-		dynamicReduction.setBlockIncrement(5);
-		dynamicReduction.setSnapToTicks(false);
-		dynamicReduction.setPrefWidth(360);
-		dynamicReduction.valueProperty().addListener(observable -> scheduleRefresh());
-		Label value = new Label();
-		value.textProperty().bind(dynamicReduction.valueProperty().map(v -> Math.round(v.doubleValue()) + " %"));
-		HBox row = new HBox(12, new Label("Riduzione degli intervalli, tutte le linee"), dynamicReduction, value);
-		row.setAlignment(Pos.CENTER_LEFT);
-		dynamicPreview.getStyleClass().add("text-muted");
-		return new VBox(8, row, dynamicPreview);
+		return new VBox(8, row, muted("Si aggiungono corse nell'area urbana dove l'attesa fra due treni supera l'obiettivo: "
+			+ "Bovisa e Passante, S9, ramo di Seveso fino a Cormano, Monza. Le corse reali non vengono spostate; "
+			+ "fuori dalle ore di punta l'obiettivo è un gradino più lungo."));
 	}
 
 	private Node summarySection() {
@@ -282,24 +264,18 @@ public final class NewSimulationView extends BorderPane {
 			.forEach(toggle -> toggle.setSelected(true));
 		switch (spec.type()) {
 			case METRO_LIKE -> metroHeadway.getValueFactory().setValue(spec.metroHeadwayMinutes());
-			case COLLAPSE -> {
-				collapseStart.getValueFactory().setValue(spec.collapseStartHeadwayMinutes());
-				collapseStep.getValueFactory().setValue(spec.collapseStepMinutes());
-				collapseSteps.getValueFactory().setValue(spec.collapseSteps());
-			}
-			case DYNAMIC -> dynamicReduction.setValue(spec.dynamicReductionPercent());
+			case LINE_UPGRADE -> lineUpgrade.prefill(spec.routeTargets());
 			case REAL -> {
 			}
 		}
 	}
 
 	private String suggestedName() {
-		SimulationType type = (SimulationType) typeGroup.getSelectedToggle().getUserData();
+		SimulationType type = selectedType();
 		String slug = switch (type) {
 			case REAL -> "reale";
 			case METRO_LIKE -> "passante";
-			case COLLAPSE -> "collasso";
-			case DYNAMIC -> "dinamica";
+			case LINE_UPGRADE -> "potenziamento";
 		};
 		return slug + "_" + day.getValue();
 	}
@@ -311,17 +287,53 @@ public final class NewSimulationView extends BorderPane {
 	}
 
 	private void refresh() {
+		if (selectedType() == SimulationType.LINE_UPGRADE && day.getValue() != null) {
+			lineUpgrade.load(feed, day.getValue(), routeTracks);
+		}
 		ScenarioSpec spec = spec();
-		ScenarioSummary summary = ScenarioSummary.of(feed, assignment, spec, networkStops);
-		List<Preflight.Finding> checks = new Preflight(model.paths().runs(), model.paths().costsFile())
-			.check(spec.name(), spec.runCount());
-		showSummary(spec, summary);
+		GtfsFeed timetable = feed;
+		List<Preflight.Finding> checks = new ArrayList<>(new Preflight(model.paths().runs(), model.paths().costsFile())
+			.check(spec.name()));
+		Optional<LineUpgrade.Report> upgrade = Optional.empty();
+		if (spec.type() == SimulationType.LINE_UPGRADE && spec.serviceDate() != null) {
+			LineUpgrade.Upgraded upgraded = upgraded(spec);
+			timetable = upgraded.feed();
+			upgrade = Optional.of(upgraded.report());
+			checks.addAll(upgradeFindings());
+		}
+		ScenarioSummary summary = ScenarioSummary.of(timetable, assignment, spec, networkStops);
+		showSummary(spec, summary, upgrade);
 		showFindings(checks);
 		blocked = checks.stream().anyMatch(Preflight.Finding::blocking);
 		start.setDisable(blocked);
 	}
 
-	private void showSummary(ScenarioSpec spec, ScenarioSummary summary) {
+	/** The timetable of the day with the trips of the chosen routes, and the table updated to show them. */
+	private LineUpgrade.Upgraded upgraded(ScenarioSpec spec) {
+		LineUpgrade.Upgraded upgraded = new LineUpgrade(upgradePlan).upgrade(feed, spec.serviceDate(), spec.routeTargets());
+		int from = spec.window() == null ? 0 : spec.window().start().toSecondOfDay();
+		int to = spec.window() == null ? Integer.MAX_VALUE : spec.window().end().toSecondOfDay();
+		lineUpgrade.show(new RegularRoutes(upgraded.feed(), spec.serviceDate(), upgradePlan.serviceGapSeconds()),
+			upgraded.report(), from, to);
+		return upgraded;
+	}
+
+	private List<Preflight.Finding> upgradeFindings() {
+		List<Preflight.Finding> upgradeChecks = new ArrayList<>();
+		if (lineUpgrade.targets().isEmpty()) {
+			upgradeChecks.add(new Preflight.Finding(true, "Includi almeno un percorso da potenziare."));
+		}
+		int turnaroundMinutes = SchedulePipeline.TURNAROUND_SECONDS / 60;
+		long belowTurnaround = lineUpgrade.targetsBelow(turnaroundMinutes);
+		if (belowTurnaround > 0) {
+			upgradeChecks.add(new Preflight.Finding(false, belowTurnaround + (belowTurnaround == 1 ? " percorso chiede" : " percorsi chiedono")
+				+ " un'attesa sotto i " + turnaroundMinutes + " minuti del tempo di inversione al capolinea: servono più treni "
+				+ "e più binari di quanti l'orario reale ne usi."));
+		}
+		return upgradeChecks;
+	}
+
+	private void showSummary(ScenarioSpec spec, ScenarioSummary summary, Optional<LineUpgrade.Report> upgrade) {
 		summaryState.setText(spec.serviceDate() == null ? "Scegli un giorno di servizio." : "");
 		lineChips.getChildren().clear();
 		for (String line : summary.lines()) {
@@ -335,18 +347,16 @@ public final class NewSimulationView extends BorderPane {
 		int row = 0;
 		row = metric(row, "Linee coinvolte", String.valueOf(summary.lines().size()));
 		row = metric(row, "Corse attese", summary.extraTrips() > 0
-			? summary.trips() + " (di cui " + summary.extraTrips() + " aggiunte, stima)" : String.valueOf(summary.trips()));
+			? summary.trips() + " (di cui " + summary.extraTrips() + " aggiunte)" : String.valueOf(summary.trips()));
 		if (summary.offNetworkTrips() > 0) {
-			row = metric(row, "Corse escluse", summary.offNetworkTrips() + " (fermano fuori dalla rete modellata)");
+			row = metric(row, "Corse escluse", summary.offNetworkTrips() + " (fermano fuori dalla rete modellata"
+				+ (summary.offNetworkExtraTrips() > 0 ? ", di cui " + summary.offNetworkExtraTrips() + " aggiunte" : "") + ")");
 		}
-		row = metric(row, "Flotta", fleetText(summary.fleetSharesPercent()));
-		row = metric(row, "Run prodotti", String.valueOf(spec.runCount()));
-		metric(row, "Spazio stimato", String.format("~%.1f GB", spec.runCount() * 1.0));
-		if (spec.type() == SimulationType.DYNAMIC) {
-			dynamicPreview.setText(spec.dynamicReductionPercent() == 0
-				? "0 % equivale allo scenario Reale."
-				: "A questo valore: circa " + summary.extraTrips() + " corse in più sull'intera giornata (stima).");
+		if (upgrade.isPresent()) {
+			row = metric(row, "Passaggi stretti nel tunnel", upgrade.get().tunnelWarnings().size() + " (corse aggiunte a meno di "
+				+ upgradePlan.tunnel().minHeadwaySeconds() + " s da un altro treno a Milano Repubblica)");
 		}
+		metric(row, "Flotta", fleetText(summary.fleetSharesPercent()));
 	}
 
 	private int metric(int row, String label, String value) {
@@ -374,16 +384,17 @@ public final class NewSimulationView extends BorderPane {
 		}
 	}
 
+	private SimulationType selectedType() {
+		return (SimulationType) typeGroup.getSelectedToggle().getUserData();
+	}
+
 	private ScenarioSpec spec() {
-		SimulationType type = (SimulationType) typeGroup.getSelectedToggle().getUserData();
+		SimulationType type = selectedType();
 		TimeWindow window = customWindow.isSelected()
 			? new TimeWindow(LocalTime.of(windowStart.getValue(), 0), LocalTime.of(windowEnd.getValue(), 0)) : null;
 		return new ScenarioSpec(name.getText().trim(), type, day.getValue(), window,
 			type == SimulationType.METRO_LIKE ? metroHeadway.getValue() : null,
-			type == SimulationType.COLLAPSE ? collapseStart.getValue() : null,
-			type == SimulationType.COLLAPSE ? collapseStep.getValue() : null,
-			type == SimulationType.COLLAPSE ? collapseSteps.getValue() : null,
-			type == SimulationType.DYNAMIC ? (int) Math.round(dynamicReduction.getValue()) : null);
+			type == SimulationType.LINE_UPGRADE ? lineUpgrade.targets() : null);
 	}
 
 	private void startRun() {

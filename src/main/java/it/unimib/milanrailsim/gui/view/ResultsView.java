@@ -422,7 +422,7 @@ public final class ResultsView extends BorderPane {
 		CheckBox csv = new CheckBox("Tabelle CSV (puntualità, treni non arrivati)");
 		CheckBox json = new CheckBox("Dati JSON (manifest, costi, scenario)");
 		CheckBox png = new CheckBox("Grafici PNG");
-		CheckBox raw = new CheckBox("Output grezzo del motore (orario, eventi, fotogrammi: pesante)");
+		CheckBox raw = new CheckBox("Output del motore (orario, traiettorie, registrazione: pesante)");
 		for (CheckBox box : List.of(csv, json, png)) {
 			box.setSelected(true);
 		}
@@ -440,8 +440,7 @@ public final class ResultsView extends BorderPane {
 		}
 		int copied = model.runs().export(entry, chosen.toPath(), path -> {
 			String name = path.toString();
-			if (name.startsWith("raw") || name.startsWith("output") || name.startsWith("scenario")
-					|| name.startsWith("frames")) {
+			if (name.startsWith("output") || name.startsWith("scenario") || name.startsWith("frames")) {
 				return raw.isSelected();
 			}
 			return name.endsWith(".csv") ? csv.isSelected() : name.endsWith(".json") ? json.isSelected()

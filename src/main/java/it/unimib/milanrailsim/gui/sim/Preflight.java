@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.LongSupplier;
 
-/** Checks a run can start: disk space for every run it spawns, a costs source, a usable run name. */
+/** Checks a run can start: disk space, a costs source, a usable run name. */
 public final class Preflight {
 
 	/** A baseline run archive weighs about a gigabyte; the margin covers analysis files. */
@@ -31,19 +31,17 @@ public final class Preflight {
 		this.freeBytes = freeBytes;
 	}
 
-	public List<Finding> check(String runName, int runCount) {
+	public List<Finding> check(String runName) {
 		List<Finding> findings = new ArrayList<>();
 		if (runName == null || runName.isBlank()) {
 			findings.add(new Finding(true, "Dai un nome al run."));
 		} else if (Files.exists(runsDir.resolve(runName))) {
 			findings.add(new Finding(true, "Esiste già un run chiamato «" + runName + "». Scegli un altro nome."));
 		}
-		long required = BYTES_PER_RUN * runCount;
 		long free = freeBytes.getAsLong();
-		if (free < required) {
+		if (free < BYTES_PER_RUN) {
 			findings.add(new Finding(true, "Spazio su disco insufficiente: " + megabytes(free) + " liberi, ne servono almeno "
-				+ megabytes(required) + " per " + (runCount == 1 ? "questo run" : runCount + " run")
-				+ ". Libera spazio in " + runsDir + " e riprova."));
+				+ megabytes(BYTES_PER_RUN) + " per questo run. Libera spazio in " + runsDir + " e riprova."));
 		}
 		if (!Files.exists(costsFile)) {
 			findings.add(new Finding(false, "Nessuna sorgente costi caricata: il computo costi di questo run sarà incompleto. "

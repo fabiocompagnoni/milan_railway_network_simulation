@@ -1,0 +1,7 @@
+route_id,agency_id,route_short_name,route_long_name,route_color,route_text_color,route_type
+SX,1,S1,Alfa-Epsilon,ffffff,000000,2
+SW,1,S2,Beta-Gamma,ffffff,000000,2
+SE,1,S8,Pi-Rho,ffffff,000000,2
+SL,1,S11,Pi-Rho,ffffff,000000,2
+SU,1,S5,Upsilon-Omega,ffffff,000000,2
+SV,1,S6,Upsilon-Omega,ffffff,000000,2

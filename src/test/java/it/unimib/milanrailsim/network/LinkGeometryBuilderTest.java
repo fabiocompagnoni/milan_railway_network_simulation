@@ -123,4 +123,70 @@ class LinkGeometryBuilderTest {
 		assertEquals(nodes.get(5L), second.getFirst());
 		assertEquals(List.of(nodes.get(1L), nodes.get(2L), nodes.get(5L)), first);
 	}
+
+	@Test
+	void aLineOnASeparateTrackGroupIsNotDrawnAcrossToTheAnchor() {
+		// station B has two track groups 150 m apart: A-B ends on one, B-C and B-D share node 5 on the other
+		Map<Long, Coord> nodes = Map.of(
+			1L, new Coord(0, 0), 2L, new Coord(100, 50),
+			5L, new Coord(100, 200), 6L, new Coord(300, 200), 7L, new Coord(300, 300));
+		OsmRailWays ways = new OsmRailWays(nodes, Map.of(
+			10L, List.of(1L, 2L), 50L, List.of(5L, 6L), 60L, List.of(5L, 7L)));
+		Network network = network();
+		network.getNodes().get(Id.createNodeId("B")).setCoord(new Coord(100, 120));
+		network.addNode(network.getFactory().createNode(Id.createNodeId("C"), new Coord(305, 205)));
+		network.addNode(network.getFactory().createNode(Id.createNodeId("D"), new Coord(305, 305)));
+		Link ab = link(network, "A", "B", "10");
+		link(network, "B", "C", "50");
+		link(network, "B", "D", "60");
+
+		List<Coord> polyline = new LinkGeometryBuilder(ways, network).polyline(ab);
+
+		assertEquals(List.of(nodes.get(1L), nodes.get(2L)), polyline, "the line ends on its own tracks");
+	}
+
+	@Test
+	void theLinksOfASeparateTrackGroupMeetOnTheirOwnTracks() {
+		// A-B and B-E run on the group away from the anchor (node 5), on ways that do not touch: B-E is
+		// drawn back along its track to the end of A-B, the nearer of the two to the station
+		Map<Long, Coord> nodes = Map.of(
+			1L, new Coord(0, 0), 2L, new Coord(100, 50), 8L, new Coord(160, 80), 9L, new Coord(300, 150),
+			5L, new Coord(100, 200), 6L, new Coord(300, 200), 7L, new Coord(300, 300));
+		OsmRailWays ways = new OsmRailWays(nodes, Map.of(
+			10L, List.of(1L, 2L), 70L, List.of(8L, 9L), 50L, List.of(5L, 6L), 60L, List.of(5L, 7L)));
+		Network network = network();
+		network.getNodes().get(Id.createNodeId("B")).setCoord(new Coord(100, 120));
+		network.addNode(network.getFactory().createNode(Id.createNodeId("C"), new Coord(305, 205)));
+		network.addNode(network.getFactory().createNode(Id.createNodeId("D"), new Coord(305, 305)));
+		network.addNode(network.getFactory().createNode(Id.createNodeId("E"), new Coord(305, 155)));
+		Link ab = link(network, "A", "B", "10");
+		Link be = link(network, "B", "E", "70");
+		link(network, "B", "C", "50");
+		link(network, "B", "D", "60");
+		LinkGeometryBuilder builder = new LinkGeometryBuilder(ways, network);
+
+		assertEquals(List.of(nodes.get(1L), nodes.get(2L)), builder.polyline(ab));
+		assertEquals(List.of(nodes.get(2L), nodes.get(8L), nodes.get(9L)), builder.polyline(be));
+	}
+
+	@Test
+	void anAnchorFurtherAlongTheSameTrackIsReached() {
+		// the ways of A-B stop at node 2, 110 m short of the anchor that B-C and B-D share straight ahead
+		Map<Long, Coord> nodes = Map.of(
+			1L, new Coord(0, 0), 2L, new Coord(100, 50),
+			5L, new Coord(200, 100), 6L, new Coord(400, 200), 7L, new Coord(400, 100));
+		OsmRailWays ways = new OsmRailWays(nodes, Map.of(
+			10L, List.of(1L, 2L), 50L, List.of(5L, 6L), 60L, List.of(5L, 7L)));
+		Network network = network();
+		network.getNodes().get(Id.createNodeId("B")).setCoord(new Coord(190, 100));
+		network.addNode(network.getFactory().createNode(Id.createNodeId("C"), new Coord(405, 205)));
+		network.addNode(network.getFactory().createNode(Id.createNodeId("D"), new Coord(405, 105)));
+		Link ab = link(network, "A", "B", "10");
+		link(network, "B", "C", "50");
+		link(network, "B", "D", "60");
+
+		List<Coord> polyline = new LinkGeometryBuilder(ways, network).polyline(ab);
+
+		assertEquals(List.of(nodes.get(1L), nodes.get(2L), nodes.get(5L)), polyline);
+	}
 }

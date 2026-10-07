@@ -1,0 +1,25 @@
+{
+	"scenario": "potenziamento-per-linea",
+	"title": "Potenziamento per linea: attesa massima scelta per ogni percorso",
+	"status": "prima versione, 2026-09-30; soglie del percorso regolare e intervallo del tunnel provvisori",
+	"sources": [
+		"Regole dello scenario: decisione di progetto, 2026-09-29",
+		"Orario reale: GTFS Trenord orari_trenord, conteggio dei percorsi su mercoledi' 2026-09-23"
+	],
+	"serviceGapMinutes": 60,
+	"regularRoute": {
+		"minTrips": 8,
+		"minTripsPerDirection": 4,
+		"note": "Un percorso (linea e coppia di capolinea) compare fra quelli potenziabili se nel giorno ha almeno 8 corse, di cui almeno 4 per verso. Restano fuori le corse isolate di inizio e fine servizio."
+	},
+	"targetMinutes": {
+		"min": 3,
+		"max": 30,
+		"proposed": 15
+	},
+	"tunnel": {
+		"referenceStop": "S01648",
+		"minHeadwaySeconds": 180,
+		"note": "Milano Repubblica. Riferimento, non vincolo: le corse che passano a meno di questo intervallo da un altro treno nello stesso verso vengono inserite e segnalate. Stesso valore provvisorio dello scenario ad alta frequenza."
+	}
+}

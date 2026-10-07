@@ -1,0 +1,41 @@
+from,to,name,to_confirm
+S00039,S00041,Torreberetti - Valenza,"contata doppia, binario unico da tag 4.9-6.1 km, da geometria 4.9-6.1 km - cambio del numero di binari senza un punto di snodo OSM vicino"
+S00041,S00042,Valenza - Valmadonna,"contata doppia, binario unico da tag 0.0-0.5 km, da geometria nessuno km - i criteri discordano: tag 0.5 km, geometria 0.0 km"
+S01021,S09999,Iseo - Brescia,"contata doppia, binario unico da tag 0.0-9.9 10.3-10.7 km, da geometria 0.0-7.3 7.9-9.8 10.3-10.4 km - i criteri discordano: tag 10.3 km, geometria 9.3 km; cambio del numero di binari senza un punto di snodo OSM vicino"
+S01031,S01137,Busto Arsizio - Busto Arsizio Nord,"contata doppia, binario unico da tag 0.0-0.5 km, da geometria 0.0-0.5 km - binario unico solo vicino a una stazione: forse deviatoi o raccordi; cambio del numero di binari senza un punto di snodo OSM vicino"
+S01086,S01934,Cesano Maderno - Ceriano Laghetto-Solaro,"contata doppia, binario unico da tag 0.0-1.6 km, da geometria 0.0-1.6 km - punti: PM Groane (service_station, km 1.9)"
+S01118,S01140,Laveno Mombello - Sangiano,"contata doppia, binario unico da tag 1.8-3.3 km, da geometria 1.8-3.3 km - cambio del numero di binari senza un punto di snodo OSM vicino"
+S01202,S01203,Bisuschio Viggiu' - Arcisate,"binario unico con punti di incrocio interni: P.M. Bevera (junction, km 2.3)"
+S01204,S01205,Induno Olona - Varese,"binario unico con punti di incrocio interni: P.P. Induno (service_station, km 0.9)"
+S01301,S05306,Chiasso - Balerna,tratta senza numero di binari misurato (ok)
+S01301,S13143,Chiasso - Mendrisio,tratta senza numero di binari misurato (ok)
+S01316,S01318,Camnago-Lentate - Seregno,"contata doppia, binario unico da tag 6.0-6.1 km, da geometria nessuno km - i criteri discordano: tag 0.1 km, geometria 0.0 km"
+S01316,S01925,Camnago-Lentate - Seveso,"contata doppia, binario unico da tag 0.5-2.2 km, da geometria 0.5-2.1 km - cambio del numero di binari senza un punto di snodo OSM vicino"
+S01318,S01320,Seregno - Desio,"contata doppia, binario unico da tag 0.0-0.5 km, da geometria nessuno km - i criteri discordano: tag 0.5 km, geometria 0.0 km"
+S01318,S01322,Seregno - Monza,"contata doppia, binario unico da tag 0.0-0.5 km, da geometria nessuno km - i criteri discordano: tag 0.5 km, geometria 0.0 km"
+S01322,S01325,Monza - Sesto S.Giovanni,"contata doppia, binario unico da tag 0.0-1.3 km, da geometria nessuno km - i criteri discordano: tag 1.3 km, geometria 0.0 km"
+S01322,S01520,Monza - Lecco,"contata doppia, binario unico da tag 11.1-12.2 km, da geometria nessuno km - i criteri discordano: tag 1.1 km, geometria 0.0 km"
+S01322,S01524,Monza - Calolziocorte Olginate,"contata doppia, binario unico da tag 11.2-12.3 29.6-29.9 km, da geometria nessuno km - i criteri discordano: tag 1.4 km, geometria 0.0 km"
+S01322,S01700,Monza - Milano Centrale,"contata doppia, binario unico da tag 0.0-1.4 km, da geometria nessuno km - i criteri discordano: tag 1.4 km, geometria 0.0 km"
+S01450,S09998,Albate-Trecallo - Como Camerlata,"binario unico con punti di incrocio interni: P.M. Albate (service_station, km 3.2)"
+S01510,S01511,Arcore - Carnate Usmate,"contata doppia, binario unico da tag 4.9-5.1 km, da geometria nessuno km - i criteri discordano: tag 0.2 km, geometria 0.0 km"
+S01513,S01524,Cernusco-Merate - Calolziocorte Olginate,"contata doppia, binario unico da tag 12.6-13.0 km, da geometria nessuno km - i criteri discordano: tag 0.4 km, geometria 0.0 km"
+S01515,S01524,Airuno - Calolziocorte Olginate,"contata doppia, binario unico da tag 5.2-5.7 km, da geometria nessuno km - i criteri discordano: tag 0.4 km, geometria 0.0 km"
+S01520,S01524,Lecco - Calolziocorte Olginate,"contata doppia, binario unico da tag 6.4-6.7 km, da geometria nessuno km - i criteri discordano: tag 0.4 km, geometria 0.0 km"
+S01522,S01524,Lecco Maggianico - Calolziocorte Olginate,"contata doppia, binario unico da tag 3.1-3.5 km, da geometria nessuno km - i criteri discordano: tag 0.3 km, geometria 0.0 km"
+S01523,S01524,Vercurago S.Girolamo - Calolziocorte Olginate,"contata doppia, binario unico da tag 1.0-1.3 km, da geometria nessuno km - i criteri discordano: tag 0.4 km, geometria 0.0 km"
+S01511,S01524,Carnate Usmate - Calolziocorte Olginate,"contata doppia, binario unico da tag 17.7-18.1 km, da geometria nessuno km - i criteri discordano: tag 0.3 km, geometria 0.0 km"
+S01529,S01533,Bergamo - Seriate,"contata doppia, binario unico da tag 3.3-3.9 km, da geometria 3.3-3.9 km - binario unico solo vicino a una stazione: forse deviatoi o raccordi; cambio del numero di binari senza un punto di snodo OSM vicino"
+S01601,S01708,Treviglio Ovest - Treviglio,tratta senza numero di binari misurato (ok)
+S01806,S01807,Lungavilla - Voghera,tratta senza numero di binari misurato (ok)
+S01810,S04330,Tortona - Pozzolo Formigaro,"binario unico con punti di incrocio interni: Bivio/PC Tortona (service_station, km 1.4); Bivio Pozzolo F. (service_station, km 9.3)"
+S01913,S01915,Acquanegra Cremonese - Cremona,"contata doppia, binario unico da tag 0.7-5.1 km, da geometria 0.7-5.1 km - cambio del numero di binari senza un punto di snodo OSM vicino"
+S01944,S01945,Broni - Stradella,"contata doppia, binario unico da tag 0.0-0.2 km, da geometria nessuno km - i criteri discordano: tag 0.2 km, geometria 0.0 km"
+S05212,S05213,Castione - Bellinzona,tratta senza numero di binari misurato (ok)
+S05306,S13143,Balerna - Mendrisio,tratta senza numero di binari misurato (ok)
+S05404,S05405,Cadenazzo - Quartino,"binario unico con punti di incrocio interni: Cadenazzo Ovest (junction, km 1.7)"
+S05404,S05412,Cadenazzo - Riazzino,"binario unico con punti di incrocio interni: Cadenazzo Ovest (junction, km 1.6)"
+S05406,S05407,Magadino-Vira - S.Nazzaro,"binario unico con punti di incrocio interni: Magadino-Vira (service_station, km 0.0)"
+S01451,S09998,Cantu' - Como Camerlata,"binario unico con punti di incrocio interni: P.M. Albate (service_station, km 7.1)"
+S01538,S09999,Palazzolo Sull'Oglio - Brescia,"contata doppia, binario unico da tag 0.1-9.4 km, da geometria 0.1-9.4 km - cambio del numero di binari senza un punto di snodo OSM vicino"
+S19901,Z05304,Mendrisio S. Martino - Capolago-Riva S.Vitale,tratta senza numero di binari misurato (ok)

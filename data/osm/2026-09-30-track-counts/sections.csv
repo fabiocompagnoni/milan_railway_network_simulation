@@ -1,0 +1,41 @@
+from,to,name,check,length_km,tracks_in_network,single_by_tags_km,single_by_geometry_km,single_km,operating_points
+S00039,S00041,Torreberetti - Valenza,mixed,6.15,2,4.9-6.1,4.9-6.1,1.21,
+S00041,S00042,Valenza - Valmadonna,mixed,5.79,2,0.0-0.5,,0.49,
+S01021,S09999,Iseo - Brescia,mixed,31.78,2,0.0-9.9 10.3-10.7,0.0-7.3 7.9-9.8 10.3-10.4,10.32,
+S01031,S01137,Busto Arsizio - Busto Arsizio Nord,mixed,2.4,2,0.0-0.5,0.0-0.5,0.51,
+S01086,S01934,Cesano Maderno - Ceriano Laghetto-Solaro,mixed,4.7,2,0.0-1.6,0.0-1.6,1.6,"PM Groane (service_station, km 1.9)"
+S01118,S01140,Laveno Mombello - Sangiano,mixed,3.26,2,1.8-3.3,1.8-3.3,1.44,
+S01202,S01203,Bisuschio Viggiu' - Arcisate,single,3.56,1,,,,"P.M. Bevera (junction, km 2.3)"
+S01204,S01205,Induno Olona - Varese,single,3.62,1,,,,"P.P. Induno (service_station, km 0.9)"
+S01301,S05306,Chiasso - Balerna,unmeasured,,,,,,
+S01301,S13143,Chiasso - Mendrisio,unmeasured,,,,,,
+S01316,S01318,Camnago-Lentate - Seregno,mixed,6.2,2,6.0-6.1,,0.14,
+S01316,S01925,Camnago-Lentate - Seveso,mixed,2.23,2,0.5-2.2,0.5-2.1,1.65,
+S01318,S01320,Seregno - Desio,mixed,3.09,2,0.0-0.5,,0.48,
+S01318,S01322,Seregno - Monza,mixed,9.6,2,0.0-0.5,,0.52,
+S01322,S01325,Monza - Sesto S.Giovanni,mixed,4.87,4,0.0-1.3,,1.33,
+S01322,S01520,Monza - Lecco,mixed,36.92,2,11.1-12.2,,1.1,
+S01322,S01524,Monza - Calolziocorte Olginate,mixed,29.99,2,11.2-12.3 29.6-29.9,,1.37,
+S01322,S01700,Monza - Milano Centrale,mixed,11.83,4,0.0-1.4,,1.37,
+S01450,S09998,Albate-Trecallo - Como Camerlata,single,3.24,1,,,,"P.M. Albate (service_station, km 3.2)"
+S01510,S01511,Arcore - Carnate Usmate,mixed,5.15,2,4.9-5.1,,0.18,
+S01513,S01524,Cernusco-Merate - Calolziocorte Olginate,mixed,13.13,2,12.6-13.0,,0.37,
+S01515,S01524,Airuno - Calolziocorte Olginate,mixed,5.81,2,5.2-5.7,,0.42,
+S01520,S01524,Lecco - Calolziocorte Olginate,mixed,6.79,2,6.4-6.7,,0.36,
+S01522,S01524,Lecco Maggianico - Calolziocorte Olginate,mixed,3.54,2,3.1-3.5,,0.34,
+S01523,S01524,Vercurago S.Girolamo - Calolziocorte Olginate,mixed,1.39,2,1.0-1.3,,0.36,
+S01511,S01524,Carnate Usmate - Calolziocorte Olginate,mixed,18.18,2,17.7-18.1,,0.34,
+S01529,S01533,Bergamo - Seriate,mixed,4.02,2,3.3-3.9,3.3-3.9,0.61,
+S01601,S01708,Treviglio Ovest - Treviglio,unmeasured,,,,,,
+S01806,S01807,Lungavilla - Voghera,unmeasured,,,,,,
+S01810,S04330,Tortona - Pozzolo Formigaro,single,14.01,1,,,,"Bivio/PC Tortona (service_station, km 1.4); Bivio Pozzolo F. (service_station, km 9.3)"
+S01913,S01915,Acquanegra Cremonese - Cremona,mixed,10.63,2,0.7-5.1,0.7-5.1,4.44,
+S01944,S01945,Broni - Stradella,mixed,3.7,2,0.0-0.2,,0.23,
+S05212,S05213,Castione - Bellinzona,unmeasured,,,,,,
+S05306,S13143,Balerna - Mendrisio,unmeasured,,,,,,
+S05404,S05405,Cadenazzo - Quartino,single,4.46,1,,,,"Cadenazzo Ovest (junction, km 1.7)"
+S05404,S05412,Cadenazzo - Riazzino,single,5.44,1,,,,"Cadenazzo Ovest (junction, km 1.6)"
+S05406,S05407,Magadino-Vira - S.Nazzaro,single,3.56,1,,,,"Magadino-Vira (service_station, km 0.0)"
+S01451,S09998,Cantu' - Como Camerlata,single,7.21,1,,,,"P.M. Albate (service_station, km 7.1)"
+S01538,S09999,Palazzolo Sull'Oglio - Brescia,mixed,26.94,2,0.1-9.4,0.1-9.4,9.28,
+S19901,Z05304,Mendrisio S. Martino - Capolago-Riva S.Vitale,unmeasured,,,,,,

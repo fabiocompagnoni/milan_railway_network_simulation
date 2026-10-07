@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class StationTrackResourcesTest {
 
 	private static final String VEHICLE = "v";
+	private static final java.util.function.Function<TrainPosition, java.util.Set<Id<Link>>> NO_CALLS = position -> java.util.Set.of();
 
 	/** Records the track argument of the last capacity query. */
 	private static final class RecordingManager implements RailResourceManager {
@@ -191,7 +192,7 @@ class StationTrackResourcesTest {
 	@Test
 	void detoursWaitUntilTheTailIsOnTheCurrentRoute() {
 		Network network = network();
-		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of(), java.util.Map.of());
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of(), NO_CALLS);
 
 		assertFalse(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "C_D", "A_B", "C_D", "stop_A")),
 			"the tail is still on the previous route");
@@ -201,15 +202,15 @@ class StationTrackResourcesTest {
 	@Test
 	void noDetourThatWouldDropAStopBeyondTheNextOne() {
 		Network network = network();
-		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of(), java.util.Map.of());
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of(), NO_CALLS);
 		RailLink section = new RailLink(network.getLinks().get(Id.createLinkId("C_D")), null);
 		RailLink stop = new RailLink(network.getLinks().get(Id.createLinkId("stop_A")), null);
-		// railsim reports only the next stop: the later calls of the vehicle's day must come from the schedule
+		// railsim reports only the next stop: the later calls of the trip must come from its route
 		StationTrackResources scheduled = new StationTrackResources(new RecordingManager(), network, java.util.Map.of(),
-			java.util.Map.of(Id.createVehicleId(VEHICLE), java.util.Set.of(Id.createLinkId("A_B"), Id.createLinkId("stop_A"))));
+			position -> java.util.Set.of(Id.createLinkId("A_B"), Id.createLinkId("stop_A")));
 		assertFalse(scheduled.checkReroute(0, null, null, List.of(section, stop), List.of(),
 			train(network, "C_D", "C_D", "A_B", java.util.Set.of("A_B"), "C_D", "A_B", "stop_A")),
-			"stop_A is a later call of the day even though railsim's next stop is A_B");
+			"stop_A is a later call of the trip even though railsim's next stop is A_B");
 
 		assertFalse(resources.checkReroute(0, null, null, List.of(section, stop), List.of(),
 			train(network, "C_D", "C_D", "A_B", java.util.Set.of("A_B", "stop_A"), "C_D", "A_B", "stop_A")),
@@ -220,6 +221,33 @@ class StationTrackResourcesTest {
 	}
 
 	@Test
+	void aPlatformCalledAtOnALaterTripIsJustATrackWhenRunningThrough() {
+		Network network = network();
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of(),
+			position -> java.util.Set.of(Id.createLinkId("C_D")));
+		RailLink platform = new RailLink(network.getLinks().get(Id.createLinkId("stop_A")), null);
+
+		assertTrue(resources.checkReroute(0, null, null, List.of(platform), List.of(),
+			train(network, "A_B", "A_B", "C_D", java.util.Set.of("C_D"), "A_B", "stop_A", "C_D")));
+	}
+
+	@Test
+	void noDetourOverAPlatformTheTripCallsAtLater() {
+		Network network = network();
+		// the trip runs through the station on C_D, reverses further on and comes back to end on A_B
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of(),
+			position -> java.util.Set.of(Id.createLinkId("stop_A"), Id.createLinkId("A_B")));
+		RailLink planned = new RailLink(network.getLinks().get(Id.createLinkId("C_D")), null);
+		RailLink terminus = new RailLink(network.getLinks().get(Id.createLinkId("A_B")), null);
+		RailLink free = new RailLink(network.getLinks().get(Id.createLinkId("B_A")), null);
+		TrainPosition train = train(network, "C_D", "C_D", "stop_A", java.util.Set.of("stop_A"), "C_D", "stop_A", "A_B");
+
+		assertFalse(resources.checkReroute(0, null, null, List.of(planned), List.of(terminus), train),
+			"the route would cross A_B twice, and railsim looks for the next stop from the start of the route");
+		assertTrue(resources.checkReroute(0, null, null, List.of(planned), List.of(free), train));
+	}
+
+	@Test
 	void aDetourAroundTheNextStopMustReachAPlatformOfItsArea() {
 		Network network = network();
 		Id<org.matsim.pt.transitSchedule.api.TransitStopArea> area = Id.create("A", org.matsim.pt.transitSchedule.api.TransitStopArea.class);
@@ -227,7 +255,7 @@ class StationTrackResourcesTest {
 		// A_B is a platform shared by two lines, so it carries both areas
 		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network,
 			java.util.Map.of(Id.createLinkId("stop_A"), java.util.Set.of(area), Id.createLinkId("A_B"), java.util.Set.of(otherLine, area),
-				Id.createLinkId("C_D"), java.util.Set.of(otherLine)), java.util.Map.of());
+				Id.createLinkId("C_D"), java.util.Set.of(otherLine)), NO_CALLS);
 		RailLink stop = new RailLink(network.getLinks().get(Id.createLinkId("stop_A")), null);
 		RailLink other = new RailLink(network.getLinks().get(Id.createLinkId("A_B")), null);
 		RailLink elsewhere = new RailLink(network.getLinks().get(Id.createLinkId("C_D")), null);
@@ -242,7 +270,7 @@ class StationTrackResourcesTest {
 	@Test
 	void noDetourWhileStandingOnAStationLoop() {
 		Network network = network();
-		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of(), java.util.Map.of());
+		StationTrackResources resources = new StationTrackResources(new RecordingManager(), network, java.util.Map.of(), NO_CALLS);
 
 		assertFalse(resources.checkReroute(0, null, null, List.of(), List.of(), train(network, "stop_A", "stop_A", "stop_A", "C_D")));
 	}
@@ -250,7 +278,7 @@ class StationTrackResourcesTest {
 	@Test
 	void oneWayLinksAskForAnyFreeTrack() {
 		RecordingManager delegate = new RecordingManager();
-		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of(), java.util.Map.of());
+		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of(), NO_CALLS);
 
 		resources.hasCapacity(0, Id.createLinkId("C_D"), RailResourceManager.ANY_TRACK_NON_BLOCKING, null);
 
@@ -260,7 +288,7 @@ class StationTrackResourcesTest {
 	@Test
 	void stationLinksAskForAnyFreeTrack() {
 		RecordingManager delegate = new RecordingManager();
-		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of(), java.util.Map.of());
+		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of(), NO_CALLS);
 
 		resources.hasCapacity(0, Id.createLinkId("stop_A"), RailResourceManager.ANY_TRACK_NON_BLOCKING, null);
 
@@ -270,7 +298,7 @@ class StationTrackResourcesTest {
 	@Test
 	void singleTrackSectionsKeepTheNonBlockingRule() {
 		RecordingManager delegate = new RecordingManager();
-		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of(), java.util.Map.of());
+		StationTrackResources resources = new StationTrackResources(delegate, network(), java.util.Map.of(), NO_CALLS);
 
 		resources.hasCapacity(0, Id.createLinkId("A_B"), RailResourceManager.ANY_TRACK_NON_BLOCKING, null);
 

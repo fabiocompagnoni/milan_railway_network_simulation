@@ -34,7 +34,7 @@
 					],
 					"connections": {
 						"south": [
-							"meso:S01810"
+							"meso:BIVIOPOZZOLO"
 						],
 						"north": [
 							"meso:S04203"
@@ -87,7 +87,7 @@
 						],
 						"north": [
 							"meso:S00470",
-							"meso:S04330"
+							"meso:BIVIOPOZZOLO"
 						]
 					},
 					"notes": "5 binari (5 con banchina piu' 1 di precedenza e scalo); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Voghera, verso Milano"

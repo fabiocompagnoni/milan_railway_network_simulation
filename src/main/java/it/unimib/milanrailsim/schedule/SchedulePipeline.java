@@ -34,8 +34,14 @@ public final class SchedulePipeline {
 
 	private static final Logger log = LogManager.getLogger(SchedulePipeline.class);
 
-	/** Terminal turnaround: crews change ends and rotate (domain estimate, Fabio). */
-	public static final int TURNAROUND_SECONDS = 15 * 60;
+	/**
+	 * Shortest time between an arrival at a terminus and the departure the same
+	 * train can take: passengers alight, the driver changes ends, passengers
+	 * board. It is a technical floor, not a layover: a train already standing at
+	 * its platform leaves with the next trip of its line, whenever that is.
+	 * Estimate for a multiple unit of 100 to 140 m.
+	 */
+	public static final int TURNAROUND_SECONDS = 5 * 60;
 
 	private final GtfsFeed feed;
 	private final Network network;
@@ -46,9 +52,9 @@ public final class SchedulePipeline {
 	private final Sidings sidings;
 
 	/**
-	 * @param networkFile the network the micro nodes were spliced into
-	 * @param microNodes  the nodes spliced into that network; empty for a purely mesoscopic network
-	 * @param sidings     where a long layover sends a train off the network
+	 * @param networkFile the network to run on, mesoscopic or with the micro nodes spliced in
+	 * @param microNodes  the declared micro nodes; they apply only to a network they were spliced into
+	 * @param sidings     where a long layover sends a train off the network; likewise only on a spliced network
 	 */
 	public SchedulePipeline(GtfsFeed feed, Path networkFile, FleetConfig fleet, RouteVehicleAssignment assignment,
 			StationTracks stationTracks, List<MicroNode> microNodes, Sidings sidings) {
@@ -57,8 +63,11 @@ public final class SchedulePipeline {
 		this.fleet = fleet;
 		this.assignment = assignment;
 		this.stationTracks = stationTracks;
-		this.microNodes = List.copyOf(microNodes);
-		this.sidings = sidings;
+		// the map is drawn on the mesoscopic network, which has none of the links the declarations name
+		boolean spliced = network.getLinks().values().stream()
+			.anyMatch(link -> link.getAttributes().getAttribute("microNode") != null);
+		this.microNodes = spliced ? List.copyOf(microNodes) : List.of();
+		this.sidings = spliced ? sidings : Sidings.none();
 	}
 
 	/**

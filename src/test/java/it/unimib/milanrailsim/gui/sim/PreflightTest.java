@@ -23,14 +23,14 @@ class PreflightTest {
 
 	@Test
 	void cleanConfigurationPasses() throws IOException {
-		List<Preflight.Finding> findings = preflight(10_000_000_000L).check("baseline", 1);
+		List<Preflight.Finding> findings = preflight(10_000_000_000L).check("baseline");
 
 		assertTrue(findings.isEmpty());
 	}
 
 	@Test
 	void insufficientDiskSpaceBlocks() throws IOException {
-		List<Preflight.Finding> findings = preflight(640_000_000L).check("baseline", 1);
+		List<Preflight.Finding> findings = preflight(640_000_000L).check("baseline");
 
 		assertEquals(1, findings.size());
 		assertTrue(findings.getFirst().blocking());
@@ -38,17 +38,11 @@ class PreflightTest {
 	}
 
 	@Test
-	void diskRequirementScalesWithRunCount() throws IOException {
-		assertTrue(preflight(3_000_000_000L).check("campaign", 2).isEmpty());
-		assertFalse(preflight(3_000_000_000L).check("campaign", 3).isEmpty());
-	}
-
-	@Test
 	void missingCostsOnlyWarns() throws IOException {
 		Preflight preflight = new Preflight(Files.createDirectories(home.resolve("runs")),
 			home.resolve("absent.json"), () -> 10_000_000_000L);
 
-		List<Preflight.Finding> findings = preflight.check("baseline", 1);
+		List<Preflight.Finding> findings = preflight.check("baseline");
 
 		assertEquals(1, findings.size());
 		assertFalse(findings.getFirst().blocking());
@@ -59,13 +53,13 @@ class PreflightTest {
 		Preflight preflight = preflight(10_000_000_000L);
 		Files.createDirectories(home.resolve("runs").resolve("baseline"));
 
-		List<Preflight.Finding> findings = preflight.check("baseline", 1);
+		List<Preflight.Finding> findings = preflight.check("baseline");
 
 		assertTrue(findings.stream().anyMatch(f -> f.blocking() && f.message().contains("baseline")));
 	}
 
 	@Test
 	void blankRunNameBlocks() throws IOException {
-		assertTrue(preflight(10_000_000_000L).check("  ", 1).getFirst().blocking());
+		assertTrue(preflight(10_000_000_000L).check("  ").getFirst().blocking());
 	}
 }

@@ -8,7 +8,7 @@
 	"thresholdSource": "stima provvisoria, da confermare",
 	"reentryNote": "il rientro dal ricovero non e' simulato: il nuovo treno compare sul binario di partenza all'orario di partenza",
 	"locations": [
-		{"station": "S01066", "name": "Milano Cadorna", "tracks": 8, "kind": "ricovero esterno alla stazione", "source": "rilievo 2026-09-13"},
+		{"station": "S01066", "name": "Milano Cadorna", "tracks": 40, "kind": "ricovero fittizio: 8 binari esterni alla stazione piu' i depositi Ferrovienord a nord (impianto di Novate Milanese)", "source": "rilievi 2026-09-13 e 2026-10-04", "note": "capienza non vincolante: con 8 binari i treni fermi a meta' giornata (fino a 18) restavano in coda all'ingresso e ripartivano con ore di ritardo (run reale del 2026-10-05); il tragitto fino ai depositi non e' simulato"},
 		{"station": "S01700", "name": "Milano Centrale", "tracks": 100, "kind": "deposito, coperto e scoperto, almeno un centinaio di binari di sosta e fermata, lunghe permanenze, condiviso con altri operatori", "source": "rilievi 2026-09-13 e 2026-09-15", "note": "modellato nel nodo centrale.json"},
 		{"station": "S09999", "name": "Brescia", "tracks": 63, "kind": "deposito a ovest di circa 50 binari, una decina di tronchi di manovra, binari 12, 13 e 16 di sosta", "source": "rilievo 2026-09-15", "note": "modellato nel nodo brescia.json"},
 		{"station": "S01021", "name": "Iseo", "tracks": null, "kind": "deposito Trenord con officina e piattaforma girevole", "source": "Wikipedia, Stazione di Iseo", "note": "numero di binari da rilevare: valore provvisorio del simulatore"},

@@ -340,6 +340,84 @@ class SingleTrackDeadlockAvoidanceTest {
 	}
 
 	@Test
+	void aTrainWaitsBeforeTheBlockWhileTheOnlyTrackItCanReachIsTaken() {
+		// terminus B: the single track from S ends on one stub, b1, with the sidings behind it; b2 and b3 serve another line,
+		// so by the count of its tracks the station still has room for a meet
+		Network network = NetworkUtils.createNetwork();
+		for (String id : List.of("S", "B.north.S.in", "B.north.S.out", "B.b1.b", "B.b1.a", "B.b2.b", "B.b2.a", "B.b3.b", "B.b3.a", "B.sidings")) {
+			NetworkUtils.createAndAddNode(network, Id.createNodeId(id), new Coord(0, 0));
+		}
+		Link sb = NetworkUtils.createAndAddLink(network, Id.createLinkId("S_B"), network.getNodes().get(Id.createNodeId("S")),
+			network.getNodes().get(Id.createNodeId("B.north.S.in")), 1000, 10, 1, 1);
+		Link bs = NetworkUtils.createAndAddLink(network, Id.createLinkId("B_S"), network.getNodes().get(Id.createNodeId("B.north.S.out")),
+			network.getNodes().get(Id.createNodeId("S")), 1000, 10, 1, 1);
+		singleTrack(sb, bs, "block_S_B");
+		Link approach = NetworkUtils.createAndAddLink(network, Id.createLinkId("B.b1.north.S.in"),
+			network.getNodes().get(Id.createNodeId("B.north.S.in")), network.getNodes().get(Id.createNodeId("B.b1.b")), 100, 10, 1, 1);
+		Link toSidings = NetworkUtils.createAndAddLink(network, Id.createLinkId("B.b1.north.sidings.out"),
+			network.getNodes().get(Id.createNodeId("B.b1.a")), network.getNodes().get(Id.createNodeId("B.sidings")), 100, 10, 1, 1);
+		RailLink[] platforms = new RailLink[3];
+		for (int i = 1; i <= 3; i++) {
+			Link platform = NetworkUtils.createAndAddLink(network, Id.createLinkId("B.b" + i + ".in"),
+				network.getNodes().get(Id.createNodeId("B.b" + i + ".b")), network.getNodes().get(Id.createNodeId("B.b" + i + ".a")), 200, 10, 1, 1);
+			platform.getAttributes().putAttribute("microStation", "B");
+			platform.getAttributes().putAttribute("microTrack", String.valueOf(i));
+			platform.getAttributes().putAttribute("railsimResourceId", "B.b" + i);
+			platforms[i - 1] = new RailLink(platform, null);
+			RailResourceTestSupport.fixedBlock("B.b" + i, List.of(platforms[i - 1]));
+		}
+		RailLink in = new RailLink(approach, null);
+		RailLink out = new RailLink(toSidings, null);
+		RailResourceTestSupport.fixedBlock("B.b1.north.S.in", List.of(in));
+		RailResourceTestSupport.fixedBlock("B.b1.north.sidings.out", List.of(out));
+		RailLink towardsB = new RailLink(sb, bs);
+		RailResourceTestSupport.fixedBlock("block_S_B", List.of(towardsB, new RailLink(bs, sb)));
+		SingleTrackDeadlockAvoidance avoidance = new SingleTrackDeadlockAvoidance(network, EventsUtils.createEventsManager());
+		TrainPosition standing = train(platforms[0]);
+		TrainPosition boundForTheSidings = train(towardsB, in, platforms[0], out);
+
+		avoidance.onReserve(0, platforms[0].getResource(), standing);
+
+		assertFalse(avoidance.checkLink(1, towardsB, boundForTheSidings),
+			"b1 is taken and no other track can be reached from S: in the block the train would face the one that has to leave through it");
+
+		avoidance.onRelease(2, platforms[0].getResource(), standing.getDriver());
+
+		assertTrue(avoidance.checkLink(3, towardsB, boundForTheSidings), "b1 is free again");
+
+		// a second single track, from T, ends on the same stub: once a train in one block is bound for b1, the other block stays shut
+		for (String id : List.of("T", "B.north.T.in", "B.north.T.out")) {
+			NetworkUtils.createAndAddNode(network, Id.createNodeId(id), new Coord(0, 0));
+		}
+		Link tb = NetworkUtils.createAndAddLink(network, Id.createLinkId("T_B"), network.getNodes().get(Id.createNodeId("T")),
+			network.getNodes().get(Id.createNodeId("B.north.T.in")), 1000, 10, 1, 1);
+		Link bt = NetworkUtils.createAndAddLink(network, Id.createLinkId("B_T"), network.getNodes().get(Id.createNodeId("B.north.T.out")),
+			network.getNodes().get(Id.createNodeId("T")), 1000, 10, 1, 1);
+		singleTrack(tb, bt, "block_T_B");
+		RailLink fromT = new RailLink(tb, bt);
+		RailResourceTestSupport.fixedBlock("block_T_B", List.of(fromT, new RailLink(bt, tb)));
+		RailLink inFromT = new RailLink(NetworkUtils.createAndAddLink(network, Id.createLinkId("B.b1.north.T.in"),
+			network.getNodes().get(Id.createNodeId("B.north.T.in")), network.getNodes().get(Id.createNodeId("B.b1.b")), 100, 10, 1, 1), null);
+		RailResourceTestSupport.fixedBlock("B.b1.north.T.in", List.of(inFromT));
+		TrainPosition alsoBoundForB1 = train(fromT, inFromT, platforms[0], out);
+
+		avoidance.onReserve(4, towardsB.getResource(), boundForTheSidings);
+
+		assertFalse(avoidance.checkLink(5, fromT, alsoBoundForB1), "b1 is promised to the train coming from S");
+
+		// the promise lasts while that train is in the block from S, whatever other block it clears behind it
+		Node r = NetworkUtils.createAndAddNode(network, Id.createNodeId("R"), new Coord(0, 0));
+		Link rs = NetworkUtils.createAndAddLink(network, Id.createLinkId("R_S"), r, network.getNodes().get(Id.createNodeId("S")), 1000, 10, 1, 1);
+		Link sr = NetworkUtils.createAndAddLink(network, Id.createLinkId("S_R"), network.getNodes().get(Id.createNodeId("S")), r, 1000, 10, 1, 1);
+		singleTrack(rs, sr, "block_R_S");
+		RailResource behind = RailResourceTestSupport.fixedBlock("block_R_S", List.of(new RailLink(rs, sr), new RailLink(sr, rs)));
+		avoidance.onReserve(6, behind, boundForTheSidings);
+		avoidance.onRelease(7, behind, boundForTheSidings.getDriver());
+
+		assertFalse(avoidance.checkLink(8, fromT, alsoBoundForB1), "the train from S is still in its block");
+	}
+
+	@Test
 	void keepsOnlyResourcesHoldingBothDirectionsOfALink() {
 		Network network = NetworkUtils.createNetwork();
 		Node a = NetworkUtils.createAndAddNode(network, Id.createNodeId("a"), new Coord(0, 0));

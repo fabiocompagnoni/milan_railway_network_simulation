@@ -70,6 +70,31 @@ public final class GtfsFeed {
 		return new GtfsFeed(stops, routes, trips, stopTimes, calendarDates);
 	}
 
+	/**
+	 * This feed with further trips, for timetables derived from the published one.
+	 *
+	 * @param stopTimes the calls of each added trip, by trip id, in stop sequence
+	 * @throws IllegalArgumentException for a trip id already in the feed, an unknown route or a trip without calls
+	 */
+	public GtfsFeed with(List<Trip> trips, Map<String, List<StopTime>> stopTimes) {
+		Map<String, Trip> allTrips = new LinkedHashMap<>(tripsById);
+		Map<String, List<StopTime>> allStopTimes = new LinkedHashMap<>(stopTimesByTripId);
+		for (Trip trip : trips) {
+			List<StopTime> calls = stopTimes.get(trip.id());
+			if (allTrips.putIfAbsent(trip.id(), trip) != null) {
+				throw new IllegalArgumentException("Duplicate id: " + trip.id());
+			}
+			if (!routesById.containsKey(trip.routeId())) {
+				throw new IllegalArgumentException("Trip " + trip.id() + " runs on the unknown route " + trip.routeId());
+			}
+			if (calls == null || calls.isEmpty()) {
+				throw new IllegalArgumentException("Trip " + trip.id() + " has no stop times");
+			}
+			allStopTimes.put(trip.id(), List.copyOf(calls));
+		}
+		return new GtfsFeed(stopsById, routesById, allTrips, allStopTimes, calendarDateRows);
+	}
+
 	private static <T> Collector<T, ?, Map<String, T>> toMapById(Function<T, String> idExtractor) {
 		return Collectors.toMap(idExtractor, Function.identity(),
 			(a, b) -> {

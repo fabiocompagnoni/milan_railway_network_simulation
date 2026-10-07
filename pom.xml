@@ -189,6 +189,7 @@
                                             <targetPath>share/scenarios/milan</targetPath>
                                             <includes>
                                                 <include>config.xml</include>
+                                                <include>network.xml</include>
                                                 <include>network-with-stations.xml</include>
                                                 <include>network-micro.xml</include>
                                                 <include>transitSchedule.xml</include>
@@ -198,6 +199,13 @@
                                         <resource>
                                             <directory>data/nodes</directory>
                                             <targetPath>share/data/nodes</targetPath>
+                                        </resource>
+                                        <resource>
+                                            <directory>data/scenarios</directory>
+                                            <targetPath>share/data/scenarios</targetPath>
+                                            <includes>
+                                                <include>*.json</include>
+                                            </includes>
                                         </resource>
                                         <resource>
                                             <directory>data/trains</directory>

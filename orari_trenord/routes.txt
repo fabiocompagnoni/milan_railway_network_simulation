@@ -62,3 +62,4 @@ R27,1,R27,Novara-Saronno-Milano,94C120,FFFFFF,2
 RE_7,1,RE7,Como-Saronno-Milano,E40314,FFFFFF,2
 S31,1,S31,Brescia-Iseo,0058A2,FFFFFF,2
 R9,1,R9,Rovato-Bornato-Iseo,94C120,FFFFFF,2
+R15,1,R15,Seregno-Carnate,94C120,FFFFFF,2

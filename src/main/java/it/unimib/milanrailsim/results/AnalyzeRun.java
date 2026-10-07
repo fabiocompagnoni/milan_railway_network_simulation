@@ -2,24 +2,11 @@ package it.unimib.milanrailsim.results;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.matsim.api.core.v01.Scenario;
-import org.matsim.api.core.v01.network.Network;
-import org.matsim.core.config.ConfigUtils;
-import org.matsim.core.events.EventsUtils;
-import org.matsim.core.events.MatsimEventsReader;
-import org.matsim.core.api.experimental.events.EventsManager;
-import org.matsim.core.network.NetworkUtils;
-import org.matsim.core.scenario.ScenarioUtils;
 import org.matsim.core.utils.io.IOUtils;
-import org.matsim.pt.transitSchedule.api.TransitScheduleReader;
-import org.matsim.vehicles.MatsimVehicleReader;
-import org.matsim.vehicles.VehicleUtils;
-import org.matsim.vehicles.Vehicles;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,12 +15,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 /**
  * Analyzes a finished simulation run and archives everything the report and
- * the GUI need: punctuality tables, cost breakdown, charts, manifest and a
- * copy of the raw outputs.
+ * the GUI need: punctuality tables, cost breakdown, charts and manifest.
  * <p>
  * Usage: {@code mvn exec:java -Dexec.mainClass=it.unimib.milanrailsim.results.AnalyzeRun}
  * with optional args {@code [runOutputDir] [scenario] [runsBaseDir] [costsFile] [spaceTimeLine]}.
@@ -59,10 +44,10 @@ public final class AnalyzeRun {
 			args.length > 4 ? args[4] : DEFAULT_SPACE_TIME_LINE);
 	}
 
-	static Path run(Path runOutputDir, String scenario, Path runsBaseDir, Path costsFile,
-			String spaceTimeLine) {
-		return analyze(new Request(runOutputDir, RunArchive.create(runsBaseDir, scenario), scenario, costsFile,
-			spaceTimeLine, null, log::info));
+	static Path run(Path runOutputDir, String scenario, Path runsBaseDir, Path costsFile, String spaceTimeLine) {
+		log.info("Reading the run outputs in {}", runOutputDir);
+		return analyze(new Request(RunData.fromOutput(runOutputDir), RunArchive.create(runsBaseDir, scenario), scenario,
+			costsFile, spaceTimeLine, null, log::info));
 	}
 
 	/**
@@ -72,65 +57,38 @@ public final class AnalyzeRun {
 	 *                 outputs of a run this process did not drive
 	 * @param progress told the name of each phase as it starts
 	 */
-	public record Request(Path runOutputDir, RunArchive archive, String scenario, Path costsFile,
+	public record Request(RunData data, RunArchive archive, String scenario, Path costsFile,
 			String spaceTimeLine, RunOutcome outcome, Consumer<String> progress) {
 	}
 
 	/** Runs the analysis of a finished simulation and fills the archive; returns its folder. */
 	public static Path analyze(Request request) {
-		Path runOutputDir = request.runOutputDir();
+		RunData data = request.data();
 		RunArchive archive = request.archive();
-		request.progress().accept("Analisi: lettura dell'orario simulato");
-		Scenario matsim = ScenarioUtils.createScenario(ConfigUtils.createConfig());
-		new TransitScheduleReader(matsim)
-			.readFile(locate(runOutputDir, "*.output_transitSchedule.xml*").toString());
-		Vehicles vehicles = VehicleUtils.createVehiclesContainer();
-		new MatsimVehicleReader(vehicles)
-			.readFile(locate(runOutputDir, "*.output_transitVehicles.xml*").toString());
-		Network network = NetworkUtils
-			.readNetwork(locate(runOutputDir, "*.output_network.xml*").toString());
-
-		request.progress().accept("Analisi: lettura degli eventi");
-		PunctualityAnalysis punctuality = new PunctualityAnalysis(matsim.getTransitSchedule());
-		EventsManager events = EventsUtils.createEventsManager();
-		events.addHandler(punctuality);
-		new MatsimEventsReader(events)
-			.readFile(locate(runOutputDir.resolve("ITERS/it.0"), "*.events.xml*").toString());
-		List<PunctualityAnalysis.StopVisit> visits = punctuality.visits();
-		List<PunctualityAnalysis.Unfinished> unfinished = punctuality.unfinished();
-
-		request.progress().accept("Analisi: costi");
-		CostModel.Breakdown costs = new CostModel(matsim.getTransitSchedule(), vehicles, network,
-			CostParameters.load(request.costsFile())).compute();
-
-		request.progress().accept("Analisi: grafici");
+		request.progress().accept("Analisi: puntualità");
+		List<PunctualityAnalysis.StopVisit> visits = data.punctuality().visits();
+		List<PunctualityAnalysis.Unfinished> unfinished = data.punctuality().unfinished();
 		archive.writeLines("punctuality.csv", punctualityCsv(visits));
 		archive.writeLines("punctuality_by_line.csv", byLineCsv(visits));
 		archive.writeLines("unfinished.csv", unfinishedCsv(unfinished));
+
+		request.progress().accept("Analisi: costi");
+		CostModel.Breakdown costs = new CostModel(data.schedule(), data.vehicles(), data.network(),
+			CostParameters.load(request.costsFile())).compute();
 		archive.writeJson("costs.json", costsJson(costs));
+
+		request.progress().accept("Analisi: grafici");
 		RunCharts.delayHistogram(visits, archive.chart("delay_histogram"));
 		RunCharts.delayByHour(visits, archive.chart("delay_by_hour"));
-		RunCharts.spaceTime(trajectories(runOutputDir, request.spaceTimeLine()), archive.chart("space_time"));
+		RunCharts.spaceTime(trajectories(data.timeDistanceCsv(), request.spaceTimeLine()), archive.chart("space_time"));
 		RunCharts.costBreakdown(costs, archive.chart("cost_breakdown"));
 
 		request.progress().accept("Archiviazione");
-		archive.copyRaw(runOutputDir);
-		archive.writeJson("manifest.json", manifest(request, visits, punctuality.anomalyCount(), unfinished.size(), costs));
+		int anomalies = data.punctuality().anomalyCount();
+		archive.writeJson("manifest.json", manifest(request, visits, anomalies, unfinished.size(), costs));
 
-		logSummary(visits, punctuality.anomalyCount(), unfinished.size(), archive.dir());
+		logSummary(visits, anomalies, unfinished.size(), archive.dir());
 		return archive.dir();
-	}
-
-	private static Path locate(Path dir, String glob) {
-		try (Stream<Path> files = Files.list(dir)) {
-			return files.filter(file -> dir.getFileSystem()
-					.getPathMatcher("glob:" + glob).matches(file.getFileName()))
-				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException(
-					"No file matching " + glob + " in " + dir));
-		} catch (IOException e) {
-			throw new UncheckedIOException("Cannot list " + dir, e);
-		}
 	}
 
 	private static List<String> punctualityCsv(List<PunctualityAnalysis.StopVisit> visits) {
@@ -186,7 +144,7 @@ public final class AnalyzeRun {
 		Map<String, Object> manifest = new LinkedHashMap<>();
 		manifest.put("scenario", request.scenario());
 		manifest.put("created", java.time.LocalDateTime.now().toString());
-		manifest.put("sourceOutput", request.runOutputDir().toAbsolutePath().toString());
+		manifest.put("sourceOutput", request.data().outputDir().toAbsolutePath().toString());
 		manifest.put("stopVisits", visits.size());
 		manifest.put("anomalies", anomalies);
 		manifest.put("unfinishedTrains", unfinished);
@@ -205,8 +163,7 @@ public final class AnalyzeRun {
 	}
 
 	/** Time-distance polylines of the requested line, from the railsim CSV. */
-	private static Map<String, List<double[]>> trajectories(Path runOutputDir, String line) {
-		Path csv = locate(runOutputDir.resolve("ITERS/it.0"), "*railsimTimeDistance.csv*");
+	private static Map<String, List<double[]>> trajectories(Path csv, String line) {
 		Map<String, List<double[]>> byTrain = new TreeMap<>();
 		try (BufferedReader reader = IOUtils.getBufferedReader(csv.toString())) {
 			String header = reader.readLine();
