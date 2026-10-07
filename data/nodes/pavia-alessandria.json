@@ -39,10 +39,11 @@
 							"meso:S01860"
 						],
 						"north": [
-							"meso:S00278"
+							"meso:S00278",
+								"meso:S00400"
 						]
 					},
-					"notes": "3 binari (diramazione Vercelli-Pavia / Pavia-Alessandria); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Pavia, verso Milano"
+					"notes": "3 binari (diramazione Vercelli-Pavia / Pavia-Alessandria); binari bidirezionali di incrocio, tutti collegati a ogni vicino: la numerazione e l'uso per linea non sono rilevati (ipotesi). south = lato di Pavia, verso Milano; north = lato del bivio, da cui si separano la linea per Vercelli (Villanova d'Ardenghi) e quella per Alessandria (Sairano Zinasco). Il ramo per Alessandria e' stato aggiunto il 2026-10-07: mancando, la corsa R35 che ferma a Cava Carbonara poteva raggiungerne i binari solo da Pavia e nel modello vi tornava indietro dopo essere arrivata a Pavia"
 				}
 			],
 			"throats": [],
