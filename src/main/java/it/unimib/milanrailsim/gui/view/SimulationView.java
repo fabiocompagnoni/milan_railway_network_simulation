@@ -200,7 +200,7 @@ public final class SimulationView extends BorderPane {
 		speeds.disableProperty().bind(wrappingUp);
 		stop.disableProperty().bind(session.finished());
 
-		SimulationPanel panel = new SimulationPanel(network, map, session.runDir().getFileName().toString());
+		SimulationPanel panel = new SimulationPanel(network, map, session.runDir());
 		StackPane.setAlignment(panel, Pos.TOP_RIGHT);
 		StackPane.setMargin(panel, new Insets(16, 16, 80, 0));
 		stack.getChildren().removeIf(node -> node != map);
