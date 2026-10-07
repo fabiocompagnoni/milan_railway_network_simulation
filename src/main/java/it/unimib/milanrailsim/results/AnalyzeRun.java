@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 
@@ -68,24 +69,52 @@ public final class AnalyzeRun {
 		request.progress().accept("Analisi: puntualità");
 		List<PunctualityAnalysis.StopVisit> visits = data.punctuality().visits();
 		List<PunctualityAnalysis.Unfinished> unfinished = data.punctuality().unfinished();
+		List<PunctualityAnalysis.TripOutcome> trips = data.punctuality().trips();
+		ServiceIndicators indicators = ServiceIndicators.of(trips, visits, ServiceIndicators.ON_TIME_THRESHOLD_SECONDS);
 		archive.writeLines("punctuality.csv", punctualityCsv(visits));
 		archive.writeLines("punctuality_by_line.csv", byLineCsv(visits));
+		archive.writeLines("trips.csv", tripsCsv(trips, data.energy().map(EnergyLedger.Use::byTrip).orElse(Map.of())));
+		archive.writeLines("indicators_by_line.csv", indicatorsByLineCsv(trips, visits));
+		archive.writeJson("indicators.json", indicatorsJson(indicators));
+		archive.writeLines("stations.csv", stationsCsv(visits));
+		archive.writeLines("stations_hourly.csv", stationsHourlyCsv(data.punctuality().plannedCalls(), visits));
+		archive.writeLines("trains.csv", trainsCsv(visits));
 		archive.writeLines("unfinished.csv", unfinishedCsv(unfinished));
 
+		data.energy().ifPresent(energy -> {
+			request.progress().accept("Analisi: energia");
+			archive.writeJson("energy.json", EnergyReport.json(energy));
+			archive.writeLines("energy_by_line.csv", EnergyReport.byLineCsv(energy));
+			archive.writeLines("power_profile.csv", EnergyReport.profileCsv(energy));
+			RunCharts.powerProfile(energy.profile(), archive.chart("power_profile"));
+		});
+
 		request.progress().accept("Analisi: costi");
-		CostModel.Breakdown costs = new CostModel(data.schedule(), data.vehicles(), data.network(),
-			CostParameters.load(request.costsFile())).compute();
-		archive.writeJson("costs.json", costsJson(costs));
+		CostModel costModel = new CostModel(data.schedule(), data.vehicles(), data.network(),
+			CostParameters.load(request.costsFile()));
+		CostModel.Breakdown costs = costModel.compute();
+		Optional<CostModel.Breakdown> simulatedCosts = data.energy()
+			.flatMap(energy -> costModel.computeSimulated(trips, energy.byTrip()));
+		Map<String, Object> costsFile = costsJson(costs);
+		simulatedCosts.ifPresent(simulated -> costsFile.put("simulated", costsJson(simulated)));
+		archive.writeJson("costs.json", costsFile);
 
 		request.progress().accept("Analisi: grafici");
 		RunCharts.delayHistogram(visits, archive.chart("delay_histogram"));
 		RunCharts.delayByHour(visits, archive.chart("delay_by_hour"));
+		RunCharts.trainsRunning(trips, archive.chart("trains_running"));
 		RunCharts.spaceTime(trajectories(data.timeDistanceCsv(), request.spaceTimeLine()), archive.chart("space_time"));
-		RunCharts.costBreakdown(costs, archive.chart("cost_breakdown"));
+		RunCharts.costBreakdown(simulatedCosts.orElse(costs), archive.chart("cost_breakdown"));
 
 		request.progress().accept("Archiviazione");
 		int anomalies = data.punctuality().anomalyCount();
-		archive.writeJson("manifest.json", manifest(request, visits, anomalies, unfinished.size(), costs));
+		Map<String, Object> manifest = manifest(request, visits, anomalies, unfinished.size(), costs);
+		simulatedCosts.ifPresent(simulated -> {
+			// the headline cost of a run is what the simulated day cost; the timetable's stays next to it
+			manifest.put("plannedCost", manifest.get("totalCost"));
+			manifest.put("totalCost", costsJson(simulated).get("total"));
+		});
+		archive.writeJson("manifest.json", manifest);
 
 		logSummary(visits, anomalies, unfinished.size(), archive.dir());
 		return archive.dir();
@@ -93,10 +122,11 @@ public final class AnalyzeRun {
 
 	private static List<String> punctualityCsv(List<PunctualityAnalysis.StopVisit> visits) {
 		List<String> lines = new ArrayList<>();
-		lines.add("vehicle,line,route,stop,planned_arrival_s,actual_arrival_s,arrival_delay_s,"
-			+ "planned_departure_s,actual_departure_s,departure_delay_s");
+		lines.add("vehicle,line,route,trip,stop_sequence,destination,stop,planned_arrival_s,actual_arrival_s,"
+			+ "arrival_delay_s,planned_departure_s,actual_departure_s,departure_delay_s");
 		for (PunctualityAnalysis.StopVisit visit : visits) {
-			lines.add(String.join(",", visit.vehicle(), visit.line(), visit.route(), visit.stop(),
+			lines.add(String.join(",", visit.vehicle(), visit.line(), visit.route(), visit.trip(),
+				Integer.toString(visit.stopSequence()), visit.destination(), visit.stop(),
 				format(visit.plannedArrival()), format(visit.actualArrival()),
 				format(visit.arrivalDelaySeconds()),
 				format(visit.plannedDeparture()), format(visit.actualDeparture()),
@@ -114,6 +144,105 @@ public final class AnalyzeRun {
 				format(summary.p95DelaySeconds()), format(summary.maxDelaySeconds())));
 		}
 		return lines;
+	}
+
+	/** @param energy the energy of the trips that were measured, by trip id; the columns stay empty for the others */
+	private static List<String> tripsCsv(List<PunctualityAnalysis.TripOutcome> trips,
+			Map<String, EnergyLedger.TripEnergy> energy) {
+		List<String> lines = new ArrayList<>();
+		lines.add("trip,line,route,vehicle,origin,destination,planned_departure_s,planned_arrival_s,"
+			+ "actual_arrival_s,arrival_delay_s,stops_planned,stops_served,status,km,drawn_kwh,regenerated_kwh,litres");
+		for (PunctualityAnalysis.TripOutcome trip : trips) {
+			EnergyLedger.TripEnergy used = energy.get(trip.trip());
+			lines.add(String.join(",", trip.trip(), trip.line(), trip.route(), trip.vehicle(), trip.origin(),
+				trip.destination(), format(trip.plannedDeparture()), format(trip.plannedArrival()),
+				format(trip.actualArrival()), format(trip.arrivalDelaySeconds()),
+				Integer.toString(trip.stopsPlanned()), Integer.toString(trip.stopsServed()),
+				trip.status().name().toLowerCase(java.util.Locale.ROOT),
+				used == null ? "" : EnergyReport.number(used.kilometres()),
+				used == null || !used.electric() ? "" : EnergyReport.number(used.drawnKilowattHours()),
+				used == null || !used.electric() ? "" : EnergyReport.number(used.regeneratedKilowattHours()),
+				used == null || used.electric() ? "" : EnergyReport.number(used.litres())));
+		}
+		return lines;
+	}
+
+	private static List<String> indicatorsByLineCsv(List<PunctualityAnalysis.TripOutcome> trips,
+			List<PunctualityAnalysis.StopVisit> visits) {
+		List<String> lines = new ArrayList<>();
+		lines.add("line,trips_scheduled,trips_completed,trips_interrupted,trips_never_departed,regularity_pct,"
+			+ "stops_planned,stops_served,punctuality_destination_pct,punctuality_stops_pct,mean_delay_s,"
+			+ "mean_deviation_s,median_delay_s,p95_delay_s");
+		ServiceIndicators.byLine(trips, visits, ServiceIndicators.ON_TIME_THRESHOLD_SECONDS).forEach((line, of) ->
+			lines.add(String.join(",", line, Integer.toString(of.tripsScheduled()),
+				Integer.toString(of.tripsCompleted()), Integer.toString(of.tripsInterrupted()),
+				Integer.toString(of.tripsNeverDeparted()), decimal(of.regularityPercent()),
+				Integer.toString(of.stopsPlanned()), Integer.toString(of.stopsServed()),
+				decimal(of.punctualityAtDestinationPercent()), decimal(of.punctualityAtStopsPercent()),
+				format(of.meanDelaySeconds()), format(of.meanDeviationSeconds()),
+				format(of.medianDelaySeconds()), format(of.p95DelaySeconds()))));
+		return lines;
+	}
+
+	private static List<String> stationsCsv(List<PunctualityAnalysis.StopVisit> visits) {
+		List<String> lines = new ArrayList<>();
+		lines.add("station,observations,mean_delay_s,p95_delay_s,max_delay_s,late_pct");
+		for (StationTables.StationRow row : StationTables.byStation(visits, ServiceIndicators.ON_TIME_THRESHOLD_SECONDS)) {
+			lines.add(String.join(",", row.station(), Integer.toString(row.observations()),
+				format(row.meanDelaySeconds()), format(row.p95DelaySeconds()), format(row.maxDelaySeconds()),
+				decimal(row.latePercent())));
+		}
+		return lines;
+	}
+
+	private static List<String> stationsHourlyCsv(List<PunctualityAnalysis.PlannedCall> planned,
+			List<PunctualityAnalysis.StopVisit> visits) {
+		List<String> lines = new ArrayList<>();
+		lines.add("station,direction,hour,trains_planned,trains_called,mean_delay_s,p95_delay_s,punctuality_pct");
+		for (StationTables.HourRow row : StationTables.hourly(planned, visits, ServiceIndicators.ON_TIME_THRESHOLD_SECONDS)) {
+			lines.add(String.join(",", row.station(), row.direction(), Integer.toString(row.hour()),
+				Integer.toString(row.trainsPlanned()), Integer.toString(row.trainsCalled()),
+				format(row.meanDelaySeconds()), format(row.p95DelaySeconds()), decimal(row.punctualityPercent())));
+		}
+		return lines;
+	}
+
+	private static List<String> trainsCsv(List<PunctualityAnalysis.StopVisit> visits) {
+		List<String> lines = new ArrayList<>();
+		lines.add("vehicle,line,stops,mean_delay_s,max_delay_s,final_delay_s");
+		for (StationTables.TrainRow row : StationTables.byTrain(visits)) {
+			lines.add(String.join(",", row.vehicle(), row.line(), Integer.toString(row.stops()),
+				format(row.meanDelaySeconds()), format(row.maxDelaySeconds()), format(row.finalDelaySeconds())));
+		}
+		return lines;
+	}
+
+	private static Map<String, Object> indicatorsJson(ServiceIndicators indicators) {
+		Map<String, Object> json = new LinkedHashMap<>();
+		json.put("onTimeThresholdSeconds", ServiceIndicators.ON_TIME_THRESHOLD_SECONDS);
+		json.put("tripsScheduled", indicators.tripsScheduled());
+		json.put("tripsCompleted", indicators.tripsCompleted());
+		json.put("tripsInterrupted", indicators.tripsInterrupted());
+		json.put("tripsNeverDeparted", indicators.tripsNeverDeparted());
+		json.put("regularityPercent", number(indicators.regularityPercent()));
+		json.put("stopsPlanned", indicators.stopsPlanned());
+		json.put("stopsServed", indicators.stopsServed());
+		json.put("punctualityAtDestinationPercent", number(indicators.punctualityAtDestinationPercent()));
+		json.put("punctualityAtStopsPercent", number(indicators.punctualityAtStopsPercent()));
+		json.put("meanDelaySeconds", number(indicators.meanDelaySeconds()));
+		json.put("meanDeviationSeconds", number(indicators.meanDeviationSeconds()));
+		json.put("medianDelaySeconds", number(indicators.medianDelaySeconds()));
+		json.put("p95DelaySeconds", number(indicators.p95DelaySeconds()));
+		return json;
+	}
+
+	/** JSON has no NaN: an indicator with nothing to measure is written as null. */
+	private static Double number(double value) {
+		return Double.isNaN(value) ? null : value;
+	}
+
+	private static String decimal(double value) {
+		return Double.isNaN(value) ? "" : String.format(java.util.Locale.ROOT, "%.1f", value);
 	}
 
 	private static List<String> unfinishedCsv(List<PunctualityAnalysis.Unfinished> unfinished) {

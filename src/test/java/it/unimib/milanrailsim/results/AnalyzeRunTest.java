@@ -52,7 +52,21 @@ class AnalyzeRunTest {
 
 		List<String> punctuality = Files.readAllLines(archived.resolve("punctuality.csv"));
 		assertEquals(3, punctuality.size()); // header + stops A and B
-		assertTrue(punctuality.get(1).startsWith("t1,S1,S1_1,A,28800"));
+		assertTrue(punctuality.get(1).startsWith("t1,S1,S1_1,t1,0,B,A,28800"), punctuality.get(1));
+
+		List<String> trips = Files.readAllLines(archived.resolve("trips.csv"));
+		assertEquals(2, trips.size(), "header and the one trip");
+		assertTrue(trips.get(1).startsWith("t1,S1,S1_1,t1,A,B,") && trips.get(1).endsWith(",2,2,completed,,,,"),
+			"no energy columns for a run read back from its output: " + trips.get(1));
+		assertFalse(Files.exists(archived.resolve("energy.json")));
+		assertEquals(2, Files.readAllLines(archived.resolve("indicators_by_line.csv")).size());
+		assertEquals(3, Files.readAllLines(archived.resolve("stations.csv")).size(), "header, A and B");
+		assertEquals(2, Files.readAllLines(archived.resolve("trains.csv")).size());
+		List<String> hourly = Files.readAllLines(archived.resolve("stations_hourly.csv"));
+		assertTrue(hourly.contains("A,B,8,1,1,30,30,100.0"), hourly.toString());
+		String indicators = Files.readString(archived.resolve("indicators.json"));
+		assertTrue(indicators.contains("\"regularityPercent\" : 100.0"), indicators);
+		assertTrue(indicators.contains("\"tripsScheduled\" : 1"), indicators);
 
 		assertEquals(2, Files.readAllLines(archived.resolve("punctuality_by_line.csv")).size());
 		assertTrue(Files.readString(archived.resolve("costs.json")).contains("staff"));

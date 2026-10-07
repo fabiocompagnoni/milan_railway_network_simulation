@@ -6,6 +6,8 @@
 		"diesel": {"unitCost": 3.0, "unit": "train_km", "source": "docs/network/costi-trasporto-ferroviario.md (confidenza bassa)"},
 		"maintenance": {"unitCost": 2.5, "unit": "train_km", "source": "docs/network/costi-trasporto-ferroviario.md (confidenza bassa)"},
 		"rolling_stock": {"unitCost": 650.0, "unit": "train_day", "source": "docs/network/costi-trasporto-ferroviario.md (confidenza media)"},
-		"track_access": {"unitCost": 2.5, "unit": "train_km", "source": "docs/network/costi-trasporto-ferroviario.md (confidenza media)"}
+		"track_access": {"unitCost": 2.5, "unit": "train_km", "source": "docs/network/costi-trasporto-ferroviario.md (confidenza media)"},
+		"traction_energy": {"unitCost": 0.10, "unit": "kwh", "source": "docs/network/costi-trasporto-ferroviario.md (prezzo medio dell'energia di trazione, applicato all'energia presa dalla rete al netto del recupero in frenata)"},
+		"diesel_fuel": {"unitCost": 0.95, "unit": "litre", "source": "docs/network/costi-trasporto-ferroviario.md (gasolio a prezzo agevolato per la trazione ferroviaria)"}
 	}
 }

@@ -18,10 +18,11 @@ import java.nio.file.Path;
  * @param fleetPhotos   the photos of the catalogue's train types, one file named after each type id
  * @param densificationPlan the relations and hours of the high-frequency scenario
  * @param lineUpgradePlan the fixed parameters of the line upgrade scenario
+ * @param energyModel   the parameters the energy consumption of every run is computed with
  */
 public record ScenarioFiles(Path network, Path mesoNetwork, Path engineNetwork, Path engineConfig, Path microNodes, Path transitSchedule,
 		Path linkGeometry, Path stationTracks, Path gtfsDir, Path defaultCosts, Path linkMeasures, Path fleetPhotos,
-		Path densificationPlan, Path lineUpgradePlan, String crs) {
+		Path densificationPlan, Path lineUpgradePlan, Path energyModel, String crs) {
 
 	/** The committed Milan scenario under {@code root}, laid out as in the repository. */
 	public static ScenarioFiles milan(Path root) {
@@ -41,6 +42,7 @@ public record ScenarioFiles(Path network, Path mesoNetwork, Path engineNetwork, 
 			root.resolve("data").resolve("trains"),
 			root.resolve("data").resolve("scenarios").resolve("passante-alta-frequenza.json"),
 			root.resolve("data").resolve("scenarios").resolve("potenziamento-per-linea.json"),
+			root.resolve("data").resolve("scenarios").resolve("consumi-energetici.json"),
 			"EPSG:32632");
 	}
 }

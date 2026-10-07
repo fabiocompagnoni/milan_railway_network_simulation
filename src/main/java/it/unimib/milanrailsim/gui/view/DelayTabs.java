@@ -1,14 +1,18 @@
 package it.unimib.milanrailsim.gui.view;
 
-import it.unimib.milanrailsim.runs.DelaySummaries;
-import it.unimib.milanrailsim.runs.DelaySummaries.StationRow;
-import it.unimib.milanrailsim.runs.DelaySummaries.TrainRow;
 import it.unimib.milanrailsim.runs.RunResults;
+import it.unimib.milanrailsim.runs.RunResults.StationHourRow;
+import it.unimib.milanrailsim.runs.RunResults.StationRow;
+import it.unimib.milanrailsim.runs.RunResults.TrainRow;
 import it.unimib.milanrailsim.runs.RunResults.UnfinishedRow;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -21,29 +25,71 @@ final class DelayTabs {
 	private DelayTabs() {
 	}
 
-	static Node stations(RunResults results, StopLabels labels, double lateThresholdSeconds) {
-		if (results.visits().isEmpty()) {
+	private static final String EVERY_DIRECTION = "Tutte le direzioni";
+
+	static Node stations(RunResults results, StopLabels labels) {
+		if (results.stations().isEmpty()) {
 			return unavailable("Dati per stazione non disponibili per questo run: l'analisi non li ha prodotti.");
 		}
-		List<StationRow> rows = DelaySummaries.byStation(results.visits().get(), lateThresholdSeconds);
-		TableView<StationRow> table = new TableView<>(FXCollections.observableArrayList(rows));
+		TableView<StationRow> table = new TableView<>(FXCollections.observableArrayList(results.stations().get()));
 		table.getStyleClass().add("data-table");
-		table.getColumns().add(Columns.text("Stazione", 240, row -> labels.station(row.station())));
-		table.getColumns().add(Columns.number("Arrivi osservati", 130, row -> (double) row.observations(), Columns::count));
-		table.getColumns().add(Columns.number("Ritardo medio", 120, StationRow::meanDelay, RunLibraryView::minutesSeconds));
-		table.getColumns().add(Columns.number("95° percentile", 120, StationRow::p95Delay, RunLibraryView::minutesSeconds));
-		table.getColumns().add(Columns.number("Massimo", 100, StationRow::maxDelay, RunLibraryView::minutesSeconds));
-		table.getColumns().add(Columns.number("Oltre " + (int) (lateThresholdSeconds / 60) + " min", 110,
-			row -> 100 * row.lateShare(), Columns::percent));
-		VBox column = new VBox(8, muted("Le stazioni sono ordinate dal ritardo medio più alto; ogni binario di un nodo"
-			+ " dettagliato conta per la sua stazione."), table);
+		table.getColumns().add(Columns.text("Stazione", 220, row -> labels.station(row.station())));
+		table.getColumns().add(Columns.number("Arrivi", 80, row -> (double) row.observations(), Columns::count));
+		table.getColumns().add(Columns.number("Ritardo medio", 110, StationRow::meanDelay, RunLibraryView::minutesSeconds));
+		table.getColumns().add(Columns.number("95° percentile", 110, StationRow::p95Delay, RunLibraryView::minutesSeconds));
+		table.getColumns().add(Columns.number("Massimo", 90, StationRow::maxDelay, RunLibraryView::minutesSeconds));
+		table.getColumns().add(Columns.number("Oltre 5 min", 100, StationRow::latePercent, Columns::percent));
+		VBox stations = new VBox(8, muted("Stazioni dal ritardo medio più alto; l'anticipo conta zero e ogni binario"
+			+ " di un nodo dettagliato conta per la sua stazione. Seleziona una stazione per il dettaglio orario."), table);
 		VBox.setVgrow(table, Priority.ALWAYS);
-		column.setPadding(new Insets(16, 0, 0, 0));
-		return column;
+
+		VBox hourly = new VBox(8, muted("Seleziona una stazione."));
+		table.getSelectionModel().selectedItemProperty().addListener((observable, previous, row) -> {
+			if (row != null) {
+				hourly.getChildren().setAll(hourlyOf(results, labels, row.station()));
+			}
+		});
+		SplitPane split = new SplitPane(stations, hourly);
+		split.setDividerPositions(0.5);
+		split.setPadding(new Insets(16, 0, 0, 0));
+		return split;
+	}
+
+	/** The trains of one station by direction and planned hour, with a choice of the direction. */
+	private static List<Node> hourlyOf(RunResults results, StopLabels labels, String station) {
+		Label title = new Label(labels.station(station) + " · treni e ritardi per ora");
+		title.getStyleClass().add("section-title");
+		if (results.stationsHourly().isEmpty()) {
+			return List.of(title, muted("Dettaglio orario non disponibile per questo run."));
+		}
+		List<StationHourRow> rows = results.stationsHourly().get().stream()
+			.filter(row -> row.station().equals(station)).toList();
+		FilteredList<StationHourRow> filtered = new FilteredList<>(FXCollections.observableArrayList(rows));
+		ComboBox<String> direction = new ComboBox<>();
+		direction.getItems().add(EVERY_DIRECTION);
+		rows.stream().map(StationHourRow::direction).distinct().map(labels::station).sorted().forEach(direction.getItems()::add);
+		direction.setValue(EVERY_DIRECTION);
+		direction.valueProperty().addListener((observable, previous, chosen) -> filtered.setPredicate(
+			row -> EVERY_DIRECTION.equals(chosen) || labels.station(row.direction()).equals(chosen)));
+		TableView<StationHourRow> table = new TableView<>();
+		table.getStyleClass().add("data-table");
+		table.getColumns().add(Columns.text("Verso", 190, row -> row.direction().equals(station)
+			? "termina qui" : labels.station(row.direction())));
+		table.getColumns().add(Columns.number("Ora", 60, row -> (double) row.hour(), Columns::count));
+		table.getColumns().add(Columns.number("Previsti", 80, row -> (double) row.trainsPlanned(), Columns::count));
+		table.getColumns().add(Columns.number("Passati", 80, row -> (double) row.trainsCalled(), Columns::count));
+		table.getColumns().add(Columns.number("Ritardo medio", 110, StationHourRow::meanDelay, RunLibraryView::minutesSeconds));
+		table.getColumns().add(Columns.number("Entro 5 min", 100, StationHourRow::punctualityPercent, Columns::percent));
+		SortedList<StationHourRow> sorted = new SortedList<>(filtered);
+		sorted.comparatorProperty().bind(table.comparatorProperty());
+		table.setItems(sorted);
+		VBox.setVgrow(table, Priority.ALWAYS);
+		return List.of(title, muted("L'ora è quella prevista dall'orario; la direzione è il capolinea della corsa."),
+			direction, table);
 	}
 
 	static Node trains(RunResults results, StopLabels labels) {
-		if (results.visits().isEmpty()) {
+		if (results.trains().isEmpty()) {
 			return unavailable("Dati per treno non disponibili per questo run: l'analisi non li ha prodotti.");
 		}
 		VBox column = new VBox(16);
@@ -70,8 +116,7 @@ final class DelayTabs {
 
 		Label worstTitle = new Label("Treni per ritardo massimo raggiunto");
 		worstTitle.getStyleClass().add("section-title");
-		List<TrainRow> trains = DelaySummaries.byTrain(results.visits().get());
-		TableView<TrainRow> worst = new TableView<>(FXCollections.observableArrayList(trains));
+		TableView<TrainRow> worst = new TableView<>(FXCollections.observableArrayList(results.trains().get()));
 		worst.getStyleClass().add("data-table");
 		worst.getColumns().add(Columns.text("Treno", 150, TrainRow::vehicle));
 		worst.getColumns().add(Columns.text("Linea", 70, TrainRow::line));

@@ -1,0 +1,59 @@
+{
+	"model": "consumi-energetici",
+	"title": "Parametri del modello di consumo energetico dei treni",
+	"status": "prima versione, 2026-10-04; ausiliari e motore diesel sono ipotesi senza fonte verificata",
+	"sources": [
+		"Resistenza al moto e masse rotanti: B. Dalla Chiara et al., Consumo energetico dei treni in esercizio, Ingegneria Ferroviaria 4/2015 (formula binomia di Erfurt; coefficienti 1,04 carrozze e 1,06 locomotive)",
+		"Rendimento di trazione e di recupero: E. Andersson, P. Lukaszewicz, Energy consumption and related air pollution for Scandinavian electric passenger trains, KTH/AVE 2006:46 (perdite e ausiliari di trazione 20-25% dell'energia assorbita; 60-70% dell'energia di accelerazione recuperabile)",
+		"Raggio di recupero: Universita' di Pavia, corso di Trazione Elettrica, prof. A. Minoia, Lezione 3 (sottostazioni a 3 kV ogni 20-30 km, 15-20 km sulle linee piu' cariche); meta' della distanza minima",
+		"Peso per viaggiatore: RFI, disposizione n. 35 del 3 giugno 2005 sui TAF EB 760 / EB 990 / EA 761 (63 t per 840 viaggiatori)",
+		"Trasmissione diesel-elettrica: Stadler, scheda GFNM0210i dei GTW per Ferrovienord (1160 kW alla ruota su 1528 kW dei motori)",
+		"Masse e casse dei treni: docs/network/materiale-rotabile.md",
+		"Riempimento per fascia oraria: decisione di progetto, 2026-10-04; la simulazione non ha viaggiatori"
+	],
+	"resistance": {
+		"constantNewtonPerKilonewton": 2.4,
+		"quadraticNewtonPerKilonewtonPerKmh2": 0.00077,
+		"note": "resistenza specifica r = 2,4 + 0,00077 v^2 [N/kN], v in km/h; linea in piano e in rettifilo"
+	},
+	"rotatingMassFactor": 1.06,
+	"tractionEfficiency": 0.80,
+	"recovery": {
+		"efficiency": 0.80,
+		"radiusMetres": 10000,
+		"note": "l'energia di frenata alimenta prima gli ausiliari del treno, poi i treni elettrici in trazione entro il raggio, in linea d'aria; il resto e' dissipato"
+	},
+	"auxiliaryKilowattPerCar": 30,
+	"diesel": {
+		"engineEfficiency": 0.40,
+		"transmissionEfficiency": 0.76,
+		"kilowattHoursPerLitre": 10,
+		"calibration": 0.41,
+		"calibrationNote": "coefficiente di taratura sul consumo di gasolio: senza taratura il modello da' 2,18 l/km per l'ATR 125 nel giorno reale del 2026-10-05 (7626 treni-km, 16657 l), contro un consumo medio reale di 0,9 l/km; 0,9 / 2,18 = 0,41. Compensa lo stile di guida del simulatore, che accelera al massimo fino alla velocita' della tratta e frena al massimo a ogni fermata, senza marcia per inerzia: un treno diesel non recupera quell'energia in frenata. Applicato a tutti i treni diesel",
+		"note": "nessun recupero in linea; ausiliari alimentati dal motore"
+	},
+	"passengers": {
+		"kilogramsPerPassenger": 75,
+		"load": {
+			"weekdayPeak": 1.0,
+			"weekdayOffPeak": 0.5,
+			"saturday": 0.5,
+			"sundayAndHolidays": 0.4,
+			"earlyAndLate": 0.2
+		},
+		"weekdayPeaks": [["06:30", "09:30"], ["16:30", "19:30"]],
+		"earlyBefore": "06:00",
+		"lateAfter": "21:00",
+		"note": "quota dei posti a sedere occupati, per ora di partenza prevista della corsa; prima delle 6 e dopo le 21 vale in tutti i giorni"
+	},
+	"trains": {
+		"caravaggio_521": {"emptyMassTonnes": 325, "cars": 5, "note": "stima dal carico assiale di 18,5 t"},
+		"caravaggio_421": {"emptyMassTonnes": 261, "cars": 4, "note": "stima dal carico assiale di 18,5 t"},
+		"tsr": {"emptyMassTonnes": 222, "cars": 4},
+		"taf": {"emptyMassTonnes": 213, "cars": 4},
+		"donizetti": {"emptyMassTonnes": 143.5, "cars": 4},
+		"tilo_flirt_tsi": {"emptyMassTonnes": 177.5, "cars": 6},
+		"atr125": {"emptyMassTonnes": 136, "cars": 4},
+		"atr803": {"emptyMassTonnes": 135, "cars": 3}
+	}
+}

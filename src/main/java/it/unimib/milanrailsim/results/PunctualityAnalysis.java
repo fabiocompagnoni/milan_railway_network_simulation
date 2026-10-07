@@ -35,8 +35,13 @@ public final class PunctualityAnalysis
 
 	private static final Logger log = LogManager.getLogger(PunctualityAnalysis.class);
 
-	public record StopVisit(String vehicle, String line, String route, String stop,
-			double plannedArrival, double actualArrival,
+	/**
+	 * @param trip         the departure of the timetable the visit belongs to
+	 * @param stopSequence position of the stop in the trip, from 0
+	 * @param destination  station the trip ends at
+	 */
+	public record StopVisit(String vehicle, String line, String route, String trip, int stopSequence,
+			String destination, String stop, double plannedArrival, double actualArrival,
 			double plannedDeparture, double actualDeparture) {
 
 		public double arrivalDelaySeconds() {
@@ -48,10 +53,39 @@ public final class PunctualityAnalysis
 		}
 	}
 
-	private record PlannedStop(String line, String route, String stop,
-			double plannedArrival, double plannedDeparture) {
+	/** How far a trip of the timetable got in the simulation. */
+	public enum TripStatus {
+		/** The train reached the last stop of the trip. */
+		COMPLETED,
+		/** The train left the first stop and never reached the last one. */
+		INTERRUPTED,
+		/** The train never left the first stop. */
+		NEVER_DEPARTED
 	}
 
+	/**
+	 * One trip of the timetable and what became of it.
+	 *
+	 * @param actualArrival arrival at the destination, NaN unless the trip was completed
+	 * @param stopsServed   stops of the trip the train called at
+	 */
+	public record TripOutcome(String trip, String line, String route, String vehicle, String origin,
+			String destination, double plannedDeparture, double plannedArrival, double actualArrival,
+			int stopsPlanned, int stopsServed, TripStatus status) {
+
+		public double arrivalDelaySeconds() {
+			return actualArrival - plannedArrival;
+		}
+	}
+
+	private record PlannedStop(String line, String route, String trip, int sequence, String destination,
+			String stop, double plannedArrival, double plannedDeparture) {
+	}
+
+	private record PlannedTrip(String trip, String line, String route, String vehicle, List<PlannedStop> stops) {
+	}
+
+	private final List<PlannedTrip> plannedTrips = new ArrayList<>();
 	private final Map<Id<Vehicle>, Deque<PlannedStop>> planByVehicle = new HashMap<>();
 	private final Map<Id<Vehicle>, StopVisit> openVisits = new HashMap<>();
 	private final List<StopVisit> visits = new ArrayList<>();
@@ -65,14 +99,19 @@ public final class PunctualityAnalysis
 			for (TransitRoute route : line.getRoutes().values()) {
 				for (Departure departure : route.getDepartures().values()) {
 					List<PlannedStop> plan = new ArrayList<>();
+					String destination = StopFacilities.stationOf(
+						route.getStops().getLast().getStopFacility().getId().toString());
 					for (TransitRouteStop stop : route.getStops()) {
 						plan.add(new PlannedStop(line.getId().toString(), route.getId().toString(),
+							departure.getId().toString(), plan.size(), destination,
 							stop.getStopFacility().getId().toString(),
 							departure.getDepartureTime() + stop.getArrivalOffset().seconds(),
 							departure.getDepartureTime() + stop.getDepartureOffset().seconds()));
 					}
 					plansByVehicle.computeIfAbsent(departure.getVehicleId(), key -> new ArrayList<>())
 						.add(plan);
+					plannedTrips.add(new PlannedTrip(departure.getId().toString(), line.getId().toString(),
+						route.getId().toString(), departure.getVehicleId().toString(), List.copyOf(plan)));
 				}
 			}
 		}
@@ -103,7 +142,8 @@ public final class PunctualityAnalysis
 		}
 		plan.poll();
 		openVisits.put(event.getVehicleId(), new StopVisit(event.getVehicleId().toString(),
-			next.line(), next.route(), event.getFacilityId().toString(),
+			next.line(), next.route(), next.trip(), next.sequence(), next.destination(),
+			event.getFacilityId().toString(),
 			next.plannedArrival(), event.getTime(), next.plannedDeparture(), Double.NaN));
 	}
 
@@ -149,7 +189,8 @@ public final class PunctualityAnalysis
 				+ " for vehicle " + event.getVehicleId());
 			return;
 		}
-		visits.add(new StopVisit(open.vehicle(), open.line(), open.route(), open.stop(),
+		visits.add(new StopVisit(open.vehicle(), open.line(), open.route(), open.trip(), open.stopSequence(),
+			open.destination(), open.stop(),
 			open.plannedArrival(), open.actualArrival(), open.plannedDeparture(), event.getTime()));
 	}
 
@@ -163,6 +204,47 @@ public final class PunctualityAnalysis
 		List<StopVisit> all = new ArrayList<>(visits);
 		all.addAll(openVisits.values());
 		return List.copyOf(all);
+	}
+
+	/** A call of the timetable: the planned stop of a trip, with the station the trip ends at. */
+	public record PlannedCall(String line, String trip, String stop, String destination, double plannedArrival) {
+	}
+
+	/** Every call of the timetable, whether it took place or not. */
+	public List<PlannedCall> plannedCalls() {
+		return plannedTrips.stream().flatMap(trip -> trip.stops().stream())
+			.map(stop -> new PlannedCall(stop.line(), stop.trip(), stop.stop(), stop.destination(), stop.plannedArrival()))
+			.toList();
+	}
+
+	/**
+	 * Every trip of the timetable with its outcome, in order of planned
+	 * departure. A trip counts as departed once the train has left its first
+	 * stop or called at a later one.
+	 */
+	public List<TripOutcome> trips() {
+		Map<String, List<StopVisit>> visitsByTrip = new HashMap<>();
+		for (StopVisit visit : visits()) {
+			visitsByTrip.computeIfAbsent(visit.trip(), key -> new ArrayList<>()).add(visit);
+		}
+		List<TripOutcome> outcomes = new ArrayList<>();
+		for (PlannedTrip planned : plannedTrips) {
+			List<StopVisit> served = visitsByTrip.getOrDefault(planned.trip(), List.of());
+			PlannedStop first = planned.stops().getFirst();
+			PlannedStop last = planned.stops().getLast();
+			StopVisit arrival = served.stream()
+				.filter(visit -> visit.stopSequence() == last.sequence()).findFirst().orElse(null);
+			boolean departed = served.stream().anyMatch(visit -> visit.stopSequence() > 0
+				|| !Double.isNaN(visit.actualDeparture()));
+			TripStatus status = arrival != null ? TripStatus.COMPLETED
+				: departed ? TripStatus.INTERRUPTED : TripStatus.NEVER_DEPARTED;
+			outcomes.add(new TripOutcome(planned.trip(), planned.line(), planned.route(), planned.vehicle(),
+				StopFacilities.stationOf(first.stop()), last.destination(), first.plannedDeparture(),
+				last.plannedArrival(), arrival == null ? Double.NaN : arrival.actualArrival(),
+				planned.stops().size(), served.size(), status));
+		}
+		outcomes.sort(Comparator.comparingDouble(TripOutcome::plannedDeparture).thenComparing(TripOutcome::trip));
+		return List.copyOf(outcomes);
 	}
 
 	/** A vehicle that did not reach every planned stop: where it got to and how many stops were left. */

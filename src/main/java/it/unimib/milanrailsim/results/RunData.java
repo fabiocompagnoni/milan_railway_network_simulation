@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -26,9 +27,11 @@ import java.util.stream.Stream;
  * of it in memory when the mobsim ends, so the run leaves no events file
  * behind; a MATSim output folder produced elsewhere is read back instead.
  *
+ * @param energy    the energy measured while the run was simulated; empty for a run read back from its output
  * @param outputDir the MATSim output folder, holding the railsim time-distance file
  */
-public record RunData(TransitSchedule schedule, Vehicles vehicles, Network network, PunctualityAnalysis punctuality, Path outputDir) {
+public record RunData(TransitSchedule schedule, Vehicles vehicles, Network network, PunctualityAnalysis punctuality,
+		Optional<EnergyLedger.Use> energy, Path outputDir) {
 
 	/** Reads the output files of a completed run and replays its events through the punctuality analysis. */
 	public static RunData fromOutput(Path outputDir) {
@@ -41,7 +44,7 @@ public record RunData(TransitSchedule schedule, Vehicles vehicles, Network netwo
 		EventsManager events = EventsUtils.createEventsManager();
 		events.addHandler(punctuality);
 		new MatsimEventsReader(events).readFile(locate(iterationDir(outputDir), "*.events.xml*").toString());
-		return new RunData(matsim.getTransitSchedule(), vehicles, network, punctuality, outputDir);
+		return new RunData(matsim.getTransitSchedule(), vehicles, network, punctuality, Optional.empty(), outputDir);
 	}
 
 	/** The time-distance trajectories railsim writes at the end of the iteration. */

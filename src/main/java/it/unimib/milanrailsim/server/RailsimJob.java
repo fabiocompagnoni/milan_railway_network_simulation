@@ -7,6 +7,8 @@ import it.unimib.milanrailsim.network.micro.MicroNode;
 import it.unimib.milanrailsim.network.micro.Sidings;
 import it.unimib.milanrailsim.railsim.RailsimSetup;
 import it.unimib.milanrailsim.results.AnalyzeRun;
+import it.unimib.milanrailsim.results.EnergyMeter;
+import it.unimib.milanrailsim.results.EnergyModel;
 import it.unimib.milanrailsim.results.PunctualityAnalysis;
 import it.unimib.milanrailsim.results.RunArchive;
 import it.unimib.milanrailsim.results.RunData;
@@ -47,11 +49,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -73,6 +77,8 @@ public final class RailsimJob implements SimulationServer.Job {
 	public static final String DENSIFICATION_PLAN = "densification.json";
 	/** The plan of a line upgrade run, copied into its folder when the run is launched. */
 	public static final String LINE_UPGRADE_PLAN = "line-upgrade.json";
+	/** The copy of the energy model the run's consumption is computed with. */
+	public static final String ENERGY_MODEL = "energy-model.json";
 	public static final String ADDED_TRIPS = "added_trips.csv";
 	public static final String SKIPPED_TRIPS = "skipped_trips.csv";
 	public static final String TUNNEL_WARNINGS = "tunnel_warnings.csv";
@@ -263,6 +269,7 @@ public final class RailsimJob implements SimulationServer.Job {
 		Controler controler = new Controler(scenario);
 		RailsimSetup.install(controler);
 		PunctualityAnalysis punctuality = new PunctualityAnalysis(scenario.getTransitSchedule());
+		Optional<EnergyMeter> energy = energyMeter(scenario);
 		MobsimAfterSimStepListener step = new MobsimAfterSimStepListener() {
 			private double nextProgress;
 
@@ -270,6 +277,7 @@ public final class RailsimJob implements SimulationServer.Job {
 			public void notifyMobsimAfterSimStep(MobsimAfterSimStepEvent event) {
 				double time = event.getSimulationTime();
 				sampler.onSimStep(time);
+				energy.ifPresent(meter -> meter.onSimStep(time));
 				if (time >= nextProgress) {
 					nextProgress = time + PROGRESS_INTERVAL_S;
 					out.send(Message.progress(time, sampler.activeTrains(), SIMULATING));
@@ -293,6 +301,7 @@ public final class RailsimJob implements SimulationServer.Job {
 			public void install() {
 				addEventHandlerBinding().toInstance(sampler);
 				addEventHandlerBinding().toInstance(punctuality);
+				energy.ifPresent(meter -> addEventHandlerBinding().toInstance(meter));
 				addMobsimListenerBinding().toInstance(mobsimReady);
 				addMobsimListenerBinding().toInstance(step);
 				addMobsimListenerBinding().toInstance(new FinishedTrainRetirement(sampler));
@@ -300,7 +309,26 @@ public final class RailsimJob implements SimulationServer.Job {
 			}
 		});
 		controler.run();
-		return new RunData(scenario.getTransitSchedule(), scenario.getTransitVehicles(), scenario.getNetwork(), punctuality, output);
+		return new RunData(scenario.getTransitSchedule(), scenario.getTransitVehicles(), scenario.getNetwork(), punctuality,
+			energy.map(EnergyMeter::use), output);
+	}
+
+	/**
+	 * The meter of the run's energy, with the model the application left in
+	 * the run folder; empty for a run started without one.
+	 */
+	private Optional<EnergyMeter> energyMeter(Scenario scenario) {
+		Path modelFile = inputs.runDir().resolve(ENERGY_MODEL);
+		if (!Files.exists(modelFile)) {
+			return Optional.empty();
+		}
+		FleetConfig fleet = Files.exists(inputs.fleetFile()) ? FleetConfig.read(inputs.fleetFile()) : FleetConfig.defaults();
+		Set<String> diesel = new HashSet<>();
+		fleet.types().stream().filter(type -> type.traction() == FleetConfig.Traction.DIESEL)
+			.forEach(type -> diesel.add(type.id()));
+		LocalDate day = ScenarioSpec.read(inputs.runDir().resolve("scenario.json")).serviceDate();
+		return Optional.of(new EnergyMeter(EnergyModel.read(modelFile), day, scenario.getTransitSchedule(),
+			scenario.getTransitVehicles(), scenario.getNetwork(), diesel::contains, FRAME_INTERVAL_S));
 	}
 
 	/** Departure time plus the last stop's arrival offset, over every departure of the schedule. */

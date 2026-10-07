@@ -5,13 +5,13 @@ import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -21,35 +21,97 @@ public final class RunCharts {
 
 	private static final int WIDTH = 1200;
 	private static final int HEIGHT = 700;
+	private static final int EARLIEST_MINUTE = -5;
+	private static final int LATEST_MINUTE = 30;
 
 	private RunCharts() {
 	}
 
+	/** Arrivals at a stop by minute of delay, from 5 minutes early to 30 late, with one class for each tail. */
 	public static void delayHistogram(List<PunctualityAnalysis.StopVisit> visits, Path png) {
-		HistogramDataset dataset = new HistogramDataset();
-		double[] delays = visits.stream()
-			.mapToDouble(PunctualityAnalysis.StopVisit::arrivalDelaySeconds).toArray();
-		dataset.addSeries("arrivi", delays, 40);
-		JFreeChart chart = ChartFactory.createHistogram("Distribuzione dei ritardi all'arrivo",
-			"ritardo [s]", "numero di arrivi", dataset, PlotOrientation.VERTICAL, false, false, false);
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		delayClasses(visits).forEach((minute, arrivals) -> dataset.addValue(arrivals, "arrivi", minute));
+		JFreeChart chart = ChartFactory.createBarChart("Distribuzione dei ritardi all'arrivo in fermata",
+			"ritardo [min] (negativo = anticipo)", "numero di arrivi", dataset, PlotOrientation.VERTICAL, false, false, false);
+		// the labels of the two tails are wider than their bar and would be cut to an ellipsis
+		chart.getCategoryPlot().getDomainAxis().setMaximumCategoryLabelWidthRatio(3);
 		save(chart, png);
 	}
 
+	/**
+	 * The arrivals in each class of delay, in order: below {@value #EARLIEST_MINUTE} minutes, one class per
+	 * minute (a class holds the delays from its minute up to the next), {@value #LATEST_MINUTE} minutes and over.
+	 */
+	static Map<String, Integer> delayClasses(List<PunctualityAnalysis.StopVisit> visits) {
+		Map<String, Integer> classes = new LinkedHashMap<>();
+		String below = "< " + signed(EARLIEST_MINUTE);
+		String over = "≥ " + LATEST_MINUTE;
+		classes.put(below, 0);
+		for (int minute = EARLIEST_MINUTE; minute < LATEST_MINUTE; minute++) {
+			classes.put(signed(minute), 0);
+		}
+		classes.put(over, 0);
+		for (PunctualityAnalysis.StopVisit visit : visits) {
+			int minute = (int) Math.floor(visit.arrivalDelaySeconds() / 60);
+			classes.merge(minute < EARLIEST_MINUTE ? below : minute >= LATEST_MINUTE ? over : signed(minute), 1, Integer::sum);
+		}
+		return classes;
+	}
+
+	private static String signed(int minute) {
+		return minute < 0 ? "−" + -minute : String.valueOf(minute);
+	}
+
 	public static void delayByHour(List<PunctualityAnalysis.StopVisit> visits, Path png) {
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		meanDelayMinutesByPlannedHour(visits).forEach((hour, minutes) -> dataset.addValue(minutes, "ritardo medio", hour));
+		JFreeChart chart = ChartFactory.createBarChart("Ritardo medio all'arrivo in fermata, per ora prevista",
+			"ora prevista (24 e oltre: dopo la mezzanotte del giorno di servizio)", "ritardo medio [min], anticipo = 0",
+			dataset, PlotOrientation.VERTICAL, false, false, false);
+		save(chart, png);
+	}
+
+	/** Minutes of delay, an early arrival counting as zero, by the hour the arrival was planned in. */
+	static Map<Integer, Double> meanDelayMinutesByPlannedHour(List<PunctualityAnalysis.StopVisit> visits) {
 		Map<Integer, double[]> sumAndCountByHour = new TreeMap<>();
 		for (PunctualityAnalysis.StopVisit visit : visits) {
-			int hour = (int) (visit.actualArrival() / 3600);
-			double[] aggregate = sumAndCountByHour.computeIfAbsent(hour, key -> new double[2]);
-			aggregate[0] += visit.arrivalDelaySeconds();
+			double[] aggregate = sumAndCountByHour.computeIfAbsent((int) (visit.plannedArrival() / 3600), key -> new double[2]);
+			aggregate[0] += Math.max(0, visit.arrivalDelaySeconds());
 			aggregate[1]++;
 		}
-		XYSeries series = new XYSeries("ritardo medio");
-		sumAndCountByHour.forEach((hour, aggregate) ->
-			series.add((double) hour, aggregate[0] / aggregate[1]));
-		JFreeChart chart = ChartFactory.createXYLineChart("Ritardo medio per ora del giorno",
-			"ora", "ritardo medio [s]", new XYSeriesCollection(series),
-			PlotOrientation.VERTICAL, false, false, false);
+		Map<Integer, Double> minutes = new TreeMap<>();
+		sumAndCountByHour.forEach((hour, aggregate) -> minutes.put(hour, aggregate[0] / aggregate[1] / 60));
+		return minutes;
+	}
+
+	/** Trips in progress through the day, minute by minute. */
+	public static void trainsRunning(List<PunctualityAnalysis.TripOutcome> trips, Path png) {
+		XYSeries series = new XYSeries("corse in circolazione");
+		int[] running = tripsRunningByMinute(trips);
+		for (int minute = 0; minute < running.length; minute++) {
+			series.add(minute / 60.0, running[minute]);
+		}
+		JFreeChart chart = ChartFactory.createXYLineChart("Treni in circolazione nel giorno",
+			"ora", "corse in corso", new XYSeriesCollection(series), PlotOrientation.VERTICAL, false, false, false);
 		save(chart, png);
+	}
+
+	/**
+	 * How many completed trips are between their planned departure and their
+	 * actual arrival at each minute since midnight; trips that did not
+	 * complete have no arrival and are left out.
+	 */
+	static int[] tripsRunningByMinute(List<PunctualityAnalysis.TripOutcome> trips) {
+		List<PunctualityAnalysis.TripOutcome> completed = trips.stream()
+			.filter(trip -> trip.status() == PunctualityAnalysis.TripStatus.COMPLETED).toList();
+		int lastMinute = completed.stream().mapToInt(trip -> (int) (trip.actualArrival() / 60)).max().orElse(0);
+		int[] running = new int[lastMinute + 2];
+		for (PunctualityAnalysis.TripOutcome trip : completed) {
+			for (int minute = (int) (trip.plannedDeparture() / 60); minute <= (int) (trip.actualArrival() / 60); minute++) {
+				running[minute]++;
+			}
+		}
+		return running;
 	}
 
 	/** One polyline per train: x = time [s], y = distance along the segment [m]. */
@@ -72,6 +134,22 @@ public final class RunCharts {
 		JFreeChart chart = ChartFactory.createBarChart(
 			"Costi per categoria [" + breakdown.currency() + "]",
 			"categoria", breakdown.currency(), dataset, PlotOrientation.VERTICAL, false, false, false);
+		save(chart, png);
+	}
+
+	/** Power drawn from the substations and braking power reused, minute by minute. */
+	public static void powerProfile(List<EnergyLedger.Minute> profile, Path png) {
+		XYSeries drawn = new XYSeries("assorbita dalla linea");
+		XYSeries recovered = new XYSeries("recuperata in frenata");
+		for (EnergyLedger.Minute minute : profile) {
+			drawn.add(minute.minuteOfDay() / 60.0, minute.lineKilowatt() / 1000);
+			recovered.add(minute.minuteOfDay() / 60.0, minute.recoveredKilowatt() / 1000);
+		}
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		dataset.addSeries(drawn);
+		dataset.addSeries(recovered);
+		JFreeChart chart = ChartFactory.createXYLineChart("Potenza elettrica nel giorno (media al minuto)",
+			"ora", "potenza [MW]", dataset, PlotOrientation.VERTICAL, true, false, false);
 		save(chart, png);
 	}
 

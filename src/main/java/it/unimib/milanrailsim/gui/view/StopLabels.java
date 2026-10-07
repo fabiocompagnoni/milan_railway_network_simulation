@@ -1,6 +1,6 @@
 package it.unimib.milanrailsim.gui.view;
 
-import it.unimib.milanrailsim.runs.DelaySummaries;
+import it.unimib.milanrailsim.results.StopFacilities;
 
 import java.util.Map;
 
@@ -20,7 +20,7 @@ final class StopLabels {
 
 	/** {@code S01326.p2|S01326|R38|terminal} reads as "Milano Greco Pirelli · p2"; a plain station id as its name. */
 	String stop(String facilityId) {
-		String station = DelaySummaries.stationOf(facilityId);
+		String station = StopFacilities.stationOf(facilityId);
 		int separator = facilityId.indexOf('|');
 		if (separator < 0) {
 			return station(station);

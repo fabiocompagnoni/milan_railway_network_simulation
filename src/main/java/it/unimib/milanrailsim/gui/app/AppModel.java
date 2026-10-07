@@ -1,5 +1,9 @@
 package it.unimib.milanrailsim.gui.app;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import it.unimib.milanrailsim.gui.config.AppPaths;
 import it.unimib.milanrailsim.gui.config.ScenarioFiles;
 import it.unimib.milanrailsim.gui.sim.LiveSession;
@@ -104,6 +108,7 @@ public final class AppModel {
 			case REAL -> {
 			}
 		}
+		keepPlan(files.energyModel(), runDir.resolve(RailsimJob.ENERGY_MODEL));
 		RailsimJob.Inputs inputs = new RailsimJob.Inputs(runDir, files.engineConfig(),
 			files.engineNetwork(), gtfsDir(), paths.fleetTypesFile(), paths.lineAssignmentsFile(), paths.costsFile(),
 			Files.exists(files.stationTracks()) ? files.stationTracks() : null,
@@ -180,15 +185,36 @@ public final class AppModel {
 		feed.set(CompletableFuture.supplyAsync(() -> GtfsFeed.load(gtfsDir())));
 	}
 
-	/** The user's cost parameters start as a copy of the repository defaults. */
+	/**
+	 * The user's cost parameters start as a copy of the repository defaults. A
+	 * file saved by an earlier version receives the categories added since,
+	 * and keeps every value the user set.
+	 */
 	private void seedCosts() {
 		Path costs = paths.costsFile();
-		if (Files.exists(costs) || !Files.exists(files.defaultCosts())) {
+		if (!Files.exists(files.defaultCosts())) {
 			return;
 		}
 		try {
-			Files.createDirectories(costs.getParent());
-			Files.copy(files.defaultCosts(), costs);
+			if (!Files.exists(costs)) {
+				Files.createDirectories(costs.getParent());
+				Files.copy(files.defaultCosts(), costs);
+				return;
+			}
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode saved = mapper.readTree(costs.toFile());
+			if (!(saved.path("categories") instanceof ObjectNode categories)) {
+				return;
+			}
+			int before = categories.size();
+			mapper.readTree(files.defaultCosts().toFile()).path("categories").properties().forEach(category -> {
+				if (!categories.has(category.getKey())) {
+					categories.set(category.getKey(), category.getValue());
+				}
+			});
+			if (categories.size() > before) {
+				mapper.enable(SerializationFeature.INDENT_OUTPUT).writeValue(costs.toFile(), saved);
+			}
 		} catch (IOException e) {
 			throw new UncheckedIOException("Cannot seed " + costs, e);
 		}

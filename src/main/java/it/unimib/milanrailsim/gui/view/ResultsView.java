@@ -43,6 +43,7 @@ import javafx.stage.DirectoryChooser;
 
 import java.io.File;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -59,7 +60,6 @@ import java.util.stream.Collectors;
 public final class ResultsView extends BorderPane {
 
 	private static final double ON_TIME_THRESHOLD_S = 300;
-	private static final double SEVERE_THRESHOLD_S = 900;
 	private static final DateTimeFormatter STAMP = DateTimeFormatter.ofPattern("d MMM yyyy HH:mm", Locale.ITALY);
 	private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -164,9 +164,10 @@ public final class ResultsView extends BorderPane {
 		TabPane tabs = new TabPane();
 		tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 		tabs.getTabs().addAll(new Tab("Sintesi", summaryTab()), new Tab("Linee", linesTab()),
-			new Tab("Stazioni", DelayTabs.stations(results, labels, ON_TIME_THRESHOLD_S)),
+			new Tab("Stazioni", DelayTabs.stations(results, labels)),
 			new Tab("Treni", DelayTabs.trains(results, labels)), new Tab("Corse", visitsTab()),
-			new Tab("Costi", costsTab()));
+			new Tab("Energia", EnergyTab.of(results)), new Tab("Costi", costsTab()),
+			new Tab("Scenario", ScenarioTab.of(results.dir())));
 		VBox.setVgrow(tabs, Priority.ALWAYS);
 		VBox column = new VBox(16, header, headline, tabs);
 		body.getChildren().setAll(column);
@@ -188,26 +189,51 @@ public final class ResultsView extends BorderPane {
 		RunLibrary.Manifest manifest = entry.manifest().orElseThrow();
 		boolean delta = compare.isSelected() && baseline != null;
 		RunLibrary.Manifest base = delta ? baseline.manifest().orElseThrow() : null;
-		headline.getChildren().setAll(
-			metric("Ritardo medio all'arrivo", RunLibraryView.minutesSeconds(manifest.meanArrivalDelaySeconds()),
+		Optional<RunResults.Indicators> baseIndicators = delta ? baselineResults.indicators() : Optional.empty();
+		List<Node> figures = new ArrayList<>();
+		results.indicators().ifPresentOrElse(indicators -> {
+			figures.add(metric("Regolarità", Columns.percent(indicators.regularityPercent()),
+				indicators.tripsCompleted() + " corse su " + indicators.tripsScheduled() + " · "
+					+ indicators.tripsInterrupted() + " interrotte, " + indicators.tripsNeverDeparted() + " mai partite",
+				indicators.tripsCompleted() < indicators.tripsScheduled()));
+			figures.add(metric("Puntualità a destinazione (5 min)", Columns.percent(indicators.punctualityAtDestinationPercent()),
+				baseIndicators.map(b -> points(indicators.punctualityAtDestinationPercent() - b.punctualityAtDestinationPercent()))
+					.orElse(null), false));
+			figures.add(metric("Puntualità su tutte le fermate (5 min)", Columns.percent(indicators.punctualityAtStopsPercent()),
+				baseIndicators.map(b -> points(indicators.punctualityAtStopsPercent() - b.punctualityAtStopsPercent()))
+					.orElse(null), false));
+			figures.add(metric("Ritardo medio (anticipo = 0)", RunLibraryView.minutesSeconds(indicators.meanDelay()),
+				"scostamento con segno " + RunLibraryView.minutesSeconds(indicators.meanDeviation())
+					+ baseIndicators.map(b -> " · Δ " + RunLibraryView.minutesSeconds(indicators.meanDelay() - b.meanDelay())).orElse(""),
+				baseIndicators.map(b -> indicators.meanDelay() > b.meanDelay()).orElse(false)));
+			figures.add(metric("Fermate servite", indicators.stopsServed() + " su " + indicators.stopsPlanned(), null,
+				indicators.stopsServed() < indicators.stopsPlanned()));
+		}, () -> {
+			figures.add(metric("Scostamento medio all'arrivo", RunLibraryView.minutesSeconds(manifest.meanArrivalDelaySeconds()),
 				delta ? RunLibraryView.minutesSeconds(manifest.meanArrivalDelaySeconds() - base.meanArrivalDelaySeconds()) : null,
-				delta && manifest.meanArrivalDelaySeconds() > base.meanArrivalDelaySeconds()),
-			metric("Puntualità (entro 5 min)", results.punctuality(ON_TIME_THRESHOLD_S).map(Columns::percent).orElse("—"),
+				delta && manifest.meanArrivalDelaySeconds() > base.meanArrivalDelaySeconds()));
+			figures.add(metric("Puntualità su tutte le fermate (5 min)",
+				results.punctuality(ON_TIME_THRESHOLD_S).map(Columns::percent).orElse("—"),
 				delta ? baselineResults.punctuality(ON_TIME_THRESHOLD_S).flatMap(b -> results.punctuality(ON_TIME_THRESHOLD_S)
-					.map(v -> String.format(Locale.ITALY, "%+.1f punti", v - b))).orElse(null) : null, false),
-			metric("Arrivi oltre 15 min", results.punctuality(SEVERE_THRESHOLD_S).map(v -> Columns.percent(100 - v)).orElse("—"),
-				null, results.punctuality(SEVERE_THRESHOLD_S).map(v -> 100 - v > 5).orElse(false)),
+					.map(v -> points(v - b))).orElse(null) : null, false));
+			figures.add(metric("Fermate osservate", String.valueOf(manifest.stopVisits()), null, false));
+		});
+		figures.addAll(List.of(
 			metric("Treni non arrivati", String.valueOf(manifest.unfinishedTrains()),
 				manifest.unfinishedTrains() > 0 ? "vedi la scheda Treni" : null, manifest.unfinishedTrains() > 0),
 			metric("Costo totale", RunLibraryView.euro(manifest.totalCost()),
 				delta ? String.format(Locale.ITALY, "%+,.0f €", manifest.totalCost() - base.totalCost()) : null,
 				delta && manifest.totalCost() > base.totalCost()),
-			metric("Fermate osservate", String.valueOf(manifest.stopVisits()), null, false),
 			metric("Anomalie", String.valueOf(manifest.anomalies()),
-				manifest.anomalies() > 0 ? "corse fuori orario rispetto al programma" : null, manifest.anomalies() > 0));
+				manifest.anomalies() > 0 ? "corse fuori orario rispetto al programma" : null, manifest.anomalies() > 0)));
+		headline.getChildren().setAll(figures);
 	}
 
-	private static Node metric(String label, String value, String note, boolean warn) {
+	private static String points(double difference) {
+		return String.format(Locale.ITALY, "%+.1f punti", difference);
+	}
+
+	static Node metric(String label, String value, String note, boolean warn) {
 		Label key = muted(label);
 		Label text = new Label(value);
 		text.getStyleClass().add("headline-value");
@@ -225,7 +251,7 @@ public final class ResultsView extends BorderPane {
 		ScrollPane spaceTime = new ScrollPane(chart(RunResults.SPACE_TIME, 1040));
 		spaceTime.getStyleClass().add("plain-scroll");
 		spaceTime.setFitToHeight(true);
-		VBox column = new VBox(16, outcomePanel(), charts, spaceTime);
+		VBox column = new VBox(16, outcomePanel(), charts, chart(RunResults.TRAINS_RUNNING, 1040), spaceTime);
 		column.setPadding(new Insets(16, 0, 0, 0));
 		ScrollPane scroll = new ScrollPane(column);
 		scroll.setFitToWidth(true);
@@ -287,9 +313,20 @@ public final class ResultsView extends BorderPane {
 		table.getStyleClass().add("data-table");
 		table.getColumns().add(Columns.text("Linea", 90, LineRow::line));
 		table.getColumns().add(Columns.number("Fermate osservate", 130, row -> (double) row.observations(), Columns::count));
-		table.getColumns().add(Columns.number("Puntualità (5 min)", 130,
+		results.indicatorsByLine().ifPresent(byLine -> {
+			table.getColumns().add(Columns.number("Corse", 80,
+				row -> byLine.containsKey(row.line()) ? (double) byLine.get(row.line()).tripsScheduled() : Double.NaN, Columns::count));
+			table.getColumns().add(Columns.number("Regolarità", 100,
+				row -> byLine.containsKey(row.line()) ? byLine.get(row.line()).regularityPercent() : Double.NaN, Columns::percent));
+			table.getColumns().add(Columns.number("Puntualità a destinazione", 170,
+				row -> byLine.containsKey(row.line()) ? byLine.get(row.line()).punctualityAtDestinationPercent() : Double.NaN,
+				Columns::percent));
+		});
+		table.getColumns().add(Columns.number("Puntualità fermate", 130,
 			row -> RunResults.punctuality(visitsByLine.getOrDefault(row.line(), List.of()), ON_TIME_THRESHOLD_S), Columns::percent));
-		table.getColumns().add(Columns.number("Ritardo medio", 120, LineRow::meanDelay, RunLibraryView::minutesSeconds));
+		results.indicatorsByLine().ifPresent(byLine -> table.getColumns().add(Columns.number("Ritardo medio", 120,
+			row -> byLine.containsKey(row.line()) ? byLine.get(row.line()).meanDelay() : Double.NaN, RunLibraryView::minutesSeconds)));
+		table.getColumns().add(Columns.number("Scostamento medio", 130, LineRow::meanDelay, RunLibraryView::minutesSeconds));
 		table.getColumns().add(Columns.number("Mediana", 100, LineRow::medianDelay, RunLibraryView::minutesSeconds));
 		table.getColumns().add(Columns.number("95° percentile", 120, LineRow::p95Delay, RunLibraryView::minutesSeconds));
 		table.getColumns().add(Columns.number("Massimo", 100, LineRow::maxDelay, RunLibraryView::minutesSeconds));
@@ -391,12 +428,55 @@ public final class ResultsView extends BorderPane {
 		if (results.costs().isEmpty()) {
 			return partial("Dati costi non disponibili per questo run: l'analisi non li ha prodotti.");
 		}
-		RunResults.Costs costs = results.costs().get();
+		RunResults.Costs planned = results.costs().get();
+		if (planned.simulated().isEmpty()) {
+			return plannedCosts(planned);
+		}
+		RunResults.Costs simulated = planned.simulated().get();
+		HBox figures = new HBox(32,
+			metric("Costo della giornata simulata", RunLibraryView.euro(simulated.total()),
+				"da orario " + RunLibraryView.euro(planned.total()) + " · " + signedEuro(simulated.total() - planned.total()), false),
+			metric("Per treno-km", String.format(Locale.ITALY, "%.2f €", simulated.total() / simulated.trainKm()),
+				String.format(Locale.ITALY, "%,.0f treni-km", simulated.trainKm()), false),
+			metric("Treni-ora", String.format(Locale.ITALY, "%,.0f", simulated.trainHours()),
+				String.format(Locale.ITALY, "da orario %,.0f", planned.trainHours()), false),
+			metric("Treni impiegati", String.valueOf(simulated.fleetSize()),
+				"minimo teorico da orario " + planned.fleetSize(), false));
+		GridPane table = new GridPane();
+		table.setHgap(24);
+		table.setVgap(6);
+		table.addRow(0, muted("Categoria"), muted("Simulato"), muted("Quota"), muted("Da orario"), muted("Differenza"));
+		int row = 1;
+		for (Map.Entry<String, Double> category : simulated.byCategory().entrySet()) {
+			double fromTimetable = planned.byCategory().getOrDefault(category.getKey(), 0.0);
+			Label amount = new Label(RunLibraryView.euro(category.getValue()));
+			amount.getStyleClass().add("metric");
+			table.addRow(row++, new Label(categoryLabel(category.getKey())), amount,
+				new Label(simulated.total() == 0 ? "—" : Columns.percent(100 * category.getValue() / simulated.total())),
+				new Label(RunLibraryView.euro(fromTimetable)), new Label(signedEuro(category.getValue() - fromTimetable)));
+		}
+		HBox content = new HBox(32, chart(RunResults.COST_BREAKDOWN, 420), table);
+		content.setAlignment(Pos.TOP_LEFT);
+		Label note = muted("Simulato: personale sulle ore effettive, ritardi compresi; energia e gasolio misurati nel run per il loro"
+			+ " prezzo; un costo giornaliero per ogni treno usato. Una corsa interrotta o mai partita è contata al valore"
+			+ " d'orario. Da orario: quantità dell'orario per i costi unitari a treno-km, con la flotta minima teorica.");
+		note.setWrapText(true);
+		VBox column = new VBox(16, figures, content, note);
+		column.setPadding(new Insets(16, 0, 0, 0));
+		return column;
+	}
+
+	private static String signedEuro(double amount) {
+		return (amount < 0 ? "−" : "+") + RunLibraryView.euro(Math.abs(amount));
+	}
+
+	/** The cost tab of a run analysed before the simulated costs existed. */
+	private Node plannedCosts(RunResults.Costs costs) {
 		HBox figures = new HBox(32,
 			metric("Treni-km", String.format(Locale.ITALY, "%,.0f", costs.trainKm()), null, false),
 			metric("Treni-ora", String.format(Locale.ITALY, "%,.0f", costs.trainHours()), null, false),
 			metric("Flotta impiegata", String.valueOf(costs.fleetSize()), null, false),
-			metric("Totale", RunLibraryView.euro(costs.total()), null, false));
+			metric("Totale da orario", RunLibraryView.euro(costs.total()), null, false));
 		GridPane table = new GridPane();
 		table.setHgap(24);
 		table.setVgap(6);

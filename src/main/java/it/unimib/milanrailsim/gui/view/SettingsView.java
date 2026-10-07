@@ -389,6 +389,8 @@ public final class SettingsView extends BorderPane {
 				case "maintenance" -> "Manutenzione";
 				case "rolling_stock" -> "Materiale rotabile";
 				case "track_access" -> "Accesso alla rete";
+				case "traction_energy" -> "Energia di trazione (costi simulati)";
+				case "diesel_fuel" -> "Gasolio al litro (costi simulati)";
 				default -> category;
 			};
 		}
@@ -398,6 +400,8 @@ public final class SettingsView extends BorderPane {
 				case "train_hour" -> "€/treno-ora";
 				case "train_km" -> "€/treno-km";
 				case "train_day" -> "€/treno-giorno";
+				case "kwh" -> "€/kWh";
+				case "litre" -> "€/litro";
 				default -> unit;
 			};
 		}
