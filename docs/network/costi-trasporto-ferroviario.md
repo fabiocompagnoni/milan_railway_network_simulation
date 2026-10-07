@@ -77,6 +77,60 @@ Regole del costo simulato:
 I prezzi si modificano dalle impostazioni dell'applicazione
 (`config/costs.json`, voci `traction_energy` e `diesel_fuel`).
 
+## Treni utilizzati e treni aggiuntivi
+
+Ogni run conta i treni che mette in servizio e li salva nella propria cartella; la scheda Flotta dei risultati li mostra.
+
+| Grandezza | Definizione |
+|---|---|
+| Treno utilizzato | un veicolo a cui l'orario del run assegna almeno una corsa |
+| Treno in corsa | dalla partenza prevista all'arrivo effettivo di una corsa; una corsa interrotta o mai partita conta sui tempi d'orario; fra due corse il treno è fermo |
+| Massimo dell'ora | il numero più alto di treni in corsa nello stesso istante in quell'ora; la divisione per tipo è quella di quell'istante, quindi i tipi sommano al totale |
+| Treni attivi nell'ora | i treni che nell'ora hanno fatto almeno un tratto di corsa |
+| Linea di un treno | quella della sua prima corsa; un treno in comune fra due linee è contato una volta |
+| Treni aggiuntivi | per tipo, treni utilizzati dal run meno quelli del giorno reale dello stesso giorno di servizio |
+
+| File del run | Contenuto |
+|---|---|
+| `fleet.csv` | una riga per treno: veicolo, tipo, linea, corse |
+| `fleet_by_type.csv` | treni per tipo, con il totale |
+| `fleet_by_line.csv` | treni per linea e tipo |
+| `trains_by_hour.csv` | per ora e tipo: massimo dell'ora e treni attivi, con il totale dell'ora |
+| `charts/trains_by_hour.png` | massimo dell'ora, a barre impilate per tipo |
+| `charts/fleet_by_type.png` | treni utilizzati per tipo |
+| `fleet_vs_baseline.csv`, `charts/fleet_vs_baseline.png` | confronto con il giorno reale, salvato dalla scheda Flotta |
+
+Giorno feriale di lunedì 2026-10-05:
+
+| Tipo | Giorno reale | Passante a 10 minuti | Differenza |
+|---|---|---|---|
+| TSR | 50 | 73 | +23 |
+| TAF | 20 | 30 | +10 |
+| Caravaggio ETR 421 | 12 | 12 | 0 |
+| Caravaggio ETR 521 | 186 | 186 | 0 |
+| Donizetti ETR 204 | 21 | 21 | 0 |
+| ATR 125 | 25 | 25 | 0 |
+| FLIRT TSI (TILO) | 7 | 7 | 0 |
+| Colleoni ATR 803 | 22 | 22 | 0 |
+| **Totale** | **343** | **376** | **+33** |
+
+Massimo di treni in corsa nello stesso istante: 208 nel giorno reale e 228
+nel Passante a 10 minuti, in entrambi nell'ora delle 7.
+
+Cautele:
+
+- I treni sono quelli dei giri treno del modello, non i turni reali
+  dell'operatore: ogni linea usa il proprio parco, salvo dove una stazione
+  dichiara treni in comune, e l'inversione al capolinea è di 5 minuti. Il
+  totale di un run va letto con questa riserva; la **differenza** fra uno
+  scenario e il giorno reale, calcolata con le stesse regole, è il dato
+  solido.
+- Il tipo di ogni treno viene dalla regola di assegnazione linea → tipo, che
+  è una stima: la ripartizione per tipo ne dipende.
+- Riserve e treni in manutenzione non sono contati.
+- La consistenza della flotta dell'operatore non è nel modello: il confronto
+  con i treni disponibili va fatto a parte.
+
 ## Cosa NON modelliamo (fuori scope dichiarato)
 
 - Ricavi tariffari e impatto sugli utenti (l'idea «di quanto aumentano i
