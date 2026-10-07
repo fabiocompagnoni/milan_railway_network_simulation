@@ -30,6 +30,7 @@ import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -111,8 +112,9 @@ final class LineUpgradePanel extends VBox {
 		table.setPrefHeight(360);
 		table.getColumns().addAll(List.of(includedColumn(), Columns.text("Linea", 60, row -> row.route.line()),
 			Columns.text("Percorso", 280, row -> row.name), Columns.text("Corse", 60, row -> String.valueOf(row.route.trips())),
-			Columns.text("Lunghezza", 90, row -> row.length.map(length -> kilometres(length.totalMetres())).orElse("—")),
-			Columns.text("Binario unico", 170, row -> row.length.map(LineUpgradePanel::singleTrack).orElse("—")),
+			Columns.number("Lunghezza", 90, row -> row.length.map(Length::totalMetres).orElse(Double.NaN),
+				LineUpgradePanel::kilometres),
+			singleTrackColumn(),
 			textColumn("Attesa max reale", 120, row -> row.realWait), targetColumn(),
 			textColumn("Corse aggiunte", 110, row -> row.addedTrips), textColumn("Attesa max risultante", 150, row -> row.resultingWait)));
 		getChildren().addAll(tools, table, muted("Si aggiungono corse fra due corse reali consecutive dello stesso percorso "
@@ -228,6 +230,22 @@ final class LineUpgradePanel extends VBox {
 		column.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue()));
 		column.setCellFactory(col -> new TargetCell());
 		column.setPrefWidth(120);
+		return column;
+	}
+
+	/** Sorts on the metres of single track; a route with no measured length sorts first. */
+	private static TableColumn<Row, Optional<Length>> singleTrackColumn() {
+		TableColumn<Row, Optional<Length>> column = new TableColumn<>("Binario unico");
+		column.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().length));
+		column.setComparator(Comparator.comparingDouble(length -> length.map(Length::singleTrackMetres).orElse(-1.0)));
+		column.setCellFactory(col -> new TableCell<>() {
+			@Override
+			protected void updateItem(Optional<Length> item, boolean empty) {
+				super.updateItem(item, empty);
+				setText(empty || item == null ? "" : item.map(LineUpgradePanel::singleTrack).orElse("—"));
+			}
+		});
+		column.setPrefWidth(170);
 		return column;
 	}
 

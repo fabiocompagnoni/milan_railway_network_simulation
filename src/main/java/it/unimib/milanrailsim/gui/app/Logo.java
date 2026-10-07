@@ -4,10 +4,11 @@ import javafx.scene.image.Image;
 
 /**
  * The application's logos, exported as PNG from the SVG sources in
- * {@code assets/logo} since JavaFX renders no SVG. The round mark serves as
- * window icon and as the brand of the compact sidebar; the extended logo comes
- * in one version per theme because its wordmark is dark on light and white on
- * dark.
+ * {@code assets/logo} since JavaFX renders no SVG. The sidebar logos are
+ * exported at the size they are shown at, with an {@code @2x} twin JavaFX picks
+ * on high-density screens: scaling a large image down when drawing blurs it.
+ * The extended logo comes in one version per theme because its wordmark is dark
+ * on light and white on dark.
  */
 public final class Logo {
 
@@ -16,8 +17,14 @@ public final class Logo {
 	private Logo() {
 	}
 
-	public static Image mark() {
+	/** The round mark at full size, scaled by the window system. */
+	public static Image windowIcon() {
 		return image("logo.png");
+	}
+
+	/** The round mark of the compact sidebar. */
+	public static Image mark() {
+		return image("logo_mark.png");
 	}
 
 	public static Image extended(Theme theme) {

@@ -452,6 +452,17 @@
 	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 12, 0, 0, 2);
 }
 
+.line-row {
+	-fx-padding: 2 6 2 6;
+	-fx-background-radius: 4;
+	-fx-cursor: hand;
+}
+
+.line-row:hover,
+.line-row-selected {
+	-fx-background-color: -border;
+}
+
 .clock {
 	-fx-font-size: 15px;
 	-fx-font-weight: 600;

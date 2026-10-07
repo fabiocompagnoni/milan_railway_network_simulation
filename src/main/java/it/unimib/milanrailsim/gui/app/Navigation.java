@@ -23,10 +23,8 @@ import java.util.function.Supplier;
 public final class Navigation extends BorderPane {
 
 	private static final double COMPACT_BELOW_PX = 1100;
-	/** The sidebar is as wide as the extended logo needs to be readable, subtitle included. */
+	/** The sidebar holds the extended logo at its own size, with a margin on each side. */
 	private static final double SIDEBAR_WIDTH_PX = 248;
-	private static final double EXTENDED_WIDTH_PX = 224;
-	private static final double MARK_WIDTH_PX = 36;
 
 	private final Map<String, Supplier<Node>> views = new LinkedHashMap<>();
 	private final ToggleGroup group = new ToggleGroup();
@@ -43,12 +41,9 @@ public final class Navigation extends BorderPane {
 	/** The extended logo of the theme, or the round mark alone on narrow windows. */
 	private Node brand(ObservableValue<Theme> theme) {
 		ImageView logo = new ImageView();
-		logo.setPreserveRatio(true);
-		logo.setSmooth(true);
 		BooleanBinding compact = compact();
 		logo.imageProperty().bind(Bindings.createObjectBinding(
 			() -> compact.get() ? Logo.mark() : Logo.extended(theme.getValue()), compact, theme));
-		logo.fitWidthProperty().bind(Bindings.when(compact).then(MARK_WIDTH_PX).otherwise(EXTENDED_WIDTH_PX));
 		HBox brand = new HBox(logo);
 		brand.getStyleClass().add("brand");
 		brand.setAlignment(Pos.CENTER);

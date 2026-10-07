@@ -51,10 +51,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -126,7 +124,7 @@ public final class RailsimJob implements SimulationServer.Job {
 		FrameSampler sampler;
 		RunData data;
 		try (FrameRecorder recorder = new FrameRecorder(inputs.runDir().resolve(FrameRecorder.FILE_NAME))) {
-			sampler = new FrameSampler(FRAME_INTERVAL_S, tripsPerVehicle(timetable), frame -> {
+			sampler = new FrameSampler(FRAME_INTERVAL_S, FrameSampler.Timetable.of(timetable), frame -> {
 				recorder.record(frame);
 				out.send(Message.frame(frame));
 			});
@@ -144,18 +142,6 @@ public final class RailsimJob implements SimulationServer.Job {
 			}));
 		Files.deleteIfExists(marker);
 		out.send(Message.done(inputs.runDir().toString(), summary));
-	}
-
-	private static Map<String, Integer> tripsPerVehicle(TransitSchedule timetable) {
-		Map<String, Integer> trips = new HashMap<>();
-		for (TransitLine line : timetable.getTransitLines().values()) {
-			for (TransitRoute route : line.getRoutes().values()) {
-				for (Departure departure : route.getDepartures().values()) {
-					trips.merge(departure.getVehicleId().toString(), 1, Integer::sum);
-				}
-			}
-		}
-		return trips;
 	}
 
 	private TransitSchedule generateTimetable(ScenarioSpec spec, Path scenarioDir) {
@@ -276,8 +262,10 @@ public final class RailsimJob implements SimulationServer.Job {
 			@Override
 			public void notifyMobsimAfterSimStep(MobsimAfterSimStepEvent event) {
 				double time = event.getSimulationTime();
-				sampler.onSimStep(time);
-				energy.ifPresent(meter -> meter.onSimStep(time));
+				energy.ifPresentOrElse(meter -> {
+					meter.onSimStep(time);
+					sampler.onSimStep(time, meter.reading());
+				}, () -> sampler.onSimStep(time));
 				if (time >= nextProgress) {
 					nextProgress = time + PROGRESS_INTERVAL_S;
 					out.send(Message.progress(time, sampler.activeTrains(), SIMULATING));
