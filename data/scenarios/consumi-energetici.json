@@ -54,6 +54,8 @@
 		"donizetti": {"emptyMassTonnes": 143.5, "cars": 4},
 		"tilo_flirt_tsi": {"emptyMassTonnes": 177.5, "cars": 6},
 		"atr125": {"emptyMassTonnes": 136, "cars": 4},
-		"atr803": {"emptyMassTonnes": 135, "cars": 3}
+		"atr803": {"emptyMassTonnes": 135, "cars": 3},
+		"etr425": {"emptyMassTonnes": 160, "cars": 5, "note": "Wikipedia, Elettrotreno Alstom Coradia Meridian ETR 324, 425 e 526 (consultato il 7 ottobre 2026): massa a vuoto 160 t, in servizio 204 t"},
+		"etr245": {"emptyMassTonnes": 160, "cars": 5, "note": "massa a vuoto dell'ETR 425, convoglio della stessa famiglia Coradia Meridian con le stesse 5 casse e la stessa lunghezza di 82,20 m; per l'ETR 245 non e' stato trovato un dato proprio"}
 	}
 }
