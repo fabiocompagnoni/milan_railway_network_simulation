@@ -151,7 +151,12 @@ public final class TransitScheduleBuilder {
 			chain.add(StationStopLinks.stopLinkId(Id.createNodeId(stopTime.stopId())));
 			double arrivalOffset = stopTime.arrivalSeconds() - firstDeparture;
 			double departureOffset = stopTime.departureSeconds() - firstDeparture;
-			routeStops.add(factory.createTransitRouteStop(facility, arrivalOffset, departureOffset));
+			TransitRouteStop routeStop =
+				factory.createTransitRouteStop(facility, arrivalOffset, departureOffset);
+			// without passengers a driver would skip stops and run early;
+			// holding to the timetable keeps the simulation on the GTFS times
+			routeStop.setAwaitDepartureTime(true);
+			routeStops.add(routeStop);
 		}
 
 		NetworkRoute networkRoute = RouteUtils.createNetworkRoute(chain, network);

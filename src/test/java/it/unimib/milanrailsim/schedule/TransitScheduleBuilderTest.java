@@ -50,6 +50,8 @@ class TransitScheduleBuilderTest {
 		// T1: departs S1 08:01; S2 arrival 08:06 (+300 s), departure 08:07 (+360 s)
 		assertEquals(300.0, t1Route.getStops().get(1).getArrivalOffset().seconds());
 		assertEquals(360.0, t1Route.getStops().get(1).getDepartureOffset().seconds());
+		assertTrue(t1Route.getStops().stream().allMatch(
+			org.matsim.pt.transitSchedule.api.TransitRouteStop::isAwaitDepartureTime));
 		Departure dep = t1Route.getDepartures().values().iterator().next();
 		assertEquals(8 * 3600 + 60, dep.getDepartureTime());
 	}
