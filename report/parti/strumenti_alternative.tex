@@ -239,3 +239,31 @@ railsim simula il moto e i conflitti dei treni su una rete e con un orario che r
 Non prevede depositi o binari di ricovero: un treno fermo fra due corse occupa il binario su cui si trova. \\
 Non calcola indicatori di puntualità né il consumo di energia, e non introduce guasti o perturbazioni casuali, per cui lo stesso scenario produce sempre lo stesso risultato. \\
 Come si è visto, infine, la prevenzione degli stalli è solo parziale. Le sezioni che seguono descrivono come il progetto ha affrontato ciascuno di questi punti.
+
+\subsection{Confronto con Mesa e Mesa-Geo}
+Come anticipato, un'alternativa a Railsim sarebbe potuta essere Mesa che si presenta come la controparte in Python degli ambienti classici per la modellazione ad agenti, come NetLogo, Repast e MASON.\\
+Mette a disposizione le classi di base per il modello e per gli agenti, gli spazi in cui collocarli, come griglie e reti, la raccolta dei dati e una visualizzazione nel browser~\cite{terhoeven2025mesa}.
+È uno strumento generale, che non fa ipotesi sul fenomeno simulato: il comportamento degli agenti e le regole con cui interagiscono sono interamente a carico di chi scrive il modello.
+La sua estensione Mesa-Geo~\cite{wang2022mesageo} aggiunge i dati geografici. Gli agenti hanno una geometria, cioè un punto, una linea o un poligono, con il proprio sistema di riferimento, e possono essere creati direttamente da file geografici. Per questo progetto sarebbe stata utile nella prima fase, quella in cui stazioni e tracciati vengono ricavati dai dati cartografici e mostrati su una mappa. 
+La geografia però non è la parte difficile del problema: lo sono le regole dell'esercizio ferroviario, che né Mesa né Mesa-Geo contengono.
+
+La \cref{tab:confronto-strumenti} riassume il confronto. Con Mesa, anche esteso con Mesa-Geo, la parte ferroviaria sarebbe stata da scrivere per intero; con railsim è già disponibile, e il lavoro si è potuto concentrare sulla costruzione della rete e sugli aspetti che lo strumento non prevede.
+
+\begin{table}[H]
+	\centering
+	\caption{Confronto fra Mesa, Mesa-Geo e railsim rispetto alle esigenze del progetto.}
+	\label{tab:confronto-strumenti}
+	\begin{tabularx}{\textwidth}{lXXX}
+		\toprule
+		Aspetto & Mesa & Mesa-Geo & railsim \\
+		\midrule
+		Natura & libreria generale per modelli ad agenti & estensione geografica di Mesa & estensione ferroviaria di MATSim \\
+		Linguaggio & Python & Python & Java \\
+		Spazio & griglie e reti & geometrie con sistema di riferimento & grafo di link con risorse e capienze \\
+		Dati geografici & non previsti & lettura da file geografici & coordinate dei nodi \\
+		Moto dei treni & da scrivere & da scrivere & accelerazione, frenata, lunghezza del treno \\
+		Occupazione dei binari & da scrivere & da scrivere & prenotazione delle risorse \\
+		Orario & da scrivere & da scrivere & orario del trasporto pubblico di MATSim \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
