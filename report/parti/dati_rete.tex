@@ -1,0 +1,187 @@
+railsim simula la rete che riceve, ma non la costruisce. Questa sezione descrive da quali dati e con quali passaggi è stata ottenuta la rete del modello, e come sono descritti i treni. I passaggi sono quattro: uno scheletro ricavato dall'orario, le misure dei tracciati, la rete mesoscopica e l'innesto delle stazioni descritte binario per binario.
+
+\subsection{Fonti dei dati}
+\label{sec:fonti-dati}
+Tutti i dati del modello vengono da fonti pubbliche o da rilievi diretti, e nessun valore è stato inventato: dove una fonte manca il dato è dichiarato come stima o come ipotesi, e nei file del progetto è marcato come provvisorio. La \cref{tab:dati-provenienza} riassume, per ogni gruppo di dati, da dove viene e in quale punto del progetto è conservato insieme alla propria fonte. Le sottosezioni che seguono riprendono ciascun gruppo.
+
+\begin{table}[H]
+	\centering
+	\caption{Provenienza dei dati del modello.}
+	\label{tab:dati-provenienza}
+	\small
+	\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.27\textwidth}}
+		\toprule
+		Dati & Fonte & Dove sono conservati \\
+		\midrule
+		Fermate, linee, corse, orari & orario GTFS di Trenord~\cite{trenord_gtfs} & \texttt{orari\_trenord/} \\
+		Tracciati, lunghezze, velocità di linea, numero di binari & OpenStreetMap~\cite{openstreetmap}, cinque estrazioni fra il 5 agosto e il 30 settembre 2026 & \texttt{data/osm/}, una cartella per estrazione \\
+		Numero di binari delle tratte dubbie & rilievo diretto, 30 settembre e 2 ottobre 2026 & \texttt{data/osm/2026-09-30-track-counts/} \\
+		Binari delle stazioni & OpenStreetMap~\cite{openstreetmap}, voci di Wikipedia sulle singole stazioni, rilievo diretto & \texttt{docs/network/misure/} \\
+		Disposizione dei binari, uso per linea, ricoveri & voci di Wikipedia, rilievi diretti, orario~\cite{trenord_gtfs} & \texttt{data/nodes/}, un file per nodo \\
+		Caratteristiche dei treni & \cref{tab:dati-treni} & \texttt{docs/network/materiale-rotabile.md} \\
+		Consistenza della flotta & \cite{fnm2025rinnovo,trenord2026caravaggio,trenord2026bilancio,trenord2024carta,ferrovienord_flotta}; rilievi dell'autore & stesso documento \\
+		Parametri del modello energetico & \cref{tab:dati-energia} & \texttt{data/scenarios/ consumi-energetici.json} \\
+		Costi unitari & \cite{trenord_contratto,traspol2021trenord}; stime & \texttt{config/costs.json} \\
+		Definizione degli indicatori & delibera 16/2018 dell'Autorità di regolazione dei trasporti~\cite{art2018delibera16} & codice dell'analisi \\
+		Dati di confronto per la validazione & \cite{trenord2026bilancio,trenord2024carta,fnm2025rinnovo,trenord2026caravaggio} & sezione sull'analisi dei risultati \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\subsubsection{Orario}
+L'orario è quello pubblicato da Trenord nel formato GTFS~\cite{trenord_gtfs}, lo standard con cui le aziende di trasporto descrivono fermate, linee, corse e orari. Il file usato è stato scaricato il 25 luglio 2026 ed è valido dall'11 giugno al 12 dicembre 2026. Da una versione successiva è stata presa soltanto la linea R15 Seregno--Carnate, attivata il 7 settembre con 30 corse al giorno; le altre differenze fra le due versioni sono variazioni temporanee dovute a lavori, e sono state lasciate fuori perché non descrivono il servizio a regime. Dall'orario vengono le fermate con le loro coordinate, le corse di ogni giorno, i tempi di percorrenza e di sosta, e per ogni coppia di fermate il tempo minimo di percorrenza, usato come controllo delle velocità misurate.
+
+\subsubsection{OpenStreetMap}
+Da OpenStreetMap~\cite{openstreetmap} vengono i tracciati dei binari e, attraverso questi, le lunghezze, le velocità di linea e il numero dei binari. I dati sono distribuiti con licenza Open Database License. Le estrazioni sono cinque, elencate nella \cref{tab:dati-osm}; ognuna è conservata nel progetto in una cartella propria, con i dati scaricati, i programmi che li hanno elaborati e una nota che descrive metodo ed esito, in modo che ogni misura possa essere ripetuta.
+
+\begin{table}[H]
+	\centering
+	\caption{Estrazioni da OpenStreetMap.}
+	\label{tab:dati-osm}
+	\small
+	\begin{tabularx}{\textwidth}{l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+		\toprule
+		Data & Che cosa & Esito \\
+		\midrule
+		5 agosto 2026 & binari e deviatoi dell'intera area delle stazioni: 23\,590 tracciati e 10\,247 deviatoi & misurati 1157 link su 1179 \\
+		9 settembre 2026 & le 11 tratte rimaste senza misura, con un raggio di ricerca più ampio attorno alle stazioni & tutte misurate \\
+		13 settembre 2026 & i binari numerati delle stazioni principali, dalla stessa estrazione del 5 agosto & binari di Domodossola, Bovisa e Saronno; assenti quelli di Cadorna \\
+		17 settembre 2026 & i binari delle stazioni sulle linee a binario unico & 236 stazioni censite \\
+		30 settembre 2026 & posti di movimento e bivi, per le tratte in cui il numero dei binari cambia & 76 punti; 40 tratte verificate \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\subsubsection{Rilievi diretti e fonti sulle stazioni}
+OpenStreetMap non descrive in modo affidabile due cose: quanti binari di una stazione servono davvero ai treni, e come sono usati. Per la prima il valore ricavato dalla cartografia è stato confrontato, stazione per stazione, con la voce di Wikipedia dedicata alla stazione e, dove è stato possibile, con l'osservazione sul posto; quando le fonti non concordano prevale il rilievo diretto. Per la seconda, cioè quali linee usano quali binari, la fonte è quasi sempre il rilievo: l'osservazione dei tabelloni e dei treni nelle stazioni principali, nelle date indicate in ogni file.
+
+Ogni file che descrive un nodo elenca le proprie fonti. Nei 53 file le citazioni sono 269: 160 rimandano a una voce di Wikipedia, 54 a un rilievo diretto, 24 all'orario, da cui si ricava quante corse terminano o transitano in una stazione, e le altre alla cartografia e alla rete del modello. Ogni file riporta inoltre le questioni rimaste aperte, cioè i punti in cui la descrizione è un'interpretazione da confermare. Wikipedia non è una fonte primaria, e i dati che ne provengono vanno letti con questa riserva; per le stazioni minori è però l'unica fonte pubblica che riporti il numero dei binari.
+
+Dove un dato manca del tutto il modello usa un valore provvisorio, dichiarato: 200 metri per la lunghezza di una banchina, 100 metri a 30 chilometri all'ora per i deviatoi di ingresso di una stazione non rilevati.
+
+\subsection{Scheletro della rete}
+Il primo passaggio ricava la struttura della rete dal solo orario. Ogni fermata dell'orario diventa un nodo, e ogni coppia di fermate consecutive in almeno una corsa diventa una coppia di link, uno per verso. Si ottiene così uno scheletro di 453 nodi e 1179 link, in cui la lunghezza è la distanza in linea d'aria e ogni link ammette un solo treno: valori provvisori, che i passaggi successivi sostituiscono. \\
+Lo scheletro ha un difetto che si ritrova più avanti. Una corsa che non ferma in una stazione intermedia produce un link diretto fra le due stazioni in cui ferma, distinto dai link che passano per la stazione saltata: nel grafo compare un collegamento che sul terreno è lo stesso binario. La questione è ripresa nella \cref{sec:dettagli-rete} e fra i limiti.
+
+\subsection{Misure da OpenStreetMap}
+Per ogni link dello scheletro sono stati misurati sul tracciato reale la lunghezza, la velocità e il numero di binari. Il metodo procede come una misura con il righello sulla carta. La posizione di ogni stazione è proiettata su tutti i binari che si trovano entro 90 metri; fra i binari delle due stazioni si cerca il percorso più breve lungo il tracciato; i percorsi più lunghi del 20\% rispetto al minimo sono scartati come deviazioni. Lungo il percorso trovato si sommano le lunghezze e si leggono la velocità massima e il numero di binari dichiarati.
+
+Sono stati misurati 1157 link su 1179. Il rapporto fra la lunghezza misurata e la distanza in linea d'aria ha mediana 1,02 e arriva a circa 2,3 sulle linee di montagna, dove la differenza è dovuta alle curve del tracciato. La velocità di linea è disponibile per 526 link; per gli altri, dove il dato manca in OpenStreetMap, resta una velocità provvisoria ricavata dai tempi dell'orario. I tratti privi del dato sono riportati come tali e non stimati. Le poche tratte non misurate, per esempio quelle con una stazione sotterranea, sono state completate in un secondo rilievo.
+
+\subsection{Rete mesoscopica}
+Applicando le misure allo scheletro si ottiene la rete mesoscopica: 459 nodi e 1195 link; i nodi in più rispetto allo scheletro sono stati aggiunti dove è stato necessario dividere una tratta, come spiegato più avanti. La capienza di ogni link dipende dal numero dei binari.
+
+Una tratta a binario unico è descritta da due link di verso opposto con capienza 1 e con la stessa risorsa, così che un treno la occupa in entrambi i sensi. Per una tratta a doppio binario un solo treno per senso sarebbe invece troppo poco: il blocco automatico divide la linea in sezioni, e un treno può seguirne un altro appena la sezione alle sue spalle è libera. Con sezioni lunghe fino a 1350 metri, e contando per ogni treno la sezione che occupa e quella che lo separa dal treno davanti, la capienza di un binario è stata posta pari a un treno ogni 2700 metri, con un minimo di uno. Il valore è un'ipotesi del modello. La sua necessità è emersa da una simulazione: con un solo treno per senso, sulle tratte di 30--50 chilometri un treno teneva in coda dietro di sé l'intera linea.
+
+Il numero dei binari di una tratta viene dal valore più frequente dichiarato lungo il percorso, e questo produce un errore sulle tratte miste: una tratta in parte a binario unico e in parte doppia risulta tutta doppia, benché due treni di verso opposto non possano incrociarsi sul tratto singolo. Per questo il numero dei binari è stato verificato su 40 tratte, scelte fra quelle miste, quelle a binario unico con un punto di incrocio intermedio e quelle non misurate. La verifica ha corretto 6 tratte in binario unico e 7 in doppio binario, e ne ha divise 5 con un nodo nuovo nel punto in cui il numero dei binari cambia. Un nodo senza fermata ha due binari ed è un punto in cui due treni possono incrociarsi.
+
+\subsection{Livello mesoscopico e livello microscopico}
+Descrivere binario per binario tutta la rete avrebbe richiesto dati non disponibili per centinaia di stazioni, e non sarebbe servito: sulla maggior parte delle linee la capacità è determinata dal numero dei binari e dal distanziamento, che il livello mesoscopico rappresenta. Il dettaglio è stato quindi riservato ai punti in cui la disposizione dei binari decide chi passa e chi aspetta: le stazioni di Milano e il Passante, le stazioni di diramazione e i capolinea, e le linee a binario unico, in cui conta in quali stazioni due treni possono incrociarsi.
+
+I punti descritti in dettaglio sono raccolti in 53 file, uno per nodo della rete, dove un nodo è una stazione, un gruppo di stazioni vicine o una linea. Ogni file è una descrizione e non un programma: elenca le stazioni, i loro binari riuniti in gruppi, a quali linee ogni gruppo è collegato da ciascun lato, i deviatoi di ingresso condivisi, i binari di ricovero e, per ogni linea, i binari ammessi in ordine di preferenza. Riporta inoltre le fonti e le questioni rimaste aperte. Il \cref{lst:nodo-lecco} mostra una parte del file della stazione di Lecco.
+
+\begin{lstlisting}[language=json,caption={Parte della descrizione della stazione di Lecco.},label={lst:nodo-lecco}]
+"stations": [{
+  "id": "S01520", "name": "Lecco", "kind": "mixed",
+  "groups": [
+    {"id": "lecco", "kind": "through",
+     "tracks": [{"ref": "1"}, {"ref": "2"}, {"ref": "3"},
+                {"ref": "4"}, {"ref": "5"}],
+     "connections": {
+       "south": ["meso:S01322", "meso:S01522", "meso:S01523",
+                 "meso:S01524", "meso:S01463", "meso:S01460"],
+       "north": ["meso:S01415", "meso:S01416"]}},
+    {"id": "lecco_tronco", "kind": "terminal",
+     "tracks": [{"ref": "tronco"}],
+     "connections": {"south": ["meso:S01463", "meso:S01460"]}}
+  ],
+  "sidings": {"tracks": 19}
+}],
+"lines": {
+  "S8":  {"stations": {"S01520": ["lecco/3", "lecco"]}},
+  "RE8": {"stations": {"S01520": {
+            "from_south": ["lecco/1", "lecco"],
+            "from_north": ["lecco/4", "lecco"]}}}
+}
+\end{lstlisting}
+
+Un programma del progetto legge questi file e innesta ogni nodo nella rete mesoscopica: toglie il nodo unico che rappresentava la stazione e lo sostituisce con un link per ogni binario, con i link di ingresso e di uscita su ciascun lato e con le risorse condivise dei deviatoi. Il risultato è la rete eseguita dal motore, di 6008 nodi e 11452 link. Il \cref{lst:binario-micro} mostra il link di un binario di stazione così generato: capienza 1, una risorsa propria condivisa con il link da cui il treno ne esce, e gli attributi che ne ricordano la stazione, il gruppo e il binario di origine.
+
+\begin{lstlisting}[language=XML,caption={Link di un binario di stazione nella rete di dettaglio.},label={lst:binario-micro}]
+<link id="S00023.p1.in" from="S00023.p1.a.in" to="S00023.p1.b"
+      length="200.0" freespeed="13.9" capacity="3600.0"
+      permlanes="1.0" oneway="1" modes="rail">
+  <attributes>
+    <attribute name="dataStatus" class="java.lang.String">provisional</attribute>
+    <attribute name="microGroup" class="java.lang.String">novara_nord</attribute>
+    <attribute name="microStation" class="java.lang.String">S00023</attribute>
+    <attribute name="microTrack" class="java.lang.String">1</attribute>
+    <attribute name="railsimResourceId" class="java.lang.String">S00023.p1</attribute>
+    <attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+  </attributes>
+</link>
+\end{lstlisting}
+
+Alcune lunghezze della rete di dettaglio non sono misurate. Le banchine valgono 200 metri dove il dato manca, e i tratti di ingresso e di uscita di una stazione 200 metri, più del treno più lungo del modello: in questo modo un treno fermo in attesa di un binario sta per intero oltre la tratta che ha appena percorso e la libera, come un treno fermo al segnale di protezione. Con tratti di 100 metri ogni attesa in stazione teneva occupata la tratta alle spalle e metteva in coda tutta la linea.
+
+\subsection{Rilievi}
+Due rilievi hanno completato i dati che OpenStreetMap non fornisce in modo affidabile. Il primo riguarda il numero dei binari delle stazioni: per le 176 stazioni più servite il valore ricavato dalla cartografia è stato confrontato con le fonti pubbliche e, dove possibile, con l'osservazione diretta. Il secondo riguarda le 236 stazioni delle linee a binario unico, per ciascuna delle quali è stato stabilito se due treni possono incrociarsi, perché da questo dipende la lunghezza dei tratti in cui un treno deve attendere quello di verso opposto. Entrambe le tabelle sono conservate nel progetto e sono lette dal programma che costruisce la rete.
+
+\subsection{Fonti dei dati sui treni}
+Le caratteristiche dei treni sono state scritte nella \cref{sec:materiale-rotabile}. La \cref{tab:dati-treni} indica, per ogni tipo, da quale fonte viene ciascun dato e quali valori sono invece stimati.
+
+\begin{table}[H]
+	\centering
+	\caption{Provenienza dei dati tecnici dei treni.}
+	\label{tab:dati-treni}
+	\small
+	\begin{tabularx}{\textwidth}{l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.24\textwidth}}
+		\toprule
+		Tipo & Dato e fonte & Valori stimati \\
+		\midrule
+		TSR & posti e velocità~\cite{trenord_flotta}; masse e potenza delle casse~\cite{wiki_tsr,scalaenne_tsr}; lunghezze delle casse~\cite{scalaenne_tsr} & accelerazione \\
+		TAF & masse, posti, carico, velocità~\cite{rfi2005taf}; lunghezze~\cite{scalaenne_taf}; potenza~\cite{wiki_taf} & accelerazione \\
+		Caravaggio & lunghezza, posti, potenza, accelerazione~\cite{wiki_caravaggio}; composizione e allestimento dell'operatore~\cite{fantini2021caravaggio}; carico per asse~\cite{scalaenne_caravaggio} & massa a vuoto \\
+		Donizetti & composizione, lunghezza, posti~\cite{fantini2021caravaggio}; massa e potenza~\cite{wiki_pop}; velocità e motori~\cite{trenitalia2017pop} & accelerazione \\
+		ETR 425 & lunghezza, posti, massa, potenza, velocità~\cite{wiki_coradia} & accelerazione \\
+		ETR 245 & lunghezza, posti, velocità~\cite{trenord_flotta} & accelerazione, massa a vuoto \\
+		FLIRT TSI (TILO) & lunghezza, masse, potenza, posti, velocità~\cite{trainswiss_rabe524}; alimentazione~\cite{railwaygazette_tilo} & accelerazione \\
+		ATR 125 & tutti i dati~\cite{stadler_gtw}; posti e velocità anche in~\cite{trenord_flotta} & accelerazione \\
+		Colleoni & massa e potenza~\cite{railvolution_atr803}; lunghezza, posti, velocità~\cite{wiki_atr803}; miglioramento dell'accelerazione~\cite{trenord_flotta} & accelerazione \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+La decelerazione è stimata per tutti i tipi. Le voci di Wikipedia non sono una fonte primaria: sono usate dove né l'operatore né il costruttore pubblicano il dato, e per i tipi principali i valori sono stati confrontati con le presentazioni tecniche del proprietario dei treni~\cite{fantini2021caravaggio} e dell'operatore~\cite{minoia2021esercizio}.
+La consistenza della flotta viene dal comunicato con cui l'operatore ha annunciato il completamento del rinnovo~\cite{fnm2025rinnovo}, da quello sulle consegne successive~\cite{trenord2026caravaggio}, dal bilancio di sostenibilità del 2025~\cite{trenord2026bilancio}, dalla carta dei servizi del 2024~\cite{trenord2024carta} e dalla pagina del proprietario dei treni~\cite{ferrovienord_flotta}. 
+Per i treni più anziani questi documenti non danno il numero per tipo: il dato usato per i TSR viene da~\cite{wiki_tsr}, e quelli di TAF, ETR 425 ed ETR 245 provengono da ricerche da forum e ricerche incrociate da più fonti affidabili. Anche la ripartizione dei tipi sulle linee deriva dall'osservazione diretta e, per i treni nuovi, dalle linee indicate in~\cite{minoia2021esercizio,trenord2026caravaggio}, perché i turni del materiale non sono pubblici.
+
+\subsection{Fonti dei parametri energetici e dei costi}
+I parametri del modello energetico, discussi nella sezione sui costi, hanno ciascuno una fonte o sono dichiarati come ipotesi; la \cref{tab:dati-energia} ne riporta la provenienza. I valori sono raccolti in un file del progetto, e ogni simulazione ne conserva una copia, così che resti traccia dei parametri con cui è stata eseguita.
+
+\begin{table}[H]
+	\centering
+	\caption{Provenienza dei parametri del modello energetico.}
+	\label{tab:dati-energia}
+	\small
+	\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.42\textwidth}>{\raggedright\arraybackslash}X}
+		\toprule
+		Parametro & Fonte \\
+		\midrule
+		Resistenza al moto; coefficiente delle masse rotanti & \cite{dallachiara2015consumo} \\
+		Rendimento di trazione e di recupero in frenata & \cite{andersson2006energy} \\
+		Raggio entro cui l'energia di frenata è riusata & distanza fra le sottostazioni a 3 kV~\cite{minoia_trazione} \\
+		Recupero dell'energia nelle sottostazioni a 3 kV & \cite{andersson2006energy,rfi_energia} \\
+		Rendimento della trasmissione diesel-elettrica & \cite{stadler_gtw} \\
+		Peso di un viaggiatore & \cite{rfi2005taf} \\
+		Consumo di riferimento per la verifica & \cite{uft_consumi} \\
+		Servizi ausiliari; rendimento del motore diesel; energia di un litro di gasolio; riempimento dei treni & ipotesi \\
+		Consumo dell'ATR 125 usato per la taratura & dato indicato dall'autore, senza fonte verificata \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+I costi unitari sono stime di ordine di grandezza. Il loro riferimento complessivo è il contratto di servizio fra l'operatore e la Regione Lombardia per il periodo 2023--2033~\cite{trenord_contratto}, da cui si ricava, insieme ai ricavi da biglietti e alla produzione annua, un costo fra 15 e 19 euro per treno-chilometro; un'analisi indipendente dei conti dell'operatore è in~\cite{traspol2021trenord}. Le singole voci sono stime derivate da questi documenti e dalla letteratura di settore, e a ciascuna è attribuito un grado di confidenza, medio o basso. Per tre valori, il prezzo dell'energia di trazione, quello del gasolio e il consumo dell'ATR 125, la fonte non è stata verificata.
+
+\subsection{Fonti dei dati di confronto}
+I dati con cui i risultati sono confrontati nell'analisi vengono da quattro documenti pubblici dell'operatore. Dal bilancio di sostenibilità del 2025~\cite{trenord2026bilancio} vengono i treni-chilometro, il numero delle corse, gli indici di puntualità, le soppressioni, l'energia di trazione e i costi operativi; dalla carta dei servizi del 2024~\cite{trenord2024carta} la consistenza complessiva della flotta e gli obiettivi di qualità; dai due comunicati sul rinnovo della flotta~\cite{fnm2025rinnovo,trenord2026caravaggio} il numero e il costo dei treni nuovi. La definizione degli indicatori di puntualità e di regolarità è quella della delibera 16/2018 dell'Autorità di regolazione dei trasporti~\cite{art2018delibera16}, la stessa che l'operatore applica nei propri documenti.
