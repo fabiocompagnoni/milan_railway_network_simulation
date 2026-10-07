@@ -47,6 +47,30 @@
 \usepackage{longtable}
 \usepackage{xcolor}
 
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Listato}
+\lstdefinelanguage{json}{
+	string=[s]{"}{"},
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/}
+}
+\lstset{
+	basicstyle=\ttfamily\footnotesize,
+	keywordstyle=\color{blue!50!black},
+	stringstyle=\color{green!35!black},
+	commentstyle=\color{gray},
+	breaklines=true,
+	columns=fullflexible,
+	keepspaces=true,
+	showstringspaces=false,
+	tabsize=2,
+	frame=none,
+	xleftmargin=1.5em,
+	captionpos=b,
+	aboveskip=1em,
+	belowskip=1em
+}
+
 % ---------------------------------------------------------------------------
 % Numeri e unità di misura, con la virgola decimale
 % ---------------------------------------------------------------------------
@@ -68,6 +92,8 @@
 
 \usepackage[hidelinks]{hyperref}
 \usepackage[italian,nameinlink]{cleveref}
+\crefname{listing}{listato}{listati}
+\Crefname{listing}{Listato}{Listati}
 \hypersetup{pdftitle={\titolo},pdfauthor={\autore}}
 
 \begin{document}
@@ -108,34 +134,34 @@
 % Contentuo %
 
 \section{Introduzione}
-\include{parti/introduzione}
+\input{parti/introduzione}
 
 \section{Strumenti e alternative}
-\include{parti/strumenti_alternative}
+\input{parti/strumenti_alternative}
 
 \section{Modello di simulazione}
-\include{parti/modello}
+\input{parti/modello}
 
 \section{Dati e costruzione della rete}
-\include{parti/dati_rete}
+\input{parti/dati_rete}
 
 \section{Orari}
-\include{parti/orari}
+\input{parti/orari}
 
 \section{Dettagli micro della rete}
-\include{parti/dettagli_rete}
+\input{parti/dettagli_rete}
 
 \section{Scenari di simulazione}
-\include{parti/scenari}
+\input{parti/scenari}
 
 \section{Costi e risultati}
-\include{parti/costi}
+\input{parti/costi}
 
 \section{Analisi dei risultati}
-\include{parti/analisi_risultati}
+\input{parti/analisi_risultati}
 
 \section{Limiti, sviluppi futuri e conclusioni}
-\include{parti/limiti_sviluppi_conclusione}
+\input{parti/limiti_sviluppi_conclusione}
 
 \printbibliography[heading=bibintoc]
 
