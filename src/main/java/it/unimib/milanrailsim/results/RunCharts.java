@@ -1,20 +1,26 @@
 package it.unimib.milanrailsim.results;
 
+import it.unimib.milanrailsim.network.FleetConfig;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /** Report charts of a run, rendered headless to PNG (Italian labels). */
 public final class RunCharts {
@@ -23,6 +29,10 @@ public final class RunCharts {
 	private static final int HEIGHT = 700;
 	private static final int EARLIEST_MINUTE = -5;
 	private static final int LATEST_MINUTE = 30;
+	/** Colours told apart by colour-blind readers too (Okabe and Ito), one per train type. */
+	private static final Color[] TYPE_COLOURS = { new Color(0x0072B2), new Color(0xE69F00), new Color(0x009E73),
+		new Color(0x56B4E9), new Color(0xD55E00), new Color(0xCC79A7), new Color(0x999999), new Color(0xF0E442),
+		new Color(0x000000), new Color(0x8C510A) };
 
 	private RunCharts() {
 	}
@@ -91,7 +101,7 @@ public final class RunCharts {
 		for (int minute = 0; minute < running.length; minute++) {
 			series.add(minute / 60.0, running[minute]);
 		}
-		JFreeChart chart = ChartFactory.createXYLineChart("Treni in circolazione nel giorno",
+		JFreeChart chart = ChartFactory.createXYLineChart("Corse in corso nel giorno",
 			"ora", "corse in corso", new XYSeriesCollection(series), PlotOrientation.VERTICAL, false, false, false);
 		save(chart, png);
 	}
@@ -151,6 +161,82 @@ public final class RunCharts {
 		JFreeChart chart = ChartFactory.createXYLineChart("Potenza elettrica nel giorno (media al minuto)",
 			"ora", "potenza [MW]", dataset, PlotOrientation.VERTICAL, true, false, false);
 		save(chart, png);
+	}
+
+	/**
+	 * The trains running at the busiest instant of each hour, stacked by type.
+	 *
+	 * @param typeNames name of each vehicle type by id
+	 */
+	public static void trainsByHour(FleetUse fleet, Map<String, String> typeNames, Path png) {
+		List<String> types = inCatalogueOrder(fleet.byType().keySet());
+		Map<Integer, FleetUse.Hour> byHour = new TreeMap<>();
+		fleet.hours().forEach(hour -> byHour.put(hour.hour(), hour));
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		if (!byHour.isEmpty()) {
+			int first = byHour.keySet().iterator().next();
+			int last = fleet.hours().getLast().hour();
+			// hours with no train keep their place on the axis
+			for (int hour = first; hour <= last; hour++) {
+				FleetUse.Hour counted = byHour.get(hour);
+				for (String type : types) {
+					dataset.addValue(counted == null ? 0 : counted.peakByType().getOrDefault(type, 0),
+						typeNames.getOrDefault(type, type), Integer.valueOf(hour));
+				}
+			}
+		}
+		JFreeChart chart = ChartFactory.createStackedBarChart("Treni in circolo per ora, per tipo",
+			"ora (24 e oltre: dopo la mezzanotte del giorno di servizio)", "treni in corsa nello stesso istante, massimo dell'ora",
+			dataset, PlotOrientation.VERTICAL, true, false, false);
+		paintByType(chart, types);
+		save(chart, png);
+	}
+
+	/** The trains the day used, one bar per type. */
+	public static void fleetByType(FleetUse fleet, Map<String, String> typeNames, Path png) {
+		fleetAgainstReference(Map.of(), fleet.byType(), typeNames, png);
+	}
+
+	/**
+	 * The trains a run used next to those of its reference day, by type.
+	 *
+	 * @param reference trains of the reference day by type id; empty to chart the run alone
+	 * @param run       trains of the run by type id
+	 */
+	public static void fleetAgainstReference(Map<String, Integer> reference, Map<String, Integer> run,
+			Map<String, String> typeNames, Path png) {
+		Set<String> present = new TreeSet<>(run.keySet());
+		present.addAll(reference.keySet());
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		for (String type : inCatalogueOrder(present)) {
+			String name = typeNames.getOrDefault(type, type);
+			if (!reference.isEmpty()) {
+				dataset.addValue(reference.getOrDefault(type, 0), "giorno reale di riferimento", name);
+			}
+			dataset.addValue(run.getOrDefault(type, 0), "questo run", name);
+		}
+		JFreeChart chart = ChartFactory.createBarChart("Treni utilizzati, per tipo", "tipo di treno", "treni",
+			dataset, PlotOrientation.VERTICAL, !reference.isEmpty(), false, false);
+		chart.getCategoryPlot().getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+		save(chart, png);
+	}
+
+	/** The types in the order of the rolling stock catalogue, then any other in alphabetical order. */
+	private static List<String> inCatalogueOrder(Set<String> types) {
+		List<String> ordered = new ArrayList<>();
+		FleetConfig.defaults().types().stream().map(FleetConfig.TrainType::id).filter(types::contains).forEach(ordered::add);
+		new TreeSet<>(types).stream().filter(type -> !ordered.contains(type)).forEach(ordered::add);
+		return ordered;
+	}
+
+	/** A type keeps its colour in every chart, whichever types the run has. */
+	private static void paintByType(JFreeChart chart, List<String> types) {
+		List<String> catalogue = FleetConfig.defaults().types().stream().map(FleetConfig.TrainType::id).toList();
+		for (int series = 0; series < types.size(); series++) {
+			int index = catalogue.indexOf(types.get(series));
+			chart.getCategoryPlot().getRenderer().setSeriesPaint(series,
+				TYPE_COLOURS[(index < 0 ? catalogue.size() + series : index) % TYPE_COLOURS.length]);
+		}
 	}
 
 	private static void save(JFreeChart chart, Path png) {

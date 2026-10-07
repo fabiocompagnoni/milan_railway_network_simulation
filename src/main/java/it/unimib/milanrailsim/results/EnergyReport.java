@@ -15,7 +15,11 @@ final class EnergyReport {
 	private EnergyReport() {
 	}
 
-	static Map<String, Object> json(EnergyLedger.Use use) {
+	/**
+	 * @param trips every trip of the run, to tell how many completed ones the meter left out: those of a
+	 *              train type the energy model has no mass for
+	 */
+	static Map<String, Object> json(EnergyLedger.Use use, List<PunctualityAnalysis.TripOutcome> trips) {
 		Totals totals = use.totals();
 		TripEnergy electric = totals.electric();
 		TripEnergy diesel = totals.diesel();
@@ -46,6 +50,9 @@ final class EnergyReport {
 			peakJson.put("trainsInService", peak.trainsInService());
 			json.put("peakMinute", peakJson);
 		});
+		json.put("completedTripsNotMetered", (int) trips.stream()
+			.filter(trip -> trip.status() == PunctualityAnalysis.TripStatus.COMPLETED && !use.byTrip().containsKey(trip.trip()))
+			.count());
 		return json;
 	}
 

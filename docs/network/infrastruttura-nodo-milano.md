@@ -242,15 +242,47 @@ Criticità**.
   17 sera: nessun arrivo registrato al capolinea, ritardi apparenti di ore
   nell'analisi di puntualità). Il controllo conosce tutte le fermate della **corsa in corso** e rifiuta ogni deviazione che ne attraversi una senza fermarsi. Le fermate sono quelle della corsa, non della giornata del veicolo: nel run di domenica 20 settembre un RE1 in transito a Varese Casbeno non poteva lasciare il binario 1 occupato per il 2 libero, perché su quel binario avrebbe fermato tre ore dopo con un'altra corsa; restava al segnale tenendo il blocco unico da Varese Nord e il treno opposto, fermo sul binario 1, aspettava quel blocco (10 treni bloccati fra Malnate e Cocquio).
   Il controllo rifiuta anche la deviazione che porta il treno su un binario in
-  cui la stessa corsa fermerà più avanti. Nel run di lunedì 28 settembre un
-  R35 attraversava Pavia senza fermarsi, invertiva a Cava Carbonara e tornava
-  a Pavia per terminare sul binario 5: deviato dal binario 6 occupato al 5, si
-  trovava quel binario due volte nel percorso. railsim cerca la fermata
-  successiva dall'inizio del percorso e non dalla posizione del treno
-  (`TrainState.getRouteUntilNextStop`): alla ripartenza da Cava Carbonara
-  trovava la fermata alle spalle del treno e la simulazione si interrompeva
-  alle 7:17 con `fromIndex(46) > toIndex(38)`. Il treno ora attende il binario
-  previsto.
+  cui la stessa corsa fermerà più avanti. Nel run di lunedì 28 settembre il
+  percorso di un R35 passava due volte da Pavia: deviato dal binario 6
+  occupato al 5, dove la corsa termina, si trovava quel binario due volte nel
+  percorso. railsim cerca la fermata successiva dall'inizio del percorso e non
+  dalla posizione del treno (`TrainState.getRouteUntilNextStop`): trovava la
+  fermata alle spalle del treno e la simulazione si interrompeva alle 7:17 con
+  `fromIndex(46) > toIndex(38)`. Il treno ora attende il binario previsto.
+  Lo stesso errore si è ripresentato il 7 ottobre in uno scenario di
+  potenziamento con una seconda corsa R35 al mattino (partenze alle 6:00 e
+  alle 6:21), alle 7:57, con `fromIndex(51) > toIndex(38)`. Il controllo
+  precedente guardava i binari in cui la corsa ferma **secondo l'orario**;
+  qui il binario era entrato nel percorso per una **deviazione precedente**:
+  al primo passaggio da Pavia il treno era stato deviato su un binario libero,
+  e al secondo railsim gli offriva come deviazione, per fermarsi, proprio
+  quel binario. Ora è rifiutata ogni deviazione che passa su un binario di
+  stazione già presente nel percorso del treno
+  (`StationTrackResources.keepsStops`).
+  **Causa a monte, corretta il 7 ottobre.** Il doppio passaggio da Pavia non
+  esiste nella realtà: era un difetto della rete del modello. La corsa ferma a
+  Cava Carbonara, che è un bivio fra la linea per Vercelli e quella per
+  Alessandria, e nella realtà percoorre Sairano Zinasco – Cava Carbonara –
+  Pavia senza invertire. Il nodo di Cava Carbonara, generato in automatico
+  con un solo vicino per lato, dichiarava Pavia e Villanova d'Ardenghi ma non
+  Sairano Zinasco: il link da Sairano Zinasco finiva in un nodo senza uscite.
+  Il calcolo del percorso poteva portare il treno sui binari di Cava
+  Carbonara solo da Pavia, e lo faceva arrivare a Pavia, tornare a Cava
+  Carbonara e rientrare a Pavia: 57 link invece di 46. Aggiunto il ramo per
+  Alessandria (`data/nodes/pavia-alessandria.json`), nessun percorso
+  dell'orario passa più due volte dalla stessa stazione. La regola sulle
+  deviazioni resta come protezione dal difetto di railsim, che si
+  ripresenterebbe con qualunque percorso che ripassi da una stazione.
+  I nodi generati in automatico vanno rivisti a mano dove sono bivi. Nella
+  rete di dettaglio restano 64 link che finiscono in un nodo senza uscite,
+  esaminati tutti il 7 ottobre: nessuno altera un percorso. 49 sono
+  collegamenti diretti fra stazioni non adiacenti, creati dall'orario per le
+  corse che saltano fermate (65 corse al giorno); la stazione di arrivo non
+  li riconosce come vicini e la corsa percorre la linea attraverso le
+  stazioni intermedie senza fermarsi, con un percorso fra 1,00 e 1,11 volte
+  il collegamento diretto. Gli altri 15 sono tronchini di uscita non usati.
+  A Cava Carbonara il collegamento mancante era invece l'unico accesso alla
+  stazione dal lato di Alessandria.
 
 - **Circolazione a SINISTRA**: i treni tengono la sinistra (contrario delle
   auto). Determina l'assegnazione binario→direzione in ogni fascio a doppio

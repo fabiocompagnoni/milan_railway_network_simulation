@@ -46,6 +46,8 @@
 \usepackage{tabularx}
 \usepackage{longtable}
 \usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
 
 \usepackage{listings}
 \renewcommand{\lstlistingname}{Listato}
@@ -127,6 +129,7 @@
 \end{titlepage}
 
 \begin{abstract}
+Il lavoro presenta un modello di simulazione della rete ferroviaria regionale e suburbana della Lombardia, sviluppato per stabilire di quanto si possa aumentare la frequenza del servizio prima che i ritardi si propaghino, e quali punti della rete fissino questo limite. Il modello è un sistema multi-agente situato su un grafo: i treni sono agenti reattivi che interagiscono soltanto attraverso l'occupazione dei binari. È realizzato con railsim, estensione ferroviaria di MATSim, su una rete costruita da dati pubblici, mesoscopica sulle linee e descritta binario per binario nelle stazioni principali e sulle linee a binario unico. Il progetto aggiunge allo strumento la costruzione della rete, l'assegnazione dei treni e dei binari, le regole di circolazione per le stazioni e per il binario unico, gli indicatori di puntualità, un modello dei consumi e dei costi e un'applicazione per definire le simulazioni e analizzarne i risultati. Il modello esegue l'orario di un giorno feriale, 2349 corse con 343 treni, senza treni bloccati, e i suoi indicatori sono coerenti con i dati pubblicati dall'operatore. Due scenari aumentano le corse. Nell'area urbana di Milano un'attesa massima di 10 minuti nelle ore di punta risulta sostenibile, con una riduzione limitata della puntualità e senza superare la flotta disponibile; è ottenuta con corse limitate ai tratti urbani, mentre la cadenza delle singole linee sull'intero percorso resta quella attuale; il primo limite è il binario unico di una linea, non il tunnel del Passante. A frequenze maggiori il limite diventa il tunnel con i suoi capolinea.
 \end{abstract}
 
 \tableofcontents
@@ -146,9 +149,11 @@
 \input{parti/dati_rete}
 
 \section{Orari}
+\label{sec:orari}
 \input{parti/orari}
 
 \section{Dettagli micro della rete}
+\label{sec:dettagli-rete}
 \input{parti/dettagli_rete}
 
 \section{Scenari di simulazione}

@@ -20,7 +20,7 @@ class RailVehicleTypesTest {
 	@Test
 	void definesTheApprovedTypes() {
 		assertEquals(Set.of("tsr", "taf", "caravaggio_421", "caravaggio_521",
-			"donizetti", "etr245", "atr125", "tilo_flirt_tsi", "atr803"), byId().keySet());
+			"donizetti", "etr245", "etr425", "atr125", "tilo_flirt_tsi", "atr803"), byId().keySet());
 	}
 
 	@Test
@@ -34,6 +34,12 @@ class RailVehicleTypesTest {
 			assertTrue(type.getMaximumVelocity() > 0);
 			assertTrue(type.getLength() > 0);
 		}
+	}
+
+	@Test
+	void everyTypeCarriesTheNameOfTheCatalogue() {
+		assertEquals("Caravaggio ETR 521", byId().get("caravaggio_521").getAttributes().getAttribute(RailVehicleTypes.NAME_ATTRIBUTE));
+		assertEquals("Colleoni ATR 803", byId().get("atr803").getAttributes().getAttribute(RailVehicleTypes.NAME_ATTRIBUTE));
 	}
 
 	@Test

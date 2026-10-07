@@ -1,0 +1,52 @@
+L'orario pubblico elenca le corse e le fermate con i loro orari, ma non dice quale treno effettua ogni corsa, su quale binario ferma, né dove sta un treno fra una corsa e la successiva. railsim legge queste tre informazioni dall'orario che riceve e non le decide. Vanno quindi ricostruite prima di ogni simulazione, e il modo in cui lo si fa determina le condizioni iniziali del sistema. Questa sezione descrive i passaggi che portano dall'orario pubblico all'orario simulato.
+
+\subsection{Dall'orario pubblico all'orario simulato}
+A ogni simulazione l'orario viene generato di nuovo dal file GTFS per il giorno scelto, in modo che lo stesso procedimento valga per un giorno feriale, un sabato o un festivo. Le corse del giorno sono tradotte nel formato di MATSim: ogni corsa diventa una partenza su un percorso, cioè una sequenza di link della rete con le fermate e gli scarti di tempo dalla partenza. Per un mercoledì feriale si ottengono 2349 corse su 57 linee; una sola corsa del giorno è esclusa, perché ferma fuori dalla rete modellata.
+
+La prima simulazione completa ha mostrato che l'orario non bastava così com'era. Il ritardo medio risultava negativo, di oltre tre minuti: senza passeggeri che salgono e scendono, il conducente simulato non ha motivo di attendere alle fermate, e i treni arrivavano in anticipo. Ogni fermata è stata quindi marcata in modo che il treno attenda l'orario di partenza pubblicato. Di conseguenza i tempi di sosta del modello sono quelli dell'orario reale, che contengono già il tempo medio di salita e discesa dei viaggiatori. Un treno può ancora arrivare in anticipo a una fermata, ma non ripartire prima dell'orario.
+
+\subsection{Giri treno}
+Nella stessa simulazione ogni corsa aveva un treno proprio, e solo 479 treni su 2306 riuscivano a entrare in circolazione: gli altri non trovavano posto al binario di partenza. Nella realtà lo stesso treno fa la spola fra i capolinea, e una linea è servita da un numero di treni che dipende dal tempo di giro e dalla frequenza. Le corse sono state quindi concatenate in giri treno con una regola semplice: un treno arrivato a un capolinea effettua la successiva partenza della stessa linea da quel capolinea, purché sia trascorso un tempo minimo di inversione; fra più treni disponibili la corsa tocca a quello fermo da più tempo; se nessun treno è disponibile ne entra in servizio uno nuovo. Con questa regola le corse di una giornata feriale sono effettuate da 343 treni.
+
+Il tempo di inversione è il tempo che serve al macchinista per cambiare cabina. Era stato posto a 15 minuti e poi ridotto a 5, il minimo tecnico, perché con il valore più alto il modello richiedeva più treni del necessario e, negli scenari con più corse, non riusciva a riusare il materiale ai capolinea. È una stima, e fra i parametri del modello è quello che più incide sul numero dei treni.
+
+I turni reali del materiale non sono pubblici, e legare ogni treno a una sola linea è un'approssimazione. In due stazioni l'approssimazione produceva un difetto evidente e la regola è stata estesa: a Bergamo fra le linee R1 e R5, e a Milano Cadorna fra R22 e RE1, che percorrono la stessa relazione, un treno arrivato con una linea può ripartire con una corsa dell'altra. Le linee che condividono i treni sono dichiarate nella descrizione della stazione.
+
+\subsection{Piano dei binari}
+Nelle stazioni descritte in dettaglio ogni fermata deve indicare un binario preciso. Il piano dei binari lo assegna prima della simulazione, partendo dall'elenco che ogni linea ha per ogni stazione: i gruppi di binari ammessi, in ordine di preferenza, oppure un binario fisso. Il treno riceve il primo binario ammesso che sia libero per tutta la durata della sosta. Durante la simulazione railsim può ancora deviarlo su un altro binario della stessa stazione se quello previsto è occupato; il piano fissa quindi la situazione normale, la deviazione gestisce le eccezioni.
+
+\subsection{Ricoveri}
+Un treno fermo fra due corse occupa per railsim il binario su cui è arrivato. Per una sosta breve è ciò che accade nella realtà; per una sosta lunga no, perché il materiale dell'ora di punta, che a metà giornata non serve, viene portato in deposito. Il modello introduce per questo i ricoveri: una sosta fino a 60 minuti avviene al binario di arrivo, mentre oltre questa soglia il treno lascia il binario, raggiunge il ricovero della stazione e rientra 4 minuti prima della partenza. Soglia e anticipo sono stime. La capienza di ogni ricovero viene da rilievi dove sono stati possibili. Il tragitto verso i depositi lontani dalla stazione non è simulato: il ricovero è collegato direttamente alla stazione.
+
+\subsection{Il caso della linea R22 a Milano Cadorna}
+Le regole appena descritte non sono state stabilite in una volta. Il caso che segue mostra come sono state corrette a partire dai dati di una simulazione, cercando una causa alla volta e verificando ogni ipotesi prima di intervenire.
+
+Nella simulazione del giorno reale un solo treno, della linea R22 Milano Cadorna--Varese, accumulava un ritardo di quasi cinque ore. Arrivato a Cadorna in orario alle 9:51, aveva la corsa successiva alle 11:39: superata la soglia dei 60 minuti si avviava al ricovero, restava in coda al suo ingresso fino alle 16:05 e ripartiva con 270 minuti di ritardo, che trascinava su tutte le corse successive. Il ritardo medio della linea era di 1474 secondi, contro i 63 dell'intera rete.
+
+La prima causa era la capienza del ricovero di Cadorna, fissato a 8 binari. Dall'orario risulta che i treni da ricoverare a Cadorna sono 14 fra le 9 e le 10 e 18 fra le 10 e le 12: è il materiale della punta del mattino, che nella realtà raggiunge i depositi lungo la linea. Nel modello i treni in più restavano in coda all'ingresso. Il ricovero è stato reso non vincolante, con una capienza che rappresenta insieme i binari esterni alla stazione e i depositi più a nord. La seconda causa era il legame dei treni con la singola linea: un treno arrivato come R22 attendeva la successiva partenza R22 anche quando una RE1 partiva prima. Da qui la condivisione dei treni descritta sopra.
+
+Con le due correzioni il ritardo medio della rete si è quasi dimezzato, ma la puntualità a destinazione è scesa dal 92,0\% al 90,3\%: 40 corse in più arrivavano con oltre cinque minuti di ritardo, tutte su linee che terminano a Cadorna. L'ipotesi che le manovre da e per il ricovero ostacolassero gli altri treni è stata verificata sui dati e scartata. La causa era nel piano dei binari, che assegnava lo stesso binario a due treni nello stesso momento, 22 volte a Cadorna e 169 in tutta la rete. I binari però bastavano: contando minuto per minuto i treni presenti a Cadorna, il massimo è di 5 treni sui 4 binari dei regionali, per sei minuti in tutta la giornata, e di 4 treni sui 5 binari dei suburbani. Le sovrapposizioni nascevano dall'ordine di costruzione del piano, che assegnava i binari un treno alla volta per l'intera giornata. I primi treni occupavano i binari a tratti lungo tutto il giorno, e i successivi trovavano intervalli liberi che non coincidevano con le proprie soste. È un risultato noto: l'assegnazione di intervalli di tempo a un insieme di risorse usa il numero minimo di risorse se gli intervalli sono presi in ordine di inizio, mentre in un altro ordine il numero può crescere.
+
+Il piano scorre ora tutte le corse della giornata in ordine di tempo. Poiché i binari ammessi dipendono dalla linea, il minimo non è garantito: quando nessun binario ammesso è libero, il treno in sosta che ripartirà per ultimo viene mandato al ricovero. La \cref{tab:orari-r22} riporta gli indicatori nei tre passaggi.
+
+\begin{table}[H]
+	\centering
+	\caption{Effetto delle correzioni sul giorno reale.}
+	\label{tab:orari-r22}
+	\begin{tabularx}{\textwidth}{Xrrr}
+		\toprule
+		Indicatore & Prima & Ricovero e treni condivisi & Anche piano in ordine di tempo \\
+		\midrule
+		Ritardo medio & \SI{96}{\second} & \SI{53}{\second} & \SI{48}{\second} \\
+		Puntualità a destinazione & 92,0\% & 90,3\% & 94,0\% \\
+		Puntualità su tutte le fermate & 96,0\% & 96,1\% & 96,6\% \\
+		Ritardo medio della linea R22 & \SI{1474}{\second} & \SI{49}{\second} & \SI{56}{\second} \\
+		Ritardo massimo della linea R22 & 303 min & 34 min & 19 min \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Il caso mostra una proprietà del sistema su cui si tornerà: una regola locale, l'ordine con cui si assegnano i binari di una stazione, ha cambiato il ritardo di una linea di un ordine di grandezza e la puntualità dell'intera rete di alcuni punti.
+
+\subsection{Fine del servizio}
+Terminata l'ultima corsa del proprio giro, un treno resterebbe sulla rete, occupando il binario di arrivo, e la simulazione proseguirebbe a rete ferma fino al limite orario. Il modello ritira quindi il conducente al termine dell'ultima corsa, e la simulazione si conclude quando l'ultimo treno ha finito il servizio.

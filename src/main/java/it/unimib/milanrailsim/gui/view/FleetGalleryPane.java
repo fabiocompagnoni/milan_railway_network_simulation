@@ -182,7 +182,7 @@ final class FleetGalleryPane extends VBox {
 		String lines = assignments.byLine().entrySet().stream()
 			.filter(entry -> entry.getValue().stream().anyMatch(share -> share.vehicleTypeId().equals(typeId)))
 			.map(Map.Entry::getKey).sorted().reduce((a, b) -> a + " " + b).orElse("");
-		if (LineAssignments.REGIONAL_DEFAULT_TYPE.equals(typeId)) {
+		if (LineAssignments.REGIONAL_DEFAULT.stream().anyMatch(share -> share.vehicleTypeId().equals(typeId))) {
 			lines += (lines.isEmpty() ? "" : " ") + "+ regionali non assegnate";
 		}
 		return lines.isEmpty() ? "nessuna" : lines;
