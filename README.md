@@ -30,7 +30,9 @@ which parts of the network set that limit?** The real day is the reference;
 two families of scenarios add trips on top of it.
 
 Exam project for *Sistemi Complessi: Modelli e Simulazione*, Università degli
-Studi di Milano-Bicocca.
+Studi di Milano-Bicocca. 
+The model, the scenarios and the results are
+described in the [report](report/Compagnoni_MRailSim.pdf) (in Italian).
 
 ## What it does
 
