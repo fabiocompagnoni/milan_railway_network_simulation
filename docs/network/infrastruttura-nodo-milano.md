@@ -273,9 +273,16 @@ Criticità**.
   dell'orario passa più due volte dalla stessa stazione. La regola sulle
   deviazioni resta come protezione dal difetto di railsim, che si
   ripresenterebbe con qualunque percorso che ripassi da una stazione.
-  I nodi generati in automatico vanno rivisti a mano dove sono bivi: nella
+  I nodi generati in automatico vanno rivisti a mano dove sono bivi. Nella
   rete di dettaglio restano 64 link che finiscono in un nodo senza uscite,
-  non ancora esaminati uno per uno.
+  esaminati tutti il 7 ottobre: nessuno altera un percorso. 49 sono
+  collegamenti diretti fra stazioni non adiacenti, creati dall'orario per le
+  corse che saltano fermate (65 corse al giorno); la stazione di arrivo non
+  li riconosce come vicini e la corsa percorre la linea attraverso le
+  stazioni intermedie senza fermarsi, con un percorso fra 1,00 e 1,11 volte
+  il collegamento diretto. Gli altri 15 sono tronchini di uscita non usati.
+  A Cava Carbonara il collegamento mancante era invece l'unico accesso alla
+  stazione dal lato di Alessandria.
 
 - **Circolazione a SINISTRA**: i treni tengono la sinistra (contrario delle
   auto). Determina l'assegnazione binario→direzione in ogni fascio a doppio
