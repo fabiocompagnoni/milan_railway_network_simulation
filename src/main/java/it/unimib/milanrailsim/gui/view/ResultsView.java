@@ -2,6 +2,7 @@ package it.unimib.milanrailsim.gui.view;
 
 import it.unimib.milanrailsim.gui.app.AppModel;
 import it.unimib.milanrailsim.network.GtfsFeed;
+import it.unimib.milanrailsim.runs.RunFleet;
 import it.unimib.milanrailsim.runs.RunLibrary.Entry;
 import it.unimib.milanrailsim.runs.RunLibrary;
 import it.unimib.milanrailsim.runs.RunResults.LineRow;
@@ -73,6 +74,8 @@ public final class ResultsView extends BorderPane {
 	private Entry entry;
 	private RunResults results;
 	private StopLabels labels;
+	private Optional<RunFleet> fleet = Optional.empty();
+	private Optional<FleetTab.Reference> fleetReference = Optional.empty();
 
 	public ResultsView(AppModel model, Runnable onOpenLibrary) {
 		this.model = model;
@@ -108,6 +111,10 @@ public final class ResultsView extends BorderPane {
 			protected RunResults call() {
 				baseline = findBaseline(selected);
 				baselineResults = baseline == null ? null : RunResults.load(baseline.dir());
+				fleet = RunFleet.read(selected.dir());
+				Entry reference = baseline;
+				fleetReference = reference == null ? Optional.empty()
+					: RunFleet.read(reference.dir()).map(real -> new FleetTab.Reference(reference.name(), real));
 				labels = new StopLabels(model.feed().join().stopsById().values().stream()
 					.collect(Collectors.toMap(GtfsFeed.Stop::id, GtfsFeed.Stop::name, (first, second) -> first)));
 				return RunResults.load(selected.dir());
@@ -166,7 +173,8 @@ public final class ResultsView extends BorderPane {
 		tabs.getTabs().addAll(new Tab("Sintesi", summaryTab()), new Tab("Linee", linesTab()),
 			new Tab("Stazioni", DelayTabs.stations(results, labels)),
 			new Tab("Treni", DelayTabs.trains(results, labels)), new Tab("Corse", visitsTab()),
-			new Tab("Energia", EnergyTab.of(results)), new Tab("Costi", costsTab()),
+			new Tab("Energia", EnergyTab.of(results)), new Tab("Flotta", FleetTab.of(results.dir(), fleet, fleetReference)),
+			new Tab("Costi", costsTab()),
 			new Tab("Scenario", ScenarioTab.of(results.dir())));
 		VBox.setVgrow(tabs, Priority.ALWAYS);
 		VBox column = new VBox(16, header, headline, tabs);
@@ -217,6 +225,13 @@ public final class ResultsView extends BorderPane {
 				delta ? baselineResults.punctuality(ON_TIME_THRESHOLD_S).flatMap(b -> results.punctuality(ON_TIME_THRESHOLD_S)
 					.map(v -> points(v - b))).orElse(null) : null, false));
 			figures.add(metric("Fermate osservate", String.valueOf(manifest.stopVisits()), null, false));
+		});
+		fleet.ifPresent(used -> {
+			int trains = used.use().trains().size();
+			figures.add(metric("Treni utilizzati", String.valueOf(trains), delta
+				? fleetReference.map(real -> String.format(Locale.ITALY, "%+d sul giorno reale",
+					trains - real.fleet().use().trains().size())).orElse(null)
+				: "vedi la scheda Flotta", false));
 		});
 		figures.addAll(List.of(
 			metric("Treni non arrivati", String.valueOf(manifest.unfinishedTrains()),
@@ -441,7 +456,7 @@ public final class ResultsView extends BorderPane {
 			metric("Treni-ora", String.format(Locale.ITALY, "%,.0f", simulated.trainHours()),
 				String.format(Locale.ITALY, "da orario %,.0f", planned.trainHours()), false),
 			metric("Treni impiegati", String.valueOf(simulated.fleetSize()),
-				"minimo teorico da orario " + planned.fleetSize(), false));
+				"minimo teorico da orario " + planned.fleetSize() + " · dettaglio nella scheda Flotta", false));
 		GridPane table = new GridPane();
 		table.setHgap(24);
 		table.setVgap(6);
