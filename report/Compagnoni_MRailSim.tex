@@ -48,6 +48,8 @@
 \usepackage{xcolor}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 
 \usepackage{listings}
 \renewcommand{\lstlistingname}{Listato}
@@ -129,7 +131,10 @@
 \end{titlepage}
 
 \begin{abstract}
-Il lavoro presenta un modello di simulazione della rete ferroviaria regionale e suburbana della Lombardia, sviluppato per stabilire di quanto si possa aumentare la frequenza del servizio prima che i ritardi si propaghino, e quali punti della rete fissino questo limite. Il modello è un sistema multi-agente situato su un grafo: i treni sono agenti reattivi che interagiscono soltanto attraverso l'occupazione dei binari. È realizzato con railsim, estensione ferroviaria di MATSim, su una rete costruita da dati pubblici, mesoscopica sulle linee e descritta binario per binario nelle stazioni principali e sulle linee a binario unico. Il progetto aggiunge allo strumento la costruzione della rete, l'assegnazione dei treni e dei binari, le regole di circolazione per le stazioni e per il binario unico, gli indicatori di puntualità, un modello dei consumi e dei costi e un'applicazione per definire le simulazioni e analizzarne i risultati. Il modello esegue l'orario di un giorno feriale, 2349 corse con 343 treni, senza treni bloccati, e i suoi indicatori sono coerenti con i dati pubblicati dall'operatore. Due scenari aumentano le corse. Nell'area urbana di Milano un'attesa massima di 10 minuti nelle ore di punta risulta sostenibile, con una riduzione limitata della puntualità e senza superare la flotta disponibile; è ottenuta con corse limitate ai tratti urbani, mentre la cadenza delle singole linee sull'intero percorso resta quella attuale; il primo limite è il binario unico di una linea, non il tunnel del Passante. A frequenze maggiori il limite diventa il tunnel con i suoi capolinea.
+Il lavoro studia, con un modello di simulazione, quanto si possa aumentare la frequenza dei treni regionali e suburbani della Lombardia senza apportare modifiche alll'infrastruttura esistente, e quali punti della rete siano il limite per questo obiettivo.\\
+Il servizio è modellato come un sistema multi-agente modellato tramite un grafo. L'ambiente corrisponde alla rete, descritta sia in modo mesoscopico che microscopico a seconda del livello necessario. Gli agenti sono i treni, reattivi ed eterogenei per prestazioni, e interagiscono solo in modo indiretto, contendendosi i binari: ritardi, code e blocchi non sono scritti in alcuna regola ed emergono da questa interazione.\\
+Il modello è deterministico e non non sono stati considerati i passeggeri come agenti del sistema ma come massa trasportata dai treni. La rete, l'assegnazione dei treni alle corse e ai binari e le regole di precedenza nelle stazioni e sul binario unico sono state ricavate da dati pubblici. Ogni simulazione calcola puntualità, consumi e costi. Il modello è stato validato sull'orario reale di un'intera settimana: tutte le corse sono completate, i tempi di percorrenza si discostano di meno dell'1\% dall'orario, l'energia di pochi punti percentuali dai dati pubblicati, e la puntualità, 94\%, è un limite superiore di quella reale. Due gruppi di scenari aumentano le corse. Il servizio può crescere solo in modo localizzato: un'attesa massima di 10 minuti sui tratti urbani richiede 33 treni e il 6\% di costi in più e riduce la puntualità di 2,4 punti.\\
+I limiti sono il binario unico, che porta al 66\% la puntualità della linea S9, e il tunnel del Passante e i nodi attorno a Milano, dove un aumento diffuso riduce le corse completate anche sulle linee non potenziate.
 \end{abstract}
 
 \tableofcontents
@@ -148,7 +153,7 @@ Il lavoro presenta un modello di simulazione della rete ferroviaria regionale e 
 \section{Dati e costruzione della rete}
 \input{parti/dati_rete}
 
-\section{Orari}
+\section{Preparazione dell'orario}
 \label{sec:orari}
 \input{parti/orari}
 
@@ -159,15 +164,35 @@ Il lavoro presenta un modello di simulazione della rete ferroviaria regionale e 
 \section{Scenari di simulazione}
 \input{parti/scenari}
 
-\section{Costi e risultati}
+\section{Calcolo dei consumi e dei costi}
+\label{sec:costi}
 \input{parti/costi}
 
 \section{Analisi dei risultati}
+\label{sec:analisi}
 \input{parti/analisi_risultati}
+
+\section{Validazione del modello}
+\label{sec:validazione}
+\input{parti/validazione}
+
+\section{Architettura e dettagli implementativi}
+\label{sec:architettura}
+\input{parti/architettura}
 
 \section{Limiti, sviluppi futuri e conclusioni}
 \input{parti/limiti_sviluppi_conclusione}
 
 \printbibliography[heading=bibintoc]
+
+\clearpage
+\appendix
+\section{Linee, stazioni e tratte in dettaglio}
+\label{app:linee}
+Per ognuna delle 61 linee simulate sono riportati le corse del giorno feriale, la lunghezza, le tratte a binario unico e il percorso. Le stazioni in grassetto sono descritte in dettaglio, le altre sono mesoscopiche. Ogni stazione in dettaglio è descritta una sola volta, sotto la prima linea che la serve: fra parentesi quadre nel percorso se ha un solo gruppo di binari, nella tabella che segue la linea se ne ha più di uno.
+
+{\small
+\input{parti/linee_dettaglio}
+}
 
 \end{document}
