@@ -77,7 +77,8 @@ public final class EngineProcess {
 		}
 	}
 
-	private static Path javaExecutable() {
+	/** The java command of the runtime the application itself runs on: the packaged one once installed. */
+	static Path javaExecutable() {
 		boolean windows = System.getProperty("os.name").toLowerCase(Locale.ROOT).startsWith("windows");
 		return Path.of(System.getProperty("java.home"), "bin", windows ? "java.exe" : "java");
 	}

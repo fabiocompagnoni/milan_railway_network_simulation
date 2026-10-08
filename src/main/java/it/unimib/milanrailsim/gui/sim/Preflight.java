@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.LongSupplier;
 
-/** Checks a run can start: disk space, a costs source, a usable run name. */
+/** Checks a run can start: disk space, a costs source, a usable run name, the engine launcher. */
 public final class Preflight {
 
 	/** A baseline run archive weighs about a gigabyte; the margin covers analysis files. */
@@ -17,18 +17,22 @@ public final class Preflight {
 	public record Finding(boolean blocking, String message) {
 	}
 
-	private final Path runsDir;
-	private final Path costsFile;
-	private final LongSupplier freeBytes;
-
-	public Preflight(Path runsDir, Path costsFile) {
-		this(runsDir, costsFile, () -> usableSpace(runsDir));
+	/** What the checks need to know about the host: free space for the runs and the java command the engine starts with. */
+	record Machine(LongSupplier freeBytes, Path engineLauncher) {
 	}
 
-	Preflight(Path runsDir, Path costsFile, LongSupplier freeBytes) {
+	private final Path runsDir;
+	private final Path costsFile;
+	private final Machine machine;
+
+	public Preflight(Path runsDir, Path costsFile) {
+		this(runsDir, costsFile, new Machine(() -> usableSpace(runsDir), EngineProcess.javaExecutable()));
+	}
+
+	Preflight(Path runsDir, Path costsFile, Machine machine) {
 		this.runsDir = runsDir;
 		this.costsFile = costsFile;
-		this.freeBytes = freeBytes;
+		this.machine = machine;
 	}
 
 	public List<Finding> check(String runName) {
@@ -38,7 +42,11 @@ public final class Preflight {
 		} else if (Files.exists(runsDir.resolve(runName))) {
 			findings.add(new Finding(true, "Esiste già un run chiamato «" + runName + "». Scegli un altro nome."));
 		}
-		long free = freeBytes.getAsLong();
+		if (!Files.isRegularFile(machine.engineLauncher())) {
+			findings.add(new Finding(true, "Il motore di simulazione non può partire: manca " + machine.engineLauncher()
+				+ ". L'installazione è incompleta: reinstalla l'applicazione."));
+		}
+		long free = machine.freeBytes().getAsLong();
 		if (free < BYTES_PER_RUN) {
 			findings.add(new Finding(true, "Spazio su disco insufficiente: " + megabytes(free) + " liberi, ne servono almeno "
 				+ megabytes(BYTES_PER_RUN) + " per questo run. Libera spazio in " + runsDir + " e riprova."));
