@@ -1,9 +1,9 @@
 L'orario pubblico elenca le corse e le fermate con i loro orari, ma non dice quale treno effettua ogni corsa, su quale binario ferma, né dove sta un treno fra una corsa e la successiva. railsim legge queste tre informazioni dall'orario che riceve e non le decide. Vanno quindi ricostruite prima di ogni simulazione, e il modo in cui lo si fa determina le condizioni iniziali del sistema. Questa sezione descrive i passaggi che portano dall'orario pubblico all'orario simulato.
 
 \subsection{Dall'orario pubblico all'orario simulato}
-A ogni simulazione l'orario viene generato di nuovo dal file GTFS per il giorno scelto, in modo che lo stesso procedimento valga per un giorno feriale, un sabato o un festivo. Le corse del giorno sono tradotte nel formato di MATSim: ogni corsa diventa una partenza su un percorso, cioè una sequenza di link della rete con le fermate e gli scarti di tempo dalla partenza. Per un mercoledì feriale l'orario contiene 2502 corse ferroviarie su 61 linee; ne sono simulate 2349 su 57 linee. Le 153 escluse sono le 152 corse delle linee S10, S30, S40 e S50, che si svolgono in gran parte nel Canton Ticino e non confluiscono sulla rete suburbana di Milano, e una corsa che ferma fuori dalla rete modellata. Le corse su autobus sostitutivi presenti nell'orario non sono considerate.
+A ogni simulazione l'orario viene generato di nuovo dal file GTFS per il giorno scelto, in modo che lo stesso procedimento valga per un giorno feriale, un sabato o un festivo. Le corse del giorno sono tradotte nel formato di MATSim: ogni corsa diventa una partenza su un percorso, cioè una sequenza di link della rete con le fermate e gli scarti di tempo dalla partenza. Per un mercoledì feriale l'orario contiene 2502 corse ferroviarie su 61 linee; ne sono simulate 2501 su tutte le 61 linee, comprese le quattro linee TILO che si svolgono in gran parte nel Canton Ticino. L'unica corsa esclusa è una corsa della linea RE13 che ferma fuori dalla rete modellata. Le corse su autobus sostitutivi presenti nell'orario non sono considerate.
 
-L'offerta cambia con il tipo di giorno, come riportato nella \cref{tab:orari-giorni}. Il sabato non circolano tre linee suburbane, S2, S12 e S19; la domenica mancano anche quattro linee regionali. Le stazioni delle tre linee suburbane restano servite dalle altre linee che percorrono gli stessi tratti, con circa metà delle corse. La domenica, invece, 15 stazioni delle quattro linee regionali non hanno alcun treno fra quelli simulati.
+L'offerta cambia con il tipo di giorno, come riportato nella \cref{tab:orari-giorni}. Il sabato non circolano tre linee suburbane, S2, S12 e S19; la domenica mancano anche quattro linee regionali e la S40. Le stazioni delle tre linee suburbane restano servite dalle altre linee che percorrono gli stessi tratti, con circa metà delle corse. La domenica, invece, 15 stazioni delle quattro linee regionali non hanno alcun treno fra quelli simulati.
 
 \begin{table}[H]
 	\centering
@@ -13,9 +13,9 @@ L'offerta cambia con il tipo di giorno, come riportato nella \cref{tab:orari-gio
 		\toprule
 		Giorno & Corse & Linee & Linee assenti o ridotte rispetto al feriale \\
 		\midrule
-		Feriale & 2349 & 57 & \\
-		Sabato & 2035 & 54 & assenti S2, S12, S19; R27 da 37 a 2 corse; S7 da 40 a 36 \\
-		Domenica & 1758 & 50 & assenti anche R15, R18, R27, R41; S8 da 74 a 38 corse; S7 a 22 \\
+		Feriale & 2501 & 61 & \\
+		Sabato & 2190 & 58 & assenti S2, S12, S19; R27 da 37 a 2 corse; S7 da 40 a 36 \\
+		Domenica & 1881 & 53 & assenti anche R15, R18, R27, R41, S40; S8 da 74 a 38 corse; S7 a 22 \\
 		\bottomrule
 	\end{tabularx}
 \end{table}
@@ -23,7 +23,7 @@ L'offerta cambia con il tipo di giorno, come riportato nella \cref{tab:orari-gio
 La prima simulazione completa ha mostrato che l'orario non bastava così com'era. Il ritardo medio risultava negativo, di oltre tre minuti: senza passeggeri che salgono e scendono, il conducente simulato non ha motivo di attendere alle fermate, e i treni arrivavano in anticipo. Ogni fermata è stata quindi marcata in modo che il treno attenda l'orario di partenza pubblicato. Di conseguenza i tempi di sosta del modello sono quelli dell'orario reale, che contengono già il tempo medio di salita e discesa dei viaggiatori. L'orario è espresso in minuti interi, e l'85\% delle soste intermedie dura esattamente 60 secondi: è il valore pubblicato, non una sosta misurata. Un treno può ancora arrivare in anticipo a una fermata, ma non ripartire prima dell'orario.
 
 \subsection{Assegnazione dei treni alle corse}
-Nelle prime simulazioni ogni corsa aveva un treno proprio, e solo 479 treni su 2306 riuscivano a entrare in circolazione: gli altri non trovavano posto al binario di partenza. Nella realtà lo stesso treno fa la spola fra i capolinea, e una linea è servita da un numero di treni che dipende dal tempo che un treno impiega per andare e tornare e dalla frequenza~\cite{alfieri2006circulation}. Le corse sono state quindi assegnate ai treni con una regola semplice: un treno arrivato a un capolinea effettua la successiva partenza della stessa linea da quel capolinea, purché sia trascorso un tempo minimo di inversione; fra più treni disponibili la corsa tocca a quello fermo da più tempo; se nessun treno è disponibile ne entra in servizio uno nuovo. Con questa regola le corse di una giornata feriale sono effettuate da 343 treni.
+Se ogni corsa avesse un treno proprio, la maggior parte dei treni non troverebbe posto al binario di partenza. Nella realtà lo stesso treno fa la spola fra i capolinea, e una linea è servita da un numero di treni che dipende dal tempo che un treno impiega per andare e tornare e dalla frequenza~\cite{alfieri2006circulation}. Le corse sono state quindi assegnate ai treni con una regola semplice: un treno arrivato a un capolinea effettua la successiva partenza della stessa linea da quel capolinea, purché sia trascorso un tempo minimo di inversione; fra più treni disponibili la corsa tocca a quello fermo da più tempo; se nessun treno è disponibile ne entra in servizio uno nuovo. Con questa regola le 2501 corse di una giornata feriale sono effettuate da 370 treni.
 
 Il tempo di inversione è il tempo minimo che deve passare fra l'arrivo di un treno al capolinea e la sua ripartenza: comprende la discesa dei viaggiatori, il cambio di cabina del macchinista e la salita. Era stato posto a 15 minuti e poi ridotto a 5. Il valore è un minimo tecnico e non una sosta programmata, perché la durata effettiva della sosta è fissata dall'orario della corsa successiva; è stato scelto di 5 minuti perché resti valido anche negli scenari in cui le corse si susseguono a 5 minuti. È una stima, e fra i parametri del modello è quello che più incide sul numero dei treni.
 
