@@ -71,6 +71,14 @@ jobs:
         shell: bash
         run: mvn -B -ntp -DskipTests verify -Pdist $DIST_VERSION
 
+      # the engine is started with the java command of the packaged runtime: an
+      # installer without it opens but cannot run a simulation. The jpackage
+      # options are the same on every platform, so the Linux package stands for all
+      - name: Check the installer carries the java command
+        if: matrix.platform == 'linux'
+        shell: bash
+        run: dpkg-deb --contents target/dist/*.deb | grep -q 'lib/runtime/bin/java$'
+
       # the shaded jar holds the JavaFX natives of the platform that built it
       - name: Name the jar after its platform
         shell: bash
