@@ -82,6 +82,24 @@ class VehicleCirculationsTest {
 	}
 
 	@Test
+	void onAPeakRankedLineTheTrainBusiestAtPeakTakesTheFirstShare() {
+		LineAssignments shares = LineAssignments.defaults().with("S1",
+			List.of(new LineAssignments.Share("tilo_flirt_6", 50), new LineAssignments.Share("tilo_flirt_4", 50)));
+		RouteVehicleAssignment byPeakLoad = new RouteVehicleAssignment(shares, Set.of("S1"));
+
+		// TN leaves after midnight, T1 at 08:01: the later chain in service order is the one busy at peak
+		Vehicles circulated = VehicleCirculations.apply(result.schedule(), result.vehicles(),
+			List.of(List.of("TN"), List.of("T1")), byPeakLoad);
+
+		assertEquals("tilo_flirt_4", typeOf(circulated, "S1_circ_1"));
+		assertEquals("tilo_flirt_6", typeOf(circulated, "S1_circ_2"));
+	}
+
+	private static String typeOf(Vehicles vehicles, String vehicleId) {
+		return vehicles.getVehicles().get(Id.create(vehicleId, Vehicle.class)).getType().getId().toString();
+	}
+
+	@Test
 	void rejectsChainsWithUnknownTrips() {
 		assertThrows(IllegalArgumentException.class, () -> VehicleCirculations.apply(result.schedule(),
 			result.vehicles(), List.of(List.of("nope")), RouteVehicleAssignment.defaults()));

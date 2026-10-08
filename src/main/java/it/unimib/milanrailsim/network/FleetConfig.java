@@ -53,6 +53,7 @@ public record FleetConfig(List<TrainType> types) {
 	private static final String TRENORD_FLEET = "Trenord, La flotta, trenord.it (consultato il 5 agosto 2026)";
 	private static final String WIKIPEDIA_CARAVAGGIO = "Wikipedia, Elettrotreno FS ETR 421/521 (consultato il 5 agosto 2026)";
 	private static final String TILO_SOURCES = "Schede RABe 524 FLIRT TSI: trainswiss.ch, sguggiari.ch, Wikipedia (consultati il 5 agosto 2026)";
+	private static final String TRAINSWISS_TILO = "trainswiss, RABDe 524 Tilo (consultato l'8 ottobre 2026)";
 	private static final String WIKIPEDIA_CORADIA_MERIDIAN =
 		"Wikipedia, Elettrotreno Alstom Coradia Meridian ETR 324, 425 e 526 (consultato il 7 ottobre 2026)";
 	private static final String WIKIPEDIA_ATR_803 = "Wikipedia, Autotreno ATR 803 (consultato il 23 settembre 2026)";
@@ -66,7 +67,7 @@ public record FleetConfig(List<TrainType> types) {
 		}
 	}
 
-	/** The ten types of the model with the sources recorded in the infrastructure notes. */
+	/** The twelve types of the model with the sources recorded in the infrastructure notes. */
 	public static FleetConfig defaults() {
 		return new FleetConfig(List.of(
 			type("tsr", "TSR", 104.98, 436, 140, 1.0, Traction.ELECTRIC,
@@ -98,6 +99,12 @@ public record FleetConfig(List<TrainType> types) {
 				Set.of("length", "acceleration", "deceleration")),
 			type("tilo_flirt_tsi", "FLIRT TSI (TILO)", 105.0, 244, 160, 1.0, Traction.ELECTRIC,
 				Map.of("length", TILO_SOURCES, "seats", TILO_SOURCES, "vmax", TILO_SOURCES),
+				Set.of("acceleration", "deceleration")),
+			type("tilo_flirt_6", "FLIRT a 6 casse (TILO)", 106.3, 250, 160, 1.0, Traction.ELECTRIC,
+				Map.of("length", TRAINSWISS_TILO, "seats", TRAINSWISS_TILO, "vmax", TRAINSWISS_TILO),
+				Set.of("acceleration", "deceleration")),
+			type("tilo_flirt_4", "FLIRT a 4 casse (TILO)", 74.1, 163, 160, 1.0, Traction.ELECTRIC,
+				Map.of("length", TRAINSWISS_TILO, "seats", TRAINSWISS_TILO + ", 163 posti più 19", "vmax", TRAINSWISS_TILO),
 				Set.of("acceleration", "deceleration")),
 			// acceleration: Trenord states "+20% in accelerazione" over the current diesel fleet, applied to the ATR 125
 			type("atr803", "Colleoni ATR 803", 66.8, 168, 140, 0.72, Traction.DIESEL,

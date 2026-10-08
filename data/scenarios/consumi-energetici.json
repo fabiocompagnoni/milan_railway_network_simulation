@@ -53,6 +53,8 @@
 		"taf": {"emptyMassTonnes": 213, "cars": 4},
 		"donizetti": {"emptyMassTonnes": 143.5, "cars": 4},
 		"tilo_flirt_tsi": {"emptyMassTonnes": 177.5, "cars": 6},
+		"tilo_flirt_6": {"emptyMassTonnes": 174, "cars": 6, "note": "trainswiss, RABDe 524 Tilo (consultato l'8 ottobre 2026): 174 t, seconda serie a 6 casse; la fonte non precisa se a vuoto"},
+		"tilo_flirt_4": {"emptyMassTonnes": 131, "cars": 4, "note": "trainswiss, RABDe 524 Tilo (consultato l'8 ottobre 2026): 131 t, prima serie a 4 casse; la fonte non precisa se a vuoto"},
 		"atr125": {"emptyMassTonnes": 136, "cars": 4},
 		"atr803": {"emptyMassTonnes": 135, "cars": 3},
 		"etr425": {"emptyMassTonnes": 160, "cars": 5, "note": "Wikipedia, Elettrotreno Alstom Coradia Meridian ETR 324, 425 e 526 (consultato il 7 ottobre 2026): massa a vuoto 160 t, in servizio 204 t"},

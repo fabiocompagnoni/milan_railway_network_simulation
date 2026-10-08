@@ -8,6 +8,10 @@
 			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
 			<attribute name="railsimAcceleration" class="java.lang.Double">0.6</attribute>
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">diesel</attribute>
+			<attribute name="typeName" class="java.lang.String">ATR 125 Stadler GTW</attribute>
 		</attributes>
 		<capacity seats="231" standingRoomInPersons="0">
 
@@ -23,11 +27,40 @@
 		<flowEfficiencyFactor factor="1.0"/>
 	</vehicleType>
 
+	<vehicleType id="atr803">
+		<attributes>
+			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">0.72</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">diesel</attribute>
+			<attribute name="typeName" class="java.lang.String">Colleoni ATR 803</attribute>
+		</attributes>
+		<capacity seats="168" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="66.8"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="38.888888888888886"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
 	<vehicleType id="caravaggio_421">
 		<attributes>
 			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
 			<attribute name="railsimAcceleration" class="java.lang.Double">1.1</attribute>
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">Caravaggio ETR 421</attribute>
 		</attributes>
 		<capacity seats="466" standingRoomInPersons="0">
 
@@ -48,6 +81,10 @@
 			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
 			<attribute name="railsimAcceleration" class="java.lang.Double">1.1</attribute>
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">Caravaggio ETR 521</attribute>
 		</attributes>
 		<capacity seats="598" standingRoomInPersons="0">
 
@@ -69,6 +106,10 @@
 			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
 			<attribute name="railsimAcceleration" class="java.lang.Double">1.0</attribute>
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">Donizetti ETR 204</attribute>
 		</attributes>
 		<capacity seats="262" standingRoomInPersons="0">
 
@@ -90,8 +131,37 @@
 			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
 			<attribute name="railsimAcceleration" class="java.lang.Double">1.0</attribute>
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">ETR 245 Coradia Meridian</attribute>
 		</attributes>
 		<capacity seats="230" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="82.2"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="44.44444444444444"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
+	<vehicleType id="etr425">
+		<attributes>
+			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">1.0</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">ETR 425 Coradia Meridian</attribute>
+		</attributes>
+		<capacity seats="290" standingRoomInPersons="0">
 
 		</capacity>
 		<length meter="82.2"/>
@@ -111,6 +181,10 @@
 			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
 			<attribute name="railsimAcceleration" class="java.lang.Double">0.8</attribute>
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">TAF</attribute>
 		</attributes>
 		<capacity seats="469" standingRoomInPersons="0">
 
@@ -126,12 +200,66 @@
 		<flowEfficiencyFactor factor="1.0"/>
 	</vehicleType>
 
+	<vehicleType id="tilo_flirt_4">
+		<attributes>
+			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">1.0</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">FLIRT a 4 casse (TILO)</attribute>
+		</attributes>
+		<capacity seats="163" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="74.1"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="44.44444444444444"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
+	<vehicleType id="tilo_flirt_6">
+		<attributes>
+			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">1.0</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">FLIRT a 6 casse (TILO)</attribute>
+		</attributes>
+		<capacity seats="250" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="106.3"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="44.44444444444444"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
 	<vehicleType id="tilo_flirt_tsi">
 		<attributes>
 			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>
 			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
 			<attribute name="railsimAcceleration" class="java.lang.Double">1.0</attribute>
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">FLIRT TSI (TILO)</attribute>
 		</attributes>
 		<capacity seats="244" standingRoomInPersons="0">
 
@@ -153,6 +281,10 @@
 			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
 			<attribute name="railsimAcceleration" class="java.lang.Double">1.0</attribute>
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">TSR</attribute>
 		</attributes>
 		<capacity seats="436" standingRoomInPersons="0">
 

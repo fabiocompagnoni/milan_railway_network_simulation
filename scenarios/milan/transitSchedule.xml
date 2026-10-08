@@ -106,6 +106,8 @@
 		<stopFacility id="S01101" x="520913.3046597682" y="5077967.703984724" linkRefId="stop_S01101" name="S01101" isBlocking="false"/>
 		<stopFacility id="S01104" x="515944.8783810434" y="5020703.692020804" linkRefId="stop_S01104" name="S01104" isBlocking="false"/>
 		<stopFacility id="S01109" x="513590.32846925966" y="5043589.59452384" linkRefId="stop_S01109" name="S01109" isBlocking="false"/>
+		<stopFacility id="S01110" x="479676.4731849873" y="5105042.773539292" linkRefId="stop_S01110" name="S01110" isBlocking="false"/>
+		<stopFacility id="S01111" x="480829.7130433477" y="5096754.382588287" linkRefId="stop_S01111" name="S01111" isBlocking="false"/>
 		<stopFacility id="S01112" x="507149.64529173484" y="5030760.991419417" linkRefId="stop_S01112" name="S01112" isBlocking="false"/>
 		<stopFacility id="S01113" x="479665.9842517086" y="5093733.910939644" linkRefId="stop_S01113" name="S01113" isBlocking="false"/>
 		<stopFacility id="S01116" x="474742.9298668592" y="5089476.737445522" linkRefId="stop_S01116" name="S01116" isBlocking="false"/>
@@ -128,6 +130,7 @@
 		<stopFacility id="S01203" x="489337.5591834458" y="5078360.014757736" linkRefId="stop_S01203" name="S01203" isBlocking="false"/>
 		<stopFacility id="S01204" x="487480.3062753615" y="5077068.454895253" linkRefId="stop_S01204" name="S01204" isBlocking="false"/>
 		<stopFacility id="S01205" x="487027.28731949494" y="5073643.421486313" linkRefId="stop_S01205" name="S01205" isBlocking="false"/>
+		<stopFacility id="S01206" x="492796.65312408726" y="5076030.5105639715" linkRefId="stop_S01206" name="S01206" isBlocking="false"/>
 		<stopFacility id="S01207" x="486374.81677505927" y="5069472.698147488" linkRefId="stop_S01207" name="S01207" isBlocking="false"/>
 		<stopFacility id="S01208" x="485272.2536336094" y="5065752.422672579" linkRefId="stop_S01208" name="S01208" isBlocking="false"/>
 		<stopFacility id="S01209" x="484913.7949702038" y="5063337.832627771" linkRefId="stop_S01209" name="S01209" isBlocking="false"/>
@@ -422,6 +425,8 @@
 		<stopFacility id="S04330" x="482810.1689057868" y="4960463.858389758" linkRefId="stop_S04330" name="S04330" isBlocking="false"/>
 		<stopFacility id="S05000" x="555599.3258345583" y="4988964.350787099" linkRefId="stop_S05000" name="S05000" isBlocking="false"/>
 		<stopFacility id="S05014" x="605057.9859003007" y="4962732.511613169" linkRefId="stop_S05014" name="S05014" isBlocking="false"/>
+		<stopFacility id="S05201" x="469999.7031692522" y="5152744.648011372" linkRefId="stop_S05201" name="S05201" isBlocking="false"/>
+		<stopFacility id="S05204" x="483972.08480690204" y="5147735.117732489" linkRefId="stop_S05204" name="S05204" isBlocking="false"/>
 		<stopFacility id="S05209" x="498008.6475767508" y="5133171.6415146785" linkRefId="stop_S05209" name="S05209" isBlocking="false"/>
 		<stopFacility id="S05212" x="503218.8836397886" y="5119050.474776813" linkRefId="stop_S05212" name="S05212" isBlocking="false"/>
 		<stopFacility id="S05213" x="502235.5289190692" y="5115718.87374919" linkRefId="stop_S05213" name="S05213" isBlocking="false"/>
@@ -438,6 +443,11 @@
 		<stopFacility id="S05401" x="488565.75254994386" y="5113772.446525103" linkRefId="stop_S05401" name="S05401" isBlocking="false"/>
 		<stopFacility id="S05402" x="489639.9693795226" y="5113960.304960316" linkRefId="stop_S05402" name="S05402" isBlocking="false"/>
 		<stopFacility id="S05404" x="495494.1111286727" y="5110986.356851295" linkRefId="stop_S05404" name="S05404" isBlocking="false"/>
+		<stopFacility id="S05405" x="491297.6828545015" y="5110863.988261449" linkRefId="stop_S05405" name="S05405" isBlocking="false"/>
+		<stopFacility id="S05406" x="488429.4815099709" y="5110204.931623143" linkRefId="stop_S05406" name="S05406" isBlocking="false"/>
+		<stopFacility id="S05407" x="485096.06867679005" y="5109083.537495481" linkRefId="stop_S05407" name="S05407" isBlocking="false"/>
+		<stopFacility id="S05408" x="482739.6615977267" y="5107067.129188592" linkRefId="stop_S05408" name="S05408" isBlocking="false"/>
+		<stopFacility id="S05410" x="483384.65777929773" y="5107633.910612079" linkRefId="stop_S05410" name="S05410" isBlocking="false"/>
 		<stopFacility id="S05412" x="491216.7229009825" y="5113549.879383766" linkRefId="stop_S05412" name="S05412" isBlocking="false"/>
 		<stopFacility id="S05415" x="497991.3463376836" y="5111873.1667895075" linkRefId="stop_S05415" name="S05415" isBlocking="false"/>
 		<stopFacility id="S05417" x="486072.62824464845" y="5113398.0194115" linkRefId="stop_S05417" name="S05417" isBlocking="false"/>
@@ -446,6 +456,7 @@
 		<stopFacility id="S13143" x="498339.22308339283" y="5079506.302618885" linkRefId="stop_S13143" name="S13143" isBlocking="false"/>
 		<stopFacility id="S17451" x="591218.1280630834" y="5044172.109481522" linkRefId="stop_S17451" name="S17451" isBlocking="false"/>
 		<stopFacility id="S19901" x="498641.8816836477" y="5080428.925703287" linkRefId="stop_S19901" name="S19901" isBlocking="false"/>
+		<stopFacility id="S19919" x="495690.1928969834" y="5077358.738184079" linkRefId="stop_S19919" name="S19919" isBlocking="false"/>
 		<stopFacility id="Z05304" x="498361.3492944436" y="5083252.613756155" linkRefId="stop_Z05304" name="Z05304" isBlocking="false"/>
 	</transitStops>
 	<transitLine id="R1">
@@ -25697,6 +25708,742 @@
 			</departures>
 		</transitRoute>
 	</transitLine>
+	<transitLine id="S10">
+		<transitRoute id="S10_1">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05213" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05216" arrivalOffset="00:13:00" departureOffset="00:13:00" awaitDeparture="true"/>
+				<stop refId="S05217" arrivalOffset="00:17:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S05218" arrivalOffset="00:23:00" departureOffset="00:23:00" awaitDeparture="true"/>
+				<stop refId="S05219" arrivalOffset="00:26:00" departureOffset="00:26:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:32:00" departureOffset="00:33:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:36:00" departureOffset="00:36:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:40:00" departureOffset="00:40:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:45:00" departureOffset="00:45:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:48:00" departureOffset="00:48:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:51:00" departureOffset="00:51:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="00:54:00" departureOffset="00:59:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="01:03:00" departureOffset="01:03:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="01:07:00" departureOffset="01:10:00" awaitDeparture="true"/>
+				<stop refId="S01307" arrivalOffset="01:16:00" departureOffset="01:17:00" awaitDeparture="true"/>
+				<stop refId="S09998" arrivalOffset="01:21:00" departureOffset="01:21:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05216"/>
+				<link refId="stop_S05216"/>
+				<link refId="S05216_S05217"/>
+				<link refId="stop_S05217"/>
+				<link refId="S05217_S05218"/>
+				<link refId="stop_S05218"/>
+				<link refId="S05218_S05219"/>
+				<link refId="stop_S05219"/>
+				<link refId="S05219_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S01307"/>
+				<link refId="stop_S01307"/>
+				<link refId="S01307_S09998"/>
+				<link refId="stop_S09998"/>
+			</route>
+			<departures>
+				<departure id="125155-5e707081" departureTime="04:33:00" vehicleRefId="S10_circ_1"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S10_2">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05212" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="00:04:00" departureOffset="00:08:00" awaitDeparture="true"/>
+				<stop refId="S05216" arrivalOffset="00:22:00" departureOffset="00:22:00" awaitDeparture="true"/>
+				<stop refId="S05217" arrivalOffset="00:26:00" departureOffset="00:26:00" awaitDeparture="true"/>
+				<stop refId="S05218" arrivalOffset="00:31:00" departureOffset="00:31:00" awaitDeparture="true"/>
+				<stop refId="S05219" arrivalOffset="00:34:00" departureOffset="00:34:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:40:00" departureOffset="00:41:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:44:00" departureOffset="00:44:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:48:00" departureOffset="00:48:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:53:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:56:00" departureOffset="00:56:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:59:00" departureOffset="00:59:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:02:00" departureOffset="01:02:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="01:07:00" departureOffset="01:07:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="01:11:00" departureOffset="01:14:00" awaitDeparture="true"/>
+				<stop refId="S01307" arrivalOffset="01:19:00" departureOffset="01:20:00" awaitDeparture="true"/>
+				<stop refId="S09998" arrivalOffset="01:24:00" departureOffset="01:24:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05216"/>
+				<link refId="stop_S05216"/>
+				<link refId="S05216_S05217"/>
+				<link refId="stop_S05217"/>
+				<link refId="S05217_S05218"/>
+				<link refId="stop_S05218"/>
+				<link refId="S05218_S05219"/>
+				<link refId="stop_S05219"/>
+				<link refId="S05219_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S01307"/>
+				<link refId="stop_S01307"/>
+				<link refId="S01307_S09998"/>
+				<link refId="stop_S09998"/>
+			</route>
+			<departures>
+				<departure id="125107-0b3a11d2" departureTime="04:55:00" vehicleRefId="S10_circ_2"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S10_3">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S09998" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01307" arrivalOffset="00:04:00" departureOffset="00:05:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="00:11:00" departureOffset="00:14:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="00:17:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="00:24:00" departureOffset="00:28:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:29:00" departureOffset="00:29:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:32:00" departureOffset="00:32:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:36:00" departureOffset="00:36:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:40:00" departureOffset="00:40:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:44:00" departureOffset="00:44:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:48:00" departureOffset="00:57:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="01:13:00" departureOffset="01:14:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="01:18:00" departureOffset="01:19:00" awaitDeparture="true"/>
+				<stop refId="S05209" arrivalOffset="01:31:00" departureOffset="01:31:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S09998"/>
+				<link refId="S09998_S01307"/>
+				<link refId="stop_S01307"/>
+				<link refId="S01307_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05209"/>
+				<link refId="stop_S05209"/>
+			</route>
+			<departures>
+				<departure id="125154-02c50ad2" departureTime="05:06:00" vehicleRefId="S10_circ_3"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S10_4">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05209" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="00:10:00" departureOffset="00:10:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="00:14:00" departureOffset="00:21:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:40:00" departureOffset="00:41:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:44:00" departureOffset="00:44:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:48:00" departureOffset="00:48:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:53:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:56:00" departureOffset="00:56:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:59:00" departureOffset="00:59:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:02:00" departureOffset="01:02:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="01:07:00" departureOffset="01:07:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="01:11:00" departureOffset="01:14:00" awaitDeparture="true"/>
+				<stop refId="S01307" arrivalOffset="01:19:00" departureOffset="01:20:00" awaitDeparture="true"/>
+				<stop refId="S09998" arrivalOffset="01:24:00" departureOffset="01:24:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05209"/>
+				<link refId="S05209_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S01307"/>
+				<link refId="stop_S01307"/>
+				<link refId="S01307_S09998"/>
+				<link refId="stop_S09998"/>
+			</route>
+			<departures>
+				<departure id="125109-f903d104" departureTime="05:55:00" vehicleRefId="S10_circ_4"/>
+				<departure id="125113-ac46f741" departureTime="07:55:00" vehicleRefId="S10_circ_3"/>
+				<departure id="125115-1a28ed21" departureTime="08:55:00" vehicleRefId="S10_circ_2"/>
+				<departure id="125117-8edf4d7d" departureTime="09:55:00" vehicleRefId="S10_circ_4"/>
+				<departure id="125119-f7a0b324" departureTime="10:55:00" vehicleRefId="S10_circ_5"/>
+				<departure id="125121-f51891d0" departureTime="11:55:00" vehicleRefId="S10_circ_3"/>
+				<departure id="125123-bde5d272" departureTime="12:55:00" vehicleRefId="S10_circ_2"/>
+				<departure id="125125-6358375c" departureTime="13:55:00" vehicleRefId="S10_circ_4"/>
+				<departure id="125127-6f94a812" departureTime="14:55:00" vehicleRefId="S10_circ_5"/>
+				<departure id="125129-0be4aee5" departureTime="15:55:00" vehicleRefId="S10_circ_3"/>
+				<departure id="125131-71a476bb" departureTime="16:55:00" vehicleRefId="S10_circ_2"/>
+				<departure id="125133-e8a1ad99" departureTime="17:55:00" vehicleRefId="S10_circ_4"/>
+				<departure id="125135-5a3d09ae" departureTime="18:55:00" vehicleRefId="S10_circ_7"/>
+				<departure id="125137-80c17469" departureTime="19:55:00" vehicleRefId="S10_circ_1"/>
+				<departure id="125139-07e200c9" departureTime="20:55:00" vehicleRefId="S10_circ_2"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S10_5">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S09998" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01307" arrivalOffset="00:04:00" departureOffset="00:05:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="00:11:00" departureOffset="00:14:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="00:17:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="00:24:00" departureOffset="00:28:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:29:00" departureOffset="00:29:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:32:00" departureOffset="00:32:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:36:00" departureOffset="00:36:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:40:00" departureOffset="00:40:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:44:00" departureOffset="00:44:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:48:00" departureOffset="00:49:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="01:07:00" departureOffset="01:14:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="01:18:00" departureOffset="01:19:00" awaitDeparture="true"/>
+				<stop refId="S05209" arrivalOffset="01:31:00" departureOffset="01:31:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S09998"/>
+				<link refId="S09998_S01307"/>
+				<link refId="stop_S01307"/>
+				<link refId="S01307_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05209"/>
+				<link refId="stop_S05209"/>
+			</route>
+			<departures>
+				<departure id="125156-3bcdced7" departureTime="06:06:00" vehicleRefId="S10_circ_1"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S10_6">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05201" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05204" arrivalOffset="00:18:00" departureOffset="00:18:00" awaitDeparture="true"/>
+				<stop refId="S05209" arrivalOffset="00:42:00" departureOffset="00:43:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="00:53:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="00:57:00" departureOffset="01:04:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="01:23:00" departureOffset="01:24:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="01:27:00" departureOffset="01:27:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="01:31:00" departureOffset="01:31:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="01:36:00" departureOffset="01:36:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="01:39:00" departureOffset="01:39:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="01:42:00" departureOffset="01:42:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:45:00" departureOffset="01:45:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="01:50:00" departureOffset="01:50:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="01:54:00" departureOffset="01:57:00" awaitDeparture="true"/>
+				<stop refId="S01307" arrivalOffset="02:02:00" departureOffset="02:03:00" awaitDeparture="true"/>
+				<stop refId="S09998" arrivalOffset="02:07:00" departureOffset="02:07:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05201"/>
+				<link refId="S05201_S05204"/>
+				<link refId="stop_S05204"/>
+				<link refId="S05204_S05209"/>
+				<link refId="stop_S05209"/>
+				<link refId="S05209_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S01307"/>
+				<link refId="stop_S01307"/>
+				<link refId="S01307_S09998"/>
+				<link refId="stop_S09998"/>
+			</route>
+			<departures>
+				<departure id="125111-97b22b48" departureTime="06:12:00" vehicleRefId="S10_circ_5"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S10_7">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05209" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="00:10:00" departureOffset="00:10:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="00:14:00" departureOffset="00:16:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:33:00" departureOffset="00:41:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:44:00" departureOffset="00:44:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:48:00" departureOffset="00:48:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:53:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:56:00" departureOffset="00:56:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:59:00" departureOffset="00:59:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:02:00" departureOffset="01:07:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="01:11:00" departureOffset="01:11:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="01:15:00" departureOffset="01:18:00" awaitDeparture="true"/>
+				<stop refId="S01307" arrivalOffset="01:25:00" departureOffset="01:25:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05209"/>
+				<link refId="S05209_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S01307"/>
+				<link refId="stop_S01307"/>
+			</route>
+			<departures>
+				<departure id="125159-2d7c48a2" departureTime="06:25:00" vehicleRefId="S10_circ_6"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S10_8">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05201" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05204" arrivalOffset="00:18:00" departureOffset="00:18:00" awaitDeparture="true"/>
+				<stop refId="S05209" arrivalOffset="00:42:00" departureOffset="00:43:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="00:52:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="00:57:00" departureOffset="01:08:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="01:27:00" departureOffset="01:28:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="01:31:00" departureOffset="01:31:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="01:35:00" departureOffset="01:35:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="01:40:00" departureOffset="01:40:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="01:43:00" departureOffset="01:43:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="01:46:00" departureOffset="01:46:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:49:00" departureOffset="01:54:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="01:58:00" departureOffset="01:58:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="02:02:00" departureOffset="02:05:00" awaitDeparture="true"/>
+				<stop refId="S01307" arrivalOffset="02:12:00" departureOffset="02:12:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05201"/>
+				<link refId="S05201_S05204"/>
+				<link refId="stop_S05204"/>
+				<link refId="S05204_S05209"/>
+				<link refId="stop_S05209"/>
+				<link refId="S05209_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S01307"/>
+				<link refId="stop_S01307"/>
+			</route>
+			<departures>
+				<departure id="125161-05c9505a" departureTime="06:38:00" vehicleRefId="S10_circ_7"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S10_9">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S09998" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01307" arrivalOffset="00:04:00" departureOffset="00:05:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="00:11:00" departureOffset="00:14:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="00:17:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="00:22:00" departureOffset="00:24:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:25:00" departureOffset="00:25:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:28:00" departureOffset="00:28:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:32:00" departureOffset="00:32:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:36:00" departureOffset="00:36:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:40:00" departureOffset="00:40:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:44:00" departureOffset="00:45:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="01:03:00" departureOffset="01:10:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="01:14:00" departureOffset="01:15:00" awaitDeparture="true"/>
+				<stop refId="S05209" arrivalOffset="01:27:00" departureOffset="01:27:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S09998"/>
+				<link refId="S09998_S01307"/>
+				<link refId="stop_S01307"/>
+				<link refId="S01307_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05209"/>
+				<link refId="stop_S05209"/>
+			</route>
+			<departures>
+				<departure id="125110-f4f93ffd" departureTime="06:40:00" vehicleRefId="S10_circ_2"/>
+				<departure id="125112-24854252" departureTime="07:40:00" vehicleRefId="S10_circ_4"/>
+				<departure id="125114-b63f4886" departureTime="08:40:00" vehicleRefId="S10_circ_5"/>
+				<departure id="125116-61005c1e" departureTime="09:40:00" vehicleRefId="S10_circ_3"/>
+				<departure id="125118-3ac91bc2" departureTime="10:40:00" vehicleRefId="S10_circ_2"/>
+				<departure id="125120-fa8b8b85" departureTime="11:40:00" vehicleRefId="S10_circ_4"/>
+				<departure id="125122-1e366b2e" departureTime="12:40:00" vehicleRefId="S10_circ_5"/>
+				<departure id="125124-254824c7" departureTime="13:40:00" vehicleRefId="S10_circ_3"/>
+				<departure id="125126-f5dfa737" departureTime="14:40:00" vehicleRefId="S10_circ_2"/>
+				<departure id="125128-95d80f40" departureTime="15:40:00" vehicleRefId="S10_circ_4"/>
+				<departure id="125130-61405659" departureTime="16:40:00" vehicleRefId="S10_circ_5"/>
+				<departure id="125132-b3fab8f3" departureTime="17:40:00" vehicleRefId="S10_circ_3"/>
+				<departure id="125134-26a0cc8b" departureTime="18:40:00" vehicleRefId="S10_circ_2"/>
+				<departure id="125136-dcc48493" departureTime="19:40:00" vehicleRefId="S10_circ_4"/>
+				<departure id="125138-9e63080e" departureTime="20:40:00" vehicleRefId="S10_circ_7"/>
+				<departure id="125140-24602e8a" departureTime="21:40:00" vehicleRefId="S10_circ_1"/>
+				<departure id="125142-bffa26c1" departureTime="22:40:00" vehicleRefId="S10_circ_2"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S10_10">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S09998" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01307" arrivalOffset="00:05:00" departureOffset="00:06:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="00:17:00" departureOffset="00:20:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="00:23:00" departureOffset="00:23:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="00:30:00" departureOffset="00:34:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:35:00" departureOffset="00:35:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:38:00" departureOffset="00:38:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:42:00" departureOffset="00:42:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:46:00" departureOffset="00:46:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:50:00" departureOffset="00:50:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:54:00" departureOffset="00:55:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="01:13:00" departureOffset="01:20:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="01:24:00" departureOffset="01:25:00" awaitDeparture="true"/>
+				<stop refId="S05209" arrivalOffset="01:37:00" departureOffset="01:37:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S09998"/>
+				<link refId="S09998_S01307"/>
+				<link refId="stop_S01307"/>
+				<link refId="S01307_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05209"/>
+				<link refId="stop_S05209"/>
+			</route>
+			<departures>
+				<departure id="125158-826c3c60" departureTime="07:00:00" vehicleRefId="S10_circ_8"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S10_11">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01307" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="00:07:00" departureOffset="00:10:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="00:13:00" departureOffset="00:13:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="00:20:00" departureOffset="00:24:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:25:00" departureOffset="00:25:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:28:00" departureOffset="00:28:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:32:00" departureOffset="00:32:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:36:00" departureOffset="00:36:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:40:00" departureOffset="00:40:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:44:00" departureOffset="00:45:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="01:03:00" departureOffset="01:10:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="01:14:00" departureOffset="01:15:00" awaitDeparture="true"/>
+				<stop refId="S05209" arrivalOffset="01:27:00" departureOffset="01:27:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01307"/>
+				<link refId="S01307_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05209"/>
+				<link refId="stop_S05209"/>
+			</route>
+			<departures>
+				<departure id="125160-38b08551" departureTime="08:10:00" vehicleRefId="S10_circ_6"/>
+				<departure id="125162-27bb71ff" departureTime="09:10:00" vehicleRefId="S10_circ_7"/>
+				<departure id="125164-238079dd" departureTime="10:10:00" vehicleRefId="S10_circ_1"/>
+				<departure id="125166-9bdff61b" departureTime="11:10:00" vehicleRefId="S10_circ_8"/>
+				<departure id="125168-607d1e7d" departureTime="12:10:00" vehicleRefId="S10_circ_6"/>
+				<departure id="125170-db17aa71" departureTime="13:10:00" vehicleRefId="S10_circ_7"/>
+				<departure id="125172-7b24b857" departureTime="14:10:00" vehicleRefId="S10_circ_1"/>
+				<departure id="125174-d51231a8" departureTime="15:10:00" vehicleRefId="S10_circ_8"/>
+				<departure id="125178-81dfcd3c" departureTime="17:10:00" vehicleRefId="S10_circ_7"/>
+				<departure id="125180-e8a9e4d4" departureTime="18:10:00" vehicleRefId="S10_circ_1"/>
+				<departure id="125182-0caa6c06" departureTime="19:10:00" vehicleRefId="S10_circ_8"/>
+				<departure id="125184-ca191bae" departureTime="20:10:00" vehicleRefId="S10_circ_5"/>
+				<departure id="125186-16422ff9" departureTime="21:10:00" vehicleRefId="S10_circ_3"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S10_12">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05209" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="00:10:00" departureOffset="00:10:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="00:14:00" departureOffset="00:21:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:40:00" departureOffset="00:41:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:44:00" departureOffset="00:44:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:48:00" departureOffset="00:48:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:53:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:56:00" departureOffset="00:56:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:59:00" departureOffset="00:59:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:02:00" departureOffset="01:07:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="01:11:00" departureOffset="01:11:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="01:15:00" departureOffset="01:18:00" awaitDeparture="true"/>
+				<stop refId="S01307" arrivalOffset="01:25:00" departureOffset="01:25:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05209"/>
+				<link refId="S05209_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S01307"/>
+				<link refId="stop_S01307"/>
+			</route>
+			<departures>
+				<departure id="125163-06488d1c" departureTime="08:25:00" vehicleRefId="S10_circ_1"/>
+				<departure id="125165-2ff8ee73" departureTime="09:25:00" vehicleRefId="S10_circ_8"/>
+				<departure id="125167-58e3f2d8" departureTime="10:25:00" vehicleRefId="S10_circ_6"/>
+				<departure id="125169-80593c56" departureTime="11:25:00" vehicleRefId="S10_circ_7"/>
+				<departure id="125171-182710ad" departureTime="12:25:00" vehicleRefId="S10_circ_1"/>
+				<departure id="125173-fe637dd8" departureTime="13:25:00" vehicleRefId="S10_circ_8"/>
+				<departure id="125175-c772d090" departureTime="14:25:00" vehicleRefId="S10_circ_6"/>
+				<departure id="125177-50c1afe4" departureTime="15:25:00" vehicleRefId="S10_circ_7"/>
+				<departure id="125179-41de3a61" departureTime="16:25:00" vehicleRefId="S10_circ_1"/>
+				<departure id="125181-d6a6d3f4" departureTime="17:25:00" vehicleRefId="S10_circ_8"/>
+				<departure id="125183-b7bef4f6" departureTime="18:25:00" vehicleRefId="S10_circ_5"/>
+				<departure id="125185-d48b8c23" departureTime="19:25:00" vehicleRefId="S10_circ_3"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S10_13">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01307" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="00:07:00" departureOffset="00:10:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="00:13:00" departureOffset="00:13:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="00:20:00" departureOffset="00:24:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:25:00" departureOffset="00:25:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:28:00" departureOffset="00:28:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:32:00" departureOffset="00:32:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:36:00" departureOffset="00:36:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:40:00" departureOffset="00:40:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:44:00" departureOffset="00:45:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="01:03:00" departureOffset="01:10:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="01:14:00" departureOffset="01:15:00" awaitDeparture="true"/>
+				<stop refId="S05209" arrivalOffset="01:27:00" departureOffset="01:28:00" awaitDeparture="true"/>
+				<stop refId="S05204" arrivalOffset="01:51:00" departureOffset="01:52:00" awaitDeparture="true"/>
+				<stop refId="S05201" arrivalOffset="02:10:00" departureOffset="02:10:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01307"/>
+				<link refId="S01307_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05209"/>
+				<link refId="stop_S05209"/>
+				<link refId="S05209_S05204"/>
+				<link refId="stop_S05204"/>
+				<link refId="S05204_S05201"/>
+				<link refId="stop_S05201"/>
+			</route>
+			<departures>
+				<departure id="125176-a3cb01f1" departureTime="16:10:00" vehicleRefId="S10_circ_6"/>
+			</departures>
+		</transitRoute>
+	</transitLine>
 	<transitLine id="S11">
 		<transitRoute id="S11_1">
 			<transportMode>rail</transportMode>
@@ -27658,6 +28405,681 @@
 			</departures>
 		</transitRoute>
 	</transitLine>
+	<transitLine id="S30">
+		<transitRoute id="S30_1">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01113" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01111" arrivalOffset="00:04:00" departureOffset="00:04:00" awaitDeparture="true"/>
+				<stop refId="S01110" arrivalOffset="00:18:00" departureOffset="00:18:00" awaitDeparture="true"/>
+				<stop refId="S05408" arrivalOffset="00:22:00" departureOffset="00:22:00" awaitDeparture="true"/>
+				<stop refId="S05410" arrivalOffset="00:24:00" departureOffset="00:24:00" awaitDeparture="true"/>
+				<stop refId="S05407" arrivalOffset="00:28:00" departureOffset="00:28:00" awaitDeparture="true"/>
+				<stop refId="S05406" arrivalOffset="00:33:00" departureOffset="00:33:00" awaitDeparture="true"/>
+				<stop refId="S05405" arrivalOffset="00:36:00" departureOffset="00:36:00" awaitDeparture="true"/>
+				<stop refId="S05404" arrivalOffset="00:41:00" departureOffset="00:42:00" awaitDeparture="true"/>
+				<stop refId="S05415" arrivalOffset="00:45:00" departureOffset="00:45:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="00:52:00" departureOffset="00:52:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01113"/>
+				<link refId="S01113_S01111"/>
+				<link refId="stop_S01111"/>
+				<link refId="S01111_S01110"/>
+				<link refId="stop_S01110"/>
+				<link refId="S01110_S05408"/>
+				<link refId="stop_S05408"/>
+				<link refId="S05408_S05410"/>
+				<link refId="stop_S05410"/>
+				<link refId="S05410_S05407"/>
+				<link refId="stop_S05407"/>
+				<link refId="S05407_S05406"/>
+				<link refId="stop_S05406"/>
+				<link refId="S05406_S05405"/>
+				<link refId="stop_S05405"/>
+				<link refId="S05405_S05404"/>
+				<link refId="stop_S05404"/>
+				<link refId="S05404_S05415"/>
+				<link refId="stop_S05415"/>
+				<link refId="S05415_S05213"/>
+				<link refId="stop_S05213"/>
+			</route>
+			<departures>
+				<departure id="125350-20bf0535" departureTime="05:40:00" vehicleRefId="S30_circ_1"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S30_2">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05213" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05415" arrivalOffset="00:06:00" departureOffset="00:06:00" awaitDeparture="true"/>
+				<stop refId="S05404" arrivalOffset="00:10:00" departureOffset="00:10:00" awaitDeparture="true"/>
+				<stop refId="S05405" arrivalOffset="00:13:00" departureOffset="00:13:00" awaitDeparture="true"/>
+				<stop refId="S05406" arrivalOffset="00:17:00" departureOffset="00:19:00" awaitDeparture="true"/>
+				<stop refId="S05407" arrivalOffset="00:23:00" departureOffset="00:24:00" awaitDeparture="true"/>
+				<stop refId="S05410" arrivalOffset="00:26:00" departureOffset="00:26:00" awaitDeparture="true"/>
+				<stop refId="S05408" arrivalOffset="00:29:00" departureOffset="00:29:00" awaitDeparture="true"/>
+				<stop refId="S01110" arrivalOffset="00:34:00" departureOffset="00:34:00" awaitDeparture="true"/>
+				<stop refId="S01111" arrivalOffset="00:42:00" departureOffset="00:43:00" awaitDeparture="true"/>
+				<stop refId="S01113" arrivalOffset="00:48:00" departureOffset="00:51:00" awaitDeparture="true"/>
+				<stop refId="S01118" arrivalOffset="01:05:00" departureOffset="01:06:00" awaitDeparture="true"/>
+				<stop refId="S01140" arrivalOffset="01:10:00" departureOffset="01:11:00" awaitDeparture="true"/>
+				<stop refId="S01141" arrivalOffset="01:15:00" departureOffset="01:16:00" awaitDeparture="true"/>
+				<stop refId="S01142" arrivalOffset="01:20:00" departureOffset="01:21:00" awaitDeparture="true"/>
+				<stop refId="S01143" arrivalOffset="01:24:00" departureOffset="01:25:00" awaitDeparture="true"/>
+				<stop refId="S01144" arrivalOffset="01:32:00" departureOffset="01:37:00" awaitDeparture="true"/>
+				<stop refId="S01145" arrivalOffset="01:41:00" departureOffset="01:42:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="01:49:00" departureOffset="01:49:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05415"/>
+				<link refId="stop_S05415"/>
+				<link refId="S05415_S05404"/>
+				<link refId="stop_S05404"/>
+				<link refId="S05404_S05405"/>
+				<link refId="stop_S05405"/>
+				<link refId="S05405_S05406"/>
+				<link refId="stop_S05406"/>
+				<link refId="S05406_S05407"/>
+				<link refId="stop_S05407"/>
+				<link refId="S05407_S05410"/>
+				<link refId="stop_S05410"/>
+				<link refId="S05410_S05408"/>
+				<link refId="stop_S05408"/>
+				<link refId="S05408_S01110"/>
+				<link refId="stop_S01110"/>
+				<link refId="S01110_S01111"/>
+				<link refId="stop_S01111"/>
+				<link refId="S01111_S01113"/>
+				<link refId="stop_S01113"/>
+				<link refId="S01113_S01116"/>
+				<link refId="S01116_S01117"/>
+				<link refId="S01117_S01118"/>
+				<link refId="stop_S01118"/>
+				<link refId="S01118_S01140"/>
+				<link refId="stop_S01140"/>
+				<link refId="S01140_S01141"/>
+				<link refId="stop_S01141"/>
+				<link refId="S01141_S01142"/>
+				<link refId="stop_S01142"/>
+				<link refId="S01142_S01143"/>
+				<link refId="stop_S01143"/>
+				<link refId="S01143_S01144"/>
+				<link refId="stop_S01144"/>
+				<link refId="S01144_S01145"/>
+				<link refId="stop_S01145"/>
+				<link refId="S01145_S01030"/>
+				<link refId="stop_S01030"/>
+			</route>
+			<departures>
+				<departure id="125357-2e38ff47" departureTime="05:54:00" vehicleRefId="S30_circ_2"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S30_3">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05404" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05405" arrivalOffset="00:03:00" departureOffset="00:03:00" awaitDeparture="true"/>
+				<stop refId="S05406" arrivalOffset="00:07:00" departureOffset="00:09:00" awaitDeparture="true"/>
+				<stop refId="S05407" arrivalOffset="00:13:00" departureOffset="00:14:00" awaitDeparture="true"/>
+				<stop refId="S05410" arrivalOffset="00:16:00" departureOffset="00:16:00" awaitDeparture="true"/>
+				<stop refId="S05408" arrivalOffset="00:19:00" departureOffset="00:19:00" awaitDeparture="true"/>
+				<stop refId="S01110" arrivalOffset="00:24:00" departureOffset="00:24:00" awaitDeparture="true"/>
+				<stop refId="S01111" arrivalOffset="00:32:00" departureOffset="00:33:00" awaitDeparture="true"/>
+				<stop refId="S01113" arrivalOffset="00:38:00" departureOffset="00:41:00" awaitDeparture="true"/>
+				<stop refId="S01118" arrivalOffset="00:55:00" departureOffset="00:56:00" awaitDeparture="true"/>
+				<stop refId="S01140" arrivalOffset="01:00:00" departureOffset="01:01:00" awaitDeparture="true"/>
+				<stop refId="S01141" arrivalOffset="01:05:00" departureOffset="01:06:00" awaitDeparture="true"/>
+				<stop refId="S01142" arrivalOffset="01:10:00" departureOffset="01:11:00" awaitDeparture="true"/>
+				<stop refId="S01143" arrivalOffset="01:14:00" departureOffset="01:15:00" awaitDeparture="true"/>
+				<stop refId="S01144" arrivalOffset="01:20:00" departureOffset="01:21:00" awaitDeparture="true"/>
+				<stop refId="S01145" arrivalOffset="01:25:00" departureOffset="01:26:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="01:31:00" departureOffset="01:31:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05404"/>
+				<link refId="S05404_S05405"/>
+				<link refId="stop_S05405"/>
+				<link refId="S05405_S05406"/>
+				<link refId="stop_S05406"/>
+				<link refId="S05406_S05407"/>
+				<link refId="stop_S05407"/>
+				<link refId="S05407_S05410"/>
+				<link refId="stop_S05410"/>
+				<link refId="S05410_S05408"/>
+				<link refId="stop_S05408"/>
+				<link refId="S05408_S01110"/>
+				<link refId="stop_S01110"/>
+				<link refId="S01110_S01111"/>
+				<link refId="stop_S01111"/>
+				<link refId="S01111_S01113"/>
+				<link refId="stop_S01113"/>
+				<link refId="S01113_S01116"/>
+				<link refId="S01116_S01117"/>
+				<link refId="S01117_S01118"/>
+				<link refId="stop_S01118"/>
+				<link refId="S01118_S01140"/>
+				<link refId="stop_S01140"/>
+				<link refId="S01140_S01141"/>
+				<link refId="stop_S01141"/>
+				<link refId="S01141_S01142"/>
+				<link refId="stop_S01142"/>
+				<link refId="S01142_S01143"/>
+				<link refId="stop_S01143"/>
+				<link refId="S01143_S01144"/>
+				<link refId="stop_S01144"/>
+				<link refId="S01144_S01145"/>
+				<link refId="stop_S01145"/>
+				<link refId="S01145_S01030"/>
+				<link refId="stop_S01030"/>
+			</route>
+			<departures>
+				<departure id="125361-af01f999" departureTime="08:04:00" vehicleRefId="S30_circ_3"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S30_4">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01030" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01145" arrivalOffset="00:05:00" departureOffset="00:06:00" awaitDeparture="true"/>
+				<stop refId="S01144" arrivalOffset="00:10:00" departureOffset="00:11:00" awaitDeparture="true"/>
+				<stop refId="S01143" arrivalOffset="00:16:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S01142" arrivalOffset="00:20:00" departureOffset="00:21:00" awaitDeparture="true"/>
+				<stop refId="S01141" arrivalOffset="00:25:00" departureOffset="00:26:00" awaitDeparture="true"/>
+				<stop refId="S01140" arrivalOffset="00:31:00" departureOffset="00:32:00" awaitDeparture="true"/>
+				<stop refId="S01118" arrivalOffset="00:37:00" departureOffset="00:42:00" awaitDeparture="true"/>
+				<stop refId="S01117" arrivalOffset="00:46:00" departureOffset="00:47:00" awaitDeparture="true"/>
+				<stop refId="S01116" arrivalOffset="00:50:00" departureOffset="00:51:00" awaitDeparture="true"/>
+				<stop refId="S01113" arrivalOffset="00:56:00" departureOffset="00:56:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01145"/>
+				<link refId="stop_S01145"/>
+				<link refId="S01145_S01144"/>
+				<link refId="stop_S01144"/>
+				<link refId="S01144_S01143"/>
+				<link refId="stop_S01143"/>
+				<link refId="S01143_S01142"/>
+				<link refId="stop_S01142"/>
+				<link refId="S01142_S01141"/>
+				<link refId="stop_S01141"/>
+				<link refId="S01141_S01140"/>
+				<link refId="stop_S01140"/>
+				<link refId="S01140_S01118"/>
+				<link refId="stop_S01118"/>
+				<link refId="S01118_S01117"/>
+				<link refId="stop_S01117"/>
+				<link refId="S01117_S01116"/>
+				<link refId="stop_S01116"/>
+				<link refId="S01116_S01113"/>
+				<link refId="stop_S01113"/>
+			</route>
+			<departures>
+				<departure id="125318-f59b7305" departureTime="08:19:00" vehicleRefId="S30_circ_2"/>
+				<departure id="125334-89e79af2" departureTime="16:19:00" vehicleRefId="S30_circ_2"/>
+				<departure id="125338-b693d3cc" departureTime="18:19:00" vehicleRefId="S30_circ_3"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S30_5">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01030" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01145" arrivalOffset="00:05:00" departureOffset="00:06:00" awaitDeparture="true"/>
+				<stop refId="S01144" arrivalOffset="00:10:00" departureOffset="00:11:00" awaitDeparture="true"/>
+				<stop refId="S01143" arrivalOffset="00:16:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S01142" arrivalOffset="00:20:00" departureOffset="00:21:00" awaitDeparture="true"/>
+				<stop refId="S01141" arrivalOffset="00:25:00" departureOffset="00:26:00" awaitDeparture="true"/>
+				<stop refId="S01140" arrivalOffset="00:31:00" departureOffset="00:32:00" awaitDeparture="true"/>
+				<stop refId="S01118" arrivalOffset="00:37:00" departureOffset="00:42:00" awaitDeparture="true"/>
+				<stop refId="S01113" arrivalOffset="00:56:00" departureOffset="00:59:00" awaitDeparture="true"/>
+				<stop refId="S01111" arrivalOffset="01:03:00" departureOffset="01:03:00" awaitDeparture="true"/>
+				<stop refId="S01110" arrivalOffset="01:11:00" departureOffset="01:11:00" awaitDeparture="true"/>
+				<stop refId="S05408" arrivalOffset="01:15:00" departureOffset="01:15:00" awaitDeparture="true"/>
+				<stop refId="S05410" arrivalOffset="01:16:00" departureOffset="01:16:00" awaitDeparture="true"/>
+				<stop refId="S05407" arrivalOffset="01:21:00" departureOffset="01:21:00" awaitDeparture="true"/>
+				<stop refId="S05406" arrivalOffset="01:27:00" departureOffset="01:27:00" awaitDeparture="true"/>
+				<stop refId="S05405" arrivalOffset="01:30:00" departureOffset="01:30:00" awaitDeparture="true"/>
+				<stop refId="S05404" arrivalOffset="01:37:00" departureOffset="01:37:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01145"/>
+				<link refId="stop_S01145"/>
+				<link refId="S01145_S01144"/>
+				<link refId="stop_S01144"/>
+				<link refId="S01144_S01143"/>
+				<link refId="stop_S01143"/>
+				<link refId="S01143_S01142"/>
+				<link refId="stop_S01142"/>
+				<link refId="S01142_S01141"/>
+				<link refId="stop_S01141"/>
+				<link refId="S01141_S01140"/>
+				<link refId="stop_S01140"/>
+				<link refId="S01140_S01118"/>
+				<link refId="stop_S01118"/>
+				<link refId="S01118_S01117"/>
+				<link refId="S01117_S01116"/>
+				<link refId="S01116_S01113"/>
+				<link refId="stop_S01113"/>
+				<link refId="S01113_S01111"/>
+				<link refId="stop_S01111"/>
+				<link refId="S01111_S01110"/>
+				<link refId="stop_S01110"/>
+				<link refId="S01110_S05408"/>
+				<link refId="stop_S05408"/>
+				<link refId="S05408_S05410"/>
+				<link refId="stop_S05410"/>
+				<link refId="S05410_S05407"/>
+				<link refId="stop_S05407"/>
+				<link refId="S05407_S05406"/>
+				<link refId="stop_S05406"/>
+				<link refId="S05406_S05405"/>
+				<link refId="stop_S05405"/>
+				<link refId="S05405_S05404"/>
+				<link refId="stop_S05404"/>
+			</route>
+			<departures>
+				<departure id="125370-43b97392" departureTime="14:19:00" vehicleRefId="S30_circ_3"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S30_6">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01113" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01116" arrivalOffset="00:05:00" departureOffset="00:06:00" awaitDeparture="true"/>
+				<stop refId="S01117" arrivalOffset="00:08:00" departureOffset="00:09:00" awaitDeparture="true"/>
+				<stop refId="S01118" arrivalOffset="00:14:00" departureOffset="00:15:00" awaitDeparture="true"/>
+				<stop refId="S01140" arrivalOffset="00:19:00" departureOffset="00:20:00" awaitDeparture="true"/>
+				<stop refId="S01141" arrivalOffset="00:24:00" departureOffset="00:25:00" awaitDeparture="true"/>
+				<stop refId="S01142" arrivalOffset="00:29:00" departureOffset="00:30:00" awaitDeparture="true"/>
+				<stop refId="S01143" arrivalOffset="00:33:00" departureOffset="00:34:00" awaitDeparture="true"/>
+				<stop refId="S01144" arrivalOffset="00:41:00" departureOffset="00:46:00" awaitDeparture="true"/>
+				<stop refId="S01145" arrivalOffset="00:50:00" departureOffset="00:51:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="00:56:00" departureOffset="00:56:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01113"/>
+				<link refId="S01113_S01116"/>
+				<link refId="stop_S01116"/>
+				<link refId="S01116_S01117"/>
+				<link refId="stop_S01117"/>
+				<link refId="S01117_S01118"/>
+				<link refId="stop_S01118"/>
+				<link refId="S01118_S01140"/>
+				<link refId="stop_S01140"/>
+				<link refId="S01140_S01141"/>
+				<link refId="stop_S01141"/>
+				<link refId="S01141_S01142"/>
+				<link refId="stop_S01142"/>
+				<link refId="S01142_S01143"/>
+				<link refId="stop_S01143"/>
+				<link refId="S01143_S01144"/>
+				<link refId="stop_S01144"/>
+				<link refId="S01144_S01145"/>
+				<link refId="stop_S01145"/>
+				<link refId="S01145_S01030"/>
+				<link refId="stop_S01030"/>
+			</route>
+			<departures>
+				<departure id="125333-04308ddd" departureTime="14:45:00" vehicleRefId="S30_circ_2"/>
+				<departure id="125341-bfd4f230" departureTime="18:45:00" vehicleRefId="S30_circ_2"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S30_7">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05404" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05405" arrivalOffset="00:03:00" departureOffset="00:03:00" awaitDeparture="true"/>
+				<stop refId="S05406" arrivalOffset="00:07:00" departureOffset="00:09:00" awaitDeparture="true"/>
+				<stop refId="S05407" arrivalOffset="00:13:00" departureOffset="00:14:00" awaitDeparture="true"/>
+				<stop refId="S05410" arrivalOffset="00:16:00" departureOffset="00:16:00" awaitDeparture="true"/>
+				<stop refId="S05408" arrivalOffset="00:19:00" departureOffset="00:19:00" awaitDeparture="true"/>
+				<stop refId="S01110" arrivalOffset="00:24:00" departureOffset="00:24:00" awaitDeparture="true"/>
+				<stop refId="S01111" arrivalOffset="00:32:00" departureOffset="00:33:00" awaitDeparture="true"/>
+				<stop refId="S01113" arrivalOffset="00:38:00" departureOffset="00:41:00" awaitDeparture="true"/>
+				<stop refId="S01118" arrivalOffset="00:55:00" departureOffset="00:56:00" awaitDeparture="true"/>
+				<stop refId="S01140" arrivalOffset="01:00:00" departureOffset="01:01:00" awaitDeparture="true"/>
+				<stop refId="S01141" arrivalOffset="01:05:00" departureOffset="01:06:00" awaitDeparture="true"/>
+				<stop refId="S01142" arrivalOffset="01:10:00" departureOffset="01:11:00" awaitDeparture="true"/>
+				<stop refId="S01143" arrivalOffset="01:14:00" departureOffset="01:15:00" awaitDeparture="true"/>
+				<stop refId="S01144" arrivalOffset="01:22:00" departureOffset="01:27:00" awaitDeparture="true"/>
+				<stop refId="S01145" arrivalOffset="01:31:00" departureOffset="01:32:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="01:37:00" departureOffset="01:37:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05404"/>
+				<link refId="S05404_S05405"/>
+				<link refId="stop_S05405"/>
+				<link refId="S05405_S05406"/>
+				<link refId="stop_S05406"/>
+				<link refId="S05406_S05407"/>
+				<link refId="stop_S05407"/>
+				<link refId="S05407_S05410"/>
+				<link refId="stop_S05410"/>
+				<link refId="S05410_S05408"/>
+				<link refId="stop_S05408"/>
+				<link refId="S05408_S01110"/>
+				<link refId="stop_S01110"/>
+				<link refId="S01110_S01111"/>
+				<link refId="stop_S01111"/>
+				<link refId="S01111_S01113"/>
+				<link refId="stop_S01113"/>
+				<link refId="S01113_S01116"/>
+				<link refId="S01116_S01117"/>
+				<link refId="S01117_S01118"/>
+				<link refId="stop_S01118"/>
+				<link refId="S01118_S01140"/>
+				<link refId="stop_S01140"/>
+				<link refId="S01140_S01141"/>
+				<link refId="stop_S01141"/>
+				<link refId="S01141_S01142"/>
+				<link refId="stop_S01142"/>
+				<link refId="S01142_S01143"/>
+				<link refId="stop_S01143"/>
+				<link refId="S01143_S01144"/>
+				<link refId="stop_S01144"/>
+				<link refId="S01144_S01145"/>
+				<link refId="stop_S01145"/>
+				<link refId="S01145_S01030"/>
+				<link refId="stop_S01030"/>
+			</route>
+			<departures>
+				<departure id="125377-7d8010cf" departureTime="16:04:00" vehicleRefId="S30_circ_3"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S30_8">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05213" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05415" arrivalOffset="00:06:00" departureOffset="00:06:00" awaitDeparture="true"/>
+				<stop refId="S05404" arrivalOffset="00:09:00" departureOffset="00:10:00" awaitDeparture="true"/>
+				<stop refId="S05405" arrivalOffset="00:13:00" departureOffset="00:13:00" awaitDeparture="true"/>
+				<stop refId="S05406" arrivalOffset="00:17:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S05407" arrivalOffset="00:22:00" departureOffset="00:23:00" awaitDeparture="true"/>
+				<stop refId="S05408" arrivalOffset="00:27:00" departureOffset="00:27:00" awaitDeparture="true"/>
+				<stop refId="S01113" arrivalOffset="00:50:00" departureOffset="00:51:00" awaitDeparture="true"/>
+				<stop refId="S01118" arrivalOffset="01:05:00" departureOffset="01:06:00" awaitDeparture="true"/>
+				<stop refId="S01140" arrivalOffset="01:10:00" departureOffset="01:11:00" awaitDeparture="true"/>
+				<stop refId="S01141" arrivalOffset="01:15:00" departureOffset="01:16:00" awaitDeparture="true"/>
+				<stop refId="S01142" arrivalOffset="01:20:00" departureOffset="01:21:00" awaitDeparture="true"/>
+				<stop refId="S01143" arrivalOffset="01:24:00" departureOffset="01:25:00" awaitDeparture="true"/>
+				<stop refId="S01144" arrivalOffset="01:32:00" departureOffset="01:37:00" awaitDeparture="true"/>
+				<stop refId="S01145" arrivalOffset="01:41:00" departureOffset="01:42:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="01:47:00" departureOffset="01:47:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05415"/>
+				<link refId="stop_S05415"/>
+				<link refId="S05415_S05404"/>
+				<link refId="stop_S05404"/>
+				<link refId="S05404_S05405"/>
+				<link refId="stop_S05405"/>
+				<link refId="S05405_S05406"/>
+				<link refId="stop_S05406"/>
+				<link refId="S05406_S05407"/>
+				<link refId="stop_S05407"/>
+				<link refId="S05407_S05410"/>
+				<link refId="S05410_S05408"/>
+				<link refId="stop_S05408"/>
+				<link refId="S05408_S01110"/>
+				<link refId="S01110_S01111"/>
+				<link refId="S01111_S01113"/>
+				<link refId="stop_S01113"/>
+				<link refId="S01113_S01116"/>
+				<link refId="S01116_S01117"/>
+				<link refId="S01117_S01118"/>
+				<link refId="stop_S01118"/>
+				<link refId="S01118_S01140"/>
+				<link refId="stop_S01140"/>
+				<link refId="S01140_S01141"/>
+				<link refId="stop_S01141"/>
+				<link refId="S01141_S01142"/>
+				<link refId="stop_S01142"/>
+				<link refId="S01142_S01143"/>
+				<link refId="stop_S01143"/>
+				<link refId="S01143_S01144"/>
+				<link refId="stop_S01144"/>
+				<link refId="S01144_S01145"/>
+				<link refId="stop_S01145"/>
+				<link refId="S01145_S01030"/>
+				<link refId="stop_S01030"/>
+			</route>
+			<departures>
+				<departure id="125379-3715e6d7" departureTime="16:54:00" vehicleRefId="S30_circ_1"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S30_9">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05404" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05405" arrivalOffset="00:03:00" departureOffset="00:03:00" awaitDeparture="true"/>
+				<stop refId="S05406" arrivalOffset="00:07:00" departureOffset="00:09:00" awaitDeparture="true"/>
+				<stop refId="S05407" arrivalOffset="00:13:00" departureOffset="00:14:00" awaitDeparture="true"/>
+				<stop refId="S05410" arrivalOffset="00:16:00" departureOffset="00:16:00" awaitDeparture="true"/>
+				<stop refId="S05408" arrivalOffset="00:19:00" departureOffset="00:19:00" awaitDeparture="true"/>
+				<stop refId="S01110" arrivalOffset="00:24:00" departureOffset="00:24:00" awaitDeparture="true"/>
+				<stop refId="S01111" arrivalOffset="00:32:00" departureOffset="00:33:00" awaitDeparture="true"/>
+				<stop refId="S01113" arrivalOffset="00:38:00" departureOffset="00:41:00" awaitDeparture="true"/>
+				<stop refId="S01118" arrivalOffset="00:55:00" departureOffset="00:56:00" awaitDeparture="true"/>
+				<stop refId="S01140" arrivalOffset="01:00:00" departureOffset="01:01:00" awaitDeparture="true"/>
+				<stop refId="S01141" arrivalOffset="01:05:00" departureOffset="01:06:00" awaitDeparture="true"/>
+				<stop refId="S01142" arrivalOffset="01:10:00" departureOffset="01:11:00" awaitDeparture="true"/>
+				<stop refId="S01143" arrivalOffset="01:14:00" departureOffset="01:15:00" awaitDeparture="true"/>
+				<stop refId="S01144" arrivalOffset="01:22:00" departureOffset="01:27:00" awaitDeparture="true"/>
+				<stop refId="S01145" arrivalOffset="01:31:00" departureOffset="01:32:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="01:40:00" departureOffset="01:40:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05404"/>
+				<link refId="S05404_S05405"/>
+				<link refId="stop_S05405"/>
+				<link refId="S05405_S05406"/>
+				<link refId="stop_S05406"/>
+				<link refId="S05406_S05407"/>
+				<link refId="stop_S05407"/>
+				<link refId="S05407_S05410"/>
+				<link refId="stop_S05410"/>
+				<link refId="S05410_S05408"/>
+				<link refId="stop_S05408"/>
+				<link refId="S05408_S01110"/>
+				<link refId="stop_S01110"/>
+				<link refId="S01110_S01111"/>
+				<link refId="stop_S01111"/>
+				<link refId="S01111_S01113"/>
+				<link refId="stop_S01113"/>
+				<link refId="S01113_S01116"/>
+				<link refId="S01116_S01117"/>
+				<link refId="S01117_S01118"/>
+				<link refId="stop_S01118"/>
+				<link refId="S01118_S01140"/>
+				<link refId="stop_S01140"/>
+				<link refId="S01140_S01141"/>
+				<link refId="stop_S01141"/>
+				<link refId="S01141_S01142"/>
+				<link refId="stop_S01142"/>
+				<link refId="S01142_S01143"/>
+				<link refId="stop_S01143"/>
+				<link refId="S01143_S01144"/>
+				<link refId="stop_S01144"/>
+				<link refId="S01144_S01145"/>
+				<link refId="stop_S01145"/>
+				<link refId="S01145_S01030"/>
+				<link refId="stop_S01030"/>
+			</route>
+			<departures>
+				<departure id="125381-dd848072" departureTime="18:04:00" vehicleRefId="S30_circ_4"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S30_10">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01030" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01145" arrivalOffset="00:07:00" departureOffset="00:08:00" awaitDeparture="true"/>
+				<stop refId="S01144" arrivalOffset="00:12:00" departureOffset="00:13:00" awaitDeparture="true"/>
+				<stop refId="S01143" arrivalOffset="00:18:00" departureOffset="00:19:00" awaitDeparture="true"/>
+				<stop refId="S01142" arrivalOffset="00:22:00" departureOffset="00:23:00" awaitDeparture="true"/>
+				<stop refId="S01141" arrivalOffset="00:27:00" departureOffset="00:28:00" awaitDeparture="true"/>
+				<stop refId="S01140" arrivalOffset="00:33:00" departureOffset="00:34:00" awaitDeparture="true"/>
+				<stop refId="S01118" arrivalOffset="00:39:00" departureOffset="00:44:00" awaitDeparture="true"/>
+				<stop refId="S01113" arrivalOffset="00:58:00" departureOffset="01:01:00" awaitDeparture="true"/>
+				<stop refId="S01111" arrivalOffset="01:05:00" departureOffset="01:05:00" awaitDeparture="true"/>
+				<stop refId="S01110" arrivalOffset="01:13:00" departureOffset="01:13:00" awaitDeparture="true"/>
+				<stop refId="S05408" arrivalOffset="01:17:00" departureOffset="01:17:00" awaitDeparture="true"/>
+				<stop refId="S05410" arrivalOffset="01:18:00" departureOffset="01:18:00" awaitDeparture="true"/>
+				<stop refId="S05407" arrivalOffset="01:23:00" departureOffset="01:23:00" awaitDeparture="true"/>
+				<stop refId="S05406" arrivalOffset="01:29:00" departureOffset="01:29:00" awaitDeparture="true"/>
+				<stop refId="S05405" arrivalOffset="01:32:00" departureOffset="01:32:00" awaitDeparture="true"/>
+				<stop refId="S05404" arrivalOffset="01:39:00" departureOffset="01:39:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01145"/>
+				<link refId="stop_S01145"/>
+				<link refId="S01145_S01144"/>
+				<link refId="stop_S01144"/>
+				<link refId="S01144_S01143"/>
+				<link refId="stop_S01143"/>
+				<link refId="S01143_S01142"/>
+				<link refId="stop_S01142"/>
+				<link refId="S01142_S01141"/>
+				<link refId="stop_S01141"/>
+				<link refId="S01141_S01140"/>
+				<link refId="stop_S01140"/>
+				<link refId="S01140_S01118"/>
+				<link refId="stop_S01118"/>
+				<link refId="S01118_S01117"/>
+				<link refId="S01117_S01116"/>
+				<link refId="S01116_S01113"/>
+				<link refId="stop_S01113"/>
+				<link refId="S01113_S01111"/>
+				<link refId="stop_S01111"/>
+				<link refId="S01111_S01110"/>
+				<link refId="stop_S01110"/>
+				<link refId="S01110_S05408"/>
+				<link refId="stop_S05408"/>
+				<link refId="S05408_S05410"/>
+				<link refId="stop_S05410"/>
+				<link refId="S05410_S05407"/>
+				<link refId="stop_S05407"/>
+				<link refId="S05407_S05406"/>
+				<link refId="stop_S05406"/>
+				<link refId="S05406_S05405"/>
+				<link refId="stop_S05405"/>
+				<link refId="S05405_S05404"/>
+				<link refId="stop_S05404"/>
+			</route>
+			<departures>
+				<departure id="125378-71438f13" departureTime="18:19:00" vehicleRefId="S30_circ_5"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S30_11">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01030" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01145" arrivalOffset="00:05:00" departureOffset="00:06:00" awaitDeparture="true"/>
+				<stop refId="S01144" arrivalOffset="00:10:00" departureOffset="00:11:00" awaitDeparture="true"/>
+				<stop refId="S01143" arrivalOffset="00:16:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S01142" arrivalOffset="00:20:00" departureOffset="00:21:00" awaitDeparture="true"/>
+				<stop refId="S01141" arrivalOffset="00:25:00" departureOffset="00:26:00" awaitDeparture="true"/>
+				<stop refId="S01140" arrivalOffset="00:31:00" departureOffset="00:32:00" awaitDeparture="true"/>
+				<stop refId="S01118" arrivalOffset="00:37:00" departureOffset="00:42:00" awaitDeparture="true"/>
+				<stop refId="S01113" arrivalOffset="00:56:00" departureOffset="00:59:00" awaitDeparture="true"/>
+				<stop refId="S01111" arrivalOffset="01:03:00" departureOffset="01:03:00" awaitDeparture="true"/>
+				<stop refId="S01110" arrivalOffset="01:11:00" departureOffset="01:11:00" awaitDeparture="true"/>
+				<stop refId="S05408" arrivalOffset="01:15:00" departureOffset="01:15:00" awaitDeparture="true"/>
+				<stop refId="S05410" arrivalOffset="01:16:00" departureOffset="01:16:00" awaitDeparture="true"/>
+				<stop refId="S05407" arrivalOffset="01:19:00" departureOffset="01:21:00" awaitDeparture="true"/>
+				<stop refId="S05406" arrivalOffset="01:27:00" departureOffset="01:27:00" awaitDeparture="true"/>
+				<stop refId="S05405" arrivalOffset="01:30:00" departureOffset="01:30:00" awaitDeparture="true"/>
+				<stop refId="S05404" arrivalOffset="01:37:00" departureOffset="01:37:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01145"/>
+				<link refId="stop_S01145"/>
+				<link refId="S01145_S01144"/>
+				<link refId="stop_S01144"/>
+				<link refId="S01144_S01143"/>
+				<link refId="stop_S01143"/>
+				<link refId="S01143_S01142"/>
+				<link refId="stop_S01142"/>
+				<link refId="S01142_S01141"/>
+				<link refId="stop_S01141"/>
+				<link refId="S01141_S01140"/>
+				<link refId="stop_S01140"/>
+				<link refId="S01140_S01118"/>
+				<link refId="stop_S01118"/>
+				<link refId="S01118_S01117"/>
+				<link refId="S01117_S01116"/>
+				<link refId="S01116_S01113"/>
+				<link refId="stop_S01113"/>
+				<link refId="S01113_S01111"/>
+				<link refId="stop_S01111"/>
+				<link refId="S01111_S01110"/>
+				<link refId="stop_S01110"/>
+				<link refId="S01110_S05408"/>
+				<link refId="stop_S05408"/>
+				<link refId="S05408_S05410"/>
+				<link refId="stop_S05410"/>
+				<link refId="S05410_S05407"/>
+				<link refId="stop_S05407"/>
+				<link refId="S05407_S05406"/>
+				<link refId="stop_S05406"/>
+				<link refId="S05406_S05405"/>
+				<link refId="stop_S05405"/>
+				<link refId="S05405_S05404"/>
+				<link refId="stop_S05404"/>
+			</route>
+			<departures>
+				<departure id="125382-b2af41bf" departureTime="20:19:00" vehicleRefId="S30_circ_1"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S30_12">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01113" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01116" arrivalOffset="00:05:00" departureOffset="00:06:00" awaitDeparture="true"/>
+				<stop refId="S01117" arrivalOffset="00:08:00" departureOffset="00:09:00" awaitDeparture="true"/>
+				<stop refId="S01118" arrivalOffset="00:17:00" departureOffset="00:18:00" awaitDeparture="true"/>
+				<stop refId="S01140" arrivalOffset="00:22:00" departureOffset="00:23:00" awaitDeparture="true"/>
+				<stop refId="S01141" arrivalOffset="00:27:00" departureOffset="00:28:00" awaitDeparture="true"/>
+				<stop refId="S01142" arrivalOffset="00:32:00" departureOffset="00:33:00" awaitDeparture="true"/>
+				<stop refId="S01143" arrivalOffset="00:36:00" departureOffset="00:37:00" awaitDeparture="true"/>
+				<stop refId="S01144" arrivalOffset="00:44:00" departureOffset="00:49:00" awaitDeparture="true"/>
+				<stop refId="S01145" arrivalOffset="00:53:00" departureOffset="00:54:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="01:01:00" departureOffset="01:01:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01113"/>
+				<link refId="S01113_S01116"/>
+				<link refId="stop_S01116"/>
+				<link refId="S01116_S01117"/>
+				<link refId="stop_S01117"/>
+				<link refId="S01117_S01118"/>
+				<link refId="stop_S01118"/>
+				<link refId="S01118_S01140"/>
+				<link refId="stop_S01140"/>
+				<link refId="S01140_S01141"/>
+				<link refId="stop_S01141"/>
+				<link refId="S01141_S01142"/>
+				<link refId="stop_S01142"/>
+				<link refId="S01142_S01143"/>
+				<link refId="stop_S01143"/>
+				<link refId="S01143_S01144"/>
+				<link refId="stop_S01144"/>
+				<link refId="S01144_S01145"/>
+				<link refId="stop_S01145"/>
+				<link refId="S01145_S01030"/>
+				<link refId="stop_S01030"/>
+			</route>
+			<departures>
+				<departure id="125345-d496bc24" departureTime="20:45:00" vehicleRefId="S30_circ_3"/>
+			</departures>
+		</transitRoute>
+	</transitLine>
 	<transitLine id="S31">
 		<transitRoute id="S31_1">
 			<transportMode>rail</transportMode>
@@ -29146,6 +30568,254 @@
 			</departures>
 		</transitRoute>
 	</transitLine>
+	<transitLine id="S40">
+		<transitRoute id="S40_1">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S09998" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01307" arrivalOffset="00:04:00" departureOffset="00:05:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="00:11:00" departureOffset="00:14:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="00:16:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="00:22:00" departureOffset="00:27:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="00:30:00" departureOffset="00:31:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="00:34:00" departureOffset="00:35:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="00:38:00" departureOffset="00:39:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="00:42:00" departureOffset="00:43:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="00:48:00" departureOffset="00:48:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S09998"/>
+				<link refId="S09998_S01307"/>
+				<link refId="stop_S01307"/>
+				<link refId="S01307_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01205"/>
+				<link refId="stop_S01205"/>
+			</route>
+			<departures>
+				<departure id="125406-28b1405d" departureTime="05:36:00" vehicleRefId="S40_circ_1"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S40_2">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01205" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="00:03:00" departureOffset="00:04:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="00:07:00" departureOffset="00:08:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="00:12:00" departureOffset="00:13:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="00:16:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="00:21:00" departureOffset="00:26:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="00:29:00" departureOffset="00:30:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="00:34:00" departureOffset="00:41:00" awaitDeparture="true"/>
+				<stop refId="S01307" arrivalOffset="00:48:00" departureOffset="00:48:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01205"/>
+				<link refId="S01205_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S01307"/>
+				<link refId="stop_S01307"/>
+			</route>
+			<departures>
+				<departure id="125454-f7c68e3f" departureTime="05:36:00" vehicleRefId="S40_circ_2"/>
+				<departure id="125458-9cd8d9ab" departureTime="07:36:00" vehicleRefId="S40_circ_2"/>
+				<departure id="125460-da7fc185" departureTime="08:36:00" vehicleRefId="S40_circ_3"/>
+				<departure id="125462-3679d05e" departureTime="09:36:00" vehicleRefId="S40_circ_2"/>
+				<departure id="125464-dbfced2c" departureTime="10:36:00" vehicleRefId="S40_circ_3"/>
+				<departure id="125466-7178498c" departureTime="11:36:00" vehicleRefId="S40_circ_2"/>
+				<departure id="125468-8c0bbd15" departureTime="12:36:00" vehicleRefId="S40_circ_3"/>
+				<departure id="125470-77e6db72" departureTime="13:36:00" vehicleRefId="S40_circ_2"/>
+				<departure id="125472-4f5ab0de" departureTime="14:36:00" vehicleRefId="S40_circ_3"/>
+				<departure id="125474-3ff0e574" departureTime="15:36:00" vehicleRefId="S40_circ_2"/>
+				<departure id="125476-34f070ab" departureTime="16:36:00" vehicleRefId="S40_circ_3"/>
+				<departure id="125478-208024d9" departureTime="17:36:00" vehicleRefId="S40_circ_2"/>
+				<departure id="125480-b60ef733" departureTime="18:36:00" vehicleRefId="S40_circ_3"/>
+				<departure id="125482-a34feab2" departureTime="19:36:00" vehicleRefId="S40_circ_2"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S40_3">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01307" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="00:07:00" departureOffset="00:14:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="00:16:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="00:22:00" departureOffset="00:27:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="00:30:00" departureOffset="00:31:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="00:34:00" departureOffset="00:35:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="00:38:00" departureOffset="00:39:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="00:42:00" departureOffset="00:43:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="00:48:00" departureOffset="00:48:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01307"/>
+				<link refId="S01307_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01205"/>
+				<link refId="stop_S01205"/>
+			</route>
+			<departures>
+				<departure id="125408-4c6ef644" departureTime="06:36:00" vehicleRefId="S40_circ_2"/>
+				<departure id="125410-ed242a1a" departureTime="07:36:00" vehicleRefId="S40_circ_3"/>
+				<departure id="125412-73ca8ee6" departureTime="08:36:00" vehicleRefId="S40_circ_2"/>
+				<departure id="125416-2a40ee09" departureTime="10:36:00" vehicleRefId="S40_circ_2"/>
+				<departure id="125418-cb40c85d" departureTime="11:36:00" vehicleRefId="S40_circ_3"/>
+				<departure id="125420-31ee0a27" departureTime="12:36:00" vehicleRefId="S40_circ_2"/>
+				<departure id="125422-aeccca0a" departureTime="13:36:00" vehicleRefId="S40_circ_3"/>
+				<departure id="125424-f97da11a" departureTime="14:36:00" vehicleRefId="S40_circ_2"/>
+				<departure id="125426-30cc29b9" departureTime="15:36:00" vehicleRefId="S40_circ_3"/>
+				<departure id="125428-cf8cafae" departureTime="16:36:00" vehicleRefId="S40_circ_2"/>
+				<departure id="125430-d2a56143" departureTime="17:36:00" vehicleRefId="S40_circ_3"/>
+				<departure id="125432-f9869942" departureTime="18:36:00" vehicleRefId="S40_circ_2"/>
+				<departure id="125434-0273ace4" departureTime="19:36:00" vehicleRefId="S40_circ_3"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S40_4">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01205" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="00:03:00" departureOffset="00:04:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="00:07:00" departureOffset="00:08:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="00:12:00" departureOffset="00:13:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="00:16:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="00:21:00" departureOffset="00:25:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:37:00" departureOffset="00:37:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:41:00" departureOffset="00:42:00" awaitDeparture="true"/>
+				<stop refId="S05219" arrivalOffset="00:46:00" departureOffset="00:46:00" awaitDeparture="true"/>
+				<stop refId="S05218" arrivalOffset="00:49:00" departureOffset="00:49:00" awaitDeparture="true"/>
+				<stop refId="S05217" arrivalOffset="00:53:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="S05216" arrivalOffset="00:58:00" departureOffset="00:58:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01205"/>
+				<link refId="S01205_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19901"/>
+				<link refId="S19901_Z05304"/>
+				<link refId="Z05304_S05303"/>
+				<link refId="S05303_S05302"/>
+				<link refId="S05302_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05219"/>
+				<link refId="stop_S05219"/>
+				<link refId="S05219_S05218"/>
+				<link refId="stop_S05218"/>
+				<link refId="S05218_S05217"/>
+				<link refId="stop_S05217"/>
+				<link refId="S05217_S05216"/>
+				<link refId="stop_S05216"/>
+			</route>
+			<departures>
+				<departure id="125452-de06f64d" departureTime="06:36:00" vehicleRefId="S40_circ_1"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S40_5">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S13143" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05306" arrivalOffset="00:03:00" departureOffset="00:04:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="00:08:00" departureOffset="00:15:00" awaitDeparture="true"/>
+				<stop refId="S01307" arrivalOffset="00:22:00" departureOffset="00:22:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S05306"/>
+				<link refId="stop_S05306"/>
+				<link refId="S05306_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S01307"/>
+				<link refId="stop_S01307"/>
+			</route>
+			<departures>
+				<departure id="125453-e9c81387" departureTime="07:02:00" vehicleRefId="S40_circ_3"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S40_6">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01307" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01301" arrivalOffset="00:07:00" departureOffset="00:14:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="00:30:00" departureOffset="00:31:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="00:34:00" departureOffset="00:35:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="00:38:00" departureOffset="00:39:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="00:42:00" departureOffset="00:43:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="00:48:00" departureOffset="00:48:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01307"/>
+				<link refId="S01307_S01301"/>
+				<link refId="stop_S01301"/>
+				<link refId="S01301_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01205"/>
+				<link refId="stop_S01205"/>
+			</route>
+			<departures>
+				<departure id="125414-23d789b0" departureTime="09:36:00" vehicleRefId="S40_circ_3"/>
+			</departures>
+		</transitRoute>
+	</transitLine>
 	<transitLine id="S5">
 		<transitRoute id="S5_1">
 			<transportMode>rail</transportMode>
@@ -30121,6 +31791,985 @@
 			</route>
 			<departures>
 				<departure id="124586-3aa1d9f0" departureTime="23:40:00" vehicleRefId="S5_circ_8"/>
+			</departures>
+		</transitRoute>
+	</transitLine>
+	<transitLine id="S50">
+		<transitRoute id="S50_1">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S13143" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="00:03:00" departureOffset="00:04:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="00:07:00" departureOffset="00:08:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="00:11:00" departureOffset="00:12:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="00:15:00" departureOffset="00:16:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="00:21:00" departureOffset="00:27:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="00:40:00" departureOffset="00:41:00" awaitDeparture="true"/>
+				<stop refId="S01031" arrivalOffset="00:47:00" departureOffset="00:52:00" awaitDeparture="true"/>
+				<stop refId="S01137" arrivalOffset="00:57:00" departureOffset="00:58:00" awaitDeparture="true"/>
+				<stop refId="S01138" arrivalOffset="01:03:00" departureOffset="01:04:00" awaitDeparture="true"/>
+				<stop refId="S01139" arrivalOffset="01:08:00" departureOffset="01:09:00" awaitDeparture="true"/>
+				<stop refId="S01146" arrivalOffset="01:14:00" departureOffset="01:14:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01205"/>
+				<link refId="stop_S01205"/>
+				<link refId="S01205_S01207"/>
+				<link refId="S01207_S01208"/>
+				<link refId="S01208_S01209"/>
+				<link refId="S01209_S01210"/>
+				<link refId="S01210_S01030"/>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01031"/>
+				<link refId="stop_S01031"/>
+				<link refId="S01031_S01137"/>
+				<link refId="stop_S01137"/>
+				<link refId="S01137_S01138"/>
+				<link refId="stop_S01138"/>
+				<link refId="S01138_S01139"/>
+				<link refId="stop_S01139"/>
+				<link refId="S01139_S01146"/>
+				<link refId="stop_S01146"/>
+			</route>
+			<departures>
+				<departure id="125553-29d52350" departureTime="04:33:00" vehicleRefId="S50_circ_1"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S50_2">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05213" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05216" arrivalOffset="00:13:00" departureOffset="00:13:00" awaitDeparture="true"/>
+				<stop refId="S05217" arrivalOffset="00:17:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S05218" arrivalOffset="00:23:00" departureOffset="00:23:00" awaitDeparture="true"/>
+				<stop refId="S05219" arrivalOffset="00:26:00" departureOffset="00:26:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:32:00" departureOffset="00:33:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:36:00" departureOffset="00:36:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:40:00" departureOffset="00:40:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:45:00" departureOffset="00:45:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:48:00" departureOffset="00:48:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:51:00" departureOffset="00:51:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="00:54:00" departureOffset="01:00:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="01:03:00" departureOffset="01:04:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="01:07:00" departureOffset="01:08:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="01:11:00" departureOffset="01:12:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="01:15:00" departureOffset="01:16:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="01:21:00" departureOffset="01:27:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="01:40:00" departureOffset="01:41:00" awaitDeparture="true"/>
+				<stop refId="S01031" arrivalOffset="01:47:00" departureOffset="01:52:00" awaitDeparture="true"/>
+				<stop refId="S01137" arrivalOffset="01:57:00" departureOffset="01:58:00" awaitDeparture="true"/>
+				<stop refId="S01138" arrivalOffset="02:03:00" departureOffset="02:04:00" awaitDeparture="true"/>
+				<stop refId="S01139" arrivalOffset="02:08:00" departureOffset="02:09:00" awaitDeparture="true"/>
+				<stop refId="S01146" arrivalOffset="02:14:00" departureOffset="02:14:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05216"/>
+				<link refId="stop_S05216"/>
+				<link refId="S05216_S05217"/>
+				<link refId="stop_S05217"/>
+				<link refId="S05217_S05218"/>
+				<link refId="stop_S05218"/>
+				<link refId="S05218_S05219"/>
+				<link refId="stop_S05219"/>
+				<link refId="S05219_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01205"/>
+				<link refId="stop_S01205"/>
+				<link refId="S01205_S01207"/>
+				<link refId="S01207_S01208"/>
+				<link refId="S01208_S01209"/>
+				<link refId="S01209_S01210"/>
+				<link refId="S01210_S01030"/>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01031"/>
+				<link refId="stop_S01031"/>
+				<link refId="S01031_S01137"/>
+				<link refId="stop_S01137"/>
+				<link refId="S01137_S01138"/>
+				<link refId="stop_S01138"/>
+				<link refId="S01138_S01139"/>
+				<link refId="stop_S01139"/>
+				<link refId="S01139_S01146"/>
+				<link refId="stop_S01146"/>
+			</route>
+			<departures>
+				<departure id="125555-fab9366c" departureTime="04:33:00" vehicleRefId="S50_circ_2"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S50_3">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01205" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="00:03:00" departureOffset="00:04:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="00:07:00" departureOffset="00:08:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="00:12:00" departureOffset="00:13:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="00:16:00" departureOffset="00:16:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="00:20:00" departureOffset="00:34:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:35:00" departureOffset="00:35:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:38:00" departureOffset="00:38:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:42:00" departureOffset="00:42:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:46:00" departureOffset="00:46:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:50:00" departureOffset="00:50:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:54:00" departureOffset="01:03:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="01:19:00" departureOffset="01:20:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="01:24:00" departureOffset="01:25:00" awaitDeparture="true"/>
+				<stop refId="S05209" arrivalOffset="01:37:00" departureOffset="01:37:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01205"/>
+				<link refId="S01205_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05209"/>
+				<link refId="stop_S05209"/>
+			</route>
+			<departures>
+				<departure id="125554-d3a3670e" departureTime="05:00:00" vehicleRefId="S50_circ_3"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S50_4">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05209" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="00:10:00" departureOffset="00:10:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="00:14:00" departureOffset="00:18:00" awaitDeparture="true"/>
+				<stop refId="S05216" arrivalOffset="00:31:00" departureOffset="00:31:00" awaitDeparture="true"/>
+				<stop refId="S05217" arrivalOffset="00:35:00" departureOffset="00:35:00" awaitDeparture="true"/>
+				<stop refId="S05218" arrivalOffset="00:41:00" departureOffset="00:41:00" awaitDeparture="true"/>
+				<stop refId="S05219" arrivalOffset="00:44:00" departureOffset="00:44:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:50:00" departureOffset="00:51:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:54:00" departureOffset="00:54:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:58:00" departureOffset="00:58:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="01:03:00" departureOffset="01:03:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="01:06:00" departureOffset="01:06:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="01:09:00" departureOffset="01:09:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:12:00" departureOffset="01:18:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="01:21:00" departureOffset="01:22:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="01:25:00" departureOffset="01:26:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="01:29:00" departureOffset="01:30:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="01:33:00" departureOffset="01:34:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="01:39:00" departureOffset="01:45:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="01:58:00" departureOffset="01:59:00" awaitDeparture="true"/>
+				<stop refId="S01031" arrivalOffset="02:05:00" departureOffset="02:10:00" awaitDeparture="true"/>
+				<stop refId="S01137" arrivalOffset="02:15:00" departureOffset="02:16:00" awaitDeparture="true"/>
+				<stop refId="S01138" arrivalOffset="02:21:00" departureOffset="02:22:00" awaitDeparture="true"/>
+				<stop refId="S01139" arrivalOffset="02:26:00" departureOffset="02:27:00" awaitDeparture="true"/>
+				<stop refId="S01146" arrivalOffset="02:32:00" departureOffset="02:32:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05209"/>
+				<link refId="S05209_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05216"/>
+				<link refId="stop_S05216"/>
+				<link refId="S05216_S05217"/>
+				<link refId="stop_S05217"/>
+				<link refId="S05217_S05218"/>
+				<link refId="stop_S05218"/>
+				<link refId="S05218_S05219"/>
+				<link refId="stop_S05219"/>
+				<link refId="S05219_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01205"/>
+				<link refId="stop_S01205"/>
+				<link refId="S01205_S01207"/>
+				<link refId="S01207_S01208"/>
+				<link refId="S01208_S01209"/>
+				<link refId="S01209_S01210"/>
+				<link refId="S01210_S01030"/>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01031"/>
+				<link refId="stop_S01031"/>
+				<link refId="S01031_S01137"/>
+				<link refId="stop_S01137"/>
+				<link refId="S01137_S01138"/>
+				<link refId="stop_S01138"/>
+				<link refId="S01138_S01139"/>
+				<link refId="stop_S01139"/>
+				<link refId="S01139_S01146"/>
+				<link refId="stop_S01146"/>
+			</route>
+			<departures>
+				<departure id="125557-0cd6778a" departureTime="05:15:00" vehicleRefId="S50_circ_4"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S50_5">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01030" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="00:13:00" departureOffset="00:19:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="00:22:00" departureOffset="00:23:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="00:26:00" departureOffset="00:27:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="00:31:00" departureOffset="00:32:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="00:35:00" departureOffset="00:36:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="00:40:00" departureOffset="00:47:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:48:00" departureOffset="00:48:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:51:00" departureOffset="00:51:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:55:00" departureOffset="00:55:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:59:00" departureOffset="00:59:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="01:03:00" departureOffset="01:03:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="01:07:00" departureOffset="01:08:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="01:26:00" departureOffset="01:33:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="01:37:00" departureOffset="01:38:00" awaitDeparture="true"/>
+				<stop refId="S05209" arrivalOffset="01:50:00" departureOffset="01:50:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01210"/>
+				<link refId="S01210_S01209"/>
+				<link refId="S01209_S01208"/>
+				<link refId="S01208_S01207"/>
+				<link refId="S01207_S01205"/>
+				<link refId="stop_S01205"/>
+				<link refId="S01205_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05209"/>
+				<link refId="stop_S05209"/>
+			</route>
+			<departures>
+				<departure id="125550-425e46fb" departureTime="05:47:00" vehicleRefId="S50_circ_5"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S50_6">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01146" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01139" arrivalOffset="00:05:00" departureOffset="00:06:00" awaitDeparture="true"/>
+				<stop refId="S01138" arrivalOffset="00:10:00" departureOffset="00:11:00" awaitDeparture="true"/>
+				<stop refId="S01137" arrivalOffset="00:16:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S01031" arrivalOffset="00:22:00" departureOffset="00:27:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="00:33:00" departureOffset="00:34:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="00:47:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="00:56:00" departureOffset="00:57:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="01:00:00" departureOffset="01:01:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="01:05:00" departureOffset="01:06:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="01:09:00" departureOffset="01:10:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:14:00" departureOffset="01:17:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="01:29:00" departureOffset="01:29:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="01:33:00" departureOffset="01:35:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="01:54:00" departureOffset="01:54:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01146"/>
+				<link refId="S01146_S01139"/>
+				<link refId="stop_S01139"/>
+				<link refId="S01139_S01138"/>
+				<link refId="stop_S01138"/>
+				<link refId="S01138_S01137"/>
+				<link refId="stop_S01137"/>
+				<link refId="S01137_S01031"/>
+				<link refId="stop_S01031"/>
+				<link refId="S01031_S01030"/>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01210"/>
+				<link refId="S01210_S01209"/>
+				<link refId="S01209_S01208"/>
+				<link refId="S01208_S01207"/>
+				<link refId="S01207_S01205"/>
+				<link refId="stop_S01205"/>
+				<link refId="S01205_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19901"/>
+				<link refId="S19901_Z05304"/>
+				<link refId="Z05304_S05303"/>
+				<link refId="S05303_S05302"/>
+				<link refId="S05302_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05213"/>
+				<link refId="stop_S05213"/>
+			</route>
+			<departures>
+				<departure id="125558-6f8080b0" departureTime="06:13:00" vehicleRefId="S50_circ_1"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S50_7">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05209" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="00:10:00" departureOffset="00:10:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="00:14:00" departureOffset="00:16:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:33:00" departureOffset="00:41:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:44:00" departureOffset="00:44:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:48:00" departureOffset="00:48:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:53:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:56:00" departureOffset="00:56:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:59:00" departureOffset="00:59:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:02:00" departureOffset="01:08:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="01:11:00" departureOffset="01:12:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="01:15:00" departureOffset="01:16:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="01:19:00" departureOffset="01:20:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="01:23:00" departureOffset="01:24:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="01:29:00" departureOffset="01:35:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="01:48:00" departureOffset="01:49:00" awaitDeparture="true"/>
+				<stop refId="S01031" arrivalOffset="01:55:00" departureOffset="02:00:00" awaitDeparture="true"/>
+				<stop refId="S01137" arrivalOffset="02:05:00" departureOffset="02:06:00" awaitDeparture="true"/>
+				<stop refId="S01138" arrivalOffset="02:11:00" departureOffset="02:12:00" awaitDeparture="true"/>
+				<stop refId="S01139" arrivalOffset="02:16:00" departureOffset="02:17:00" awaitDeparture="true"/>
+				<stop refId="S01146" arrivalOffset="02:22:00" departureOffset="02:22:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05209"/>
+				<link refId="S05209_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01205"/>
+				<link refId="stop_S01205"/>
+				<link refId="S01205_S01207"/>
+				<link refId="S01207_S01208"/>
+				<link refId="S01208_S01209"/>
+				<link refId="S01209_S01210"/>
+				<link refId="S01210_S01030"/>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01031"/>
+				<link refId="stop_S01031"/>
+				<link refId="S01031_S01137"/>
+				<link refId="stop_S01137"/>
+				<link refId="S01137_S01138"/>
+				<link refId="stop_S01138"/>
+				<link refId="S01138_S01139"/>
+				<link refId="stop_S01139"/>
+				<link refId="S01139_S01146"/>
+				<link refId="stop_S01146"/>
+			</route>
+			<departures>
+				<departure id="125559-7a494dd6" departureTime="06:25:00" vehicleRefId="S50_circ_6"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S50_8">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05201" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05204" arrivalOffset="00:18:00" departureOffset="00:18:00" awaitDeparture="true"/>
+				<stop refId="S05209" arrivalOffset="00:42:00" departureOffset="00:43:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="00:52:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="00:57:00" departureOffset="01:08:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="01:27:00" departureOffset="01:28:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="01:31:00" departureOffset="01:31:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="01:35:00" departureOffset="01:35:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="01:40:00" departureOffset="01:40:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="01:43:00" departureOffset="01:43:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="01:46:00" departureOffset="01:46:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:49:00" departureOffset="01:55:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="01:58:00" departureOffset="01:59:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="02:02:00" departureOffset="02:03:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="02:06:00" departureOffset="02:07:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="02:10:00" departureOffset="02:11:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="02:16:00" departureOffset="02:22:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="02:35:00" departureOffset="02:36:00" awaitDeparture="true"/>
+				<stop refId="S01031" arrivalOffset="02:42:00" departureOffset="02:47:00" awaitDeparture="true"/>
+				<stop refId="S01137" arrivalOffset="02:52:00" departureOffset="02:53:00" awaitDeparture="true"/>
+				<stop refId="S01138" arrivalOffset="02:58:00" departureOffset="02:59:00" awaitDeparture="true"/>
+				<stop refId="S01139" arrivalOffset="03:03:00" departureOffset="03:04:00" awaitDeparture="true"/>
+				<stop refId="S01146" arrivalOffset="03:09:00" departureOffset="03:09:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05201"/>
+				<link refId="S05201_S05204"/>
+				<link refId="stop_S05204"/>
+				<link refId="S05204_S05209"/>
+				<link refId="stop_S05209"/>
+				<link refId="S05209_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01205"/>
+				<link refId="stop_S01205"/>
+				<link refId="S01205_S01207"/>
+				<link refId="S01207_S01208"/>
+				<link refId="S01208_S01209"/>
+				<link refId="S01209_S01210"/>
+				<link refId="S01210_S01030"/>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01031"/>
+				<link refId="stop_S01031"/>
+				<link refId="S01031_S01137"/>
+				<link refId="stop_S01137"/>
+				<link refId="S01137_S01138"/>
+				<link refId="stop_S01138"/>
+				<link refId="S01138_S01139"/>
+				<link refId="stop_S01139"/>
+				<link refId="S01139_S01146"/>
+				<link refId="stop_S01146"/>
+			</route>
+			<departures>
+				<departure id="125561-ca4cd261" departureTime="06:38:00" vehicleRefId="S50_circ_7"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S50_9">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01146" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01139" arrivalOffset="00:05:00" departureOffset="00:06:00" awaitDeparture="true"/>
+				<stop refId="S01138" arrivalOffset="00:10:00" departureOffset="00:11:00" awaitDeparture="true"/>
+				<stop refId="S01137" arrivalOffset="00:16:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S01031" arrivalOffset="00:22:00" departureOffset="00:27:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="00:33:00" departureOffset="00:34:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="00:47:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="00:56:00" departureOffset="00:57:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="01:00:00" departureOffset="01:01:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="01:05:00" departureOffset="01:06:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="01:09:00" departureOffset="01:10:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:14:00" departureOffset="01:21:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="01:22:00" departureOffset="01:22:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="01:25:00" departureOffset="01:25:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="01:29:00" departureOffset="01:29:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="01:33:00" departureOffset="01:33:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="01:37:00" departureOffset="01:37:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="01:41:00" departureOffset="01:42:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="02:00:00" departureOffset="02:07:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="02:11:00" departureOffset="02:12:00" awaitDeparture="true"/>
+				<stop refId="S05209" arrivalOffset="02:24:00" departureOffset="02:24:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01146"/>
+				<link refId="S01146_S01139"/>
+				<link refId="stop_S01139"/>
+				<link refId="S01139_S01138"/>
+				<link refId="stop_S01138"/>
+				<link refId="S01138_S01137"/>
+				<link refId="stop_S01137"/>
+				<link refId="S01137_S01031"/>
+				<link refId="stop_S01031"/>
+				<link refId="S01031_S01030"/>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01210"/>
+				<link refId="S01210_S01209"/>
+				<link refId="S01209_S01208"/>
+				<link refId="S01208_S01207"/>
+				<link refId="S01207_S01205"/>
+				<link refId="stop_S01205"/>
+				<link refId="S01205_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05209"/>
+				<link refId="stop_S05209"/>
+			</route>
+			<departures>
+				<departure id="125560-1477db6e" departureTime="07:13:00" vehicleRefId="S50_circ_2"/>
+				<departure id="125562-5c8415a8" departureTime="08:13:00" vehicleRefId="S50_circ_4"/>
+				<departure id="125564-821801f2" departureTime="09:13:00" vehicleRefId="S50_circ_6"/>
+				<departure id="125566-444c9c76" departureTime="10:13:00" vehicleRefId="S50_circ_7"/>
+				<departure id="125568-e45153eb" departureTime="11:13:00" vehicleRefId="S50_circ_3"/>
+				<departure id="125570-e9ded654" departureTime="12:13:00" vehicleRefId="S50_circ_5"/>
+				<departure id="125572-3d15e139" departureTime="13:13:00" vehicleRefId="S50_circ_2"/>
+				<departure id="125574-151c1753" departureTime="14:13:00" vehicleRefId="S50_circ_4"/>
+				<departure id="125578-4a2c534d" departureTime="16:13:00" vehicleRefId="S50_circ_7"/>
+				<departure id="125580-83a6d001" departureTime="17:13:00" vehicleRefId="S50_circ_3"/>
+				<departure id="125582-007169ea" departureTime="18:13:00" vehicleRefId="S50_circ_5"/>
+				<departure id="125584-40b4d7c0" departureTime="19:13:00" vehicleRefId="S50_circ_2"/>
+				<departure id="125586-2787a7a0" departureTime="20:13:00" vehicleRefId="S50_circ_4"/>
+				<departure id="125588-cdd19604" departureTime="21:13:00" vehicleRefId="S50_circ_8"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S50_10">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05209" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="00:10:00" departureOffset="00:10:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="00:14:00" departureOffset="00:21:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:40:00" departureOffset="00:41:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:44:00" departureOffset="00:44:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:48:00" departureOffset="00:48:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:53:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:56:00" departureOffset="00:56:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:59:00" departureOffset="00:59:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:02:00" departureOffset="01:08:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="01:11:00" departureOffset="01:12:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="01:15:00" departureOffset="01:16:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="01:19:00" departureOffset="01:20:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="01:23:00" departureOffset="01:24:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="01:29:00" departureOffset="01:35:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="01:48:00" departureOffset="01:49:00" awaitDeparture="true"/>
+				<stop refId="S01031" arrivalOffset="01:55:00" departureOffset="02:00:00" awaitDeparture="true"/>
+				<stop refId="S01137" arrivalOffset="02:05:00" departureOffset="02:06:00" awaitDeparture="true"/>
+				<stop refId="S01138" arrivalOffset="02:11:00" departureOffset="02:12:00" awaitDeparture="true"/>
+				<stop refId="S01139" arrivalOffset="02:16:00" departureOffset="02:17:00" awaitDeparture="true"/>
+				<stop refId="S01146" arrivalOffset="02:22:00" departureOffset="02:22:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05209"/>
+				<link refId="S05209_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01205"/>
+				<link refId="stop_S01205"/>
+				<link refId="S01205_S01207"/>
+				<link refId="S01207_S01208"/>
+				<link refId="S01208_S01209"/>
+				<link refId="S01209_S01210"/>
+				<link refId="S01210_S01030"/>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01031"/>
+				<link refId="stop_S01031"/>
+				<link refId="S01031_S01137"/>
+				<link refId="stop_S01137"/>
+				<link refId="S01137_S01138"/>
+				<link refId="stop_S01138"/>
+				<link refId="S01138_S01139"/>
+				<link refId="stop_S01139"/>
+				<link refId="S01139_S01146"/>
+				<link refId="stop_S01146"/>
+			</route>
+			<departures>
+				<departure id="125563-5ad913c4" departureTime="08:25:00" vehicleRefId="S50_circ_3"/>
+				<departure id="125565-3e323682" departureTime="09:25:00" vehicleRefId="S50_circ_5"/>
+				<departure id="125567-39600e34" departureTime="10:25:00" vehicleRefId="S50_circ_2"/>
+				<departure id="125569-3ca814e6" departureTime="11:25:00" vehicleRefId="S50_circ_4"/>
+				<departure id="125571-1a9572df" departureTime="12:25:00" vehicleRefId="S50_circ_6"/>
+				<departure id="125573-c7327dc6" departureTime="13:25:00" vehicleRefId="S50_circ_7"/>
+				<departure id="125575-a213f410" departureTime="14:25:00" vehicleRefId="S50_circ_3"/>
+				<departure id="125577-172bf0c3" departureTime="15:25:00" vehicleRefId="S50_circ_5"/>
+				<departure id="125579-66b3542b" departureTime="16:25:00" vehicleRefId="S50_circ_2"/>
+				<departure id="125581-37b50aa8" departureTime="17:25:00" vehicleRefId="S50_circ_4"/>
+				<departure id="125583-92cfb164" departureTime="18:25:00" vehicleRefId="S50_circ_8"/>
+				<departure id="125585-6b1ca3dc" departureTime="19:25:00" vehicleRefId="S50_circ_7"/>
+				<departure id="125587-e6b2f400" departureTime="20:25:00" vehicleRefId="S50_circ_3"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S50_11">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01146" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01139" arrivalOffset="00:05:00" departureOffset="00:06:00" awaitDeparture="true"/>
+				<stop refId="S01138" arrivalOffset="00:10:00" departureOffset="00:11:00" awaitDeparture="true"/>
+				<stop refId="S01137" arrivalOffset="00:16:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S01031" arrivalOffset="00:22:00" departureOffset="00:27:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="00:33:00" departureOffset="00:34:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="00:47:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="00:56:00" departureOffset="00:57:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="01:00:00" departureOffset="01:01:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="01:05:00" departureOffset="01:06:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="01:09:00" departureOffset="01:10:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:14:00" departureOffset="01:21:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="01:22:00" departureOffset="01:22:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="01:25:00" departureOffset="01:25:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="01:29:00" departureOffset="01:29:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="01:33:00" departureOffset="01:33:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="01:37:00" departureOffset="01:37:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="01:41:00" departureOffset="01:42:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="02:00:00" departureOffset="02:07:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="02:11:00" departureOffset="02:12:00" awaitDeparture="true"/>
+				<stop refId="S05209" arrivalOffset="02:24:00" departureOffset="02:25:00" awaitDeparture="true"/>
+				<stop refId="S05204" arrivalOffset="02:48:00" departureOffset="02:49:00" awaitDeparture="true"/>
+				<stop refId="S05201" arrivalOffset="03:07:00" departureOffset="03:07:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01146"/>
+				<link refId="S01146_S01139"/>
+				<link refId="stop_S01139"/>
+				<link refId="S01139_S01138"/>
+				<link refId="stop_S01138"/>
+				<link refId="S01138_S01137"/>
+				<link refId="stop_S01137"/>
+				<link refId="S01137_S01031"/>
+				<link refId="stop_S01031"/>
+				<link refId="S01031_S01030"/>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01210"/>
+				<link refId="S01210_S01209"/>
+				<link refId="S01209_S01208"/>
+				<link refId="S01208_S01207"/>
+				<link refId="S01207_S01205"/>
+				<link refId="stop_S01205"/>
+				<link refId="S01205_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05209"/>
+				<link refId="stop_S05209"/>
+				<link refId="S05209_S05204"/>
+				<link refId="stop_S05204"/>
+				<link refId="S05204_S05201"/>
+				<link refId="stop_S05201"/>
+			</route>
+			<departures>
+				<departure id="125576-77b7e9e1" departureTime="15:13:00" vehicleRefId="S50_circ_6"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S50_12">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S05209" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S05212" arrivalOffset="00:10:00" departureOffset="00:10:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="00:14:00" departureOffset="00:21:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="00:40:00" departureOffset="00:41:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="00:44:00" departureOffset="00:44:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="00:48:00" departureOffset="00:48:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="00:53:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="00:56:00" departureOffset="00:56:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="00:59:00" departureOffset="00:59:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:02:00" departureOffset="01:08:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="01:11:00" departureOffset="01:12:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="01:15:00" departureOffset="01:16:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="01:19:00" departureOffset="01:20:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="01:23:00" departureOffset="01:24:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="01:29:00" departureOffset="01:29:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S05209"/>
+				<link refId="S05209_S05212"/>
+				<link refId="stop_S05212"/>
+				<link refId="S05212_S05213"/>
+				<link refId="stop_S05213"/>
+				<link refId="S05213_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01205"/>
+				<link refId="stop_S01205"/>
+			</route>
+			<departures>
+				<departure id="125589-6aac9a7a" departureTime="21:25:00" vehicleRefId="S50_circ_5"/>
+				<departure id="125591-27607802" departureTime="22:25:00" vehicleRefId="S50_circ_2"/>
+			</departures>
+		</transitRoute>
+		<transitRoute id="S50_13">
+			<transportMode>rail</transportMode>
+			<routeProfile>
+				<stop refId="S01146" arrivalOffset="00:00:00" departureOffset="00:00:00" awaitDeparture="true"/>
+				<stop refId="S01139" arrivalOffset="00:05:00" departureOffset="00:06:00" awaitDeparture="true"/>
+				<stop refId="S01138" arrivalOffset="00:10:00" departureOffset="00:11:00" awaitDeparture="true"/>
+				<stop refId="S01137" arrivalOffset="00:16:00" departureOffset="00:17:00" awaitDeparture="true"/>
+				<stop refId="S01031" arrivalOffset="00:22:00" departureOffset="00:27:00" awaitDeparture="true"/>
+				<stop refId="S01030" arrivalOffset="00:33:00" departureOffset="00:34:00" awaitDeparture="true"/>
+				<stop refId="S01205" arrivalOffset="00:47:00" departureOffset="00:53:00" awaitDeparture="true"/>
+				<stop refId="S01204" arrivalOffset="00:56:00" departureOffset="00:57:00" awaitDeparture="true"/>
+				<stop refId="S01203" arrivalOffset="01:00:00" departureOffset="01:01:00" awaitDeparture="true"/>
+				<stop refId="S01206" arrivalOffset="01:05:00" departureOffset="01:06:00" awaitDeparture="true"/>
+				<stop refId="S19919" arrivalOffset="01:09:00" departureOffset="01:10:00" awaitDeparture="true"/>
+				<stop refId="S13143" arrivalOffset="01:14:00" departureOffset="01:21:00" awaitDeparture="true"/>
+				<stop refId="S19901" arrivalOffset="01:22:00" departureOffset="01:22:00" awaitDeparture="true"/>
+				<stop refId="Z05304" arrivalOffset="01:25:00" departureOffset="01:25:00" awaitDeparture="true"/>
+				<stop refId="S05303" arrivalOffset="01:29:00" departureOffset="01:29:00" awaitDeparture="true"/>
+				<stop refId="S05302" arrivalOffset="01:33:00" departureOffset="01:33:00" awaitDeparture="true"/>
+				<stop refId="S05301" arrivalOffset="01:37:00" departureOffset="01:37:00" awaitDeparture="true"/>
+				<stop refId="S05300" arrivalOffset="01:41:00" departureOffset="01:42:00" awaitDeparture="true"/>
+				<stop refId="S05219" arrivalOffset="01:46:00" departureOffset="01:46:00" awaitDeparture="true"/>
+				<stop refId="S05218" arrivalOffset="01:49:00" departureOffset="01:49:00" awaitDeparture="true"/>
+				<stop refId="S05217" arrivalOffset="01:54:00" departureOffset="01:54:00" awaitDeparture="true"/>
+				<stop refId="S05216" arrivalOffset="01:58:00" departureOffset="01:58:00" awaitDeparture="true"/>
+				<stop refId="S05213" arrivalOffset="02:13:00" departureOffset="02:13:00" awaitDeparture="true"/>
+			</routeProfile>
+			<route>
+				<link refId="stop_S01146"/>
+				<link refId="S01146_S01139"/>
+				<link refId="stop_S01139"/>
+				<link refId="S01139_S01138"/>
+				<link refId="stop_S01138"/>
+				<link refId="S01138_S01137"/>
+				<link refId="stop_S01137"/>
+				<link refId="S01137_S01031"/>
+				<link refId="stop_S01031"/>
+				<link refId="S01031_S01030"/>
+				<link refId="stop_S01030"/>
+				<link refId="S01030_S01210"/>
+				<link refId="S01210_S01209"/>
+				<link refId="S01209_S01208"/>
+				<link refId="S01208_S01207"/>
+				<link refId="S01207_S01205"/>
+				<link refId="stop_S01205"/>
+				<link refId="S01205_PPINDUNO"/>
+				<link refId="stop_PPINDUNO"/>
+				<link refId="PPINDUNO_S01204"/>
+				<link refId="stop_S01204"/>
+				<link refId="S01204_S01203"/>
+				<link refId="stop_S01203"/>
+				<link refId="S01203_S01206"/>
+				<link refId="stop_S01206"/>
+				<link refId="S01206_S19919"/>
+				<link refId="stop_S19919"/>
+				<link refId="S19919_S13143"/>
+				<link refId="stop_S13143"/>
+				<link refId="S13143_S19901"/>
+				<link refId="stop_S19901"/>
+				<link refId="S19901_Z05304"/>
+				<link refId="stop_Z05304"/>
+				<link refId="Z05304_S05303"/>
+				<link refId="stop_S05303"/>
+				<link refId="S05303_S05302"/>
+				<link refId="stop_S05302"/>
+				<link refId="S05302_S05301"/>
+				<link refId="stop_S05301"/>
+				<link refId="S05301_S05300"/>
+				<link refId="stop_S05300"/>
+				<link refId="S05300_S05219"/>
+				<link refId="stop_S05219"/>
+				<link refId="S05219_S05218"/>
+				<link refId="stop_S05218"/>
+				<link refId="S05218_S05217"/>
+				<link refId="stop_S05217"/>
+				<link refId="S05217_S05216"/>
+				<link refId="stop_S05216"/>
+				<link refId="S05216_S05213"/>
+				<link refId="stop_S05213"/>
+			</route>
+			<departures>
+				<departure id="125590-e2a1f0a9" departureTime="22:13:00" vehicleRefId="S50_circ_7"/>
+				<departure id="125592-ec3b8627" departureTime="23:13:00" vehicleRefId="S50_circ_3"/>
 			</departures>
 		</transitRoute>
 	</transitLine>

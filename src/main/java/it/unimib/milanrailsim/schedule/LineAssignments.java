@@ -41,6 +41,9 @@ public record LineAssignments(Map<String, List<Share>> byLine) {
 	private static final Set<String> SUBURBAN_MIXED = Set.of("S1", "S2", "S5", "S6", "S8", "S9", "S12", "S13", "S19");
 	private static final List<Share> SUBURBAN_CARAVAGGIO_MIX = List.of(new Share("caravaggio_521", 70), new Share("tsr", 30));
 	private static final Set<String> SUBURBAN_MOSTLY_CARAVAGGIO = Set.of("S3", "S4");
+	/** TILO runs 30 six-car sets and 23 four-car ones: the shares follow the fleet, the longer type first. */
+	private static final List<Share> TILO_MIX = List.of(new Share("tilo_flirt_6", 57), new Share("tilo_flirt_4", 43));
+	private static final Set<String> TILO = Set.of("S10", "S30", "S40", "S50");
 	private static final Map<String, String> DEDICATED = Map.ofEntries(
 		Map.entry("S7", "atr125"), Map.entry("R18", "atr125"),
 		Map.entry("R3", "atr125"), Map.entry("RE3", "atr125"),
@@ -71,6 +74,7 @@ public record LineAssignments(Map<String, List<Share>> byLine) {
 		Map<String, List<Share>> byLine = new TreeMap<>();
 		SUBURBAN_MIXED.forEach(line -> byLine.put(line, SUBURBAN_MIX));
 		SUBURBAN_MOSTLY_CARAVAGGIO.forEach(line -> byLine.put(line, SUBURBAN_CARAVAGGIO_MIX));
+		TILO.forEach(line -> byLine.put(line, TILO_MIX));
 		DEDICATED.forEach((line, type) -> byLine.put(line, List.of(new Share(type, 100))));
 		return new LineAssignments(byLine);
 	}

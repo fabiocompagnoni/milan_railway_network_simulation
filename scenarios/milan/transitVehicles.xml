@@ -10,6 +10,8 @@
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
 			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
 			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">diesel</attribute>
+			<attribute name="typeName" class="java.lang.String">ATR 125 Stadler GTW</attribute>
 		</attributes>
 		<capacity seats="231" standingRoomInPersons="0">
 
@@ -33,6 +35,8 @@
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
 			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
 			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">diesel</attribute>
+			<attribute name="typeName" class="java.lang.String">Colleoni ATR 803</attribute>
 		</attributes>
 		<capacity seats="168" standingRoomInPersons="0">
 
@@ -55,6 +59,8 @@
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
 			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
 			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">Caravaggio ETR 421</attribute>
 		</attributes>
 		<capacity seats="466" standingRoomInPersons="0">
 
@@ -77,6 +83,8 @@
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
 			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
 			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">Caravaggio ETR 521</attribute>
 		</attributes>
 		<capacity seats="598" standingRoomInPersons="0">
 
@@ -100,6 +108,8 @@
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
 			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
 			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">Donizetti ETR 204</attribute>
 		</attributes>
 		<capacity seats="262" standingRoomInPersons="0">
 
@@ -123,8 +133,35 @@
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
 			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
 			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">ETR 245 Coradia Meridian</attribute>
 		</attributes>
 		<capacity seats="230" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="82.2"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="44.44444444444444"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
+	<vehicleType id="etr425">
+		<attributes>
+			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">1.0</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">ETR 425 Coradia Meridian</attribute>
+		</attributes>
+		<capacity seats="290" standingRoomInPersons="0">
 
 		</capacity>
 		<length meter="82.2"/>
@@ -146,6 +183,8 @@
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
 			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
 			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">TAF</attribute>
 		</attributes>
 		<capacity seats="469" standingRoomInPersons="0">
 
@@ -153,6 +192,56 @@
 		<length meter="103.97"/>
 		<width meter="1.0"/>
 		<maximumVelocity meterPerSecond="38.888888888888886"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
+	<vehicleType id="tilo_flirt_4">
+		<attributes>
+			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">1.0</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">FLIRT a 4 casse (TILO)</attribute>
+		</attributes>
+		<capacity seats="163" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="74.1"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="44.44444444444444"/>
+		<costInformation>
+
+		</costInformation>
+		<passengerCarEquivalents pce="1.0"/>
+		<networkMode networkMode="rail"/>
+		<flowEfficiencyFactor factor="1.0"/>
+	</vehicleType>
+
+	<vehicleType id="tilo_flirt_6">
+		<attributes>
+			<attribute name="accelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="decelerationDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="railsimAcceleration" class="java.lang.Double">1.0</attribute>
+			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
+			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
+			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">FLIRT a 6 casse (TILO)</attribute>
+		</attributes>
+		<capacity seats="250" standingRoomInPersons="0">
+
+		</capacity>
+		<length meter="106.3"/>
+		<width meter="1.0"/>
+		<maximumVelocity meterPerSecond="44.44444444444444"/>
 		<costInformation>
 
 		</costInformation>
@@ -169,6 +258,8 @@
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
 			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
 			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">FLIRT TSI (TILO)</attribute>
 		</attributes>
 		<capacity seats="244" standingRoomInPersons="0">
 
@@ -192,6 +283,8 @@
 			<attribute name="railsimDeceleration" class="java.lang.Double">0.5</attribute>
 			<attribute name="railsimReversible" class="java.lang.Double">60.0</attribute>
 			<attribute name="reversibleDataStatus" class="java.lang.String">estimated</attribute>
+			<attribute name="traction" class="java.lang.String">electric</attribute>
+			<attribute name="typeName" class="java.lang.String">TSR</attribute>
 		</attributes>
 		<capacity seats="436" standingRoomInPersons="0">
 
@@ -207,52 +300,52 @@
 		<flowEfficiencyFactor factor="1.0"/>
 	</vehicleType>
 
-	<vehicle id="R11_circ_1" type="caravaggio_521">
+	<vehicle id="R11_circ_1" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110191-b13f6895,110194-9b4d385d,110195-d3bf3cb2,110160-db683e98,110161-febbfefe,110164-a3aef601,110165-f742196b,110168-2ec1f229,110169-05d851f0,110172-4bac645a,110173-495bdbc2,110176-c77a38d8,110177-829a527c,110180-ee282e91,110181-df6d7286,110184-623bf323</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R11_circ_2" type="caravaggio_521">
+	<vehicle id="R11_circ_2" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110192-d277dc04,110193-44d67541,110158-61d7277f,110159-02ae2634,110162-7ba5caa8,110163-8e1593c4,110166-41dbe5f4,110167-5139d11f,110170-cde3ade8,110171-4bdc26bb,110174-cb7f86e3,110175-1ae10a77,110178-3527b942,110179-78c22959,110182-4f020290,110183-c1a55308</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R12_circ_1" type="caravaggio_521">
+	<vehicle id="R12_circ_1" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110290-7b08d2bd,110297-38f6fcb1</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R12_circ_2" type="caravaggio_521">
+	<vehicle id="R12_circ_2" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110294-24c1e3d3</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R12_circ_3" type="caravaggio_521">
+	<vehicle id="R12_circ_3" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110296-1279d4f4</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R13_circ_1" type="caravaggio_521">
+	<vehicle id="R13_circ_1" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110313-0195367b,110314-124cee07,110323-b8ca6b8d,110324-d7c9e4cc,110333-192ea0e6,110334-22023292</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R13_circ_2" type="caravaggio_521">
+	<vehicle id="R13_circ_2" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110310-05ff899a,110319-bd9ff5ec,110322-1848634a,110331-4abc4dba,110332-a1f6dbee,110337-dfb299f1,110338-48ca5bf2</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R13_circ_3" type="caravaggio_521">
+	<vehicle id="R13_circ_3" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110308-0ab51226,110317-6bd42d7e,110318-e5db05ae,110307-c2ca42fa,110309-439ccc87,110330-881b1d94</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R13_circ_4" type="caravaggio_521">
+	<vehicle id="R13_circ_4" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110315-d646c181,110316-d4e642f0,110327-bc9eaf4f,110328-a7a7cdc0,110339-ebfd84c7</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R13_circ_5" type="caravaggio_521">
+	<vehicle id="R13_circ_5" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110326-c5e4a1e6,110335-0c43ff67,110336-66944cd4,110341-df070e6c</attribute>
 		</attributes>
@@ -262,7 +355,7 @@
 			<attribute name="servedTrips" class="java.lang.String">125818-39ac7380,125821-f0d03622,125834-cc6c6a01,125843-63106203,125858-80d92e10,125865-08b9b5cd,125878-9cf40040</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R14_circ_2" type="caravaggio_521">
+	<vehicle id="R14_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125815-9b9e715d,125824-825c2ffd,125831-8ba204bb,125846-047620a8,125855-3e49b8e5,125870-f3298fb2,125875-6ab1a86e</attribute>
 		</attributes>
@@ -272,7 +365,7 @@
 			<attribute name="servedTrips" class="java.lang.String">125820-94ffd928,125823-3518e222,125838-64fbc32b,125847-5cf9a7b7,125862-543889e6,125867-eeb61d13,125882-e4b5162f</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R14_circ_4" type="caravaggio_521">
+	<vehicle id="R14_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125817-9aa4cec6,125826-f4c53a47,125835-4acff13a,125850-d86954c6,125859-85e1f426,125872-56bd9965,125879-84f1ad57</attribute>
 		</attributes>
@@ -282,7 +375,7 @@
 			<attribute name="servedTrips" class="java.lang.String">125822-e06fc470,125827-68185c89,125842-40ce41a9,125851-17cacf1e,125866-d9df64e7,125869-958ba5bb,125886-9002479f</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R14_circ_6" type="caravaggio_521">
+	<vehicle id="R14_circ_6" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125819-bf4af569,125830-239fcc11,125839-bf70b769,125854-59395811,125863-8da74268,125874-5e0934a1,125883-adf3b649</attribute>
 		</attributes>
@@ -307,7 +400,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1900648-94a62dfd,1901659-d2263ea0,1901670-533a2f7c,1900685-ae33c697</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R16_circ_2" type="caravaggio_521">
+	<vehicle id="R16_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900612-8071d803,1901617-b3cdc5b9,1901630-185ba281,1901645-a0f3abe8,1901654-60edb155,1900669-15c82238,1900680-35d29c94</attribute>
 		</attributes>
@@ -317,7 +410,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1910610-499723e5,1901615-a1d8037c,1900632-05fb8229,1900647-8e0c1d91,1900662-0ff6e8c0,1902679-f7a93ec3</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R16_circ_4" type="caravaggio_521">
+	<vehicle id="R16_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1901611-b36cdc67,1900628-99f48b75,1900643-c08ede71,1900656-b03602c3,1901673-7ba8656a</attribute>
 		</attributes>
@@ -327,7 +420,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1901614-c908efbb,1900621-2336a9ba,1900636-2d3e54a7,1902649-1a09002f,1902660-8668c565,1900677-585b5446</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R16_circ_6" type="caravaggio_521">
+	<vehicle id="R16_circ_6" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900618-06c317b6,1900625-4d4a6b9a,1900640-9c56dc15,1900651-fdae5cc8,1900668-5a89bdd2,1902683-85e72037</attribute>
 		</attributes>
@@ -342,7 +435,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1900624-98cc246f,1900637-7d397567,1900652-056a0c09,1901665-86764416,1900678-2fc63dc9</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R16_circ_9" type="caravaggio_521">
+	<vehicle id="R16_circ_9" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900644-76ed12a2,1902655-fec42bc5,1902666-ca30799f,1900681-e501faaf</attribute>
 		</attributes>
@@ -352,7 +445,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1900110-dde7f25f,1902113-399c6643,1900126-daf24a1a,1900129-ebe9ec2a,1900140-0fc9b5f5,1900141-4fd7e015,1900150-9a841d1b,1900155-e684b055,1900168-79da9269,1901177-5b8f39c0,1900184-ebd9914f</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R17_circ_2" type="caravaggio_521">
+	<vehicle id="R17_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1902107-3d395a03,1900122-5eda7278,1900123-69bae3f7,1900136-2e7b5227,1900135-4930a74e,1900146-360158bd,1900149-560cbf72,1900160-928e4611,1900165-d9b45a0e,1900178-77a94096,1902185-41b5769a</attribute>
 		</attributes>
@@ -362,7 +455,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1901112-7d2e791e,1901115-ed168a49,1901128-75fba335,1901129-9082bc11,1901142-2c04bbd3,1901143-a0fb4bf2,1902152-d28463df,1902157-52260ae9,1900170-452407b2,1900179-a48cb326,1900188-2478e702</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R17_circ_4" type="caravaggio_521">
+	<vehicle id="R17_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1901111-e6924da5,1901126-286a5d55,1902125-deafdfae,1901138-dbdd3c9a,1901139-ebe05ccf,1901148-d7012ecc,1902153-1fc5694b,1900166-e09ae2de,1900173-27fcb05b,1901182-f1ae822b,1900191-7e28bbc9</attribute>
 		</attributes>
@@ -372,7 +465,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1900114-6f3201be,1900117-2f49ca4f,1900132-5e470d16,1900131-39aa8a29,1900144-f1967cd1,1900145-54541fb3,1900154-5e4e60bf,1900159-6475f8e5,1901174-6da37096,1901181-f7f98090</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R17_circ_6" type="caravaggio_521">
+	<vehicle id="R17_circ_6" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1901118-4010680e,1902121-4635cf05,1902134-b5dcdc03,1901133-318581f1,1901144-91966007,1902147-adff07eb,1902156-ef8c61f7,1901163-1bc8019e,1900176-ec5243b6,1900183-7db61169</attribute>
 		</attributes>
@@ -407,7 +500,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110110-82bf7206,110117-ad6509ee,110118-d402dab0,110127-96381a9f,110128-c50e74d6,110135-cf438a42,110106-3540cf25,110143-f481b768</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R1_circ_2" type="caravaggio_521">
+	<vehicle id="R1_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110112-9a993da1,110101-6fae8d8c,110120-3fb62153,110129-1371449a,110130-5af43963,110137-4fc6b4d9,110138-eac6e16a,110145-57775631</attribute>
 		</attributes>
@@ -417,7 +510,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110115-92939244,110116-b875b92d,110123-ed17b096,110126-94179f98,110133-60d0ead5,110136-c05da4ee,110105-45abecd3</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R1_circ_4" type="caravaggio_521">
+	<vehicle id="R1_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110102-4db02d22,110119-24182d21,110124-037b1266,110103-6395aac2,110132-3c8c30cb,110139-241faf62,110140-a6206dc2,110147-2e8a55af</attribute>
 		</attributes>
@@ -427,32 +520,32 @@
 			<attribute name="servedTrips" class="java.lang.String">110114-a72a8f2b,110121-4398542c,110104-093bd782,110131-4e254f15,110134-07729e14,110141-b12aeaec,110142-29f0b955</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R21_circ_1" type="caravaggio_521">
+	<vehicle id="R21_circ_1" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125313-0a1d8a36,125314-ee1940d2,125307-55b7dd87,125306-5043d939</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R21_circ_2" type="caravaggio_521">
+	<vehicle id="R21_circ_2" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125301-81d09e05,125302-95790d96,125331-431e7804,125332-6282e1f6,125343-d4fc7897,125346-c3bf4a1e</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R21_circ_3" type="caravaggio_521">
+	<vehicle id="R21_circ_3" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125305-6f344647,125304-e74a2d1c</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R21_circ_4" type="caravaggio_521">
+	<vehicle id="R21_circ_4" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125316-33208296,125309-cfb5c261,125308-aeab3afa</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R21_circ_5" type="caravaggio_521">
+	<vehicle id="R21_circ_5" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125328-4fdade03,125335-8b985246,125336-0b992594</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R21_circ_6" type="caravaggio_521">
+	<vehicle id="R21_circ_6" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125340-c5196dc0</attribute>
 		</attributes>
@@ -467,7 +560,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1910046-78caa9c6,1910049-e31a4f86,1912062-f85ec465,1911069-6e779f3f,1912082-3dbc4848,1910091-c4658704</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R22_circ_2" type="caravaggio_521">
+	<vehicle id="R22_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1902014-751519a5,1910017-9ec1c4ce,1911030-c5c10bdf,1910035-ee195152,1911044-479ccb8e,1912047-d0e1077f,1910060-de012f83,1910065-5ecac942,1911078-aada9ca4,1912085-71c60398</attribute>
 		</attributes>
@@ -477,7 +570,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1910009-cf86a462,1912018-04f9f65f,1912021-3360cf2a,1910032-24fe10c1,1901039-1c98f156</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R22_circ_4" type="caravaggio_521">
+	<vehicle id="R22_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1911012-d8d52c0b,1901015-aacffdbb,1901048-d7d6eba9,1912053-49ed3924,1910066-90e96d50,1910073-dfc087b3,1910090-2f7b3a37</attribute>
 		</attributes>
@@ -487,7 +580,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1901011-071979f5,1901054-dc27847a,1912058-3e953648,1912063-62a94def,1910078-3871dd6e,1900083-a7fc5551</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R22_circ_6" type="caravaggio_521">
+	<vehicle id="R22_circ_6" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1910022-84bc4a81,1910023-7685c251,1910036-73a4bbc5,1910041-7ebedf92,1910052-405b27d8,1910055-c79f4236,1912068-8c60da67,1902075-4988922d</attribute>
 		</attributes>
@@ -502,7 +595,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1910028-b912fdd0,1910031-f4279a7f,1910044-e3f911a7,1910045-aa357f97,1910056-ac5deeba,1910059-f97406d6,1912074-c9c2092a,1911081-33411a75</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R22_circ_9" type="caravaggio_521">
+	<vehicle id="R22_circ_9" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1901037-e7450e8e,1900084-fd032f0c</attribute>
 		</attributes>
@@ -512,7 +605,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110213-fd8b47ce,110218-dffec18c,110221-cadcfda9,110230-51dd3094,110233-a9662b2e,110242-3c8fdd3b,110245-61f85d75</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R23_circ_2" type="caravaggio_521">
+	<vehicle id="R23_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110214-1134fd8d,110219-bfe949d4,110226-c3b97769,110229-f31c6608,110238-6f8675ad,110241-0e570b0e,110246-5db9c893</attribute>
 		</attributes>
@@ -527,7 +620,7 @@
 			<attribute name="servedTrips" class="java.lang.String">111250-9bff4327,111265-1a57ecfc,111269-82ec3e17,111278-41408ed2</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R25_circ_2" type="caravaggio_521">
+	<vehicle id="R25_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">111252-1440cdd0,111275-6025aec3</attribute>
 		</attributes>
@@ -537,7 +630,7 @@
 			<attribute name="servedTrips" class="java.lang.String">111254-cc770502,111277-5deb8d67</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R25_circ_4" type="caravaggio_521">
+	<vehicle id="R25_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">111256-bdd9c56a,111279-53e65f5a</attribute>
 		</attributes>
@@ -547,7 +640,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1902214-9bf7200f,1902217-33638c35,1902232-ee618e57,1902241-dbd82603,1902250-8f464ef6,1902263-9f189e07,1902276-0538dbf1,1902283-787a0338</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R27_circ_2" type="caravaggio_521">
+	<vehicle id="R27_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1901211-14a115f7,1901224-80fb574e,1902231-399ba5d8,1902244-b1d5353c,1902255-79e77864,1902266-bacacdf7,1902273-38d37c49</attribute>
 		</attributes>
@@ -557,7 +650,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1902218-0f9be479,1902223-ac989eb4,1902236-c50d89a3,1902245-63f0fc38,1902254-e2e6889f,1902265-bb048a7a,1902280-0942997e</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R27_circ_4" type="caravaggio_521">
+	<vehicle id="R27_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1902213-984569dd,1902226-94a26a09,1902235-70424211,1902246-baf647bf,1902259-5be2bc3e,1902270-052f5201,1902279-afee912e</attribute>
 		</attributes>
@@ -567,7 +660,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1902222-dc281511,1902229-f2c5f005,1902240-ad51067f,1902249-fccc6f4c,1902260-332f03b0,1902269-7e8611e5,1902284-12655f91</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R27_circ_6" type="caravaggio_521">
+	<vehicle id="R27_circ_6" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1902277-d3b5a5c2</attribute>
 		</attributes>
@@ -577,7 +670,7 @@
 			<attribute name="servedTrips" class="java.lang.String">122617-b8187da0,122618-6f91cd13,122623-f65d92ec,122630-cd8de035,122635-cfc638f0,122642-300180db,122647-482c68d6,122650-021dbb80,122659-ba1b11b6,122662-b82a16eb,122671-a0c607b4,122674-b2b8ebac</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R2_circ_2" type="caravaggio_521">
+	<vehicle id="R2_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">122619-58f0daab,122622-6030be8a,122627-6a8d9889,122634-c72a5dae,122639-7c2fa8f0,122646-15ee588b,122651-4cd2712c,122654-662e0156,122663-70e8828a,122666-bbd2d8ae,122675-ae92ec64,122678-93b213de</attribute>
 		</attributes>
@@ -592,7 +685,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110016-81a2ee96,110019-b63801bf,110030-8e91453c,110045-b2fa10da,110062-973176eb,110069-1dc21ad9</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R31_circ_2" type="caravaggio_521">
+	<vehicle id="R31_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110020-c8b6b2ed,110027-a71939fb,110038-dd21f8f7,110051-064f0f44,110060-34b48fb3,110067-63ec48df,110078-6a3c3cbc,110083-3bd77f11</attribute>
 		</attributes>
@@ -602,7 +695,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110018-11b0965c,110023-78866e95,110034-4513a3f1,110047-11ab434b,110058-2f5f4685,110065-51dc15b3</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R31_circ_4" type="caravaggio_521">
+	<vehicle id="R31_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110017-02456231,110090-8d5f98fa</attribute>
 		</attributes>
@@ -612,7 +705,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110024-b5fd4945,110035-e1d646d8,110046-adda8d62,110059-c3b64736,110070-9eb700c9,110073-d481dd5d</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R31_circ_6" type="caravaggio_521">
+	<vehicle id="R31_circ_6" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110022-7bca83e0,110031-5082aa1c,110042-cd9644d6,110055-cd1daf9c,110066-c28e8cbd,110071-386bdaad,110082-1222c61c,110087-6385b89a</attribute>
 		</attributes>
@@ -627,7 +720,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110028-d6e4ecdd,110043-b5426696,110054-9770cba1,110063-079322f5,110074-a78ac193,110079-b517ba23</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R31_circ_9" type="caravaggio_521">
+	<vehicle id="R31_circ_9" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110075-fa91b835,110086-d7a58ee8</attribute>
 		</attributes>
@@ -737,7 +830,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110852-541be04f,110855-35ace7c5,110896-0e189896,110871-7267295c,110874-df1dd3fb,110879-dd429ebe</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R38_circ_2" type="caravaggio_521">
+	<vehicle id="R38_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110853-6e9af953,110856-3e65661b,110865-9b41b67c,110868-4fc23b34,110893-49e2ba18,110880-e70c1565,110885-2a77096d</attribute>
 		</attributes>
@@ -747,7 +840,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110854-e1285706,110857-8ce80db9,110860-01e69e2f,110873-b1a76bb7,110876-853e7224,110897-5c81c765</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R38_circ_4" type="caravaggio_521">
+	<vehicle id="R38_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110892-7450efd9,110859-50484085,110866-c89c8915,110875-8fb63dc5,110878-44a3cc16,110881-78dc6306</attribute>
 		</attributes>
@@ -757,7 +850,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110898-cb9b47f8</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R38_circ_6" type="caravaggio_521">
+	<vehicle id="R38_circ_6" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110894-083468ae,110867-8538ea1b,110870-9613b12f,110877-011159ed,110884-d7b7b82b,110889-bf239498</attribute>
 		</attributes>
@@ -777,7 +870,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110791-a5918367,110792-690528da,110797-f451a7bb</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R39_circ_2" type="caravaggio_521">
+	<vehicle id="R39_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110790-38bbf848,110793-7a142a41,110796-3df69a4a</attribute>
 		</attributes>
@@ -817,7 +910,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110001-aeba3f71,110004-2d1cf89e,110007-2aae9138,110008-2e19abce</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R40_circ_2" type="caravaggio_521">
+	<vehicle id="R40_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110002-e49bf7c8,110005-66d3d2da,110006-737ebf7f,110009-3e8c6e22</attribute>
 		</attributes>
@@ -827,7 +920,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110495-0fe91d28,110494-c51baba8,110497-acc6fbcd,110498-42405993</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R41_circ_2" type="caravaggio_521">
+	<vehicle id="R41_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110496-951f0f9f,110499-30fa7122</attribute>
 		</attributes>
@@ -837,7 +930,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110911-d94bb474,110910-1cdd794d,110915-84e968b0,110918-65c3682e,110931-efedaece,110934-55e168cd,110939-ea13211a</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R4_circ_2" type="caravaggio_521">
+	<vehicle id="R4_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110913-6d8b46a6,110916-7ec70fbb,110929-ae17eece,110932-8668fb8e,110907-281c9a3f</attribute>
 		</attributes>
@@ -847,7 +940,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110904-6e247c7d,110917-3c916ef1,110920-2da4172c,110933-1e81b27e,110936-d5b04bc2,110941-8ab35d0d</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R4_circ_4" type="caravaggio_521">
+	<vehicle id="R4_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110914-f03db325,110919-3b80d502,110926-b48119b9,110935-e56712e8,110938-3bbd1220,110943-f0ce0768</attribute>
 		</attributes>
@@ -857,7 +950,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110906-ef4dd531,110925-a7c306ad,110928-abf7e935,110905-78d46b44,110940-82504f85,110945-ed2e0e0b</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R4_circ_6" type="caravaggio_521">
+	<vehicle id="R4_circ_6" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110930-9f8d47bf,110937-74bf42f9,110944-a60a4207</attribute>
 		</attributes>
@@ -867,7 +960,7 @@
 			<attribute name="servedTrips" class="java.lang.String">110512-22384f65,110513-d18f4283,110518-45f2fe7a,110521-8898a02b,110526-d891bd6e,110529-4c8a11fc,110534-f4d627fd,110537-26ae085d,110542-30b9b20c</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R5_circ_2" type="caravaggio_521">
+	<vehicle id="R5_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110514-bce97b30,110517-3c0fc7ca,110522-9f0dcdcb,110525-a0ff4bc7,110530-0fcad9a5,110533-1e787d8c,110538-abaee9c6,110541-1826d951</attribute>
 		</attributes>
@@ -877,57 +970,57 @@
 			<attribute name="servedTrips" class="java.lang.String">110515-2de35ce3,110520-9e28f4b5,110523-304df4b6,110528-2b4890a4,110531-f8a18164,110536-24df9a07,110539-5ebf26d0,110544-63f77381</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R5_circ_4" type="caravaggio_521">
+	<vehicle id="R5_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110516-0e54f72b,110519-70adb1fa,110524-9fb11671,110527-464f7cf2,110532-c2ea7d06,110535-ee7e18d4,110540-845fc3e7,110543-86085c69</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R6_circ_1" type="caravaggio_521">
+	<vehicle id="R6_circ_1" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110600-97318653,110601-d86fee19,110608-86328dd0,110609-a2d752b7</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R6_circ_2" type="caravaggio_521">
+	<vehicle id="R6_circ_2" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110602-a82d1209,110603-2788b335,110610-f244bafc,110651-402e74f3</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R6_circ_3" type="caravaggio_521">
+	<vehicle id="R6_circ_3" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110604-b74725a9</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R6_circ_4" type="caravaggio_521">
+	<vehicle id="R6_circ_4" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110613-a7a7833d,110656-e82b49a3,110607-15d8267c</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R6_circ_5" type="caravaggio_521">
+	<vehicle id="R6_circ_5" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110606-358fef3b,110605-b9aa602a,110638-5e5ef326</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R6_circ_6" type="caravaggio_521">
+	<vehicle id="R6_circ_6" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110648-d1babeba,110617-d410e275,110620-51c3043b,110625-2ef4945d,110628-844ddfc7,110633-0da14bfa,110636-ad43676e,110643-ec6f7eac</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R6_circ_7" type="caravaggio_521">
+	<vehicle id="R6_circ_7" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110615-c0cd037a,110618-81de350c,110621-871beef1,110624-f17994b7,110631-a86c8206,110634-42b4c755,110649-70fc0c72</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R6_circ_8" type="caravaggio_521">
+	<vehicle id="R6_circ_8" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110619-6d9de3a8,110622-0250c204,110627-5da42623,110630-70fc7625,110647-31547d9e,110640-7a610454</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R7_circ_1" type="caravaggio_521">
+	<vehicle id="R7_circ_1" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110715-5faf16e2,110716-909eec3a,110719-972ca5df,110720-90b708f2,110723-08ee9966,110724-09409a33,110727-31905e8c,110728-8c74e6f8,110731-b7b0eef8,110732-047855f9,110735-ba519328,110736-4a071136,110739-fa3f883d,110740-9593c0ea,110743-a57b169e,110744-d11cf220</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="R7_circ_2" type="caravaggio_521">
+	<vehicle id="R7_circ_2" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">110714-6805d094,110717-9addcd17,110718-1cc09c95,110721-e413d101,110722-16d78da8,110725-7eedd9e7,110726-93ad128d,110729-001e65fd,110730-377e4a32,110733-9f58796e,110734-1c462169,110737-a918f89c,110738-9f0eea9f,110741-87d1c048,110742-c938ce95</attribute>
 		</attributes>
@@ -967,7 +1060,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102154-74b1916a,102157-3f2bf1b3,102166-b1cf2d7a,102167-f915094d,102176-1661c70f,102177-fcabd64d</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE11_circ_2" type="caravaggio_521">
+	<vehicle id="RE11_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102153-865fdc4d,102162-13ae6f29,102165-80c4d496,102174-2b1005db,102175-9ef669e2,102186-931a777f</attribute>
 		</attributes>
@@ -977,7 +1070,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102156-8200c234,102159-2dcacd01,102168-dd6c99eb,102169-806fabeb,102178-248799da,102179-1f69722d</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE11_circ_4" type="caravaggio_521">
+	<vehicle id="RE11_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102158-06b63629,102161-1c6716a1,102170-07f1c5dc,102173-621a9c82,102182-1c522a70,102185-00071bef</attribute>
 		</attributes>
@@ -987,7 +1080,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102180-55a2b60f</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE11_circ_6" type="caravaggio_521">
+	<vehicle id="RE11_circ_6" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102181-cf8e1f93</attribute>
 		</attributes>
@@ -1027,7 +1120,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1902016-1d5e0174,1900019-949abb85,1900036-5aea9852,1900047-7b222c4f,1900058-a7ba205e,1902071-39bee49c</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE1_circ_2" type="caravaggio_521">
+	<vehicle id="RE1_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900020-62e3e5ab,1900025-5299410e,1900040-0a8d5e54,1900051-15e448c4,1900066-2aa8f6ea,1900075-9d4f4d82</attribute>
 		</attributes>
@@ -1037,7 +1130,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1902024-d8306139,1900029-d43c831d,1900044-4a147987,1900055-7d97ccdd,1900070-aab9cfc2,1902081-915d39c2</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE1_circ_4" type="caravaggio_521">
+	<vehicle id="RE1_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900026-3253795f,1900031-860b261b,1901046-e8419d69,1900061-32e7f3e4,1900078-dac14ee4</attribute>
 		</attributes>
@@ -1047,7 +1140,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1901030-213b905c,1901035-fc20272b,1901052-31ebb86a,1902065-0aa95006</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE1_circ_6" type="caravaggio_521">
+	<vehicle id="RE1_circ_6" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900030-babbef74,1901041-21e59fed,1900056-c9fed3e9,1900067-538e3cc0</attribute>
 		</attributes>
@@ -1057,7 +1150,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102247-16e2909d,102212-8072fe69,102213-601c4500,102216-00b66e1f,102217-35a853fc,102220-68ea7581,102223-5e6da27f,102226-b8859ec9,102229-57579554,102232-a34c6f56,102235-5840bbba,102238-0079b4c4,102241-f33409eb,102244-d5ac5546</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE2_circ_2" type="caravaggio_521">
+	<vehicle id="RE2_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102201-93a73d85,102256-8f9a4a11,102257-cfe88f10,102262-b0f9d5bb,102275-be2621ed,102280-d0393502</attribute>
 		</attributes>
@@ -1067,7 +1160,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102214-222c163a,102215-2cafa053,102218-d76ac1a5,102221-2e201693,102224-873bcc35,102227-8788f2e4,102230-e63e9792,102233-cd5774ea,102236-b79b759f,102239-6b60ac55,102242-d4d03edc,102245-b048f8f7</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE2_circ_4" type="caravaggio_521">
+	<vehicle id="RE2_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102253-e2176f7e,102206-cd48588b,102219-5c948231,102222-d5d8f635,102225-4c9b2d7c,102228-f8997f4f,102231-8a0d5b93,102234-afa362a5,102237-d9c1b277,102240-b589ae23,102243-4bfa4332,102246-b811aada</attribute>
 		</attributes>
@@ -1077,7 +1170,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102258-fec5752f,102271-4c8caefd,102276-678dd4cb,102277-31d15f31,102282-17674a93</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE2_circ_6" type="caravaggio_521">
+	<vehicle id="RE2_circ_6" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102255-6496b822,102260-4b044cb8,102273-cf38989c,102278-8dfa80e5,102279-3029a9d1,102284-5d69a971</attribute>
 		</attributes>
@@ -1102,7 +1195,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102411-7d83f20b,102414-dc367806,102431-287d7d29,102434-584417ba,102443-eb3158b7</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE4_circ_2" type="caravaggio_521">
+	<vehicle id="RE4_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102413-93fe0a7a,102416-905de9b6,102433-89699b86,102436-393d03a3</attribute>
 		</attributes>
@@ -1112,7 +1205,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102415-5afa84fe,102418-325fc8ea,102421-02efd080,102428-94b3f5a4,102435-5fda59c8,102438-c3aa57be</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE4_circ_4" type="caravaggio_521">
+	<vehicle id="RE4_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102417-b7e58552,102424-c478bd39,102427-78ae9b2e,102430-1274c9b7,102437-bef96f4c,102440-3b30a582</attribute>
 		</attributes>
@@ -1122,7 +1215,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102419-6bdeccaf,102426-e0865ba1</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE4_circ_6" type="caravaggio_521">
+	<vehicle id="RE4_circ_6" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102432-74ccf86c,102439-f7a48ed3,102442-db421d45</attribute>
 		</attributes>
@@ -1192,7 +1285,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102511-7e758862,102514-53ffc00f,102519-b9a99874,102524-8d1abb6e,102529-8f199050,102534-0fa0bcb8,102539-6c15e1cc</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE5_circ_2" type="caravaggio_521">
+	<vehicle id="RE5_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102508-d804ce1e,102513-e274a448,102516-85d13aa7,102521-05136805,102526-29feaacc,102531-4c03d8bb,102504-ee49bfa5,102505-60713595,102542-6ed6b570</attribute>
 		</attributes>
@@ -1202,7 +1295,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102510-0cbbeaeb,102515-6f6f8b48,102518-78be6cca,102523-5d028620,102528-fc635220,102533-77797f40,102536-40b55c40,102541-2a7d4302</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE5_circ_4" type="caravaggio_521">
+	<vehicle id="RE5_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102512-d52e65d4,102517-9ca81bba,102522-58ed4e88,102527-396f96c2,102532-afeaf206,102537-1c1c9fe1,102540-f867023b</attribute>
 		</attributes>
@@ -1212,7 +1305,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102503-7098f600,102520-80c8d478,102525-783c1333,102530-2f0bcdd8,102535-549031a9,102506-6a462df1</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE5_circ_6" type="caravaggio_521">
+	<vehicle id="RE5_circ_6" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102538-4bf57be3,102543-7031025e</attribute>
 		</attributes>
@@ -1222,7 +1315,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102616-60a32ed7,102617-e66a01c6,102626-7d6c8f33,102633-4f4807c6,102642-9fb77923,102645-c98037a1</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE6_circ_2" type="caravaggio_521">
+	<vehicle id="RE6_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102656-3b351fbe,102615-58ec8ee2,102624-325d4305,102631-b394e127,102640-aca4f0cf,102643-4b45ab94</attribute>
 		</attributes>
@@ -1232,7 +1325,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102613-d72e16bb,102622-b76c20d8,102629-be533cb3,102638-83f86a50,102641-b825dccb</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE6_circ_4" type="caravaggio_521">
+	<vehicle id="RE6_circ_4" type="etr425">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102606-dc498ee3,102601-b021f8d2,102600-67338acc,102675-03f706f1</attribute>
 		</attributes>
@@ -1242,7 +1335,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102693-8f67d520,102695-362417ec</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE6_circ_6" type="caravaggio_521">
+	<vehicle id="RE6_circ_6" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102658-20cee059,102619-573aa5e4,102628-cc672601,102635-90a4a534,102644-5d4c147e,102607-5e571ad4</attribute>
 		</attributes>
@@ -1257,7 +1350,7 @@
 			<attribute name="servedTrips" class="java.lang.String">102620-6929f316,102627-ff81605f,102636-500efbe7,102639-340b2f2d,102648-3d47ca05</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE6_circ_9" type="caravaggio_521">
+	<vehicle id="RE6_circ_9" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102660-ee36f914,102625-860d73f4,102634-fc9f928b,102677-04c869d2</attribute>
 		</attributes>
@@ -1267,7 +1360,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1902116-81474dd6,1902169-0fa1f706</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE7_circ_2" type="caravaggio_521">
+	<vehicle id="RE7_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1902120-43f66c47</attribute>
 		</attributes>
@@ -1307,54 +1400,94 @@
 			<attribute name="servedTrips" class="java.lang.String">125511-ceb5f5f1,125516-32f36d1a,125525-86cf577f,125530-d8b195f7,125539-606ea278</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE8_circ_1" type="caravaggio_521">
+	<vehicle id="RE8_circ_1" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102811-2cabe0a2,102814-647bceaa,102823-4dd86632,102828-ce669c7c,102837-dd6791ed,102840-1872adb4</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE8_circ_10" type="caravaggio_521">
+	<vehicle id="RE8_circ_10" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102845-a067c90a</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE8_circ_2" type="caravaggio_521">
+	<vehicle id="RE8_circ_2" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102813-c8cd0927,102816-302197bc,102825-349d9ca1,102830-75b3c25d,102839-4aa091a6,102842-4bca3708</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE8_circ_3" type="caravaggio_521">
+	<vehicle id="RE8_circ_3" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102815-a0a50912,102818-dbd264de,102827-cabb5802,102832-3e90040c,102841-3358489c,102844-06ee52d8</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE8_circ_4" type="caravaggio_521">
+	<vehicle id="RE8_circ_4" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102855-065b9ff2,102858-0ad840ec,102863-1a8060ab,102868-4e725fb2</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE8_circ_5" type="caravaggio_521">
+	<vehicle id="RE8_circ_5" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102812-af7781dc,102821-26897507,102826-feea7887,102835-f4447b6b,102838-e1ef57ef</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE8_circ_6" type="caravaggio_521">
+	<vehicle id="RE8_circ_6" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102817-bb598567,102822-f7f3f834,102831-e6234b3f,102874-63f948f3</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE8_circ_7" type="caravaggio_521">
+	<vehicle id="RE8_circ_7" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102819-12b89a9c,102824-6931ada3,102833-ae0f6850,102836-0713a379</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE8_circ_8" type="caravaggio_521">
+	<vehicle id="RE8_circ_8" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102857-335fea55,102820-8a350b2d,102829-8fa7ca96,102834-04a88025,102843-497a3f67</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="RE8_circ_9" type="caravaggio_521">
+	<vehicle id="RE8_circ_9" type="donizetti">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">102876-e3770d34</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S10_circ_1" type="tilo_flirt_4">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125155-5e707081,125156-3bcdced7,125163-06488d1c,125164-238079dd,125171-182710ad,125172-7b24b857,125179-41de3a61,125180-e8a9e4d4,125137-80c17469,125140-24602e8a</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S10_circ_2" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125107-0b3a11d2,125110-f4f93ffd,125115-1a28ed21,125118-3ac91bc2,125123-bde5d272,125126-f5dfa737,125131-71a476bb,125134-26a0cc8b,125139-07e200c9,125142-bffa26c1</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S10_circ_3" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125154-02c50ad2,125113-ac46f741,125116-61005c1e,125121-f51891d0,125124-254824c7,125129-0be4aee5,125132-b3fab8f3,125185-d48b8c23,125186-16422ff9</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S10_circ_4" type="tilo_flirt_4">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125109-f903d104,125112-24854252,125117-8edf4d7d,125120-fa8b8b85,125125-6358375c,125128-95d80f40,125133-e8a1ad99,125136-dcc48493</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S10_circ_5" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125111-97b22b48,125114-b63f4886,125119-f7a0b324,125122-1e366b2e,125127-6f94a812,125130-61405659,125183-b7bef4f6,125184-ca191bae</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S10_circ_6" type="tilo_flirt_4">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125159-2d7c48a2,125160-38b08551,125167-58e3f2d8,125168-607d1e7d,125175-c772d090,125176-a3cb01f1</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S10_circ_7" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125161-05c9505a,125162-27bb71ff,125169-80593c56,125170-db17aa71,125177-50c1afe4,125178-81dfcd3c,125135-5a3d09ae,125138-9e63080e</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S10_circ_8" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125158-826c3c60,125165-2ff8ee73,125166-9bdff61b,125173-fe637dd8,125174-d51231a8,125181-d6a6d3f4,125182-0caa6c06</attribute>
 		</attributes>
 	</vehicle>
 	<vehicle id="S11_circ_1" type="caravaggio_521">
@@ -1402,7 +1535,7 @@
 			<attribute name="servedTrips" class="java.lang.String">125611-7b3aba72,125616-bbc8c56d,125619-b704d4c5,125624-7a546a17,125627-675dfe0f,125632-8bfc2936,125635-5c985408,125640-ed07fe1a,125643-cd150820,125648-41c9d824,125651-a61f8ec6,125656-76d57fb5,125659-b071078e,125664-95861360,125667-b8617f9b,125672-9497ea3c</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S12_circ_2" type="taf">
+	<vehicle id="S12_circ_2" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125613-1d0079e2,125618-dd0cab03,125621-c69edd5b,125626-de3c3d6c,125629-898cb902,125634-fed04a5a,125637-aaf93bbb,125642-f9126eb0,125645-9358b8bf,125650-af20c034,125653-5f588b86,125658-e4804bef,125661-3d748b28,125666-ae73d9b7,125669-ef98d023,125674-28f868bb</attribute>
 		</attributes>
@@ -1412,7 +1545,7 @@
 			<attribute name="servedTrips" class="java.lang.String">125615-b3e541ee,125620-b5391c19,125623-618f7ba4,125628-ca0e6487,125631-539d5dbd,125636-00651995,125639-e505643c,125644-98dfe9d7,125647-19532d5a,125652-5f63d233,125655-8e1e25a9,125660-60dd8190,125663-1a5c98c5,125668-bf6d83dc</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S12_circ_4" type="tsr">
+	<vehicle id="S12_circ_4" type="etr245">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125617-eb3e71fd,125622-b424d536,125625-359f8908,125630-e3c984d7,125633-e5b4e4b4,125638-5db1d45a,125641-5d8b59f1,125646-15bc2e28,125649-a36aa427,125654-3d7a3b9a,125657-902366b0,125662-0a72f622,125665-f815dbe3,125670-ab9bc1e7</attribute>
 		</attributes>
@@ -1422,7 +1555,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124311-3674fad3,124318-f228a37c,124323-36a32814,124330-28e52392,124335-dee3c50b,124342-834b3c9a,124347-e85130d5,124354-7b6ed539,124359-f38667dd,124366-da4286fc,124369-734f04b6,124376-a4b7f885,124379-25f13f67,124386-98d60fa9</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S13_circ_2" type="taf">
+	<vehicle id="S13_circ_2" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124314-32bd94bc,124317-1a8ebda0,124324-c42d4e72,124329-25242500,124336-0c14500d,124341-73658de9,124348-f2470a46,124353-c7e86b15,124360-ef47bb9b,124365-fe394378,124372-68102bb6,124375-3638bd88,124382-df006e06</attribute>
 		</attributes>
@@ -1432,7 +1565,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124313-4124d65b,124320-b3ed609a,124325-f897ebde,124332-a78dc1a2,124337-2eb96342,124344-a6edf971,124349-9c6461c0,124356-1badac57,124361-ba81414d,124368-17cd83ba,124371-f626581e,124378-0c32b5db,124381-cde218ce</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S13_circ_4" type="tsr">
+	<vehicle id="S13_circ_4" type="etr245">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124316-df8deb01,124319-fb75361e,124326-6eb54d38,124331-09e433dc,124338-21e5a99a,124343-0808e5ca,124350-65b35fa6,124355-488d2f52,124362-07ed6058,124367-306a0b32,124374-df617a74,124377-2eef97cc,124384-73f007b4</attribute>
 		</attributes>
@@ -1452,7 +1585,7 @@
 			<attribute name="servedTrips" class="java.lang.String">125917-39ea49cc,125924-186910cb,125927-b10cbb1f,125934-00026bbf,125937-9eb2ae92,125944-23146fe2,125947-266b5f34,125954-5756c1d5,125957-514ac21b,125964-9ab99fb7,125967-7f2084f8,125974-9a90aa80</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S19_circ_2" type="taf">
+	<vehicle id="S19_circ_2" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125920-0c024682,125923-da9bd19f,125930-f6d18778,125933-cd350ab7,125940-f21b222e,125943-ac5dbe56,125950-0a54ed45,125953-b1f2fce9,125960-b6dde266,125963-cd3f3f33,125970-3a271f40,125973-59915f3f,125980-d02493ba</attribute>
 		</attributes>
@@ -1462,7 +1595,7 @@
 			<attribute name="servedTrips" class="java.lang.String">125919-99640ba8,125926-be0f5780,125929-958bd4e6,125936-bf3cf293,125939-9b4e29de,125946-b7a253ae,125949-0a23c19e,125956-0575ad6b,125959-23cbad0d,125966-d535fa84,125969-a6adc144,125976-bdc7ea97</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S19_circ_4" type="tsr">
+	<vehicle id="S19_circ_4" type="etr245">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">125922-9edc0b63,125925-fe189d31,125932-1c36c1a2,125935-6f726d87,125942-33e3eba8,125945-83e8843d,125952-576474da,125955-26be8e5b,125962-dfddbc9a,125965-a2f1136d,125972-5ed9f756,125975-c2b0a203,125982-99f0e013</attribute>
 		</attributes>
@@ -1477,7 +1610,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124111-43868258,124116-cf6cec6f,124125-61467e27,124130-35002628,124139-ef34df48,124144-df3cbd2a,124153-6067f499,124158-3de8c54f,124167-52186112,124172-9e3b1fb4</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S1_circ_2" type="taf">
+	<vehicle id="S1_circ_2" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124113-567ec1f3,124118-7068ce60,124127-0f8e25fd,124132-535b2d79,124141-b370398c,124146-1f75aa2e,124155-31df849c,124160-73ca6d13,124169-6c9a2fc1,124174-0c081f19,124179-c0dae7d9,124184-48ed0764</attribute>
 		</attributes>
@@ -1487,7 +1620,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124114-cd02f4ad,124123-7f1a34c9,124128-6800ca4b,124137-45a9952e,124142-c5906416,124151-7c1de814,124156-9730c981,124165-c310dd88,124170-1469d37b</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S1_circ_4" type="tsr">
+	<vehicle id="S1_circ_4" type="etr245">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124115-1eabe365,124120-362a0254,124129-06a5f2d7,124134-eaebed30,124143-cbee36d9,124148-b7b74679,124157-52ce9502,124162-fb75920f,124171-ddb90a75,124176-8b1028d2,124181-7a17793f,124186-9132a6eb</attribute>
 		</attributes>
@@ -1512,7 +1645,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124217-347a1b62,124218-bb7c3fe6,124225-a2b846ca,124226-9d12c631,124235-814d759f,124236-1ff44a1f,124245-6e882d68,124246-c70fadcf,124255-eb229c00,124256-1cad9606,124265-188cf5e6,124266-fd343afa,1922680-2ee88ff1</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S2_circ_2" type="taf">
+	<vehicle id="S2_circ_2" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124219-072a97c0,124220-52efd1c2,124229-aff8c5a2,124230-6bc5240f,124239-674eec6b,124240-e23995b0,124249-86a40bfd,124250-90783fd8,124259-e79e5c98,124260-389db21b,124269-f0cc7904,124270-5855ee65</attribute>
 		</attributes>
@@ -1522,7 +1655,7 @@
 			<attribute name="servedTrips" class="java.lang.String">1922613-e2f902fe,124223-c4f25f73,124224-14f2ad29,124233-780ca199,124234-9e05cfaa,124243-97258530,124244-cdfcdac0,124253-dcc5e059,124254-121ae36c,124263-9937b0f1,124264-6bfbbe0f,124273-bccdcd7d,124274-c379be09</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S2_circ_4" type="tsr">
+	<vehicle id="S2_circ_4" type="etr245">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124221-32f21992,124222-cc32ad58,124231-e43da950,124232-d3c81893,124241-509ce5fc,124242-c4e6a0fe,124251-76995b57,124252-36d5873d,124261-dc03a7ee,124262-fedf540b,124271-0788b155,124272-33b71634</attribute>
 		</attributes>
@@ -1530,6 +1663,31 @@
 	<vehicle id="S2_circ_5" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1922619-fdc72fc2,124227-3664a870,124228-9ae11438,124237-53b4a543,124238-cd724376,124247-9f1383ce,124248-88b458b9,124257-7a6b848e,124258-b4b0dd96,124267-1a2dd66b,124268-88e0bd37,1922682-7a95d696</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S30_circ_1" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125350-20bf0535,125379-3715e6d7,125382-b2af41bf</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S30_circ_2" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125357-2e38ff47,125318-f59b7305,125333-04308ddd,125334-89e79af2,125341-bfd4f230</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S30_circ_3" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125361-af01f999,125370-43b97392,125377-7d8010cf,125338-b693d3cc,125345-d496bc24</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S30_circ_4" type="tilo_flirt_4">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125381-dd848072</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S30_circ_5" type="tilo_flirt_4">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125378-71438f13</attribute>
 		</attributes>
 	</vehicle>
 	<vehicle id="S31_circ_1" type="atr125">
@@ -1552,49 +1710,104 @@
 			<attribute name="servedTrips" class="java.lang.String">1921966-6f301d85</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S3_circ_1" type="tsr">
+	<vehicle id="S3_circ_1" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900801-382f0274,1900806-291dfd4a,1900815-9b971b3d,1900822-fde6c18a,1900825-b36d46f3,1900830-cdfa46cf,1900833-c60499c6,1900838-d912e94c,1900841-d8c5a5af,1900846-edc14eb4,1900851-afeefb85,1900854-f4138328,1900861-e3117dee,1900866-de20f03d,1900875-c3b8e683,1900876-e83e9589,1900885-76474b5e,1900884-b6bf9bf5,1900895-b1745d2b,1900892-62f799ba</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S3_circ_2" type="taf">
+	<vehicle id="S3_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900802-6e221a8a,1900811-65cfab70,1900814-ecf13cae,1900821-495a1ce6,1900826-3a941cc7,1900829-660f85f1,1900834-0159aeda,1900837-e0d3a380,1900842-eb7a44d7,1900847-af1f8d1d,1900850-0ffb3e73,1900857-41c29bde,1900858-cb90856b,1900869-309edf9b,1900872-28e974b0,1900881-434e4256,1900880-5e80f67c,1900889-64a1aacb,1900888-728589df</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S3_circ_3" type="tsr">
+	<vehicle id="S3_circ_3" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900803-e6add4fd,1900812-19c2ec56,1900817-6a0b1531,1900824-6e44caf0,1900827-76cb34e1,1900832-de60ab3c,1900835-21d748f1,1900840-491d09e9,1900845-6238dfaa,1900848-e74f7ea7,1900855-09a30671,1900856-9091b6e0,1900865-1b9ca95d,1900868-dd2ce11c,1900877-ebb88aef,1900878-20cdfe80,1900887-7637c492,1900886-270ec7f7,1900897-bb200218</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S3_circ_4" type="tsr">
+	<vehicle id="S3_circ_4" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900813-718208ef,1900818-bd3a3348,1900823-7b919a8d,1900828-a747cdd2,1900831-c28023d8,1900836-b688994e,1900839-3e47c1da,1900844-93acb675,1900849-174b4988,1900852-923203f2,1900859-64ed7138,1900862-dea62e9c,1900871-41efa57e,1900874-40fd07ab,1900883-b2807272,1900882-51dd2d1c,1900893-7f864327,1900890-49b90042</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S4_circ_1" type="tsr">
+	<vehicle id="S40_circ_1" type="tilo_flirt_4">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125406-28b1405d,125452-de06f64d</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S40_circ_2" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125454-f7c68e3f,125408-4c6ef644,125458-9cd8d9ab,125412-73ca8ee6,125462-3679d05e,125416-2a40ee09,125466-7178498c,125420-31ee0a27,125470-77e6db72,125424-f97da11a,125474-3ff0e574,125428-cf8cafae,125478-208024d9,125432-f9869942,125482-a34feab2</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S40_circ_3" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125453-e9c81387,125410-ed242a1a,125460-da7fc185,125414-23d789b0,125464-dbfced2c,125418-cb40c85d,125468-8c0bbd15,125422-aeccca0a,125472-4f5ab0de,125426-30cc29b9,125476-34f070ab,125430-d2a56143,125480-b60ef733,125434-0273ace4</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S4_circ_1" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900701-8a95b09d</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S4_circ_2" type="taf">
+	<vehicle id="S4_circ_2" type="tsr">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1901709-ab14c15b,1900716-c483f38f,1900719-ac0c8d8b,1900728-9fa65ab3,1902729-47dc4abf,1902734-397b6bc5,1902735-77f4faf2,1902740-eca2244c,1902743-c0b1e0ea,1902746-e7a367db,1902749-4e4ebae9,1902752-0b3a3569,1902757-30a79b66,1902758-8f862dda,1900765-305307f9,1900770-f57e5ae7,1900777-bbbb705a,1900780-f0c0e72d,1900787-df466a25,1900788-56bd374c,1900795-607db9bd</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S4_circ_3" type="tsr">
+	<vehicle id="S4_circ_3" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900711-82fa3d1d,1900720-64975b45,1900723-c577b026,1900730-3abf20a3,1902731-2e4e2d36,1902736-1dc8da9f,1902737-86ed3dd1,1902742-72ec15ac,1902745-8d1c4735,1902748-72171d7b,1902751-d1f35eea,1902754-9ca2db6a,1902759-a860b222,1902760-8b5ec335,1900769-7c47ead0,1900772-99368c28,1900781-b2d4a7ef,1900782-250bb332,1900789-0525ffb0,1900790-de312a31,1900797-97e827ae</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S4_circ_4" type="tsr">
+	<vehicle id="S4_circ_4" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900712-c50ac36f,1900717-37d540c1,1900726-2df3b3e9,1902727-a6fbc0d1,1902732-62befdc5,1902733-3c166774,1902738-aaa48231,1902739-3f100204,1902744-7c9b0a1b,1902747-351451cc,1902750-d5751ac9,1902755-ae7c7c03,1902756-fdb38315,1900761-7ccca196,1900768-40645a9c,1900775-1c44c579,1900778-e76507fc,1900785-5eec4f27,1900786-5521ae3d,1900793-986f6dd8</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S4_circ_5" type="tsr">
+	<vehicle id="S4_circ_5" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">1900715-e6bb19bb,1900724-5446e7ba,1900725-8c80b373,1900762-c7fbf7c7,1900771-6cffb4d5,1900774-41dd1a61,1900783-396351bc,1900784-e0ab3464,1900791-abef56f2,1900792-f3ab0584</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S50_circ_1" type="tilo_flirt_4">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125553-29d52350,125558-6f8080b0</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S50_circ_2" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125555-fab9366c,125560-1477db6e,125567-39600e34,125572-3d15e139,125579-66b3542b,125584-40b4d7c0,125591-27607802</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S50_circ_3" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125554-d3a3670e,125563-5ad913c4,125568-e45153eb,125575-a213f410,125580-83a6d001,125587-e6b2f400,125592-ec3b8627</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S50_circ_4" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125557-0cd6778a,125562-5c8415a8,125569-3ca814e6,125574-151c1753,125581-37b50aa8,125586-2787a7a0</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S50_circ_5" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125550-425e46fb,125565-3e323682,125570-e9ded654,125577-172bf0c3,125582-007169ea,125589-6aac9a7a</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S50_circ_6" type="tilo_flirt_4">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125559-7a494dd6,125564-821801f2,125571-1a9572df,125576-77b7e9e1</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S50_circ_7" type="tilo_flirt_6">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125561-ca4cd261,125566-444c9c76,125573-c7327dc6,125578-4a2c534d,125585-6b1ca3dc,125590-e2a1f0a9</attribute>
+		</attributes>
+	</vehicle>
+	<vehicle id="S50_circ_8" type="tilo_flirt_4">
+		<attributes>
+			<attribute name="servedTrips" class="java.lang.String">125583-92cfb164,125588-cdd19604</attribute>
 		</attributes>
 	</vehicle>
 	<vehicle id="S5_circ_1" type="tsr">
@@ -1607,7 +1820,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124512-fe2ab2d6,124525-81b657e5,124532-119fd47d,124545-7bc209e2,124552-1d716352,124565-6cdc15fb,124572-e89c3c25,124585-a5181eeb</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S5_circ_2" type="taf">
+	<vehicle id="S5_circ_2" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124511-349f22eb,124518-44159148,124531-b860ea58,124538-a47490be,124551-500b54e4,124558-f0c9c05c,124571-f5ea3923,124578-bf2384ba</attribute>
 		</attributes>
@@ -1617,7 +1830,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124514-0ced7b80,124527-be17d307,124534-88525930,124547-508f0734,124554-e526e2b3,124567-162cc701,124574-51678095,124587-cb2d57ee</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S5_circ_4" type="tsr">
+	<vehicle id="S5_circ_4" type="etr245">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124517-9dc19de4,124524-defe3c17,124537-939b2175,124544-82d076e9,124557-525d0078,124564-76e25de5,124577-b8f59f02,124584-7a3d000c</attribute>
 		</attributes>
@@ -1642,7 +1855,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124519-3e7f602c,124526-e3c40f65,124539-376a7ebd,124546-fb139063,124559-88e10df5,124566-8478266b,124579-595258a4,124586-3aa1d9f0</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S5_circ_9" type="taf">
+	<vehicle id="S5_circ_9" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124510-4c234a49,124523-e38afd73,124530-d6a58d00,124543-0b6cdcc8,124550-d96d0edf,124563-eae311cf,124570-87962016,124583-07c4eea8</attribute>
 		</attributes>
@@ -1652,7 +1865,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124613-3d1682f0,124614-001c765c,124607-d0100c6a,124688-80a94204,124673-cbc7939a,124678-3420d767</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S6_circ_2" type="taf">
+	<vehicle id="S6_circ_2" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124601-640fe2f0,124604-228079d2,124633-b0c4bc13,124640-73df6700,124649-b50b1382,124656-8d96040f,124695-2b97fcb3,124698-5ecbf7a4,124683-4908284e</attribute>
 		</attributes>
@@ -1662,7 +1875,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124603-0077fa37,124606-63773225,124635-39370a4d,124642-efe005f9,124651-bed97d8d,124658-d477e895,124697-5ef684b7</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S6_circ_4" type="tsr">
+	<vehicle id="S6_circ_4" type="etr245">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124605-76436081,124608-5f1bd89b,124637-ad60cf55,124644-5f4ab7da,124653-58b48016,124660-d74e91c7,124699-98beed5f</attribute>
 		</attributes>
@@ -1687,7 +1900,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124602-9e59dc3e,124631-c7a5ee74,124638-6e402f7e,124647-ae2d5fe2,124654-ed365d44,124693-2269242f,124696-137195a4,124681-2aaa44e4</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S6_circ_9" type="taf">
+	<vehicle id="S6_circ_9" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124623-c10c0719,124630-abd0df23,124639-6988689b,124646-8bec00aa,124655-df9d05a5,124662-a9341d15,124671-8c79e142,124676-f4a48b21,124685-1bf7a808</attribute>
 		</attributes>
@@ -1732,7 +1945,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124817-ec76cc72,124818-a9b99ddc,124827-25b87bd5,124828-9324e336,124837-68d36a2a,124838-a0e8c18c,124847-5c529240,124848-be1155ef,124857-3899c73d,124858-26af72ed,124867-58692c83,124868-f35f581d,124877-59b09894,124878-56321071,124887-beab6d98</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S8_circ_2" type="taf">
+	<vehicle id="S8_circ_2" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124814-052bb2da,124823-b6981705,124824-1611ae5d,124833-a190a4c2,124834-b2d08bb3,124843-eaa5fec1,124844-0e13738d,124853-a53b462d,124854-74b8bb31,124863-7b874acd,124864-16b1e02e,124873-b2fe41b3,124874-74cd5ea7,124883-dea67e82,124884-85cb6646</attribute>
 		</attributes>
@@ -1742,7 +1955,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124819-346d5f80,124820-3d742bcb,124829-36ed878e,124830-b71da3e4,124839-84ef212b,124840-9e9eb874,124849-1ba74796,124850-ad36ab50,124859-8bf26c2c,124860-97a083b4,124869-97839ddc,124870-4e244c53,124879-a836c432,124880-14a7ca4f,124889-6601d541</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S8_circ_4" type="tsr">
+	<vehicle id="S8_circ_4" type="etr245">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124816-7bbc3988,124825-ec305a59,124826-f5b2c3d2,124835-0a053948,124836-d2aac0d3,124845-0f61e267,124846-d359769b,124855-de7fb53e,124856-92b5794c,124865-0b0cb949,124866-41110d9e,124875-a4fb84a0,124876-7e0f329a,124885-0f3a64ca</attribute>
 		</attributes>
@@ -1762,7 +1975,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124914-6467a1e0,124923-f595c031,124930-595ca853,124939-438b741b,124946-e8e0905b,124955-4bfe6e5e,124962-9c42c8a1,124971-40e98d7c,124998-686ff48b</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S9_circ_2" type="taf">
+	<vehicle id="S9_circ_2" type="caravaggio_521">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124915-97dc12f9,124922-fd10e1b7,124931-abe8e8d8,124938-724e5627,124947-4e48049a,124954-f8063c99,124963-9228c6c3,124970-372de3b9,124979-8e49170e,124986-e8ffe147</attribute>
 		</attributes>
@@ -1772,7 +1985,7 @@
 			<attribute name="servedTrips" class="java.lang.String">124916-bd2be27d,124925-5d5e9682,124932-0e0bb073,124941-f4a9f9c6,124948-c3fa2189,124957-9fac0bcf,124964-4b357394,124973-e0142985,124980-00729287</attribute>
 		</attributes>
 	</vehicle>
-	<vehicle id="S9_circ_4" type="tsr">
+	<vehicle id="S9_circ_4" type="etr245">
 		<attributes>
 			<attribute name="servedTrips" class="java.lang.String">124921-0cd6c5b1,124928-a2b7f32d,124937-6f5e28f9,124944-c40104ca,124953-f920ae7b,124960-04bab37c,124969-23936b86,124976-8d82b203,124985-0fd10f11</attribute>
 		</attributes>

@@ -12,9 +12,12 @@ import org.matsim.vehicles.VehicleType;
 import org.matsim.vehicles.VehicleUtils;
 import org.matsim.vehicles.Vehicles;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Turns the one-vehicle-per-trip schedule into circulations: every chain of
@@ -26,6 +29,12 @@ import java.util.Map;
 public final class VehicleCirculations {
 
 	private static final Logger log = LogManager.getLogger(VehicleCirculations.class);
+	private static final int SECONDS_PER_DAY = 24 * 3600;
+	/** Peak hours, the bands of the high-frequency scenario: 6:30-9:30 and 16:30-19:30. */
+	private static final int MORNING_PEAK_START = 6 * 3600 + 1800;
+	private static final int MORNING_PEAK_END = 9 * 3600 + 1800;
+	private static final int EVENING_PEAK_START = 16 * 3600 + 1800;
+	private static final int EVENING_PEAK_END = 19 * 3600 + 1800;
 
 	private VehicleCirculations() {
 	}
@@ -48,6 +57,7 @@ public final class VehicleCirculations {
 			}
 		}
 
+		Map<String, String> typeByPeakLoad = typesByPeakLoad(chains, departuresByTrip, assignment);
 		Map<String, Integer> perLine = new HashMap<>();
 		for (List<String> chain : chains) {
 			Stop first = departuresByTrip.get(chain.getFirst());
@@ -64,7 +74,9 @@ public final class VehicleCirculations {
 				}
 				stop.departure().setVehicleId(vehicleId);
 			}
-			String typeId = assignment.vehicleTypeId(lineId, index);
+			String typeId = typeByPeakLoad.containsKey(chain.getFirst())
+				? typeByPeakLoad.get(chain.getFirst())
+				: assignment.vehicleTypeId(lineId, index);
 			VehicleType type = circulated.getVehicleTypes().get(Id.create(typeId, VehicleType.class));
 			if (type == null) {
 				throw new IllegalArgumentException("Unknown vehicle type: " + typeId);
@@ -75,5 +87,45 @@ public final class VehicleCirculations {
 		}
 		log.info("Chained {} trips into {} circulations", tripVehicles.getVehicles().size(), chains.size());
 		return circulated;
+	}
+
+	/**
+	 * Types of the trains of the lines ranked by peak load, keyed by the first
+	 * trip of each chain: a train keeps its length all day, so the longer type
+	 * goes to the trains with the most departures at peak hours.
+	 */
+	private static Map<String, String> typesByPeakLoad(List<List<String>> chains, Map<String, Stop> departuresByTrip,
+			RouteVehicleAssignment assignment) {
+		Map<String, List<List<String>>> chainsByLine = new TreeMap<>();
+		for (List<String> chain : chains) {
+			Stop first = departuresByTrip.get(chain.getFirst());
+			if (first != null && assignment.ranksByPeakLoad(first.line().getId().toString())) {
+				chainsByLine.computeIfAbsent(first.line().getId().toString(), line -> new ArrayList<>()).add(chain);
+			}
+		}
+		Map<String, String> types = new HashMap<>();
+		chainsByLine.forEach((line, ofLine) -> {
+			List<List<String>> busiestFirst = ofLine.stream()
+				.sorted(Comparator.comparingLong((List<String> chain) -> peakDepartures(chain, departuresByTrip)).reversed())
+				.toList();
+			List<String> ranked = assignment.vehicleTypeIdsByRank(line, busiestFirst.size());
+			for (int rank = 0; rank < busiestFirst.size(); rank++) {
+				types.put(busiestFirst.get(rank).getFirst(), ranked.get(rank));
+			}
+		});
+		return types;
+	}
+
+	private static long peakDepartures(List<String> chain, Map<String, Stop> departuresByTrip) {
+		return chain.stream()
+			.map(departuresByTrip::get)
+			.filter(stop -> stop != null && isPeak(stop.departure().getDepartureTime()))
+			.count();
+	}
+
+	private static boolean isPeak(double departureSeconds) {
+		double secondsOfDay = departureSeconds % SECONDS_PER_DAY;
+		return secondsOfDay >= MORNING_PEAK_START && secondsOfDay < MORNING_PEAK_END
+			|| secondsOfDay >= EVENING_PEAK_START && secondsOfDay < EVENING_PEAK_END;
 	}
 }
