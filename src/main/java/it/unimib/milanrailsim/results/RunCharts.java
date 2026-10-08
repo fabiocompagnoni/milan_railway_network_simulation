@@ -124,7 +124,7 @@ public final class RunCharts {
 		return running;
 	}
 
-	/** One polyline per train: x = time [s], y = distance along the segment [m]. */
+	/** One polyline per train, named in the legend: x = time [s], y = distance along the segment [m]. */
 	public static void spaceTime(Map<String, List<double[]>> trajectoriesByTrain, Path png) {
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		trajectoriesByTrain.forEach((train, points) -> {
@@ -133,7 +133,7 @@ public final class RunCharts {
 			dataset.addSeries(series);
 		});
 		JFreeChart chart = ChartFactory.createXYLineChart("Diagramma spazio-tempo",
-			"ora", "distanza [km]", dataset, PlotOrientation.VERTICAL, false, false, false);
+			"ora", "distanza [km]", dataset, PlotOrientation.VERTICAL, true, false, false);
 		save(chart, png);
 	}
 
