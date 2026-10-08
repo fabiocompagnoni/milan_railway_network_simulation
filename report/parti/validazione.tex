@@ -1,0 +1,119 @@
+Gli scenari di potenziamento non si possono provare nella realtà: è questo il motivo per cui si ricorre a una simulazione. I loro risultati hanno però valore solo se il modello, messo nelle condizioni di oggi, si comporta come la rete di oggi. Questa sezione verifica il modello sull'orario reale, confrontandone i risultati con i dati pubblicati dall'operatore, e stabilisce per quali grandezze il modello è attendibile e per quali no.
+
+\subsection{Indicatori}
+Gli indicatori seguono le definizioni della delibera 16/2018 dell'Autorità di regolazione dei trasporti~\cite{art2018delibera16}, le stesse con cui l'operatore pubblica i propri risultati, in modo che i valori siano confrontabili. \\
+Ogni corsa ha uno fra tre stati: completata, interrotta, cioè partita e non arrivata, oppure mai partita. La \textit{regolarità} è la quota delle corse completate su quelle programmate. Il \textit{ritardo} è la differenza positiva fra l'arrivo effettivo e quello previsto; un anticipo conta zero, e accanto al ritardo medio è riportato lo scostamento medio con segno. La \textit{puntualità} è la quota degli arrivi con ritardo non superiore a cinque minuti, misurata sia a destinazione sia su tutte le fermate. \\
+Gli indicatori sono calcolati durante la simulazione, senza conservare l'elenco degli eventi, per ogni corsa, linea, stazione, treno e ora del giorno.
+
+\subsection{Che cosa si può validare}
+Il modello non contiene guasti, soppressioni né cause esterne di ritardo, e simula giornate in cui tutto funziona. Non può quindi riprodurre i ritardi che si osservano ogni giorno, e i suoi indicatori di puntualità vanno letti come un limite superiore di quelli reali. Si possono invece confrontare con i dati pubblici le grandezze che dipendono dall'orario e dal moto dei treni: la quantità di servizio offerto, i tempi di percorrenza, l'energia consumata, i treni impiegati. \\
+I dati di confronto vengono da due documenti dell'operatore: il bilancio di sostenibilità relativo al 2025~\cite{trenord2026bilancio} e la carta dei servizi del 2024~\cite{trenord2024carta}.
+
+Il perimetro dei dati dell'operatore non è dichiarato in modo esplicito. Il bilancio elenca fra i servizi offerti il transfrontaliero TILO, svolto attraverso una società partecipata al 50\% con le ferrovie svizzere, ma non precisa se le sue corse siano comprese nei totali; il numero delle corse feriali è dato in forma indicativa, \enquote{oltre 2350}, ed è compatibile sia con le 2501 corse del modello completo sia con le 2349 che restano togliendo le quattro linee TILO S10, S30, S40 e S50. Per questo ogni grandezza che dipende dal perimetro è riportata in due valori: quello del modello completo e quello senza le quattro linee.
+
+\subsection{Una settimana di servizio}
+L'orario reale è stato simulato per un'intera settimana, da lunedì 5 a domenica 11 ottobre 2026, con una simulazione per ogni giorno. La \cref{tab:validazione-settimana} riporta i risultati.
+
+\begin{table}[H]
+	\centering
+	\caption{Orario reale: i sette giorni della settimana dal 5 all'11 ottobre 2026. I quattro giorni da lunedì a giovedì hanno dato risultati identici.}
+	\label{tab:validazione-settimana}
+	\begin{tabularx}{\textwidth}{Xrrrr}
+		\toprule
+		Indicatore & Lun–gio & Venerdì & Sabato & Domenica \\
+		\midrule
+		Corse & 2501 & 2501 & 2190 & 1881 \\
+		\quad senza le linee TILO & 2349 & 2349 & 2035 & 1758 \\
+		Treni-chilometro & 155\,939 & 156\,003 & 141\,216 & 126\,404 \\
+		Treni utilizzati & 370 & 370 & 316 & 253 \\
+		Regolarità & 100\% & 100\% & 100\% & 100\% \\
+		Puntualità a destinazione & 94,4\% & 94,4\% & 94,2\% & 94,8\% \\
+		Puntualità su tutte le fermate & 96,3\% & 96,3\% & 96,0\% & 96,3\% \\
+		Ritardo medio & \SI{49}{\second} & \SI{49}{\second} & \SI{52}{\second} & \SI{51}{\second} \\
+		Energia presa dalla rete (MWh) & 1722 & 1723 & 1493 & 1370 \\
+		Gasolio (l) & 15\,683 & 15\,683 & 15\,176 & 9978 \\
+		Costo simulato & \SI{1630662}{\euro} & \SI{1631151}{\euro} & \SI{1454193}{\euro} & \SI{1277600}{\euro} \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Nei cinque giorni feriali il comportamento è lo stesso. Da lunedì a giovedì l'orario è identico e le quattro simulazioni coincidono in ogni valore, corsa per corsa; il venerdì l'orario differisce per poche corse e i risultati cambiano di 64 treni-chilometro, con gli stessi indicatori di puntualità. Il sabato e la domenica il servizio si riduce del 12\% e del 25\%, e la puntualità resta fra il 94,2\% e il 94,8\%: il modello si comporta allo stesso modo con tre livelli di servizio diversi.
+
+Questo risultato va letto alla luce di una proprietà del modello. La simulazione è deterministica: non contiene estrazioni casuali, e lo stesso orario sulla stessa rete produce sempre lo stesso risultato. La simulazione di mercoledì 7 ottobre, ripetuta su due calcolatori diversi, ha dato risultati identici. Ripetere una simulazione non equivale quindi a ripetere un esperimento, e la settimana non fornisce cinque misure indipendenti del giorno feriale: mostra che il giorno scelto per le analisi non è un caso particolare, e che i risultati sono riproducibili. La variabilità che nella realtà distingue un giorno dall'altro, dovuta a guasti, affollamento e condizioni esterne, nel modello non è rappresentata.
+
+\subsection{Offerta di servizio}
+La \cref{tab:validazione} confronta il servizio simulato con quello dichiarato dall'operatore.
+
+\begin{table}[H]
+	\centering
+	\caption{Orario reale simulato e dati pubblicati dall'operatore. Il modello è riportato con tutte le linee e senza le quattro linee TILO.}
+	\label{tab:validazione}
+	\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}}
+		\toprule
+		Grandezza & Dato pubblicato & Modello completo & Modello senza linee TILO \\
+		\midrule
+		Corse in un giorno feriale & oltre 2350 & 2501 & 2349 \\
+		Corse in un giorno del fine settimana & 1940 in media & 2036 in media & 1897 in media \\
+		Linee servite & 59 & 61 & 57 \\
+		Stazioni servite & 442 & 443 & \\
+		Treni-chilometro all'anno & 41,9 milioni & 54,6 milioni & 50,3 milioni \\
+		\midrule
+		Puntualità a 5 minuti & 92,7\% per le sole cause dell'operatore; 83,8\% per tutte le cause & 94,4\% & 94,1\% \\
+		Regolarità & circa 96,7\% & 100\% & 100\% \\
+		\midrule
+		Energia elettrica all'anno & 566 GWh & 598 GWh & 560 GWh \\
+		Energia elettrica per treno-chilometro & fra 13,5 e 15,3 kWh & 12,4 kWh & 12,7 kWh \\
+		\midrule
+		Treni in servizio nel giorno feriale & 456 in flotta a fine 2024 & 370 & 343 \\
+		Costo per treno-chilometro & \SI{19,5}{\euro} & \SI{10,5}{\euro} & \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Il numero delle corse è compatibile con quello dichiarato, nei giorni feriali e nel fine settimana, come atteso: l'orario simulato è quello pubblicato, e il modello ne simula 2501 corse su 2502. Il dato dell'operatore è indicativo, e non permette di stabilire se comprenda le 152 corse delle quattro linee TILO. Le stazioni servite differiscono di una, le linee di due. \\
+I valori annui del modello sono ottenuti moltiplicando la settimana simulata per le settimane dell'anno. I treni-chilometro risultano superiori a quelli dichiarati del 30\% con il modello completo e del 20\% senza le linee TILO. Poiché le corse coincidono, la differenza sta nella lunghezza media di una corsa, che nel modello è di 61 chilometri. La causa non è stata accertata: può dipendere da ciò che il dato dell'operatore comprende, per esempio le sole percorrenze del contratto di servizio, oppure dalle corse che nel modello proseguono oltre i confini regionali. Questo scarto va tenuto presente per ogni grandezza del modello espressa per treno-chilometro.
+
+\subsection{Tempi di percorrenza}
+Il confronto più diretto fra il moto simulato e la realtà è quello con l'orario, che riporta per ogni corsa l'ora di arrivo e di partenza a ogni fermata. Nel giorno feriale le corse sono 2501 e le tratte fra due fermate consecutive 30\,934. \\
+Sommando tutte le tratte, il tempo di viaggio simulato è pari a 0,996 volte quello previsto dall'orario, e la durata di una corsa, dalla partenza all'arrivo, è nella mediana 0,998 volte quella prevista. Nel complesso, quindi, il modello riproduce i tempi dell'orario con uno scarto inferiore all'1\%. \\
+Le singole tratte si discostano di più. Nel 47\% dei casi il tempo simulato è inferiore a quello previsto: i treni simulati viaggiano sempre alla velocità massima consentita, mentre l'orario contiene margini di recupero. Per questo una parte degli arrivi è in anticipo: lo scostamento medio dall'orario all'arrivo in fermata è di \SI{18}{\second}, la mediana di \SI{5}{\second}; il 60\% degli arrivi avviene entro un minuto dall'ora prevista, il 18\% con oltre un minuto di anticipo, il 4\% con oltre cinque minuti di ritardo. Gli anticipi non alterano la puntualità, perché a ogni fermata il treno attende l'ora di partenza prevista.
+
+\subsection{Puntualità e regolarità}
+La puntualità simulata a destinazione, 94,4\%, è superiore a quella complessiva dichiarata dall'operatore, 83,8\%. L'operatore pubblica però anche l'indice limitato alle cause a esso attribuibili, 92,7\%, che esclude i ritardi dovuti all'infrastruttura, alle altre imprese e alle cause esterne. È questo il termine di confronto appropriato per un modello che non ha cause esterne, e la differenza è di poco più di un punto. La differenza fra i due indici dell'operatore, quasi nove punti, dà la misura di ciò che il modello non rappresenta. Lo stesso vale per la regolarità: l'operatore dichiara in media 78 soppressioni al giorno, il modello nessuna.
+
+Il valore complessivo nasconde però una differenza fra le linee. Delle 61 linee simulate, 46 hanno una puntualità a destinazione di almeno il 95\%, mentre quattro restano sotto il 60\% già con l'orario reale: la R4 (3\%), la R5 (33\%), la RE11 (46\%) e la RE3 (54\%). Sono 105 corse su 2501; senza di esse la puntualità delle altre linee è del 97,2\%. Su queste quattro linee il modello non riproduce il servizio: l'orario pubblicato non risulta eseguibile nei tempi previsti sui tratti di rete che percorrono. La causa non è stata individuata, e i risultati degli scenari che riguardano queste linee vanno considerati con cautela.
+
+\subsection{Energia}
+L'operatore dichiara l'energia elettrica di trazione consumata in un anno, pari a 566 GWh. Il modello, proiettato sull'anno, ne dà 598 con tutte le linee e 560 senza le quattro linee TILO: lo scarto è del 6\% in più nel primo caso e dell'1\% in meno nel secondo. È il confronto più solido fra quelli disponibili, perché riguarda una quantità totale e non dipende da stime sulle percorrenze. \\
+Il consumo per treno-chilometro del modello, 12,4 kWh, risulta invece inferiore all'intervallo ricavato dai dati dell'operatore, fra 13,5 e 15,3 kWh secondo che l'energia si divida per tutti i chilometri o per la sola quota a trazione elettrica. Le due osservazioni sono coerenti fra loro: a parità di energia, il modello ha più treni-chilometro di quelli dichiarati, e il rapporto ne risulta più basso. Va osservato che anche il dato dell'operatore è in parte il risultato di un modello: sulla rete nazionale il consumo è stimato con un misuratore virtuale, basato sul profilo della linea, sulle fermate e sul tipo di treno. \\
+Il modello energetico è stato verificato anche sui valori interni della simulazione del giorno feriale di mercoledì 7 ottobre 2026, riportati nella \cref{tab:energia-verifica}. I treni-chilometro calcolati durante la simulazione coincidono a meno dello 0,5\% con quelli ricavati dall'orario. Il consumo per tonnellata-chilometro, 0,049 kWh, è vicino al valore normativo svizzero per i treni regionali con frenatura a recupero~\cite{uft_consumi}, 0,0463 kWh; quello senza recupero, 0,059, è inferiore al corrispondente valore normativo, 0,0671. Il recupero in frenata riduce del 18\% l'energia prelevata dalle sottostazioni, da 2097 a 1722 MWh. Il consumo di gasolio risulta di 0,96 litri per chilometro, come atteso dopo la taratura.
+
+\begin{table}[H]
+	\centering
+	\caption{Energia nel giorno feriale reale.}
+	\label{tab:energia-verifica}
+	\begin{tabularx}{\textwidth}{Xr}
+		\toprule
+		Misura & Valore \\
+		\midrule
+		Energia presa dalle sottostazioni & 1722 MWh \\
+		Energia necessaria senza alcun recupero & 2097 MWh \\
+		Energia rigenerata in frenata & 472 MWh \\
+		\quad di cui riusata da altri treni & 325 MWh \\
+		\quad di cui dissipata & 97 MWh \\
+		Consumo per treno-chilometro elettrico & 12,4 kWh \\
+		Consumo per tonnellata-chilometro & 0,049 kWh \\
+		Gasolio & 15\,683 l \\
+		Picco di potenza, media su un minuto & 154 MW alle 7:47 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\subsection{Treni e costi}
+Nel giorno feriale il modello impiega 370 treni, 343 senza le linee TILO, pari all'81\% e al 75\% dei 456 che l'operatore dichiarava a fine 2024. Il rapporto è plausibile, perché una flotta comprende i treni di riserva e quelli in manutenzione, ma il confronto ha due limiti: una parte del servizio reale è svolta con locomotive e carrozze, che il modello non ha, e la ripartizione dei treni per tipo nel modello è una stima. \\
+L'operatore dichiara costi operativi di 815,5 milioni di euro~\cite{trenord2026bilancio}, che divisi per i 41,9 milioni di treni-chilometro danno \SI{19,5}{\euro} per treno-chilometro. Il costo simulato è di \SI{10,5}{\euro}, circa la metà, perché il modello comprende le sole voci legate direttamente alla circolazione: restano fuori il personale non viaggiante, le pulizie, le assicurazioni e i costi generali. Il confronto verifica quindi l'ordine di grandezza delle sei voci nel loro insieme, non il valore di ciascuna.
+
+\subsection{Esito}
+Il modello sta vicino ai dati pubblici per le grandezze che rappresenta: l'offerta di servizio, i tempi di percorrenza nel loro complesso, l'energia elettrica totale. Se ne discosta nel verso atteso per quelle che non rappresenta: puntualità e regolarità sono più alte, perché mancano le perturbazioni. \\
+Restano tre punti deboli, che delimitano l'uso dei risultati. I treni-chilometro superano quelli dichiarati almeno del 20\%, per una causa non accertata. Quattro linee non sono riprodotte correttamente nemmeno con l'orario reale. I costi coprono solo una parte di quelli reali. \\
+Ne segue il modo in cui i risultati degli scenari vanno letti. Sono attendibili le differenze fra uno scenario e il giorno reale, simulati con lo stesso modello: corse aggiunte, treni in più, variazione della puntualità, dell'energia e dei costi. Non lo sono i valori assoluti di puntualità e di costo, che il modello sovrastima e sottostima rispettivamente.
