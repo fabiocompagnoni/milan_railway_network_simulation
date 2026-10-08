@@ -1,0 +1,725 @@
+Questa sezione esamina i risultati delle simulazioni e risponde alla domanda di ricerca. Parte dall'orario reale, il cui confronto con i dati pubblici è nella \cref{sec:validazione}, e passa poi agli scenari, che nella realtà avrebbero un costo ingente provare.
+
+\subsection{Disegno sperimentale}
+\label{sec:disegno-sperimentale}
+I risultati vengono da 24 simulazioni, eseguite sulla stessa versione del modello e riportate nella \cref{tab:risultati-simulazioni}. Ogni scenario è simulato su tutti i giorni della settimana dal 5 all'11 ottobre 2026, così da poterlo confrontare con l'orario reale dello stesso giorno e da poter confrontare fra loro i tre tipi di giorno: feriale, sabato e festivo.
+
+\begin{table}[H]
+	\centering
+	\caption{Simulazioni eseguite.}
+	\label{tab:risultati-simulazioni}
+	\begin{tabularx}{\textwidth}{l>{\raggedright\arraybackslash}Xlr}
+		\toprule
+		Scenario & Parametro & Giorni di ottobre & Simulazioni \\
+		\midrule
+		Orario reale & nessuno & dal 5 all'11 & 7 \\
+		Passante ad alta frequenza & attesa massima di 15 minuti & dal 5 all'11 & 7 \\
+		Passante ad alta frequenza & attesa massima di 10 minuti & dal 5 all'11 & 7 \\
+		Potenziamento per linea & 30 minuti su 69 percorsi & giovedì 8 & 1 \\
+		Potenziamento per linea & 15 minuti su 9 percorsi di linee milanesi, 30 sugli altri 60 & giovedì 8 & 1 \\
+		Potenziamento per linea & 15 minuti sui 3 percorsi di S10 e S50, 30 sugli altri 66 & giovedì 8 & 1 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Il confronto segue queste regole:
+\begin{itemize}
+	\item la sola grandezza variata è l'orario: le corse aggiunte dallo scenario, con i treni che le effettuano;
+	\item restano costanti la rete, i tipi di treno e la loro ripartizione sulle linee, le regole di circolazione e i costi unitari;
+	\item ogni scenario è confrontato con la simulazione dell'orario reale dello stesso giorno;
+	\item gli indicatori sono quelli definiti nella \cref{sec:validazione}: regolarità, puntualità a destinazione e sulle fermate, ritardo medio, con l'anticipo contato zero; consumi e costi sono calcolati come descritto nella \cref{sec:costi}.
+\end{itemize}
+
+Ogni scenario base e passante ad alta frequenza è stato simulato separatamente per ciascuno dei sette giorni della settimana, e i risultati sono stati confrontati giorno per giorno. Dai dati risulta che le simulazioni dei giorni da lunedì a giovedì, che hanno lo stesso orario, sono sovrapponibili: in ciascuno dei tre scenari danno gli stessi indicatori e gli stessi costi. Il venerdì differisce per tre fermate e 64 chilometri, con indicatori uguali alla prima cifra decimale; il sabato e la domenica hanno orari propri e risultati distinti. Per questo nel seguito i cinque giorni feriali sono rappresentati da uno solo, il mercoledì 7 ottobre, il sabato dal 10 e il festivo dalla domenica 11.
+
+\subsection{Caso base: l'orario reale nella settimana}
+La \cref{tab:risultati-reale} riporta gli indicatori dell'orario reale nei tre tipi di giorno, che corrispondono a tre livelli di servizio. In tutti i giorni ogni corsa è completata e nessun treno resta bloccato.
+
+\begin{table}[H]
+	\centering
+	\caption{Orario reale nei tre tipi di giorno.}
+	\label{tab:risultati-reale}
+	\begin{tabularx}{\textwidth}{Xrrr}
+		\toprule
+		Indicatore & Feriale & Sabato & Domenica \\
+		\midrule
+		Linee in servizio & 61 & 58 & 53 \\
+		Corse & 2501 & 2190 & 1881 \\
+		Treni-chilometro & 155\,939 & 141\,216 & 126\,404 \\
+		Treni utilizzati & 370 & 316 & 253 \\
+		Massimo di treni in corsa insieme & 221 & 184 & 158 \\
+		\quad ora in cui si verifica & 7 & 7 & 18 \\
+		\midrule
+		Regolarità & 100\% & 100\% & 100\% \\
+		Puntualità a destinazione & 94,4\% & 94,2\% & 94,8\% \\
+		Puntualità su tutte le fermate & 96,3\% & 96,0\% & 96,3\% \\
+		Ritardo medio & \SI{49}{\second} & \SI{52}{\second} & \SI{51}{\second} \\
+		95\textsuperscript{o} percentile del ritardo & \SI{233}{\second} & \SI{251}{\second} & \SI{245}{\second} \\
+		\midrule
+		Energia presa dalla rete (MWh) & 1722 & 1493 & 1370 \\
+		Consumo per treno-chilometro elettrico (kWh) & 12,4 & 12,0 & 11,9 \\
+		Energia di frenata riusata da altri treni & 69\% & 65\% & 63\% \\
+		Gasolio (l) & 15\,683 & 15\,176 & 9978 \\
+		Picco di potenza (MW) & 154 & 129 & 115 \\
+		\midrule
+		Costo simulato & \SI{1630662}{\euro} & \SI{1454193}{\euro} & \SI{1277600}{\euro} \\
+		Costo per treno-chilometro & \SI{10,46}{\euro} & \SI{10,30}{\euro} & \SI{10,11}{\euro} \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+La \cref{fig:reale-schermata} mostra l'applicazione durante la simulazione del giorno feriale, e la \cref{fig:reale-confronto-giorni} confronta i tre giorni sullo stesso asse.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{esecuzione_reale_07_10_new.png}
+	\caption{Simulazione dell'orario reale di mercoledì 7 ottobre 2026, attorno alle 8: la mappa con le linee, comprese quelle del Canton Ticino, e i treni in circolazione.}
+	\label{fig:reale-schermata}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[width=0.95\textwidth, height=5.2cm, xlabel={Ora del giorno}, ylabel={Treni in corsa}, xmin=5, xmax=23, ymin=0, ymax=240, xtick={5,7,...,23}, grid=major, legend pos=south east, legend columns=3, legend style={font=\small}]
+			\addplot[thick, blue!70!black, mark=*, mark size=1pt] coordinates {(5,108) (6,204) (7,221) (8,199) (9,186) (10,166) (11,145) (12,170) (13,184) (14,188) (15,179) (16,187) (17,196) (18,210) (19,208) (20,190) (21,161) (22,112) (23,81)};
+			\addplot[thick, orange!85!black, mark=square*, mark size=1pt] coordinates {(5,99) (6,171) (7,184) (8,170) (9,170) (10,151) (11,135) (12,159) (13,169) (14,170) (15,161) (16,165) (17,169) (18,176) (19,179) (20,167) (21,147) (22,106) (23,80)};
+			\addplot[thick, green!45!black, mark=triangle*, mark size=1.2pt] coordinates {(5,71) (6,127) (7,138) (8,146) (9,151) (10,136) (11,127) (12,140) (13,144) (14,155) (15,152) (16,155) (17,157) (18,158) (19,156) (20,147) (21,131) (22,102) (23,78)};
+			\legend{Feriale, Sabato, Domenica}
+		\end{axis}
+	\end{tikzpicture}
+
+	\medskip
+	\begin{tikzpicture}
+		\begin{axis}[width=0.95\textwidth, height=5.2cm, xlabel={Ora prevista di arrivo}, ylabel={Ritardo medio (s)}, xmin=5, xmax=23, ymin=0, ymax=80, xtick={5,7,...,23}, grid=major, legend pos=south east, legend columns=3, legend style={font=\small}]
+			\addplot[thick, blue!70!black, mark=*, mark size=1pt] coordinates {(5,43) (6,39) (7,45) (8,45) (9,47) (10,50) (11,46) (12,43) (13,49) (14,58) (15,58) (16,51) (17,55) (18,53) (19,60) (20,53) (21,46) (22,42) (23,37)};
+			\addplot[thick, orange!85!black, mark=square*, mark size=1pt] coordinates {(5,45) (6,43) (7,48) (8,48) (9,52) (10,51) (11,50) (12,47) (13,50) (14,64) (15,61) (16,56) (17,53) (18,53) (19,62) (20,56) (21,48) (22,42) (23,36)};
+			\addplot[thick, green!45!black, mark=triangle*, mark size=1.2pt] coordinates {(5,50) (6,40) (7,49) (8,52) (9,56) (10,49) (11,53) (12,52) (13,48) (14,52) (15,56) (16,54) (17,54) (18,53) (19,57) (20,55) (21,42) (22,41) (23,36)};
+			\legend{Feriale, Sabato, Domenica}
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Orario reale nei tre tipi di giorno: massimo di treni in corsa nello stesso istante e ritardo medio all'arrivo in fermata, per ora.}
+	\label{fig:reale-confronto-giorni}
+\end{figure}
+
+Rispetto al giorno feriale il servizio si riduce del 12\% il sabato e del 25\% la domenica in numero di corse, e del 9\% e del 19\% in chilometri percorsi; i treni utilizzati scendono del 15\% e del 32\%. La forma della giornata cambia, come mostrano le \cref{fig:reale-treni-giorni,fig:reale-treni-domenica}: il giorno feriale ha due punte, alle 7 e fra le 18 e le 19; il sabato le stesse due punte sono più basse e la giornata è più piatta; la domenica la punta del mattino non c'è, e i treni in corsa crescono fino al tardo pomeriggio.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{\textwidth}
+		\includegraphics[width=\textwidth]{reale_treni_per_ora.png}
+		\caption{Feriale.}
+	\end{subfigure}
+	\par\medskip
+	\begin{subfigure}{\textwidth}
+		\includegraphics[width=\textwidth]{sabato_treni_per_ora.png}
+		\caption{Sabato.}
+	\end{subfigure}
+	\caption{Orario reale: massimo di treni in corsa nello stesso istante, per ora e per tipo di treno, nel giorno feriale e il sabato.}
+	\label{fig:reale-treni-giorni}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{domenica_treni_per_ora.png}
+	\caption{Orario reale: massimo di treni in corsa nello stesso istante, per ora e per tipo di treno, la domenica.}
+	\label{fig:reale-treni-domenica}
+\end{figure}
+
+La puntualità è invece pressoché la stessa nei tre giorni, benché il carico della rete sia molto diverso. Lo mostra la \cref{fig:reale-ritardo-giorni}, che riporta il ritardo medio all'arrivo in fermata per ogni ora: nei tre giorni resta fra 0,6 e 1,1 minuti in tutte le ore di servizio, senza seguire le punte del numero di treni; il valore dell'ultima ora, dopo l'una di notte, riguarda poche corse.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.6\textwidth}
+		\includegraphics[width=\textwidth]{reale_ritardo_per_ora.png}
+		\caption{Feriale.}
+	\end{subfigure}
+	\par\medskip
+	\begin{subfigure}{0.6\textwidth}
+		\includegraphics[width=\textwidth]{sabato_ritardo_per_ora.png}
+		\caption{Sabato.}
+	\end{subfigure}
+	\par\medskip
+	\begin{subfigure}{0.6\textwidth}
+		\includegraphics[width=\textwidth]{domenica_ritardo_per_ora.png}
+		\caption{Domenica.}
+	\end{subfigure}
+	\caption{Orario reale: ritardo medio all'arrivo in fermata per ora prevista, nei tre tipi di giorno.}
+	\label{fig:reale-ritardo-giorni}
+\end{figure}
+
+Nel modello i ritardi dell'orario reale non dipendono quindi dal carico complessivo, ma da punti precisi: le linee meno puntuali sono le stesse in tutti e tre i giorni, cioè R4, R5, RE11 e RE3. La R4 arriva puntuale a destinazione nel 3\% delle corse, la R5 fra il 33\% e il 52\%, la RE11 e la RE3 attorno al 50\%. Un ritardo che non cambia con il carico indica un punto in cui l'orario reale non è eseguibile sulla rete del modello così come è descritta, più che un effetto del traffico; è ripreso fra i limiti.
+
+Due grandezze seguono invece il carico. La quota di energia di frenata riusata da altri treni scende dal 69\% del giorno feriale al 63\% della domenica: con meno treni in circolazione è meno probabile che un treno in trazione si trovi vicino a uno che frena. Il costo per treno-chilometro scende di poco, da \SI{10,46}{\euro} a \SI{10,11}{\euro}: la domenica i treni utilizzati diminuiscono più dei chilometri percorsi, e la voce del materiale rotabile pesa meno su ogni chilometro.
+
+La \cref{fig:reale-ritardi} mostra come si distribuiscono gli scostamenti dall'orario nel giorno feriale. La maggior parte degli arrivi cade entro un minuto dall'orario previsto, e gli arrivi in anticipo sono più numerosi di quelli in ritardo: è l'effetto dei treni simulati più veloci dell'orario. La \cref{fig:reale-giornata} riporta le corse in corso nella giornata, con le due punte del servizio, e il diagramma spazio-tempo dei treni di una linea, la S1. Il diagramma si legge così:
+\begin{itemize}
+	\item l'asse orizzontale è l'ora del giorno, quello verticale la distanza percorsa dalla partenza della corsa, e non la posizione lungo la linea: le corse dei due versi salgono entrambe;
+	\item ogni colore è un treno, indicato nella legenda, che nella giornata effettua più corse;
+	\item un tratto inclinato è un treno in movimento, tanto più veloce quanto più il tratto è ripido; un tratto orizzontale è un treno fermo, in stazione o in attesa di un binario;
+	\item linee parallele ed equidistanti indicano un servizio regolare; linee che si piegano e si addensano indicano una coda, e una linea che non raggiunge la lunghezza del percorso una corsa interrotta.
+\end{itemize}
+La \cref{fig:reale-treni} riporta i treni utilizzati nella giornata, divisi per tipo.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{reale_istogramma_ritardi.png}
+	\caption{Giorno feriale reale: distribuzione degli scostamenti dall'orario all'arrivo in fermata. I valori negativi sono arrivi in anticipo.}
+	\label{fig:reale-ritardi}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.6\textwidth}
+		\includegraphics[width=\textwidth]{reale_corse_in_corso.png}
+		\caption{Corse in corso nella giornata.}
+	\end{subfigure}
+	\par\medskip
+	\begin{subfigure}{0.8\textwidth}
+		\includegraphics[width=\textwidth]{reale_spazio_tempo.png}
+		\caption{Diagramma spazio-tempo dei treni della linea S1.}
+	\end{subfigure}
+	\caption{Giorno feriale reale: andamento del servizio nella giornata.}
+	\label{fig:reale-giornata}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{reale_flotta.png}
+	\caption{Giorno feriale reale: treni utilizzati, per tipo.}
+	\label{fig:reale-treni}
+\end{figure}
+
+\subsection{Passante ad alta frequenza: confronto con l'orario reale nel giorno feriale}
+La \cref{tab:risultati-passante} confronta il giorno feriale reale con lo scenario del Passante ai due obiettivi; accanto a ogni valore è riportata la differenza rispetto all'orario reale. Le corse aggiunte sono 47 con l'obiettivo di 15 minuti e 189 con quello di 10, sui tratti indicati nella \cref{tab:scenari-tratti}.
+
+\begin{table}[H]
+	\centering
+	\caption{Giorno feriale (mercoledì 7 ottobre 2026): orario reale e Passante ad alta frequenza. Le differenze sono rispetto all'orario reale; per le puntualità sono in punti percentuali.}
+	\label{tab:risultati-passante}
+	\small
+	\begin{tabularx}{\textwidth}{Xrrrrr}
+		\toprule
+		 & Reale & \multicolumn{2}{c}{Passante a 15 minuti} & \multicolumn{2}{c}{Passante a 10 minuti} \\
+		Indicatore & & valore & differenza & valore & differenza \\
+		\midrule
+		Corse & 2501 & 2548 & $+47$ & 2690 & $+189$ \\
+		Regolarità & 100\% & 100\% & 0 & 100\% & 0 \\
+		Puntualità a destinazione & 94,4\% & 94,2\% & $-0{,}1$ & 92,0\% & $-2{,}4$ \\
+		Puntualità su tutte le fermate & 96,3\% & 96,2\% & $-0{,}1$ & 94,0\% & $-2{,}3$ \\
+		Ritardo medio (s) & 49 & 51 & $+1$ & 87 & $+37$ \\
+		95\textsuperscript{o} percentile del ritardo (s) & 233 & 242 & $+9$ & 355 & $+122$ \\
+		\midrule
+		Treni utilizzati & 370 & 380 & $+10$ & 403 & $+33$ \\
+		Massimo di treni in corsa insieme & 221 & 227 & $+6$ & 241 & $+20$ \\
+		Treni-chilometro & 155\,939 & 157\,880 & $+1{,}2\%$ & 163\,463 & $+4{,}8\%$ \\
+		Treni-ora & 3024 & 3075 & $+1{,}7\%$ & 3248 & $+7{,}4\%$ \\
+		\midrule
+		Energia presa dalla rete (MWh) & 1722 & 1748 & $+1{,}5\%$ & 1821 & $+5{,}7\%$ \\
+		Gasolio (l) & 15\,683 & 15\,683 & 0 & 15\,684 & 0 \\
+		Picco di potenza (MW) & 154 & 154 & $+0{,}1\%$ & 169 & $+9{,}6\%$ \\
+		Costo simulato (\euro) & 1\,630\,662 & 1\,656\,535 & $+1{,}6\%$ & 1\,730\,995 & $+6{,}2\%$ \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+In entrambi i casi tutte le corse vengono completate: la rete regge l'orario aggiunto. Con l'obiettivo di 15 minuti gli indicatori sono quasi invariati, perché le 47 corse aggiunte riguardano la S9 e il tratto di Cormano, mentre nel tunnel, dove l'attesa massima è già di 15 minuti, non viene aggiunto nulla. Con quello di 10 minuti la puntualità a destinazione scende di 2,4 punti e il ritardo medio quasi raddoppia. I treni-ora crescono più dei treni-chilometro, 7,4\% contro 4,8\%, perché le corse aggiunte sono brevi e urbane, e una parte delle ore in più è ritardo.
+
+La \cref{fig:passante-confronto-ritardo} confronta i tre casi sullo stesso asse.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[width=0.95\textwidth, height=6cm, xlabel={Ora prevista di arrivo}, ylabel={Ritardo medio (s)}, xmin=5, xmax=23, ymin=0, ymax=190, xtick={5,7,...,23}, grid=major, legend pos=north west, legend columns=3, legend style={font=\small}]
+			\addplot[thick, blue!70!black, mark=*, mark size=1pt] coordinates {(5,43) (6,39) (7,45) (8,45) (9,47) (10,50) (11,46) (12,43) (13,49) (14,58) (15,58) (16,51) (17,55) (18,53) (19,60) (20,53) (21,46) (22,42) (23,37)};
+			\addplot[thick, orange!85!black, mark=square*, mark size=1pt] coordinates {(5,43) (6,40) (7,47) (8,48) (9,50) (10,50) (11,47) (12,43) (13,49) (14,58) (15,57) (16,52) (17,55) (18,57) (19,63) (20,56) (21,46) (22,42) (23,37)};
+			\addplot[thick, red!75!black, mark=triangle*, mark size=1.2pt] coordinates {(5,41) (6,40) (7,64) (8,91) (9,136) (10,140) (11,93) (12,53) (13,54) (14,59) (15,59) (16,55) (17,76) (18,124) (19,170) (20,138) (21,78) (22,45) (23,37)};
+			\legend{Reale, Passante a 15 minuti, Passante a 10 minuti}
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Giorno feriale: ritardo medio all'arrivo in fermata per ora prevista, nei tre casi.}
+	\label{fig:passante-confronto-ritardo}
+\end{figure}
+
+La \cref{fig:passante-ritardo}, prodotta dal simulatore, mostra che il ritardo in più si concentra nelle ore in cui lo scenario aggiunge corse: nel giorno reale il ritardo medio è quasi piatto, mentre con lo scenario compaiono due picchi, fra le 9 e le 10 e fra le 18 e le 20, in cui supera i due minuti. I picchi seguono di un'ora o due le punte del servizio: il ritardo si accumula durante la punta e si smaltisce dopo. La distribuzione degli scostamenti è nella \cref{fig:passante-istogramma}, e l'andamento della giornata nella \cref{fig:passante-giornata}.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.6\textwidth}
+		\includegraphics[width=\textwidth]{reale_ritardo_per_ora.png}
+		\caption{Orario reale.}
+	\end{subfigure}
+	\par\medskip
+	\begin{subfigure}{0.6\textwidth}
+		\includegraphics[width=\textwidth]{passante10_ritardo_per_ora.png}
+		\caption{Passante a 10 minuti.}
+	\end{subfigure}
+	\caption{Giorno feriale: ritardo medio all'arrivo in fermata per ora prevista.}
+	\label{fig:passante-ritardo}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.6\textwidth}
+		\includegraphics[width=\textwidth]{reale_istogramma_ritardi.png}
+		\caption{Orario reale.}
+	\end{subfigure}
+	\par\medskip
+	\begin{subfigure}{0.6\textwidth}
+		\includegraphics[width=\textwidth]{passante10_istogramma_ritardi.png}
+		\caption{Passante a 10 minuti.}
+	\end{subfigure}
+	\caption{Giorno feriale: distribuzione degli scostamenti all'arrivo in fermata.}
+	\label{fig:passante-istogramma}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.6\textwidth}
+		\includegraphics[width=\textwidth]{passante10_corse_in_corso.png}
+		\caption{Corse in corso nella giornata.}
+	\end{subfigure}
+	\par\medskip
+	\begin{subfigure}{0.8\textwidth}
+		\includegraphics[width=\textwidth]{passante10_spazio_tempo.png}
+		\caption{Diagramma spazio-tempo dei treni della linea S1.}
+	\end{subfigure}
+	\caption{Passante a 10 minuti, giorno feriale: andamento del servizio nella giornata.}
+	\label{fig:passante-giornata}
+\end{figure}
+
+Il peggioramento non è distribuito in modo uniforme, come mostra la \cref{tab:risultati-linee}. Riguarda quasi soltanto la linea S9, le cui corse passano da 73 a 155: la puntualità a destinazione scende dal 100\% al 66,5\% e il ritardo medio sale da 29 a 405 secondi, con un 95\textsuperscript{o} percentile di 35 minuti. Le altre linee potenziate restano puntuali, comprese quelle che attraversano il tunnel. Due linee non potenziate peggiorano perché condividono i binari con una linea potenziata: la R16 con la S4 verso Cadorna, e la R31 con la S9.
+
+\begin{table}[H]
+	\centering
+	\caption{Giorno feriale, obiettivo di 10 minuti: linee potenziate e linee che ne risentono.}
+	\label{tab:risultati-linee}
+	\begin{tabularx}{\textwidth}{Xrrrrrr}
+		\toprule
+		 & \multicolumn{2}{c}{Corse} & \multicolumn{2}{c}{Puntualità a destinazione} & \multicolumn{2}{c}{Ritardo medio (s)} \\
+		Linea & reale & scenario & reale & scenario & reale & scenario \\
+		\midrule
+		S1 & 74 & 86 & 100\% & 100\% & 16 & 16 \\
+		S2 & 62 & 86 & 100\% & 94,2\% & 11 & 49 \\
+		S4 & 73 & 131 & 100\% & 96,2\% & 28 & 50 \\
+		S9 & 73 & 155 & 100\% & 66,5\% & 29 & 405 \\
+		S12 & 60 & 66 & 100\% & 100\% & 6 & 6 \\
+		S13 & 74 & 79 & 100\% & 100\% & 12 & 12 \\
+		\midrule
+		R16 & 56 & 56 & 87,5\% & 75,0\% & 61 & 117 \\
+		R31 & 48 & 48 & 100\% & 100\% & 16 & 47 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+La S9 è l'unica delle linee potenziate ad avere una tratta a binario unico, fra Seregno e Cesano Maderno, e a quella frequenza i treni dei due versi non riescono più a incrociarsi senza attendersi. Con l'obiettivo di 15 minuti la stessa linea, con 97 corse, resta al 100\% di puntualità, e lo stesso accade il sabato con 129 corse e la domenica con 117: la soglia si trova quindi fra 129 e 155 corse al giorno. Il risultato va letto in due modi. Mostra che il limite di una linea non è nel suo tratto più carico ma nel suo punto più stretto, e che una linea può saturarsi mentre il resto della rete, tunnel compreso, regge. E mostra la non linearità del sistema: passando da 129 a 155 corse il ritardo medio si moltiplica per dieci.
+
+\subsection{Passante ad alta frequenza: feriale, sabato e domenica}
+La \cref{tab:risultati-passante-giorni} confronta lo scenario con obiettivo di 10 minuti nei tre tipi di giorno. Lo scenario è costruito per le ore di punta dei giorni feriali: nel fine settimana si applica il valore superiore dell'attesa massima, come descritto nella sezione sugli scenari. Con l'obiettivo di 15 minuti il sabato e la domenica non viene quindi aggiunta alcuna corsa, e la simulazione coincide con quella dell'orario reale in tutti gli indicatori.
+
+\begin{table}[H]
+	\centering
+	\caption{Scenario del Passante con obiettivo di 10 minuti nei tre tipi di giorno. Dove compaiono due valori, il primo è dell'orario reale dello stesso giorno.}
+	\label{tab:risultati-passante-giorni}
+	\begin{tabularx}{\textwidth}{Xrrr}
+		\toprule
+		Indicatore & Feriale & Sabato & Domenica \\
+		\midrule
+		Corse aggiunte & 189 & 169 & 133 \\
+		\quad Bovisa--Passante & 47 & 56 & 44 \\
+		\quad Saronno--Albairate (S9) & 82 & 56 & 44 \\
+		\quad Cormano--Cadorna & 58 & 57 & 45 \\
+		\quad Monza--Garibaldi & 2 & 0 & 0 \\
+		\midrule
+		Regolarità & 100\% & 100\% & 100\% \\
+		Puntualità a destinazione & 94,4 $\rightarrow$ 92,0\% & 94,2 $\rightarrow$ 93,9\% & 94,8 $\rightarrow$ 94,7\% \\
+		Ritardo medio (s) & 49 $\rightarrow$ 87 & 52 $\rightarrow$ 53 & 51 $\rightarrow$ 52 \\
+		Corse della S9 & 73 $\rightarrow$ 155 & 73 $\rightarrow$ 129 & 73 $\rightarrow$ 117 \\
+		Puntualità a destinazione della S9 & 100 $\rightarrow$ 66,5\% & 100 $\rightarrow$ 100\% & 100 $\rightarrow$ 100\% \\
+		\midrule
+		Treni in più & 33 & 18 & 18 \\
+		Costo simulato in più & 6,2\% & 5,0\% & 4,6\% \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Il sabato e la domenica lo scenario non peggiora la puntualità, mentre nel giorno feriale la riduce di 2,4 punti. La differenza non dipende dal carico della rete nel fine settimana, ma dalla regola dello scenario: fuori dalle ore di punta dei giorni feriali l'obiettivo di 10 minuti diventa di 15. La S9 riceve quindi 82 corse nel giorno feriale e 56 il sabato, e resta sotto la soglia oltre la quale il suo tratto a binario unico non regge più gli incroci. Il confronto conferma dunque, da un'altra direzione, che il peggioramento del giorno feriale è dovuto a quella sola linea.
+
+I treni in più sono 18 il sabato e la domenica contro i 33 del giorno feriale, e in tutti e tre i casi sono dei tipi che servono le linee suburbane. Il costo cresce in proporzione simile nei tre giorni, fra il 4,6\% e il 6,2\%.
+
+La \cref{fig:passante-confronto-giorni} mostra il ritardo medio per ora con l'obiettivo di 10 minuti nei tre tipi di giorno: i due picchi del giorno feriale, dopo le punte del mattino e della sera, mancano il sabato e la domenica, in cui la curva resta vicina a quella dell'orario reale.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[width=0.95\textwidth, height=6cm, xlabel={Ora prevista di arrivo}, ylabel={Ritardo medio (s)}, xmin=5, xmax=23, ymin=0, ymax=190, xtick={5,7,...,23}, grid=major, legend pos=north west, legend columns=3, legend style={font=\small}]
+			\addplot[thick, blue!70!black, mark=*, mark size=1pt] coordinates {(5,41) (6,40) (7,64) (8,91) (9,136) (10,140) (11,93) (12,53) (13,54) (14,59) (15,59) (16,55) (17,76) (18,124) (19,170) (20,138) (21,78) (22,45) (23,37)};
+			\addplot[thick, orange!85!black, mark=square*, mark size=1pt] coordinates {(5,45) (6,43) (7,48) (8,50) (9,55) (10,54) (11,51) (12,49) (13,52) (14,66) (15,62) (16,58) (17,55) (18,55) (19,64) (20,58) (21,49) (22,42) (23,36)};
+			\addplot[thick, green!45!black, mark=triangle*, mark size=1.2pt] coordinates {(5,50) (6,40) (7,49) (8,51) (9,57) (10,51) (11,54) (12,54) (13,50) (14,55) (15,59) (16,60) (17,55) (18,56) (19,59) (20,57) (21,43) (22,41) (23,36)};
+			\legend{Feriale, Sabato, Domenica}
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Passante a 10 minuti: ritardo medio all'arrivo in fermata per ora prevista, nei tre tipi di giorno.}
+	\label{fig:passante-confronto-giorni}
+\end{figure}
+
+La \cref{tab:risultati-settimana} riporta i totali della settimana dal 5 all'11 ottobre nei tre scenari. Sull'intera settimana lo scenario a 15 minuti aggiunge 235 corse e costa l'1,2\% in più; quello a 10 minuti aggiunge 1247 corse e costa il 5,8\% in più, cioè circa \SI{634000}{\euro}. Per il venerdì con l'obiettivo di 15 minuti il valore è ricavato sommando all'orario reale del venerdì le 47 corse aggiunte e il loro costo negli altri giorni feriali, identici fra loro.
+
+\begin{table}[H]
+	\centering
+	\caption{Totali della settimana dal 5 all'11 ottobre 2026 nei tre scenari.}
+	\label{tab:risultati-settimana}
+	\begin{tabularx}{\textwidth}{Xrrr}
+		\toprule
+		Misura & Reale & Passante a 15 minuti & Passante a 10 minuti \\
+		\midrule
+		Corse & 16\,576 & 16\,811 & 17\,823 \\
+		Treni-chilometro & 1\,047\,379 & 1\,057\,084 & 1\,095\,918 \\
+		Costo simulato (\euro) & 10\,885\,593 & 11\,014\,958 & 11\,519\,160 \\
+		Differenza di costo & & $+1{,}2\%$ & $+5{,}8\%$ \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\subsection{Passante ad alta frequenza: costi}
+La \cref{tab:costi-risultati} riporta il costo simulato del giorno feriale diviso per voce, e la \cref{tab:costi-risultati-festivi} energia, costi e treni del sabato e della domenica.
+
+\begin{table}[H]
+	\centering
+	\caption{Giorno feriale (mercoledì 7 ottobre 2026): costo simulato per voce, in euro. L'ultima colonna è la differenza fra lo scenario a 10 minuti e l'orario reale.}
+	\label{tab:costi-risultati}
+	\begin{tabularx}{\textwidth}{Xrrrr}
+		\toprule
+		Voce & Reale & Passante a 15 min & Passante a 10 min & Differenza \\
+		\midrule
+		Personale di bordo & 423\,337 & 430\,436 & 454\,762 & $+7{,}4\%$ \\
+		Elettricità & 172\,233 & 174\,802 & 182\,070 & $+5{,}7\%$ \\
+		Gasolio & 14\,899 & 14\,899 & 14\,900 & 0 \\
+		Manutenzione & 389\,847 & 394\,699 & 408\,656 & $+4{,}8\%$ \\
+		Accesso alla rete & 389\,847 & 394\,699 & 408\,656 & $+4{,}8\%$ \\
+		Materiale rotabile & 240\,500 & 247\,000 & 261\,950 & $+8{,}9\%$ \\
+		\midrule
+		Costo simulato & 1\,630\,662 & 1\,656\,535 & 1\,730\,995 & $+6{,}2\%$ \\
+		Costo da orario & 1\,663\,604 & 1\,688\,880 & 1\,756\,670 & $+5{,}6\%$ \\
+		\midrule
+		Costo in più rispetto al reale & & 25\,873 & 100\,333 & \\
+		Costo per corsa aggiunta & & 550 & 531 & \\
+		Costo per treno-chilometro aggiunto & & 13,33 & 13,33 & \\
+		Costo medio per treno-chilometro & 10,46 & 10,49 & 10,59 & \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Le voci che crescono di più sono il materiale rotabile e il personale di bordo: la prima perché ogni treno in più costa per l'intera giornata anche se effettua poche corse, la seconda perché segue le ore di servizio, che comprendono i ritardi. Un treno-chilometro aggiunto costa \SI{13,33}{\euro}, più dei \SI{10,46}{\euro} medi dell'orario reale, perché le corse aggiunte si concentrano nelle ore di punta e richiedono treni che nel resto della giornata restano fermi.
+
+\begin{table}[H]
+	\centering
+	\caption{Energia, costi e treni il sabato (10 ottobre 2026) e la domenica (11 ottobre 2026).}
+	\label{tab:costi-risultati-festivi}
+	\begin{tabularx}{\textwidth}{Xrrrr}
+		\toprule
+		 & \multicolumn{2}{c}{Sabato} & \multicolumn{2}{c}{Domenica} \\
+		Misura & Reale & Passante 10 & Reale & Passante 10 \\
+		\midrule
+		Corse & 2190 & 2359 & 1881 & 2014 \\
+		Treni-chilometro & 141\,216 & 147\,326 & 126\,404 & 131\,215 \\
+		Energia presa dalla rete (MWh) & 1493 & 1568 & 1370 & 1430 \\
+		Gasolio (l) & 15\,176 & 15\,176 & 9978 & 9978 \\
+		Picco di potenza (MW) & 129 & 128 & 115 & 120 \\
+		Costo simulato (\euro) & 1\,454\,193 & 1\,526\,712 & 1\,277\,600 & 1\,336\,983 \\
+		Treni utilizzati & 316 & 334 & 253 & 271 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.6\textwidth}
+		\includegraphics[width=\textwidth]{reale_costi.png}
+		\caption{Orario reale.}
+	\end{subfigure}
+	\par\medskip
+	\begin{subfigure}{0.6\textwidth}
+		\includegraphics[width=\textwidth]{passante10_costi.png}
+		\caption{Passante a 10 minuti.}
+	\end{subfigure}
+	\caption{Giorno feriale: costo simulato per voce. Nell'ordine: gasolio, elettricità, manutenzione, materiale rotabile, personale, accesso alla rete.}
+	\label{fig:costi-voci}
+\end{figure}
+
+La \cref{fig:costi-voci} mostra la composizione del costo simulato. Nel giorno feriale lo scenario a 15 minuti costa circa \SI{26000}{\euro} in più al giorno, l'1,6\%, per 47 corse aggiunte; quello a 10 minuti circa \SI{100000}{\euro} in più, il 6,2\%, per 189 corse. Il gasolio non cambia, perché le linee potenziate sono tutte elettriche. Il costo simulato è in ogni caso inferiore a quello da orario, fra l'1,5\% e il 2,0\%, ma la differenza è il saldo di voci che si muovono in versi opposti. Nel giorno reale l'energia costa meno se calcolata sui consumi anziché sui chilometri, circa \SI{65000}{\euro} in meno per l'elettricità e \SI{34000}{\euro} per il gasolio; il personale costa circa \SI{12000}{\euro} in meno, perché i treni simulati sono più veloci dell'orario e le ore effettive sono minori di quelle previste; il materiale rotabile costa invece circa \SI{78000}{\euro} in più, perché i treni messi in servizio sono 370 contro i 250 della flotta minima teorica.
+
+La \cref{fig:energia-potenza} mostra la potenza nel corso della giornata. La potenza assorbita segue le due punte del servizio; quella recuperata in frenata resta fra 20 e 30 MW per quasi tutto il giorno.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.75\textwidth}
+		\includegraphics[width=\textwidth]{reale_potenza.png}
+		\caption{Orario reale.}
+	\end{subfigure}
+	\par\medskip
+	\begin{subfigure}{0.75\textwidth}
+		\includegraphics[width=\textwidth]{passante10_potenza.png}
+		\caption{Passante a 10 minuti.}
+	\end{subfigure}
+	\caption{Giorno feriale: potenza elettrica assorbita dalla linea e recuperata in frenata, media al minuto.}
+	\label{fig:energia-potenza}
+\end{figure}
+
+\input{parti/analisi_linee}
+
+\subsection{Treni necessari e flotta disponibile}
+Uno scenario che aggiunge corse richiede treni in più, e la domanda è se l'operatore ne dispone. La \cref{tab:risultati-flotta} confronta, per tipo, i treni utilizzati nelle tre simulazioni del giorno feriale con quelli disponibili.
+
+\begin{table}[H]
+	\centering
+	\caption{Treni utilizzati in un giorno feriale e treni disponibili, per tipo.}
+	\label{tab:risultati-flotta}
+	\begin{tabularx}{\textwidth}{Xrrrr}
+		\toprule
+		Tipo & Disponibili & Reale & Passante a 15 min & Passante a 10 min \\
+		\midrule
+		Caravaggio & 136 & 119 & 123 & 127 \\
+		TSR & circa 104 & 80 & 85 & 101 \\
+		Donizetti & 61 & 57 & 57 & 57 \\
+		ETR 425 e 526 & 54 & 18 & 18 & 18 \\
+		TAF & 34 & 6 & 6 & 9 \\
+		Colleoni & 30 & 22 & 22 & 22 \\
+		ETR 245 & 14 & 9 & 10 & 10 \\
+		ATR 125 & 20 & 25 & 25 & 25 \\
+		FLIRT TILO & 53 & 34 & 34 & 34 \\
+		\midrule
+		Totale & & 370 & 380 & 403 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{\textwidth}
+		\includegraphics[width=\textwidth]{passante10_treni_per_ora.png}
+		\caption{Massimo di treni in corsa insieme, per ora e per tipo.}
+	\end{subfigure}
+	\par\medskip
+	\begin{subfigure}{0.7\textwidth}
+		\includegraphics[width=\textwidth]{passante10_flotta.png}
+		\caption{Treni utilizzati, per tipo.}
+	\end{subfigure}
+	\caption{Passante a 10 minuti, giorno feriale: treni in servizio. I grafici corrispondenti dell'orario reale sono nelle \cref{fig:reale-treni-giorni,fig:reale-treni}.}
+	\label{fig:passante-treni}
+\end{figure}
+
+Lo scenario a 15 minuti richiede 10 treni in più, quello a 10 minuti 33; il sabato e la domenica, con l'obiettivo di 10 minuti, 18 in entrambi i casi. In tutte le simulazioni ogni tipo resta entro la disponibilità, con una sola eccezione, gli ATR 125, che nel modello sono 25 contro 20: nella realtà la differenza è coperta da altri tipi di automotrice diesel, che il modello non contiene. Sulla carta, dunque, lo scenario del Passante non richiede l'acquisto di treni.
+
+Il margine è però ridotto. Con l'obiettivo di 10 minuti i TSR utilizzati sono 101 su circa 104, e il conto non comprende i treni di riserva né quelli in manutenzione, che in una flotta reale sono una quota non trascurabile. Se i 33 treni in più dovessero essere acquistati, al prezzo delle ultime commesse dell'operatore, fra 8,5 e 10 milioni di euro a treno, l'investimento sarebbe dell'ordine di 280--330 milioni: una stima di larga massima, da leggere come ordine di grandezza. \\
+Valgono le cautele già indicate. I treni contati sono quelli assegnati dal modello, e la ripartizione per tipo deriva dalle quote per linea, che sono una stima. Il dato solido è la differenza fra scenario e giorno reale.
+
+\subsection{Potenziamento per linea}
+Il secondo scenario è stato usato per valutare un aumento esteso a tutta la rete e all'intera giornata. Le simulazioni sono tre, riportate nella \cref{tab:risultati-potenziamento}: tutte del giorno feriale di giovedì 8 ottobre. Nel caso 1 tutti i 69 percorsi regolari hanno un'attesa massima di 30 minuti. Nel caso 2 nove percorsi di sette linee dell'area milanese scendono a 15 minuti: S1, S5, R17, RE1, RE2, RE4 e RE54. Nel caso 3 scendono a 15 minuti i tre percorsi delle linee S10 e S50 nel Canton Ticino, per osservare se un sovraccarico sulle linee svizzere si propaga a quelle italiane.
+
+\begin{table}[H]
+	\centering
+	\caption{Potenziamento per linea: definizione e risultati dei tre casi, nel giorno feriale di giovedì 8 ottobre 2026. L'orario reale dello stesso giorno ha 2501 corse, 370 treni e una puntualità a destinazione del 94,4\%.}
+	\label{tab:risultati-potenziamento}
+	\begin{tabularx}{\textwidth}{Xrrr}
+		\toprule
+		 & Caso 1 & Caso 2 & Caso 3 \\
+		\midrule
+		Linee con obiettivo di 15 minuti & nessuna & sette, milanesi & S10 e S50 \\
+		Percorsi con obiettivo di 15 minuti & 0 & 9 & 3 \\
+		Percorsi con obiettivo di 30 minuti & 69 & 60 & 66 \\
+		Corse aggiunte & 916 & 1359 & 1069 \\
+		Corse previste & 3417 & 3860 & 3570 \\
+		Segnalazioni nel tunnel & 6 & 125 & 6 \\
+		\midrule
+		Corse completate & 3253 & 3410 & 2978 \\
+		Regolarità & 95,2\% & 88,3\% & 83,4\% \\
+		Corse interrotte & 60 & 194 & 188 \\
+		Corse mai partite & 104 & 256 & 404 \\
+		Treni fermi a fine giornata & 63 su 516 & 197 su 568 & 192 su 548 \\
+		Linee che completano tutte le corse & 52 su 61 & 32 su 61 & 40 su 61 \\
+		\midrule
+		Puntualità a destinazione & 76,1\% & 69,6\% & 78,6\% \\
+		Ritardo medio (s) & 579 & 546 & 337 \\
+		Treni utilizzati & 516 & 568 & 548 \\
+		Costo simulato (\euro) & 2\,361\,638 & 2\,669\,017 & 2\,478\,132 \\
+		Differenza di costo dall'orario reale & $+45\%$ & $+64\%$ & $+52\%$ \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Puntualità e ritardo sono misurati sulle sole fermate effettuate, e le corse non completate sono contate nel costo al valore dell'orario, come descritto nella \cref{sec:costi}: nei tre casi il costo indica quindi quanto costerebbe l'orario se fosse eseguito, non il servizio ottenuto.
+
+Nessuno dei tre casi completa tutte le corse. Le \cref{fig:potenziamento-corse,fig:potenziamento-ritardo} mostrano l'andamento della giornata: le corse in corso, dai grafici del simulatore, e il ritardo medio per ora a confronto con l'orario reale.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.55\textwidth}
+		\includegraphics[width=\textwidth]{pot1_corse_in_corso.png}
+		\caption{Caso 1: tutti i percorsi a 30 minuti.}
+	\end{subfigure}
+	\par\medskip
+	\begin{subfigure}{0.55\textwidth}
+		\includegraphics[width=\textwidth]{pot2_corse_in_corso.png}
+		\caption{Caso 2: sette linee milanesi a 15 minuti.}
+	\end{subfigure}
+	\par\medskip
+	\begin{subfigure}{0.55\textwidth}
+		\includegraphics[width=\textwidth]{pot3_corse_in_corso.png}
+		\caption{Caso 3: S10 e S50 a 15 minuti.}
+	\end{subfigure}
+	\caption{Potenziamento per linea: corse in corso nella giornata. Il grafico dell'orario reale è nella \cref{fig:reale-giornata}.}
+	\label{fig:potenziamento-corse}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[width=0.95\textwidth, height=6cm, xlabel={Ora prevista di arrivo}, ylabel={Ritardo medio (min)}, xmin=5, xmax=23, ymin=0, ymax=35, xtick={5,7,...,23}, grid=major, legend pos=north west, legend columns=2, legend style={font=\small}]
+			\addplot[thick, blue!70!black, mark=*, mark size=1pt] coordinates {(5,0.7) (6,0.7) (7,0.8) (8,0.8) (9,0.8) (10,0.8) (11,0.8) (12,0.7) (13,0.8) (14,1.0) (15,1.0) (16,0.9) (17,0.9) (18,0.9) (19,1.0) (20,0.9) (21,0.8) (22,0.7) (23,0.6)};
+			\addplot[thick, orange!85!black, mark=square*, mark size=1pt] coordinates {(5,0.7) (6,1.0) (7,1.7) (8,2.6) (9,2.8) (10,2.9) (11,3.4) (12,3.9) (13,4.8) (14,5.7) (15,6.7) (16,8.0) (17,12.6) (18,17.5) (19,23.7) (20,25.0) (21,25.9) (22,26.5) (23,21.1)};
+			\addplot[thick, red!75!black, mark=triangle*, mark size=1.2pt] coordinates {(5,0.7) (6,1.0) (7,1.8) (8,3.0) (9,3.2) (10,4.0) (11,4.7) (12,5.5) (13,7.3) (14,9.3) (15,10.1) (16,11.6) (17,14.9) (18,18.2) (19,20.7) (20,20.8) (21,15.6) (22,7.2) (23,3.5)};
+			\addplot[thick, green!45!black, mark=diamond*, mark size=1.2pt] coordinates {(5,0.7) (6,1.0) (7,1.7) (8,2.9) (9,3.4) (10,4.3) (11,4.5) (12,4.0) (13,4.8) (14,5.7) (15,6.7) (16,7.7) (17,9.7) (18,13.8) (19,14.0) (20,8.4) (21,2.5) (22,0.8) (23,0.7)};
+			\legend{Orario reale, Caso 1, Caso 2, Caso 3}
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Potenziamento per linea: ritardo medio all'arrivo in fermata per ora prevista, misurato sulle fermate effettuate.}
+	\label{fig:potenziamento-ritardo}
+\end{figure}
+
+Nei tre casi le corse smettono di essere completate in punti diversi, individuati dalle prime fermate non effettuate e dalla posizione dei treni fermi a fine giornata:
+\begin{itemize}
+	\item \textbf{Caso 1:} le prime fermate mancate sono alle 9 fra Brescia e Cremona, e fino a sera restano concentrate attorno a Cremona. I 63 treni fermi appartengono a nove linee che non attraversano il Passante: sette convergono su Cremona e Codogno (R5, R6, R37, R38, R39, R40, RE11) e due percorrono la linea della Valtellina (RE8, R13), in gran parte a binario unico. Le altre 52 linee completano ogni corsa, comprese quelle del Passante e le linee TILO.
+	\item \textbf{Caso 2:} alle fermate mancate del caso 1 si aggiungono dalle 11 quelle di Treviglio e dalle 12 quelle di Lambrate e Rogoredo; le stazioni del Passante cominciano a perdere fermate alle 19, dopo la punta della sera. I treni fermi sono a Monza (12), Milano Lambrate (10), Sesto San Giovanni (9), Rho Fiera (9), Milano Porta Garibaldi (8) e Saronno (8). Le linee del Passante completano fra il 73\% e il 92\% delle corse.
+	\item \textbf{Caso 3:} le prime fermate mancate sono a Lugano alle 10. Il blocco raggiunge Bellinzona alle 11, Mendrisio, Chiasso e Como alle 12, Monza alle 13, Sesto San Giovanni e Milano Greco Pirelli alle 18. I treni fermi sono a Milano Greco Pirelli (15), Bellinzona (14), Mendrisio (11), Sesto San Giovanni (8) e Lugano (8). La S10 completa il 30\% delle corse, la S50 il 29\%.
+\end{itemize}
+
+La \cref{tab:risultati-tunnel} riporta i treni all'ora nel tunnel del Passante. Nel caso 2 sono 16 per verso, quanti nello scenario del Passante a 10 minuti, che completa tutte le corse: il numero dei treni nel tunnel non basta quindi a spiegare le corse non completate. Le differenze fra i due scenari sono tre: nel potenziamento per linea le corse aggiunte percorrono l'intera linea fino ai capolinea esterni e non il solo tratto urbano; non è imposta la distanza minima fra i treni, e 125 corse passano nel tunnel a meno di 180 secondi da un altro treno; sono potenziate nello stesso tempo le linee che condividono i nodi di Treviglio, Monza e Lambrate, dove compaiono le prime fermate mancate e i treni fermi. Quale di queste cause prevalga non è stato accertato.
+
+\begin{table}[H]
+	\centering
+	\caption{Treni all'ora nel tunnel del Passante, per verso, fra le 7 e le 9 del giorno feriale, contati a Milano Repubblica.}
+	\label{tab:risultati-tunnel}
+	\begin{tabularx}{\textwidth}{Xrrrr}
+		\toprule
+		 & Reale & Passante a 10 minuti & Caso 1 & Caso 2 \\
+		\midrule
+		Treni all'ora per verso & 12 & 16 & 12 & 16 \\
+		Capacità a 180 secondi & 20 & 20 & 20 & 20 \\
+		Corse completate & 100\% & 100\% & 95,2\% & 88,3\% \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Il caso 1 mostra il limite opposto. Con tutti i percorsi a 30 minuti il tunnel riceve gli stessi treni dell'orario reale, e le linee che non completano le corse sono periferiche. Portare a 30 minuti una linea a binario unico che oggi ha una corsa all'ora significa raddoppiare gli incroci, e dove le stazioni di incrocio sono lontane la linea non li regge.
+
+Il caso 3 isola l'effetto delle linee svizzere, perché differisce dal caso 1 soltanto per S10 e S50. Nel caso 1 le linee S8, S9, S11 e R14 completano tutte le corse e la RE80 anche; nel caso 3 la RE80 ne completa il 34\%, la S40 il 46\%, la S8 il 72\%, la S9 il 73\%, la S11 il 74\% e la R14 l'80\%. Un sovraccarico fra Bellinzona e Chiasso si propaga quindi lungo l'asse Chiasso--Como--Monza fino a Milano, su linee italiane che in quel caso hanno lo stesso orario del caso 1. Il meccanismo è credibile, perché queste linee condividono binari e stazioni. L'entità invece non è attendibile, per due limiti del modello su quel tratto: le stazioni del Canton Ticino, fra cui Lugano, Mendrisio e Bellinzona, sono definite a livello mesoscopico e non hanno binari distinti; e i treni delle linee S10 e S50, che fra Lugano e Mendrisio viaggiano accoppiati, sono simulati come treni separati, per cui a 15 minuti il carico su quel tratto risulta doppio di quello reale.
+
+I risultati vanno letti in due parti, da tenere distinte. Che questi orari non siano eseguibili è plausibile: nel caso 1 la domanda supera la capacità delle linee a binario unico, nel caso 2 anche quella dei nodi attorno a Milano. Il modo in cui falliscono invece non è realistico. Nella realtà chi regola la circolazione tratterrebbe i treni a monte e sopprimerebbe delle corse, e si avrebbero ritardi crescenti; nel modello i treni si bloccano a vicenda in modo permanente e una parte delle corse non parte. La regolarità misurata in questi casi riflette lo stallo, non il servizio che si otterrebbe, e vi contribuiscono anche i difetti noti del modello discussi fra i limiti.
+
+\subsection{Effetto sulle linee non potenziate}
+Per capire se un aumento delle corse resta confinato alle linee che lo ricevono, per ogni simulazione le linee sono state divise in due gruppi: quelle a cui sono state aggiunte corse e quelle il cui orario è rimasto identico a quello reale. Una linea del secondo gruppo è detta invariata se la puntualità a destinazione cambia di meno di un punto, il ritardo medio di meno di 15 secondi e tutte le corse sono completate; è detta peggiorata se perde più di cinque punti di puntualità o non completa tutte le corse. La \cref{tab:risultati-non-toccate} riporta il conteggio.
+
+\begin{table}[H]
+	\centering
+	\caption{Linee a cui non sono state aggiunte corse: quante restano invariate e quante peggiorano.}
+	\label{tab:risultati-non-toccate}
+	\begin{tabularx}{\textwidth}{Xrrrr}
+		\toprule
+		Simulazione & Linee potenziate & Linee non toccate & Invariate & Peggiorate \\
+		\midrule
+		Passante a 15 minuti, feriale & 2 & 59 & 55 & 2 \\
+		Passante a 10 minuti, feriale & 7 & 54 & 50 & 3 \\
+		Passante a 10 minuti, sabato & 4 & 54 & 50 & 2 \\
+		Passante a 10 minuti, domenica & 4 & 49 & 45 & 2 \\
+		Potenziamento, caso 1 & 42 & 19 & 11 & 5 \\
+		Potenziamento, caso 2 & 45 & 16 & 3 & 11 \\
+		Potenziamento, caso 3 & 42 & 19 & 10 & 7 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Nello scenario del Passante con obiettivo di 10 minuti le linee non toccate del giorno feriale sono 54, e 50 restano invariate. Peggiorano la R16, che percorre insieme alla S4 i 21 chilometri fino a Cadorna, la R38 e la RE13. Lo stesso accade il sabato e la domenica, con due linee peggiorate su 54 e su 49. L'effetto delle corse aggiunte resta quindi quasi del tutto confinato alle linee che le ricevono.
+
+Nel potenziamento per linea accade il contrario. Nel caso 2 peggiorano 11 delle 16 linee non toccate, e fra queste ci sono linee che attraversano il Passante senza aver ricevuto alcuna corsa: la S6 completa il 73\% delle corse, la S13 il 76\%, la S12 il 92\%. In quel caso sono state potenziate la S1 e la S5, che usano lo stesso tunnel. Nel caso 1, in cui nessuna linea del Passante scende sotto i 30 minuti, le linee non toccate che restano invariate sono 11 su 19; fra quelle che peggiorano c'è la S8, che completa tutte le corse ma arriva puntuale nel 24\% dei casi, sulla tratta fra Monza e Lecco che divide con la S11 potenziata.
+
+La propagazione non riguarda soltanto Milano. Le linee R39, fra Codogno e Cremona, e R40, fra Cremona e Bozzolo, non ricevono corse in nessuno dei tre casi, e in tutti completano rispettivamente il 67\% e il 38\% delle corse. Entrambe percorrono per intero tratte che dividono con linee potenziate, in gran parte a binario unico: 22 chilometri su 27 la prima, tutti i 36 la seconda.
+
+\subsection{Effetto del sovraccarico sulle linee di Cadorna e del Passante}
+Le linee che terminano a Milano Cadorna e quelle che attraversano il Passante reagiscono al sovraccarico in modo opposto, come mostra la \cref{tab:risultati-cadorna-passante}. Nel caso 2 le linee regionali di Cadorna continuano a circolare: la regolarità resta al 100\% o vicina, ma la puntualità crolla. La RE1 passa dal 97\% al 13\%, la R22 dal 98\% al 23\%. Le linee del Passante perdono invece corse: ne completano fra il 73\% e il 92\%, mentre quelle che arrivano sono quasi tutte puntuali. Le due suburbane di Cadorna, S3 e S4, stanno fra i due gruppi, con l'83\% e l'82\% di corse completate. Nel caso 1, in cui queste linee non scendono sotto i 30 minuti, entrambi i gruppi restano vicini all'orario reale, con l'eccezione di R16 e R27.
+
+\begin{table}[H]
+	\centering
+	\caption{Regolarità e puntualità a destinazione, in percentuale, delle linee di Cadorna e del Passante nel giorno feriale.}
+	\label{tab:risultati-cadorna-passante}
+	\begin{tabularx}{\textwidth}{Xrrr}
+		\toprule
+		Linea & Reale & Caso 1 & Caso 2 \\
+		\midrule
+		\multicolumn{4}{l}{\textit{Linee da Cadorna}} \\
+		S3 & 100 / 100 & 100 / 100 & 83 / 90 \\
+		S4 & 100 / 100 & 100 / 100 & 82 / 98 \\
+		R16 & 100 / 88 & 100 / 53 & 96 / 49 \\
+		R17 & 100 / 100 & 100 / 100 & 100 / 78 \\
+		R22 & 100 / 98 & 100 / 99 & 100 / 23 \\
+		R27 & 100 / 100 & 100 / 62 & 100 / 49 \\
+		RE1 & 100 / 97 & 100 / 96 & 100 / 13 \\
+		RE54 & 100 / 100 & 100 / 100 & 100 / 67 \\
+		\midrule
+		\multicolumn{4}{l}{\textit{Linee del Passante}} \\
+		S1 & 100 / 100 & 100 / 100 & 78 / 96 \\
+		S2 & 100 / 100 & 100 / 100 & 88 / 100 \\
+		S5 & 100 / 100 & 100 / 100 & 75 / 84 \\
+		S6 & 100 / 100 & 100 / 96 & 73 / 89 \\
+		S12 & 100 / 100 & 100 / 100 & 92 / 100 \\
+		S13 & 100 / 100 & 100 / 100 & 76 / 100 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+I due comportamenti corrispondono a due situazioni diverse. Sul ramo di Cadorna i treni si accodano e avanzano in ritardo, ma trovano sempre un binario su cui terminare la corsa. Sulle linee del Passante i treni restano fermi nei nodi esterni, a Treviglio, Lambrate, Rho Fiera e Saronno, e le corse successive non partono; nelle stazioni del tunnel le fermate cominciano a mancare alle 19, dopo la punta della sera.
+
+Il confronto va letto con una riserva. Nel modello il ricovero di Cadorna ha una capienza volutamente non vincolante, perché rappresenta insieme i binari esterni alla stazione e i depositi lungo la linea, mentre a Rogoredo i binari di attestamento sono cinque e non c'è ricovero. Una parte della differenza fra i due nodi dipende quindi da come sono stati descritti, e non soltanto dall'infrastruttura reale.
+
+\subsection{Confronto fra i due modi di aumentare il servizio}
+La \cref{tab:risultati-sintesi} riunisce sulle stesse righe i cinque orari con corse aggiunte simulati nel giorno feriale.
+
+\begin{table}[H]
+	\centering
+	\caption{Sintesi degli scenari con corse aggiunte. Le differenze di puntualità sono in punti percentuali rispetto all'orario reale dello stesso giorno.}
+	\label{tab:risultati-sintesi}
+	\small
+	\begin{tabularx}{\textwidth}{Xrrrrr}
+		\toprule
+		 & Passante 15 & Passante 10 & Caso 1 & Caso 2 & Caso 3 \\
+		\midrule
+		Corse aggiunte & 47 & 189 & 916 & 1359 & 1069 \\
+		\quad in percentuale sull'orario reale & 2\% & 8\% & 37\% & 54\% & 43\% \\
+		Dove & tratti urbani & tratti urbani & tutta la rete & tutta la rete & tutta la rete \\
+		Regolarità & 100\% & 100\% & 95,2\% & 88,3\% & 83,4\% \\
+		Puntualità a destinazione & $-0{,}1$ & $-2{,}4$ & $-18{,}3$ & $-24{,}8$ & $-15{,}8$ \\
+		Ritardo medio (s) & 51 & 87 & 579 & 546 & 337 \\
+		Treni in più & 10 & 33 & 146 & 198 & 178 \\
+		Costo in più & 1,6\% & 6,2\% & 45\% & 64\% & 52\% \\
+		Linee non toccate peggiorate & 2 su 59 & 3 su 54 & 5 su 19 & 11 su 16 & 7 su 19 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+I due scenari differiscono per ordine di grandezza del carico, e per il modo in cui le corse sono aggiunte:
+\begin{itemize}
+	\item lo scenario del Passante aggiunge fino all'8\% di corse, limitate ai tratti urbani e distanziate di almeno 300 secondi, e la rete le completa tutte;
+	\item il potenziamento per linea aggiunge dal 37\% al 54\% di corse sull'intero percorso delle linee, senza distanza minima, e in nessun caso la rete le completa tutte;
+	\item nel primo l'effetto resta confinato alle linee potenziate, nel secondo raggiunge linee a cui non è stata aggiunta alcuna corsa.
+\end{itemize}
+Fra i due esiste un intervallo non esplorato: nessuna simulazione aggiunge fra l'8\% e il 37\% delle corse, e la soglia oltre la quale la rete smette di completare l'orario non è quindi misurata.
+
+\subsection{Risposta alla domanda di ricerca}
+I risultati permettono una risposta in quattro punti:
+\begin{itemize}
+	\item nell'area urbana la frequenza può essere aumentata, sulle relazioni scelte, fino a un'attesa massima di 10 minuti nelle ore di punta senza che la rete si blocchi, con una perdita di 2,4 punti di puntualità, un costo giornaliero superiore del 6,2\% e 33 treni in più, che sulla carta la flotta disponibile contiene; una cadenza di 10 minuti sull'intero percorso è stata provata per la sola linea S9;
+	\item il primo limite che si incontra è il binario unico: quello della linea S9 nello scenario urbano, e quello delle linee attorno a Cremona e della Valtellina quando tutti i percorsi sono portati a 30 minuti;
+	\item quando due linee del Passante e cinque linee regionali sono portate a 15 minuti sull'intero percorso, le linee del Passante completano fra il 73\% e il 92\% delle corse, benché i treni all'ora nel tunnel siano gli stessi dello scenario urbano a 10 minuti: il limite non è il numero dei treni nel tunnel, ma l'insieme del tunnel e dei nodi in cui le sue linee terminano o si incrociano con le altre;
+	\item un sovraccarico delle linee TILO nel Canton Ticino si propaga alle linee italiane lungo l'asse Chiasso--Como--Monza: il meccanismo è credibile, la sua entità no, perché su quel tratto il modello è meno dettagliato.
+\end{itemize}
+
+I risultati valgono entro tre limiti. Il modello non rappresenta i viaggiatori, e non misura quindi il beneficio delle corse aggiunte ma soltanto il loro costo e il loro effetto sulla circolazione. I costi unitari sono stime, e il valore affidabile è la differenza fra uno scenario e l'orario reale. Oltre la soglia il modello non ha chi regoli la circolazione: gli indicatori dei tre casi del potenziamento dicono che l'orario non è eseguibile e in quali punti si blocca, non quale servizio si otterrebbe.

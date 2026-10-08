@@ -1,0 +1,89 @@
+railsim offre il livello microscopico e i meccanismi di base: la risorsa condivisa per il binario unico, la deviazione fra i binari di una stazione, la prevenzione degli stalli. Applicati alla rete lombarda con l'orario reale, questi meccanismi non sono bastati. Ogni regola descritta in questa sezione è stata aggiunta dopo una simulazione in cui una parte dei treni restava bloccata, ed è riportata insieme al caso che l'ha resa necessaria. Le regole sono realizzate nei due punti di estensione che railsim prevede a questo scopo, il gestore delle risorse e la prevenzione degli stalli, senza modificare il codice dello strumento.
+
+\subsection{Dove serve il dettaglio}
+A livello mesoscopico una stazione è un solo elemento con una capienza: il modello sa quanti treni può contenere, non su quale binario si trova ciascuno, e tratta i binari come equivalenti. Questa descrizione è sufficiente per una fermata lungo una linea a doppio binario, dove ogni treno ha il proprio binario di marcia e non deve scegliere. Non lo è in tre situazioni, che corrispondono ai tre gruppi di stazioni descritte binario per binario, riportati nella \cref{tab:dettaglio-gruppi}.
+
+\begin{table}[H]
+	\centering
+	\caption{Stazioni descritte binario per binario, per motivo del dettaglio.}
+	\label{tab:dettaglio-gruppi}
+	\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.3\textwidth}rr>{\raggedright\arraybackslash}X}
+		\toprule
+		Gruppo & Stazioni & Binari & Esempi \\
+		\midrule
+		Nodo di Milano e Passante & 16 & 131 & Centrale, Porta Garibaldi, Cadorna, Bovisa, Rogoredo, Lambrate \\
+		Diramazioni e capolinea & 27 & 124 & Brescia, Saronno, Treviglio, Pavia, Cremona, Lecco, Bergamo \\
+		Stazioni delle linee a binario unico & 137 & 369 & Sondrio, Tirano, Seregno, Varese, Villasanta, Olmeneta \\
+		\midrule
+		Totale & 180 & 624 & \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+La prima situazione è quella delle stazioni in cui molti treni di linee diverse usano molti binari. Qui i binari non sono equivalenti: ogni linea può usarne solo alcuni, quelli collegati alla direzione da cui arriva e a quella verso cui riparte, e un treno fermo su un binario di testa lo occupa fino alla ripartenza. Descrivere queste stazioni con una sola capienza significherebbe ammettere treni su binari che non possono raggiungere, e nascondere proprio i conflitti che limitano il servizio. \\
+La seconda è quella dei punti di snodo, cioè le stazioni in cui una linea si dirama o più linee confluiscono, e dei capolinea. In una diramazione i treni delle diverse linee impegnano gli stessi deviatoi di ingresso, e il percorso di uno blocca quello degli altri; in un capolinea i treni sostano fra una corsa e la successiva, e il numero dei binari di testa fissa quanti possono attendere insieme. \\
+La terza è quella delle linee a binario unico. Due treni di verso opposto possono incrociarsi solo in una stazione con almeno due binari, e perché l'incrocio riesca occorre sapere quale treno occupa quale binario: è il motivo per cui su queste linee sono descritte in dettaglio tutte le stazioni, anche le più piccole, e non soltanto quelle principali.
+
+Le altre stazioni della rete, 266 su 443, restano a livello mesoscopico: sono fermate lungo linee a doppio binario, in cui la capacità dipende dal numero dei binari e dal distanziamento fra i treni.
+
+L'elenco completo, linea per linea, delle tratte a binario unico, delle tratte in dettaglio e delle stazioni descritte binario per binario, con i gruppi di binari, i collegamenti e le linee che li usano, è riportato nell'appendice~\ref{app:linee}.
+
+\subsection{Tratte a quattro binari}
+Attorno a Milano alcune linee sono a quattro binari. Una linea quadruplicata non equivale a una linea con quattro binari intercambiabili: è formata da due fasci paralleli di due binari, ciascuno con un binario per senso di marcia, e ogni fascio è riservato a un gruppo di treni. Nello stesso senso viaggiano quindi due binari affiancati ma separati, e un treno può passare dall'uno all'altro solo dove esistono i deviatoi, cioè in prossimità delle stazioni. Dentro un fascio un treno veloce resta dietro a quello lento che lo precede.
+
+Il caso più importante è la linea da Milano Cadorna a Saronno, il cui primo tratto è rappresentato nel grafo della \cref{fig:modello-cadorna}. In uscita da Cadorna i dieci binari della stazione confluiscono in quattro: i binari da 1 a 5 nel primo fascio, percorso dai treni regionali per Saronno e dal collegamento con l'aeroporto, il 6 e il 7 nel secondo, percorso dai treni per Asso, mentre i binari da 8 a 10 sono collegati a entrambi. Fra Milano Bovisa e Saronno i quattro binari proseguono, divisi fra i treni suburbani, che fermano in tutte le stazioni, e i regionali, che non fermano. \\
+Nel modello il tratto da Cadorna a Bovisa è descritto in dettaglio: i due fasci sono due coppie di link distinte, ciascuna con le proprie risorse, e ogni linea è assegnata a un fascio: nel grafo sono i due percorsi che dalle gole di Cadorna raggiungono Domodossola e poi Bovisa. Allo stesso modo fra Saronno Sud e Saronno sono distinti il fascio dei treni suburbani e i due binari riservati alla linea S9. Un treno di un fascio non può quindi occupare i binari dell'altro, e i due flussi si ostacolano solo dove confluiscono, agli ingressi delle stazioni.
+
+Le altre tratte a quattro o più binari, 31 in tutto fra cui quelle fra Milano Centrale, Lambrate, Rogoredo, Sesto San Giovanni, Monza e Rho, restano a livello mesoscopico. Ogni tratta è un link con capienza di due treni per senso, moltiplicata per il numero delle sezioni di blocco: il modello tiene conto del numero dei binari ma li considera equivalenti, e un treno veloce può superarne uno lento in qualunque punto della tratta, mentre nella realtà può farlo solo cambiando fascio in una stazione. \\
+Fra Bovisa e Saronno la separazione fra treni che fermano e treni che non fermano è riprodotta in parte dalla struttura della rete: i suburbani percorrono i link fra una stazione e la successiva, i regionali un link diretto fra Bovisa e Saronno. Ciascuno dei due percorsi riceve però la capienza dell'intera sede a quattro binari, che risulta così sovrastimata. È un caso del limite dei collegamenti diretti, ripreso fra i limiti del lavoro.
+
+\subsection{Binario unico}
+Nella rete mesoscopica 581 link su 1195 sono a binario unico. Su queste linee due treni di verso opposto possono incrociarsi solo nelle stazioni che hanno almeno due binari; fra una stazione di incrocio e la successiva la linea può essere occupata da treni di un solo verso. Dal rilievo descritto nella \cref{sec:dati-binario-unico} risultano, su 236 stazioni censite, circa 140 in cui l'incrocio è possibile e circa 90 fermate con un solo binario, in cui non lo è.
+
+Il primo problema è emerso alla prima simulazione completa: la rete si fermava all'alba. Fra due stazioni di incrocio una linea a binario unico è formata da più link consecutivi, uno per ogni coppia di fermate, e ciascuno aveva la propria risorsa. Due treni di verso opposto entravano dai due capi, su link diversi, si incontravano a metà e restavano fermi uno di fronte all'altro. I link consecutivi a binario unico compresi fra due punti di incrocio sono stati quindi riuniti in un blocco, cioè in una sola risorsa: la tratta si occupa per intero, i treni di verso opposto la percorrono uno dopo l'altro e gli incroci avvengono in stazione, come nell'esercizio reale.
+
+Il blocco non basta a evitare gli stalli, perché non dice nulla su ciò che il treno troverà all'altro capo. Le regole aggiunte in seguito, riassunte nella \cref{tab:regole-binario-unico}, riguardano tutte questo punto.
+
+\begin{table}[H]
+	\centering
+	\caption{Regole aggiunte per le linee a binario unico e caso che le ha motivate.}
+	\label{tab:regole-binario-unico}
+	\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.27\textwidth}XX}
+		\toprule
+		Regola & Contenuto & Caso \\
+		\midrule
+		Blocco fra punti di incrocio & I link a binario unico fra due stazioni di incrocio sono una sola risorsa. & Stallo diffuso alla prima simulazione. \\
+		Consenso all'ingresso & Un treno entra nel blocco solo se la stazione all'altro capo ha un binario per lui e ne resta uno per il treno di verso opposto. & A Villasanta due treni dello stesso verso occupavano i due binari e il treno opposto restava nel blocco: 79 treni fermi su 274. \\
+		Ultimo binario riservato all'incrocio & L'ultimo binario libero di una stazione di incrocio può essere preso solo dal treno che deve incrociare uno di quelli presenti. & A Varese Nord tre treni diretti alla stessa tratta, uno uscito dal ricovero, occupavano i tre binari mentre il treno opposto attendeva in quella tratta. \\
+		Attesa prima del blocco & Un treno non entra nel blocco se l'unico binario che può raggiungere all'altro capo è occupato o già destinato a un altro treno. & Fra Bergamo e Seriate due treni si fermavano uno di fronte all'altro: 15 treni mai arrivati. \\
+		Transito sul binario di stazione & Anche un treno che non ferma percorre un binario della stazione di incrocio, e lì può attendere. & A Borgo San Giovanni due treni in transito attendevano ciascuno il blocco dell'altro, con i binari della stazione liberi. \\
+		Segnale di protezione & Ogni tratta termina 200 metri prima della stazione in un tratto di ingresso, e la deviazione è decisa lì. & Fra due stazioni di incrocio vicine un treno attendeva il binario occupato con l'altro libero: 84 treni fermi. \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+La regola del consenso riproduce ciò che nell'esercizio reale fa chi regola la circolazione, che prima di far partire un treno su un binario unico si assicura che la stazione successiva possa riceverlo e che l'incrocio resti possibile. Nel modello la prevenzione degli stalli tiene il conto, per ogni stazione di incrocio, dei treni presenti e di quelli in viaggio verso di essa, ciascuno con il lato da cui arriva. Un treno che ha ottenuto il blocco verso una stazione vi è già contato come presente: senza questo accorgimento un treno uscito dal ricovero poteva prendere l'ultimo binario mentre l'altro era in viaggio nella tratta.
+
+La prevenzione degli stalli fornita da railsim è stata sostituita anche per un secondo motivo. Essa tratta ogni risorsa con capienza 1 come un possibile punto di conflitto fra versi opposti; su un binario percorso in un solo verso questo porta il secondo treno a prenotare la sezione davanti al primo, che non può più avanzare. Nel progetto la prevenzione è limitata alle risorse percorribili nei due sensi, cioè i blocchi a binario unico e i binari tronchi. Inoltre l'analisi iniziale che railsim compie sulle risorse non era praticabile su un ingresso di stazione composto da un centinaio di link.
+
+Resta un limite: i tratti a binario unico più corti della distanza fra due stazioni, come un ponte su una linea altrimenti doppia, non sono visibili nei dati usati e sono stati inseriti solo dove il rilievo li ha individuati.
+
+\subsection{Stazioni}
+Una stazione descritta in dettaglio è formata da un link per ogni binario, riuniti in gruppi, e dai link che collegano ogni gruppo alle linee su ciascun lato. Dove più gruppi condividono i deviatoi di ingresso, quei link appartengono a una stessa risorsa, così che un treno in ingresso impegna il percorso degli altri. I binari di testa dei capolinea hanno ingresso e uscita dallo stesso lato e restano occupati per tutta la sosta: i treni sono reversibili e ripartono dal binario su cui sono arrivati. I treni tengono la sinistra, e questo determina a quale binario di una linea a doppio binario è collegato ogni gruppo.
+
+La prima regola aggiunta riguarda il modo in cui railsim concede i binari. Quando un link ammette più treni, railsim ne tiene sempre uno libero per il verso opposto se un treno è già entrato dallo stesso lato. La cautela ha senso su un binario unico; applicata a una stazione di incrocio con due binari la riduce a un solo treno, e su una linea a doppio binario ne dimezza la capienza. Il gestore delle risorse del progetto concede quindi, sui link di stazione e su quelli con una risorsa propria, un qualunque binario libero.
+
+Le regole successive riguardano le deviazioni. Il piano dei binari assegna a ogni corsa il binario abituale; se all'arrivo è occupato, railsim può deviare il treno. Nel modello la deviazione è ammessa solo fra i binari che il treno può fisicamente usare, cioè quelli collegati sia alla stazione da cui arriva sia a quella verso cui riparte. È ciò che avviene nella realtà: a Saronno un treno può superarne un altro in ritardo perché la disposizione dei binari lo consente. La regola è nata da una simulazione in cui due linee avevano a Saronno un solo binario ammesso per verso, e un treno in sosta oltre l'orario fermava tutti quelli che lo seguivano.
+
+Una deviazione è poi accettata solo se non fa saltare una fermata. railsim decide la deviazione conoscendo la sola fermata successiva; se la decide una stazione prima, può sostituire il binario del capolinea con uno su cui il treno non ferma. In una simulazione questo accadeva 310 volte: i treni proseguivano fino al ricovero senza che l'arrivo al capolinea fosse registrato, e l'analisi mostrava ritardi di ore che non esistevano. Il controllo conosce ora tutte le fermate della corsa in corso e rifiuta ogni deviazione che ne attraversi una senza fermarsi. Le fermate considerate sono quelle della corsa e non dell'intera giornata del treno: in caso contrario un treno in transito a Varese Casbeno non poteva lasciare un binario occupato per quello libero, perché su quel binario avrebbe fermato tre ore dopo con un'altra corsa, e dieci treni restavano bloccati.
+
+Infine la sosta fra due corse è ammessa in banchina solo sui binari di testa. Su un binario di transito un treno si ferma per il tempo della fermata, e se in quella stazione inverte la marcia attende nel ricovero qualunque sia la durata della sosta. Prima di questa regola un treno attestato a Milano Bovisa su un binario del Passante lo occupava per 51 minuti, e 23 treni restavano in coda nel tunnel.
+
+\subsection{Un caso: la corsa che passava due volte da Pavia}
+L'ultimo caso è riportato per esteso perché mostra insieme un errore nei dati del modello e un difetto dello strumento, e il modo in cui il primo è rimasto nascosto dietro il secondo.
+
+In uno scenario con più corse la simulazione si interrompeva alle 7:57 con un errore interno di railsim. La corsa coinvolta era della linea R35 Alessandria--Pavia, e il suo percorso passava due volte dalla stazione di Pavia. Per sapere fin dove prenotare, railsim cerca il link della fermata successiva a partire dall'inizio del percorso, e non dalla posizione del treno: se quel link compare due volte, trova l'occorrenza alle spalle del treno e chiede un tratto che termina prima di cominciare. Basta che una deviazione porti il treno, al primo passaggio, sul binario in cui fermerà al secondo. Lo stesso errore si era già presentato a settembre, ed era stato evitato rifiutando le deviazioni verso un binario in cui la corsa ferma più avanti secondo l'orario. Nel nuovo caso il binario era entrato nel percorso per una deviazione precedente, e la regola è stata estesa: è rifiutata ogni deviazione che passa su un binario di stazione già presente nel percorso del treno.
+
+A settembre il doppio passaggio era stato attribuito al servizio reale, come se il treno invertisse la marcia in una stazione vicina. Solo seguendo il percorso fermata per fermata si è visto che non era così. Due corse del mattino fermano a Cava Carbonara, dove la linea per Alessandria si separa da quella per Vercelli, e nella realtà proseguono direttamente per Pavia. Nella descrizione della stazione, generata in automatico con un solo collegamento per lato, mancava il ramo verso Alessandria: il link che vi arrivava finiva in un nodo senza uscite. Il calcolo del percorso poteva raggiungere i binari di Cava Carbonara soltanto da Pavia, e faceva arrivare il treno a Pavia, tornare indietro per la fermata e rientrare, su 57 link invece di 46. Aggiunto il collegamento e rigenerata la rete, nessun percorso dell'orario passa più due volte dalla stessa stazione. Gli altri 64 link che terminano in un nodo senza uscite sono stati esaminati uno per uno: nessuno altera un percorso.
+
+Il caso lascia tre indicazioni. Una spiegazione plausibile aveva nascosto un errore del modello, e la prima correzione ne curava solo il sintomo. Con l'orario reale il difetto produceva soltanto un treno più lento, ed è emerso quando il carico è aumentato. I dati generati in automatico vanno rivisti a mano nei punti in cui una linea si dirama. La regola sulle deviazioni è stata mantenuta come protezione, perché il difetto di railsim si ripresenterebbe con qualunque percorso che ripassi da una stazione.

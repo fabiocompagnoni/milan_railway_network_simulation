@@ -1,0 +1,144 @@
+\subsection{Vista d'insieme}
+Motore e client sono due processi distinti, mostrati nella \cref{fig:architettura}. Il client avvia un motore per ogni simulazione e lo chiude al termine.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[
+		font=\small,
+		box/.style={draw, rounded corners=2pt, minimum width=4.9cm, minimum height=3.6cm, align=center, fill=blue!4},
+		store/.style={draw, minimum width=4.9cm, minimum height=1.0cm, align=center, fill=gray!10, font=\footnotesize},
+		flow/.style={-{Stealth[length=2.2mm]}, thick},
+		item/.style={font=\footnotesize, align=center}]
+		\node[box] (client) at (0,0) {};
+		\node[font=\bfseries] at (0,1.45) {Client};
+		\node[item] at (0,0.75) {interfaccia grafica (JavaFX)};
+		\node[item] at (0,0.25) {mappa e controlli};
+		\node[item] at (0,-0.25) {impostazione degli scenari};
+		\node[item] at (0,-0.75) {archivio e risultati};
+		\node[item] at (0,-1.25) {riproduzione delle registrazioni};
+
+		\node[box] (engine) at (10.0,0) {};
+		\node[font=\bfseries] at (10.0,1.45) {Motore};
+		\node[item] at (10.0,0.75) {generazione dell'orario};
+		\node[item] at (10.0,0.25) {MATSim e railsim};
+		\node[item] at (10.0,-0.25) {estensioni del progetto};
+		\node[item] at (10.0,-0.75) {campionamento dei fotogrammi};
+		\node[item] at (10.0,-1.25) {analisi dei risultati};
+
+		\draw[flow] ([yshift=6mm]client.east) -- node[above, item] {velocità, pausa, arresto} ([yshift=6mm]engine.west);
+		\draw[flow] ([yshift=-6mm]engine.west) -- node[below, item] {avanzamento, fotogrammi, esito} ([yshift=-6mm]client.east);
+		\node[item] at (5.0,0) {socket locale, JSON per riga};
+
+		\node[store] (data) at (10.0,-3.4) {Dati del progetto, in sola lettura:\\rete, stazioni, orario pubblico, parametri};
+		\node[store] (run) at (0,-3.4) {Cartella della simulazione:\\scenario, risultati, grafici, registrazione};
+		\draw[flow] (data.north) -- (engine.south);
+		\draw[flow] (engine.south west) -- node[above, sloped, item] {scrive} (run.north east);
+		\draw[flow] (run.north) -- node[left, item] {legge} (client.south);
+	\end{tikzpicture}
+	\caption{I due processi dell'applicazione, il canale di comunicazione e i dati su disco.}
+	\label{fig:architettura}
+\end{figure}
+
+La separazione in due processi ha tre motivi:
+\begin{itemize}
+	\item una simulazione dell'intera giornata occupa molta memoria e impegna il processore per alcuni minuti: in un processo proprio non blocca l'interfaccia, e dispone di una memoria propria, pari al 60\% di quella fisica;
+	\item se il motore si interrompe per un errore, il client resta attivo e ne mostra il motivo;
+	\item il motore si può avviare anche senza interfaccia, da riga di comando, per eseguire una simulazione o per rigenerare i dati.
+\end{itemize}
+
+\subsection{Motore}
+Il motore riceve all'avvio la cartella della simulazione, che contiene la definizione dello scenario, e i percorsi dei dati di ingresso. Una simulazione procede in quattro fasi:
+\begin{enumerate}
+	\item \textbf{Orario:} dall'orario pubblico del giorno scelto viene generato l'orario simulato, con le corse aggiunte dallo scenario, l'assegnazione dei treni alle corse e il piano dei binari (\cref{sec:orari}).
+	\item \textbf{Simulazione:} MATSim esegue una sola iterazione con railsim come motore del moto dei treni. Le estensioni del progetto sono installate nei punti che railsim prevede, senza modificarne il codice: il gestore delle risorse e la prevenzione degli stalli sostituiscono quelli predefiniti (\cref{sec:dettagli-rete}).
+	\item \textbf{Analisi:} dagli eventi della simulazione sono calcolati indicatori, consumi, costi e treni utilizzati, e sono prodotti i grafici.
+	\item \textbf{Archiviazione:} risultati, grafici e registrazione sono scritti nella cartella della simulazione.
+\end{enumerate}
+La simulazione di un giorno feriale, 2501 corse e 370 treni, richiede circa quattro minuti alla velocità massima su un calcolatore portatile.
+
+Due accorgimenti riguardano l'integrazione con railsim. Il primo è la fine della simulazione: in railsim un treno che ha concluso l'ultima corsa non viene tolto dal conteggio degli agenti attivi, e la simulazione proseguirebbe a rete vuota fino al limite orario; il motore ritira il conducente al termine dell'ultima corsa, e la simulazione si conclude all'arrivo dell'ultimo treno. Il secondo è il segnale di attività: a ogni minuto simulato il motore aggiorna un file nella cartella della simulazione, così un motore che si è fermato è riconoscibile.
+
+\subsection{Comunicazione fra client e motore}
+I due processi comunicano attraverso un socket locale, su una porta scelta dal sistema al momento dell'avvio. Il motore scrive sullo standard output la porta e un codice di accesso generato per quella simulazione; il primo messaggio del client deve contenere il codice, così nessun altro processo della macchina può pilotare il motore.
+
+Ogni messaggio è un oggetto JSON su una riga, distinto dal campo \texttt{type}. I messaggi sono riportati nella \cref{tab:architettura-messaggi}.
+
+\begin{table}[H]
+	\centering
+	\caption{Messaggi scambiati fra client e motore.}
+	\label{tab:architettura-messaggi}
+	\begin{tabularx}{\textwidth}{lll>{\raggedright\arraybackslash}X}
+		\toprule
+		Verso & Tipo & Campi & Significato \\
+		\midrule
+		client $\rightarrow$ motore & \texttt{hello} & codice di accesso & apre la sessione \\
+		client $\rightarrow$ motore & \texttt{speed} & velocità & secondi simulati per secondo reale; 0 mette in pausa, $-1$ toglie il limite \\
+		client $\rightarrow$ motore & \texttt{stop} & & interrompe la simulazione \\
+		\midrule
+		motore $\rightarrow$ client & \texttt{ready} & porta, codice & il motore è in ascolto \\
+		motore $\rightarrow$ client & \texttt{progress} & ora simulata, treni attivi, fase & avanzamento \\
+		motore $\rightarrow$ client & \texttt{frame} & fotogramma & stato di tutti i treni in servizio \\
+		motore $\rightarrow$ client & \texttt{done} & cartella, riepilogo & simulazione conclusa: treni arrivati, annullati, rimasti fermi \\
+		motore $\rightarrow$ client & \texttt{error} & messaggio & simulazione fallita \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+railsim produce un evento a ogni variazione dello stato di un treno, cioè molti eventi al secondo. Il motore li riduce a un fotogramma ogni 5 secondi simulati, che contiene per ogni treno in servizio la posizione, la velocità, l'accelerazione, il ritardo, la destinazione e la potenza scambiata con la linea. Il \cref{lst:architettura-fotogramma} ne mostra uno, ridotto a un solo treno dei 232 in servizio in quell'istante.
+
+\begin{lstlisting}[language=json,caption={Un fotogramma della simulazione del giorno feriale, alle 6:56:35, ridotto a un treno.},label={lst:architettura-fotogramma}]
+{"type": "frame", "frame": {
+  "time": 24995.0,
+  "trains": [
+    {"id": "R4_circ_1", "line": "R4", "link": "S01326_S01325",
+     "position": 3211.0, "speed": 18.2, "acceleration": -0.5,
+     "delay": -38.0, "destination": "S09999", "nextStop": "S01701",
+     "power": -2405.0}
+  ],
+  "energy": {"lineKilowatt": 151418.0, "kilowattHours": 118995.0,
+             "litres": 1329.0},
+  "meanDelayByLine": {"R1": 20, "R11": 35, "R12": 0}
+}}
+\end{lstlisting}
+
+Nell'esempio il treno si trova a 3211 metri dall'inizio del link, viaggia a \SI{18,2}{\metre\per\second} e sta frenando: la potenza negativa è quella restituita alla linea. Il ritardo negativo indica un anticipo di 38 secondi.
+
+La velocità della simulazione è regolata dal motore, che fra un passo e il successivo attende il tempo necessario a mantenere il rapporto richiesto con il tempo reale. Il comando arriva da un altro filo di esecuzione rispetto a quello della simulazione, e la pausa è quindi un'attesa cooperativa e non un'interruzione.
+
+\subsection{Client}
+Il client è un'applicazione JavaFX con quattro funzioni:
+\begin{itemize}
+	\item \textbf{Impostazione di una simulazione:} giorno, finestra oraria, scenario e suoi parametri, con l'anteprima delle corse che verrebbero aggiunte. Prima dell'avvio sono controllati lo spazio su disco, la presenza del motore e il nome della simulazione.
+	\item \textbf{Mappa:} la rete, le stazioni e i treni in movimento su uno sfondo OpenStreetMap, conservato su disco dopo il primo uso. Fra due fotogrammi la posizione di ogni treno è interpolata, e il movimento risulta continuo.
+	\item \textbf{Archivio:} l'elenco delle simulazioni eseguite, con scenario, giorno, stato, ritardo, costo e treni non arrivati, e il confronto fra due simulazioni.
+	\item \textbf{Risultati:} indicatori, ritardi per linea e per stazione, energia, costi e treni utilizzati, con i grafici.
+\end{itemize}
+
+I fotogrammi sono anche registrati su disco, e una simulazione archiviata può essere riprodotta: l'orologio simulato avanza alla velocità scelta e può essere spostato in qualunque punto della giornata, senza eseguire di nuovo il motore. La mappa osserva allo stesso modo una simulazione in corso e una registrazione.
+
+\subsection{Organizzazione dei dati}
+\label{sec:architettura-dati}
+I dati sono in due posizioni distinte, riportate nella \cref{tab:architettura-dati}. I dati di ingresso sono in sola lettura e sono gli stessi per ogni simulazione; tutto ciò che l'utente produce è in una cartella nella sua cartella personale.
+
+\begin{table}[H]
+	\centering
+	\caption{Dati dell'applicazione.}
+	\label{tab:architettura-dati}
+	\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}X}
+		\toprule
+		Posizione & Contenuto \\
+		\midrule
+		Dati del progetto & rete mesoscopica e di dettaglio, 53 file delle stazioni, orario pubblico, parametri degli scenari e del modello energetico \\
+		Cartella dell'utente, configurazione & costi unitari, tipi di treno e ripartizione sulle linee, se modificati dall'utente \\
+		Cartella dell'utente, simulazioni & una cartella per simulazione \\
+		Cartella dell'utente, memoria temporanea & sfondo della mappa \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+La cartella di una simulazione contiene la definizione dello scenario, l'orario e i treni generati, gli indicatori complessivi e per linea, stazione, treno e ora, i consumi, i costi, i grafici, il registro del motore e la registrazione dei fotogrammi. Per gli scenari che aggiungono corse sono conservati anche l'elenco delle corse aggiunte, ciascuna con la corsa reale da cui è copiata, quello delle corse abbandonate e quello dei passaggi nel tunnel a intervallo ridotto. Per un giorno feriale la cartella occupa circa 90 megabyte, di cui 68 per i 18\,356 fotogrammi compressi. I dati di questa relazione sono ricavati da queste cartelle.
+
+\subsection{Sviluppo e distribuzione}
+Le parti che contengono logica, cioè la costruzione della rete e dell'orario, le regole di circolazione, il calcolo degli indicatori, dei consumi e dei costi, sono state sviluppate scrivendo prima i test, eseguiti a ogni modifica. Le regole di circolazione sono state inoltre verificate eseguendo la simulazione dell'intera giornata, come descritto nella \cref{sec:orari}.
+
+L'applicazione è distribuita come pacchetto installabile per Linux, Windows e macOS, che comprende l'ambiente di esecuzione Java: non richiede quindi che Java sia installato. I pacchetti sono costruiti da una procedura automatica a ogni versione, che per il pacchetto Linux verifica anche la presenza dell'eseguibile con cui il client avvia il motore.

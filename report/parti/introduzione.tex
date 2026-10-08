@@ -1,0 +1,54 @@
+\subsection{Contesto}
+Il contesto in cui si inserisce il progetto \textit{Milan RailSim} è quello della simulazione della rete ferroviaria lombarda, in particolare la rete suburbana e il passante milanese. \\
+L'obiettivo del progetto è la simulazione del traffico ferroviario, del comportamento dei treni e della gestione delle stazioni, al fine di analizzare l'efficienza del sistema e identificare eventuali criticità.\\
+L'obiettivo principale è quello di analizare le reti suburbane e cercare di analizzare se sia possibile avere un comportamente più simile ad una metropolitana piuttosto che ad un sistema ferroviario, dunque simulare se fosse possibile aumentare il numero di corse e ridurre l'attesa, senza modificare l'infrastruttura già esistente.\\
+Dato che sulla stessa infrastruttura circolano, insieme ai suburbani, anche i treni regionali e treni di altre società, non è possibile simulare solamente il comportamento dei suburbani, in quanto non sarebbe corretto: è stata quindi simulata l'intera rete regionale di Trenord. I treni delle altre società, come quelli a lunga percorrenza e ad alta velocità, usano in parte gli stessi binari ma non sono rappresentati nel modello.\\
+Il punto più delicato della rete è il Passante ferroviario, una galleria a due binari che attraversa la città e nella quale confluiscono sei linee suburbane. Nell'orario in vigore vi transitano 12 treni all'ora per verso, con intervalli irregolari che vanno da 2 a oltre 9 minuti.\\
+Un altro problema che è stato necessario modellare è la presenza di binari unici, dunque tratti di binario utilizzate in entrambi i versi, dunque per mantenere realistico il modello è stato necessario modellare anche questo comportamento.\\
+
+\subsection{Motivazione}
+\'E stato scelto di simulare questo caso d'uso, sia per un interesse personale, in quanto da pendolare vivo tutti i giorni le problematiche dei treni in Lombardia, sia per un interesse accademico, in quanto la rete ferroviaria lombarda è un esempio di sistema complesso, in cui il comportamento dell'intero sistema non si ricava dalle regole dei singoli treni, ma dal comportamento collettivo dei treni e dalle interazioni tra di essi.\\
+
+\subsection{Domanda di ricerca e obiettivi}
+La domanda da cui parte il lavoro è la seguente: di quanto si può aumentare la frequenza dei treni prima che i ritardi si propaghino a tutta la rete, e quali punti dell'infrastruttura fissano questo limite?
+
+L'obiettivo non è trovare l'orario migliore.
+L'obiettivo è comprendere come il sistema reale si comporta e come potrebbe comportarsi in scenari alternativi.
+Gli obiettivi da raggiungere sono quattro:
+\begin{itemize}
+	\item costruire un modello di base utilizzando la rete reale e gli orari ufficiali del servizio, cercando di modellare un sistema realistico
+	\item implementazione di uno scenario in cui la rete suburbana ha un aumento delle corse mentre il resto della rete rimane invariato;
+	\item implementazione di uno scenario più irrealistico dei primi due, in cui tutta la rete subisce un aumento delle corse e di riduzione dei tempi di attesa, con l'obiettivo di ricercare i colli di bottiglia e dove la rete si satura più velocemente;
+	\item per ogni scenario, stimare i costi i costi di servizio, come il costo per la trazione, del personale, ecc...
+\end{itemize}
+
+\subsection{Che cosa è stato realizzato}
+
+La simulazione si basa su \textit{railsim}~\cite{kaddoura2024railsim}, un'estensione ferroviaria della piattaforma di simulazione ad agenti MATSim. I dettagli di ogni parte verranno specificati nelle sezioni dedicate.\\
+
+Da railsim sono stati usati:
+\begin{itemize}
+	\item il motore di simulazione, che fa avanzare i treni sulla rete secondo per secondo;
+	\item il moto dei treni, con accelerazione, frenata e velocità massima proprie di ogni tipo di treno;
+	\item l'occupazione dei binari: un treno entra in una tratta solo se è libera, altrimenti attende;
+	\item la rappresentazione di una tratta a binario unico come risorsa condivisa dai due versi di marcia;
+	\item la possibilità di deviare un treno su un altro binario della stessa stazione;
+	\item i punti di estensione, attraverso i quali sono state inserite le regole aggiuntive.
+\end{itemize}
+
+Per il progetto sono stati sviluppati:
+\begin{itemize}
+	\item la costruzione della rete a partire dall'orario pubblico di Trenord e dai dati di OpenStreetMap;
+	\item le stazioni principali, con specifica di dettaglio a livello di binario, con gli ingressi, le uscite e i binari di ricovero;
+	\item il caricamento delle corse dall'orario pubblico e la loro assegnazione ai treni e ai binari, informazioni che l'orario non contiene;
+	\item le regole per gli incroci sul binario unico, che stabiliscono quando un treno può entrare in una tratta e dove attende il treno opposto;
+	\item la misura della puntualità, il calcolo del consumo di energia e il calcolo dei costi, che railsim non prevede;
+	\item i generatori degli scenari, che aggiungono corse all'orario reale;
+	\item un'applicazione grafica che mostra i treni sulla mappa durante la simulazione, archivia ogni simulazione e ne presenta i risultati in tabelle e grafici.
+\end{itemize}
+
+\subsection{Metodo di lavoro}
+La realizzazione del progetto è stata guidata dai dati ottenuti dalla simulazioni e dal confronto con i dati reali.\\
+Lo sviluppo è stato TDD (Test Driven Development), ovvero prima della scrittura del codice sono state scritte le suite di test e i test unitari che doveno passare una volta implementata la funzionalità.\\
+Al termine dello sviluppo veniva eseguito lo scenario di simulazione su una giornata completa, per verificare se il comportamento era corretto o si verificano situazioni anomale.\\
+Per lo sviluppo del codice e l'esecuzione dei test è stato è stato d'aiuto \textit{Claude Code}, l'assistente di programmazione di Anthropic, con i modelli Opus 5.5 e Fable 5.1.

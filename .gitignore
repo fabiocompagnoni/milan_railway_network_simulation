@@ -8,3 +8,11 @@ output/
 # Kept local for now (project rule): context document and design spec
 /progetto_sistemi_complessi_suburbane_milano.md
 /docs/superpowers/
+
+# Report: only the LaTeX sources, the bibliography and the PDFs are versioned
+/report/**
+!/report/**/
+!/report/**/*.tex
+!/report/**/*.bib
+!/report/**/*.png
+!/report/**/*.pdf

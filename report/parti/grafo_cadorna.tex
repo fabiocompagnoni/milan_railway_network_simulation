@@ -1,0 +1,154 @@
+% Grafo del nodo Milano Cadorna - Milano Domodossola - Milano Bovisa come e' descritto nel modello
+% (data/nodes/cadorna-bovisa.json): dieci binari di testa a Cadorna in cinque gruppi, due gole,
+% due fasci di due binari, quattro binari passanti a Domodossola, otto a Bovisa in quattro gruppi,
+% con gli ingressi dal Passante e da Porta Garibaldi e le uscite verso Saronno e verso Asso.
+% Incluso da modello.tex dentro un ambiente figure.
+\begin{tikzpicture}[x=0.8cm, y=0.8cm, >=Stealth,
+	nodo/.style={circle, draw, fill=white, inner sep=1.2pt},
+	snodo/.style={circle, draw, fill=black!70, inner sep=1.8pt},
+	link/.style={->, line width=0.5pt},
+	bidi/.style={<->, line width=0.5pt},
+	riserva/.style={->, line width=0.5pt, dashed, color=black!55},
+	stazione/.style={draw=black!45, line width=0.4pt, rounded corners=3pt},
+	esterno/.style={rectangle, draw=black!60, fill=white, rounded corners=2pt, inner sep=2.5pt, font=\scriptsize, align=center},
+	binario/.style={<->, line width=1.5pt},
+	passante/.style={->, line width=1.5pt},
+	etichetta/.style={font=\scriptsize, align=center},
+	nota/.style={font=\scriptsize, align=left, anchor=west},
+	mxp/.style={color=red!70!black},
+	saronno/.style={color=blue!65!black},
+	asso/.style={color=green!45!black},
+	misti/.style={color=orange!85!black},
+	essetre/.style={color=violet!80!black},
+	tunnel/.style={color=cyan!60!black}]
+
+	% gole: ogni area ombreggiata e' una sola risorsa
+	\fill[blue!60!black, opacity=0.10] (1.8,4.7) -- (1.8,-2.45) -- (4.2,3.0) -- cycle;
+	\fill[green!45!black, opacity=0.12] (1.8,0.95) -- (1.8,-2.45) -- (4.2,-0.75) -- cycle;
+	\fill[black, opacity=0.07] (9.9,-3.05) rectangle (11.2,5.4);
+	\fill[black, opacity=0.07] (13.4,-3.05) rectangle (14.6,5.4);
+
+	% riquadri delle tre stazioni
+	\draw[stazione] (-0.75,-2.65) rectangle (2.1,4.9);
+	\draw[stazione] (6.45,-1.75) rectangle (8.65,4.0);
+	\draw[stazione] (11.2,-3.05) rectangle (13.4,5.4);
+
+	% Cadorna: binario k a y = 4.5 - 0.75 (k - 1)
+	\foreach \k/\stile in {1/mxp, 2/saronno, 3/saronno, 4/saronno, 5/saronno,
+			6/asso, 7/asso, 8/misti, 9/misti, 10/essetre} {
+		\pgfmathsetmacro{\y}{4.5 - 0.75 * (\k - 1)}
+		\node[nodo] (t\k) at (0,\y) {};
+		\node[nodo] (p\k) at (1.8,\y) {};
+		\draw[binario, \stile] (t\k) -- (p\k);
+		\node[etichetta, anchor=east] at (-0.15,\y) {\k};
+	}
+
+	% gole di Cadorna
+	\node[snodo] (g1) at (4.2,3.0) {};
+	\node[snodo] (g2) at (4.2,-0.75) {};
+	\foreach \k in {1,...,5} { \draw[bidi] (p\k) -- (g1); }
+	\foreach \k in {6,7} { \draw[bidi] (p\k) -- (g2); }
+	\foreach \k in {8,9,10} { \draw[bidi] (p\k) -- (g1); \draw[bidi] (p\k) -- (g2); }
+
+	% Domodossola: quattro binari passanti, uno per verso
+	\foreach \k/\y/\stile in {1/3.4/saronno, 2/2.6/saronno, 3/-0.35/asso, 4/-1.15/asso} {
+		\node[nodo] (d\k a) at (6.8,\y) {};
+		\node[nodo] (d\k b) at (8.3,\y) {};
+	}
+	\draw[passante, saronno] (d1a) -- (d1b);
+	\draw[passante, saronno] (d2b) -- (d2a);
+	\draw[passante, asso] (d3a) -- (d3b);
+	\draw[passante, asso] (d4b) -- (d4a);
+	\node[etichetta] at (7.55,3.67) {1};
+	\node[etichetta] at (7.55,2.33) {2};
+	\node[etichetta] at (7.55,-0.08) {3};
+	\node[etichetta] at (7.55,-1.42) {4};
+
+	% fasci fra Cadorna e Domodossola
+	\draw[link] (g1) -- (d1a);
+	\draw[link] (d2a) -- (g1);
+	\draw[link] (g2) -- (d3a);
+	\draw[link] (d4a) -- (g2);
+
+	% Bovisa: otto binari passanti, dispari verso nord e pari verso Milano
+	\foreach \k/\y/\stile in {1/4.9/tunnel, 2/4.2/tunnel, 3/3.4/saronno, 4/2.6/saronno,
+			5/-0.35/asso, 6/-1.15/asso, 7/-2.0/tunnel, 8/-2.7/tunnel} {
+		\node[nodo] (b\k a) at (11.4,\y) {};
+		\node[nodo] (b\k b) at (13.2,\y) {};
+	}
+	\foreach \k/\stile in {1/tunnel, 3/saronno, 5/asso, 7/tunnel} {
+		\draw[passante, \stile] (b\k a) -- (b\k b);
+	}
+	\foreach \k/\stile in {2/tunnel, 4/saronno, 6/asso, 8/tunnel} {
+		\draw[passante, \stile] (b\k b) -- (b\k a);
+	}
+	\foreach \k/\y in {1/5.15, 3/3.65, 5/-0.1, 7/-1.75} {
+		\node[etichetta] at (12.3,\y) {\k};
+	}
+	\foreach \k/\y in {2/3.95, 4/2.35, 6/-1.4, 8/-2.95} {
+		\node[etichetta] at (12.3,\y) {\k};
+	}
+
+	% fasci fra Domodossola e Bovisa
+	\draw[link] (d1b) -- (b3a);
+	\draw[link] (b4a) -- (d2b);
+	\draw[link] (d3b) -- (b5a);
+	\draw[link] (b6a) -- (d4b);
+	\draw[riserva] (d1b) -- (b5a);
+	\draw[riserva] (b6a) -- (d2b);
+
+	% ingressi da sud: Passante e Porta Garibaldi
+	\node[esterno] (s1) at (7.55,5.95) {Lancetti (Passante)\\e Porta Garibaldi};
+	\node[esterno] (s2) at (7.55,-3.3) {Lancetti (Passante)};
+	\draw[link] (s1) -- (b1a);
+	\draw[link] (b2a) -- (s1);
+	\draw[link] (s2) -- (b7a);
+	\draw[link] (b8a) -- (s2);
+
+	% uscite a nord: ramo di Saronno e ramo di Asso
+	\node[snodo] (ns) at (14.6,3.75) {};
+	\node[snodo] (na) at (14.6,-1.55) {};
+	\foreach \k in {1,3} { \draw[link] (b\k b) -- (ns); }
+	\foreach \k in {2,4} { \draw[link] (ns) -- (b\k b); }
+	% i binari 5 e 6 sono del ramo di Asso: verso Saronno sono la riserva
+	\draw[riserva] (b5b) to[bend right=14] (ns);
+	\draw[riserva] (ns) to[bend left=30] (b6b);
+	\foreach \k in {5,7} { \draw[link] (b\k b) -- (na); }
+	\foreach \k in {6,8} { \draw[link] (na) -- (b\k b); }
+	\draw[bidi] (ns) -- (15.5,3.75);
+	\draw[bidi] (na) -- (15.5,-1.55);
+	\node[nota] at (15.55,3.75) {Quarto Oggiaro,\\Bollate, Saronno};
+	\node[nota] at (15.55,-1.55) {Affori\\(ramo di Asso)};
+
+	% titoli
+	\node[etichetta] at (0.7,5.45) {\textbf{Milano Cadorna}\\10 binari di testa};
+	\node[etichetta] at (7.55,4.5) {\textbf{Milano Domodossola}\\4 binari passanti};
+	\node[etichetta] at (12.3,5.95) {\textbf{Milano Bovisa}\\8 binari passanti};
+	\node[etichetta] at (10.55,-3.35) {gola sud};
+	\node[etichetta] at (14.0,-3.35) {gola nord};
+	\node[etichetta] at (3.4,4.3) {gola f1\\650 m, 30 km/h};
+	\node[etichetta] at (3.9,-2.35) {gola f2\\650 m, 30 km/h};
+	\node[etichetta] at (5.6,2.0) {fascio f1\\1,6 km};
+	\node[etichetta] at (5.9,-1.75) {fascio f2\\1,6 km};
+	\node[etichetta] at (9.1,3.65) {2,4 km};
+
+	% legenda
+	\begin{scope}[yshift=-3.75cm]
+		\draw[binario, mxp] (0,0) -- (0.9,0);
+		\node[nota] at (1.0,0) {Cadorna 1: Malpensa Express};
+		\draw[binario, saronno] (6.6,0) -- (7.5,0);
+		\node[nota] at (7.6,0) {ramo di Saronno};
+		\draw[binario, asso] (12.0,0) -- (12.9,0);
+		\node[nota] at (13.0,0) {ramo di Asso};
+		\draw[binario, misti] (0,-0.6) -- (0.9,-0.6);
+		\node[nota] at (1.0,-0.6) {Cadorna 8--9: variabili};
+		\draw[binario, essetre] (6.6,-0.6) -- (7.5,-0.6);
+		\node[nota] at (7.6,-0.6) {Cadorna 10: S3};
+		\draw[binario, tunnel] (12.0,-0.6) -- (12.9,-0.6);
+		\node[nota] at (13.0,-0.6) {Passante};
+		\fill[black, opacity=0.12] (0,-1.4) rectangle (0.9,-1.0);
+		\node[nota] at (1.0,-1.2) {gola: una sola risorsa};
+		\draw[riserva] (6.6,-1.2) -- (7.5,-1.2);
+		\node[nota] at (7.6,-1.2) {collegamento di riserva};
+	\end{scope}
+\end{tikzpicture}

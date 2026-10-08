@@ -1,0 +1,101 @@
+La stima dei costi è un requisito del progetto: uno scenario che aggiunge corse va valutato anche per ciò che costa in più. railsim non calcola né consumi né costi, e questa sezione descrive i due modelli che il progetto aggiunge, entrambi applicati al moto dei treni che railsim simula. Il primo ricava l'energia elettrica e il gasolio consumati; il secondo ne deriva, insieme alle altre voci, il costo di una giornata di servizio.
+\subsection{Modello energetico}
+Ogni cinque secondi di tempo simulato si leggono la velocità e l'accelerazione di ogni treno in corsa e se ne ricava la potenza; l'energia è la potenza per il tempo. Un treno è contato dalla partenza all'arrivo di ogni corsa, e fra due corse è considerato spento.
+
+La forza alle ruote ha due termini, quello che accelera il treno e quello che vince la resistenza al moto:
+\begin{equation}
+	F = m \, \rho \, a + R(v), \qquad R(v) = \left(2{,}4 + 0{,}00077\, v^2\right) \frac{P}{1000}, \qquad W = F \, v
+\end{equation}
+dove $m$ è la massa del treno con i viaggiatori, $a$ l'accelerazione, $\rho$ il coefficiente che tiene conto delle masse rotanti, $P$ il peso in newton e $v$ la velocità, in chilometri all'ora nella formula della resistenza. La resistenza specifica è la formula binomia usata in letteratura per i treni regionali~\cite{dallachiara2015consumo}. Pendenze e curve non sono considerate.
+
+Dalla potenza alle ruote $W$ si passa a quella scambiata dal treno. Un treno elettrico in trazione assorbe $W$ diviso per il rendimento di trazione, più i servizi ausiliari; in frenata restituisce $|W|$ moltiplicata per il rendimento di recupero. Un treno diesel brucia gasolio per la trazione e per gli ausiliari, e in frenata non recupera nulla. I parametri sono riportati nella \cref{tab:energia-parametri}.
+
+\begin{table}[H]
+	\centering
+	\caption{Parametri del modello energetico.}
+	\label{tab:energia-parametri}
+	\begin{tabularx}{\textwidth}{Xll}
+		\toprule
+		Parametro & Valore & Origine \\
+		\midrule
+		Coefficiente delle masse rotanti & 1,06 & \cite{dallachiara2015consumo} \\
+		Rendimento di trazione elettrica & 0,80 & \cite{andersson2006energy} \\
+		Rendimento del recupero in frenata & 0,80 & \cite{andersson2006energy} \\
+		Raggio entro cui l'energia di frenata è riusata & 10 km & distanza fra sottostazioni~\cite{minoia_trazione} \\
+		Rendimento della trasmissione diesel-elettrica & 0,76 & scheda del costruttore~\cite{stadler_gtw} \\
+		Peso di un viaggiatore & 75 kg & norme del gestore della rete~\cite{rfi2005taf} \\
+		Servizi ausiliari & 30 kW per cassa & ipotesi \\
+		Rendimento del motore diesel & 0,40 & ipotesi \\
+		Energia di un litro di gasolio & 10 kWh & ipotesi \\
+		Coefficiente di taratura del gasolio & 0,41 & taratura \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+La simulazione non ha viaggiatori, e la massa di un treno è la massa a vuoto più una quota dei posti a sedere occupati, che dipende dal giorno e dall'ora di partenza della corsa: tutti i posti nelle ore di punta dei giorni feriali, la metà nelle altre ore e il sabato, il 40\% la domenica, il 20\% prima delle 6 e dopo le 21. È un'ipotesi di progetto.
+
+\subsubsection{Recupero in frenata}
+In frenata i motori di un treno elettrico funzionano da generatori. Sulle linee a 3 kV in corrente continua le sottostazioni non riprendono energia~\cite{andersson2006energy,rfi_energia}: la corrente restituita resta sulla linea di contatto, ed è utile solo se nello stesso tratto un altro treno sta assorbendo potenza in quel momento; altrimenti viene dissipata a bordo. Il modello riproduce questo meccanismo. A ogni istante l'energia rigenerata da un treno alimenta prima i suoi servizi ausiliari, poi i treni elettrici in trazione entro 10 chilometri, a partire dal più vicino, e la parte che nessuno assorbe è dissipata. La quota recuperata dipende quindi dalla densità del traffico, ed è un effetto dell'interazione fra i treni: alta dove i treni sono vicini, quasi nulla sulle linee isolate. La distanza è misurata in linea d'aria, perché la simulazione conosce la posizione dei treni e non lo schema elettrico della rete.
+
+\subsubsection{Taratura del consumo di gasolio}
+Senza correzioni il modello attribuiva all'ATR 125 un consumo di 2,18 litri per chilometro, contro un consumo medio di esercizio di 0,9. La differenza non dipende dagli ausiliari, perché azzerandoli il consumo resta di 1,73 litri per chilometro. Dipende dal profilo di velocità usato nella simulazione, che porta ogni treno alla velocità massima della tratta con l'accelerazione massima e lo frena con la decelerazione massima a ogni fermata, senza marcia per inerzia: uno stile di guida che non corrisponde a quello di un macchinista, che dosa l'energia. Un treno elettrico recupera in frenata una parte di ciò che ha speso per accelerare; un treno diesel lo perde per intero. Il consumo di gasolio è stato quindi moltiplicato per un coefficiente di taratura, pari a $0{,}9 / 2{,}18 = 0{,}41$ e applicato a tutti i treni diesel. Il modello continua a distinguere una corsa regolare da una con più fermate e ripartenze; il coefficiente ne fissa la scala sul dato reale.
+
+La verifica del modello energetico sul giorno feriale reale e il confronto con i dati dell'operatore sono nella \cref{sec:validazione}.
+
+\subsection{Struttura dei costi}
+Il costo di una giornata è la somma di sei voci, ciascuna con un costo unitario, riportate nella \cref{tab:costi-voci}. I costi unitari sono stime di ordine di grandezza, e ognuno ha un grado di confidenza dichiarato. Il confronto con i costi dichiarati dall'operatore è nella \cref{sec:validazione}; un'analisi indipendente dei suoi conti è in~\cite{traspol2021trenord}. Per tre valori, il prezzo dell'energia di trazione, quello del gasolio e il consumo dell'ATR 125, la fonte non è stata verificata. Alla velocità commerciale e alla percorrenza giornaliera tipiche di un treno regionale le sei voci sommano a circa 11 euro per treno-chilometro di costi diretti. Restano fuori il personale non viaggiante, le pulizie, le assicurazioni e i costi generali.
+
+\begin{table}[H]
+	\centering
+	\caption{Voci di costo e modo in cui sono calcolate.}
+	\label{tab:costi-voci}
+	\begin{tabularx}{\textwidth}{lXX}
+		\toprule
+		Voce & Costo da orario & Costo simulato \\
+		\midrule
+		Personale di bordo & ore dell'orario per \SI{140}{\euro} a treno-ora & ore effettive, ritardi compresi \\
+		Elettricità & chilometri elettrici per \SI{1,7}{\euro} & kWh presi dalla rete per \SI{0,10}{\euro} \\
+		Gasolio & chilometri diesel per \SI{3,0}{\euro} & litri consumati per \SI{0,95}{\euro} \\
+		Manutenzione & chilometri per \SI{2,5}{\euro} & come da orario \\
+		Accesso alla rete & chilometri per \SI{2,5}{\euro} & come da orario \\
+		Materiale rotabile & flotta minima teorica per \SI{650}{\euro} a treno-giorno & treni usati per \SI{650}{\euro} a treno-giorno \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+I costi unitari non vengono da un tariffario pubblicato: sono stime, ricavate come indicato nella \cref{tab:costi-stime}. Dove esiste un dato pubblicato con cui confrontare la stima, è indicato nella tabella.
+
+\begin{table}[H]
+	\centering
+	\caption{Costi unitari del modello: valore, modo in cui è stato stimato e grado di confidenza.}
+	\label{tab:costi-stime}
+	\small
+	\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}Xl}
+		\toprule
+		Voce & Valore & Come è stimato & Confidenza \\
+		\midrule
+		Personale di bordo & \SI{140}{\euro} a treno-ora & due agenti per treno, macchinista e capotreno, con un costo aziendale stimato in circa \SI{65000}{\euro} l'anno ciascuno e circa 930 ore l'anno a bordo di un treno in servizio. L'operatore dichiara una remunerazione del personale di 330,1 milioni di euro per circa 4950 dipendenti~\cite{trenord2026bilancio}, cioè circa \SI{66000}{\euro} a dipendente; la retribuzione varia con il ruolo e l'anzianità, e il valore è una media & media \\
+		Elettricità & \SI{1,7}{\euro} a km; \SI{0,10}{\euro} a kWh & prezzo medio dell'energia di trazione; il valore a chilometro corrisponde a circa 17 kWh per treno-km & media \\
+		Gasolio & \SI{3,0}{\euro} a km; \SI{0,95}{\euro} al litro & prezzo del gasolio agevolato per la trazione ferroviaria; il valore a chilometro corrisponde a circa 3 litri per treno-km & bassa \\
+		Manutenzione & \SI{2,5}{\euro} a km & quota di manutenzione del costo del materiale rotabile, indicato in 4--5 euro a chilometro fra acquisto e manutenzione & bassa \\
+		Materiale rotabile & \SI{650}{\euro} a treno-giorno & costo di un convoglio di circa 7 milioni di euro, ammortizzato in 30 anni: \SI{233000}{\euro} l'anno, diviso per 365 giorni. Il prezzo di fornitura dei Caravaggio è di 7,9 milioni per la versione a 4 casse e di 9,3 milioni per quella a 5~\cite{fnm2018accordo}, pari a 723 e \SI{851}{\euro} al giorno: il valore del modello è inferiore & media \\
+		Accesso alla rete & \SI{2,5}{\euro} a km & ordine di grandezza del pedaggio per i servizi regionali & media \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Ogni simulazione calcola il costo due volte. Il costo da orario dipende solo dalle corse previste, ed è lo stesso qualunque cosa accada durante la simulazione. Il costo simulato usa ciò che è accaduto: le ore di servizio comprendono i ritardi, l'energia è quella presa dalla rete al netto del recupero, il gasolio è quello consumato, i treni sono quelli messi in servizio. La differenza fra i due misura il costo della circolazione perturbata.
+
+Due regole evitano risultati fuorvianti. Una corsa interrotta o mai partita è contata al valore dell'orario, con il consumo medio delle corse della stessa trazione che sono arrivate: in caso contrario uno scenario in cui la rete si blocca risulterebbe più economico di uno che funziona. E l'energia rigenerata in frenata non è accreditata: conta solo come minore prelievo dalla rete.
+
+I valori assoluti vanno letti con cautela, perché i costi unitari sono stime. Il dato più solido è la differenza fra uno scenario e il giorno reale, calcolata con le stesse regole e gli stessi costi unitari.
+
+\subsection{Treni utilizzati}
+Il costo del materiale rotabile dipende dal numero dei treni in servizio. Ogni simulazione ne calcola due misure, entrambe divise per tipo di treno:
+\begin{itemize}
+	\item i treni utilizzati, cioè quelli a cui l'orario assegna almeno una corsa nella giornata;
+	\item il numero massimo di treni in corsa nello stesso istante, per ogni ora del giorno.
+\end{itemize}
+I treni che uno scenario richiede in più sono la differenza, tipo per tipo, fra i treni utilizzati nello scenario e quelli utilizzati nell'orario reale dello stesso giorno.
+
+Il conteggio ha tre limiti: i treni sono quelli assegnati dal modello e non i turni dell'operatore; il tipo di ogni treno deriva dalla ripartizione per linea, che è una stima; le riserve e i treni in manutenzione non sono contati. Per questo il valore più affidabile è la differenza fra scenario e orario reale, e non il numero assoluto.

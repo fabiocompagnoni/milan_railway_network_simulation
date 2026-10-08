@@ -1,0 +1,69 @@
+railsim simula la rete che riceve, ma non la costruisce. Questa sezione descrive i dati da cui è stata ricavata la rete del modello e i passaggi con cui è stata costruita.
+
+\subsection{Fonti dei dati}
+\label{sec:fonti-dati}
+La \cref{tab:dati-provenienza} riporta la provenienza dei dati. Dove una fonte manca il valore è una stima. Quando le fonti non concordano prevale il rilievo diretto.
+
+\begin{table}[H]
+	\centering
+	\caption{Provenienza dei dati della rete.}
+	\label{tab:dati-provenienza}
+	\small
+	\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.2\textwidth}}
+		\toprule
+		Dati & Fonte & Come sono ottenuti \\
+		\midrule
+		Fermate, linee, corse, orari & orario GTFS di Trenord, dal portale dei dati aperti della Regione Lombardia~\cite{trenord_gtfs} & lettura del file \\
+		Geometria dei tracciati, lunghezze, velocità di linea, numero dei binari, tratte a binario unico & OpenStreetMap~\cite{openstreetmap} & estrazione e misura automatiche \\
+		Verifica dei tracciati, posti di movimento, bivi & OpenRailwayMap~\cite{openrailwaymap} & consultazione \\
+		Binari delle stazioni e loro uso da parte delle linee & applicazione dell'operatore, osservazione diretta nelle stazioni; per le stazioni minori, voci di Wikipedia & rilievo \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+L'orario usato è stato scaricato il 25 luglio 2026 ed è valido dall'11 giugno al 12 dicembre 2026. Durante lo sviluppo, è stata introdotta una nuova linea e quindi è stato necessario integrare gli orari già utilizzati con quelli della nuova linea R15, attivata il 7 settembre.\\
+L'orario utilizzato contiene solo il servizio di Trenord. Le estrazioni da OpenStreetMap sono cinque, fatte fra il 5 agosto e il 30 settembre 2026, e sono conservate nel progetto con i programmi che le hanno elaborate.
+
+\subsection{Dall'orario alla rete misurata}
+La struttura della rete è ricavata dall'orario: ogni fermata è un nodo, e ogni coppia di fermate consecutive in almeno una corsa è una coppia di link, uno per verso. Lo scheletro che ne risulta ha 453 nodi e 1179 link. Una corsa che non ferma in una stazione intermedia vi produce un link diretto, distinto da quelli che passano per la stazione saltata: è un difetto ripreso fra i limiti.
+
+Ogni link è poi misurato su OpenStreetMap. Lo strumento sviluppato per il progetto proietta le due stazioni sui binari entro 90 metri, cerca il percorso più breve lungo il tracciato e ne legge lunghezza, velocità massima e numero dei binari. Sono stati misurati così 1157 link su 1179; gli altri sono stati completati con una seconda estrazione. La velocità di linea è disponibile per 526 link; per gli altri resta un valore provvisorio ricavato dai tempi dell'orario.
+
+\subsection{Tratte a binario unico}
+\label{sec:dati-binario-unico}
+Secondo l'operatore circa metà delle linee della regione è a binario unico~\cite{trenord2026bilancio}. La capacità di queste linee dipende da dove si trovano i punti di incrocio e da quanto sono lunghe le tratte che li separano: sono i dati su cui si basano le regole descritte nella \cref{sec:dettagli-rete}.
+
+La misura automatica assegna a una tratta il numero di binari più frequente lungo il percorso, e sbaglia sulle tratte in parte singole e in parte doppie. Sono state perciò verificate una per una 40 tratte, con l'aiuto dei 76 posti di movimento e bivi estratti da OpenStreetMap: 6 sono state corrette in binario unico, 7 in doppio binario e 5 sono state divise nel punto in cui il numero dei binari cambia. Sono state inoltre censite le 236 stazioni delle linee a binario unico, stabilendo per ciascuna quanti binari ha e se vi è possibile l'incrocio.
+
+\subsection{Rete mesoscopica}
+Applicando misure e correzioni allo scheletro si ottiene la rete mesoscopica, di 459 nodi e 1195 link. Una tratta a binario unico è una coppia di link di verso opposto con capienza 1 e la stessa risorsa. Su una tratta a doppio binario la capienza di ogni binario è di un treno ogni 2700 metri, con un minimo di uno: corrisponde a sezioni di blocco di 1350 metri, contando per ogni treno la sezione occupata e quella che lo separa dal treno davanti. È un'ipotesi del modello: con un solo treno per senso, sulle tratte di 30--50 chilometri un treno teneva in coda l'intera linea.
+
+\subsection{Stazioni descritte binario per binario}
+Le stazioni descritte in dettaglio, scelte con i criteri della \cref{sec:dettagli-rete}, sono raccolte in 53 file. Ogni file elenca le stazioni, i binari riuniti in gruppi, le linee a cui ogni gruppo è collegato su ciascun lato, i binari di ricovero e, per ogni linea, i binari ammessi in ordine di preferenza. Il \cref{lst:nodo-lecco} mostra una parte del file di Lecco.
+
+\begin{lstlisting}[language=json,caption={Parte della descrizione della stazione di Lecco.},label={lst:nodo-lecco}]
+"stations": [{
+  "id": "S01520", "name": "Lecco", "kind": "mixed",
+  "groups": [
+    {"id": "lecco", "kind": "through",
+     "tracks": [{"ref": "1"}, {"ref": "2"}, {"ref": "3"},
+                {"ref": "4"}, {"ref": "5"}],
+     "connections": {
+       "south": ["meso:S01322", "meso:S01522", "meso:S01523",
+                 "meso:S01524", "meso:S01463", "meso:S01460"],
+       "north": ["meso:S01415", "meso:S01416"]}},
+    {"id": "lecco_tronco", "kind": "terminal",
+     "tracks": [{"ref": "tronco"}],
+     "connections": {"south": ["meso:S01463", "meso:S01460"]}}
+  ],
+  "sidings": {"tracks": 19}
+}],
+"lines": {
+  "S8":  {"stations": {"S01520": ["lecco/3", "lecco"]}},
+  "RE8": {"stations": {"S01520": {
+            "from_south": ["lecco/1", "lecco"],
+            "from_north": ["lecco/4", "lecco"]}}}
+}
+\end{lstlisting}
+
+Un programma del progetto innesta ogni file nella rete mesoscopica: sostituisce il nodo della stazione con un link per ogni binario, con i link di ingresso e di uscita su ciascun lato e con le risorse condivise dei deviatoi. Il risultato è la rete eseguita dal motore, di 6008 nodi e 11\,452 link. Dove la misura manca, le banchine e i tratti di ingresso e di uscita valgono 200 metri, più del treno più lungo del modello.
