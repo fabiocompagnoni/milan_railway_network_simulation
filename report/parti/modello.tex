@@ -46,7 +46,7 @@ I criteri con cui una stazione è descritta in dettaglio sono nella \cref{sec:de
 L'ambiente non è uno sfondo passivo: concede le risorse ai treni e ne regola i conflitti, come descritto nella \cref{sec:modello-interazione}. Secondo la classificazione degli ambienti di Russell e Norvig~\cite{russell_norvig}, quello del modello è inaccessibile, perché un treno conosce lo stato delle sole risorse sul proprio percorso e non quello della rete; deterministico, perché nessuna grandezza è estratta a caso e lo stesso scenario produce sempre lo stesso esito; non episodico, perché una risorsa occupata ora condiziona ciò che accade dopo; dinamico, perché lo stato delle risorse cambia per effetto degli altri treni; discreto negli stati delle risorse, che sono libere, in uso o esaurite, e continuo nella posizione dei treni. Il determinismo è una proprietà del simulatore e non del sistema reale, ed è discusso fra i limiti.
 
 \subsection{Agenti}
-Gli agenti nel modello sono rappresentati dai treni. In una giornata feriale il modello ne contiene 343, che effettuano 2349 corse su 57 linee. Ogni treno è descritto da tre gruppi di grandezze, riportati nella \cref{tab:modello-agente}.
+Gli agenti nel modello sono rappresentati dai treni. In una giornata feriale il modello ne contiene 370, che effettuano 2501 corse su 61 linee. Ogni treno è descritto da tre gruppi di grandezze, riportati nella \cref{tab:modello-agente}.
 
 \begin{table}[H]
 	\centering
@@ -63,7 +63,7 @@ Gli agenti nel modello sono rappresentati dai treni. In una giornata feriale il 
 	\end{tabularx}
 \end{table}
 
-Gli agenti sono eterogenei: i tipi di treno sono dieci, descritti nella \cref{sec:materiale-rotabile}, con prestazioni e lunghezze diverse, e ogni treno ha un piano proprio. Il piano però non è scelto dall'agente. A differenza delle persone simulate da MATSim, un treno non valuta e non modifica il proprio piano, e la simulazione consiste di una sola esecuzione, senza il ciclo di ripianificazione. L'unica scelta che avviene durante la corsa è la deviazione su un altro binario della stessa stazione, quando quello previsto è occupato.
+Gli agenti sono eterogenei: i tipi di treno sono dodici, descritti nella \cref{sec:materiale-rotabile}, con prestazioni e lunghezze diverse, e ogni treno ha un piano proprio. Il piano però non è scelto dall'agente. A differenza delle persone simulate da MATSim, un treno non valuta e non modifica il proprio piano, e la simulazione consiste di una sola esecuzione, senza il ciclo di ripianificazione. L'unica scelta che avviene durante la corsa è la deviazione su un altro binario della stessa stazione, quando quello previsto è occupato.
 
 Rispetto alle proprietà con cui si definisce di norma un agente, il treno è situato, perché ha una posizione nell'ambiente e ciò che può fare dipende dallo stato delle risorse che ha davanti, ed è reattivo, perché accelera, rallenta, si ferma e riparte in risposta a quello stato. È autonomo solo in parte: regola da sé il proprio moto, ma non decide percorso, fermate e orari. Non è proattivo, perché non ha scopi oltre l'esecuzione dell'orario, e non è sociale in senso stretto, perché non comunica con gli altri treni. Si tratta dunque di un agente reattivo e non deliberativo, il cui comportamento complessivo è ottenuto attraverso l'ambiente più che attraverso il ragionamento. \\
 Nelle classificazioni basate sull'architettura interna, il treno è un agente isteretico nei termini di Genesereth~\cite{genesereth1987logical}, che corrisponde all'agente a riflesso con stato interno di Russell e Norvig~\cite{russell_norvig}: possiede uno stato interno, cioè posizione, velocità e tratto autorizzato, lo aggiorna a ogni percezione dell'ambiente e sceglie l'azione in base a entrambi. Non è un agente tropistico, perché la sua azione non dipende dalla sola percezione del momento, e non è un agente a livello di conoscenza, perché non ragiona su una rappresentazione del mondo e non costruisce piani. \\
@@ -71,7 +71,7 @@ Va precisato che in MATSim l'agente è formalmente il conducente del veicolo; id
 
 \subsection{Materiale rotabile}
 \label{sec:materiale-rotabile}
-Ogni agente appartiene a un tipo di treno, e il tipo ne fissa le caratteristiche. Il parco rappresentato è quello dell'operatore, ridotto a dieci tipi. Le caratteristiche di un tipo entrano nel modello in tre punti distinti, ed è per questo che sono raccolte qui: il moto simulato dipende da lunghezza, velocità massima, accelerazione e decelerazione; il calcolo dei consumi, descritto nella sezione sui costi, dipende da massa, numero di casse, posti e tipo di trazione; il calcolo dei costi dipende dalla trazione e dal numero dei treni in servizio.
+Ogni agente appartiene a un tipo di treno, e il tipo ne fissa le caratteristiche. Il parco rappresentato è quello dell'operatore, ridotto a dodici tipi. Le caratteristiche di un tipo entrano nel modello in tre punti distinti, ed è per questo che sono raccolte qui: il moto simulato dipende da lunghezza, velocità massima, accelerazione e decelerazione; il calcolo dei consumi, descritto nella sezione sui costi, dipende da massa, numero di casse, posti e tipo di trazione; il calcolo dei costi dipende dalla trazione e dal numero dei treni in servizio.
 
 \subsubsection{Parametri del moto}
 La \cref{tab:rotabile-moto} riporta i parametri che il motore di simulazione usa per muovere i treni. La lunghezza determina quanti link un treno occupa e quando la sua coda libera una risorsa. La velocità massima limita la velocità insieme a quella del link. L'accelerazione e la decelerazione determinano i tempi di percorrenza fra due fermate e, attraverso lo spazio di frenata, la lunghezza del tratto che il treno prenota davanti a sé. I posti non incidono sul moto, perché il modello non ha passeggeri, ma servono al calcolo della massa.
@@ -94,6 +94,8 @@ La \cref{tab:rotabile-moto} riporta i parametri che il motore di simulazione usa
 		ETR 245 Coradia Meridian & 5 casse, un piano & 82,2 & 230 & 160 & 1,00* & 0,50* \\
 		ETR 425 Coradia Meridian & 5 casse, un piano & 82,2 & 290 & 160 & 1,00* & 0,50* \\
 		FLIRT TSI (TILO) ETR 524 & 6 casse, un piano & 105,0 & 244 & 160 & 1,00* & 0,50* \\
+		FLIRT a 6 casse (TILO) & 6 casse, un piano & 106,3 & 250 & 160 & 1,00* & 0,50* \\
+		FLIRT a 4 casse (TILO) & 4 casse, un piano & 74,1 & 163 & 160 & 1,00* & 0,50* \\
 		ATR 125 Stadler GTW & 4 casse, 2 moduli motore & 77,3 & 231 & 140 & 0,60* & 0,50* \\
 		Colleoni ATR 803 & 3 casse, 1 modulo motore & 66,8 & 168 & 140 & 0,72* & 0,50* \\
 		\bottomrule
@@ -123,13 +125,15 @@ La \cref{tab:rotabile-energia} riporta i parametri usati dal modello energetico.
 		ETR 245 Coradia Meridian & elettrica, 3 kV c.c. & 160* & 177 & 150 & -- \\
 		ETR 425 Coradia Meridian & elettrica, 3 kV c.c. & 160 & 182 & 150 & 2052 \\
 		FLIRT TSI (TILO) ETR 524 & elettrica, 3 kV c.c. e 15 kV c.a. & 177,5 & 196 & 180 & 2600 \\
+		FLIRT a 6 casse (TILO) & elettrica, 3 kV c.c. e 15 kV c.a. & 174* & 193 & 180 & 2000 \\
+		FLIRT a 4 casse (TILO) & elettrica, 3 kV c.c. e 15 kV c.a. & 131* & 143 & 120 & 2000 \\
 		ATR 125 Stadler GTW & diesel-elettrica & 136 & 153 & 120 & 1160 \\
 		Colleoni ATR 803 & diesel-elettrica con batterie & 135 & 148 & 90 & 1200 \\
 		\bottomrule
 	\end{tabularx}
 \end{table}
 
-Il tipo di trazione divide i treni in due gruppi, trattati in modo diverso sia nei consumi sia nei costi. Gli otto tipi elettrici prendono energia dalla linea di contatto e in frenata ne restituiscono una parte, che altri treni possono riusare. I treni alimentati a gasolio non hanno un consumo energetico in kW ma solamente in litri di carburante utilizzato e data l'alimentazione non c'è alcun tipo di recupero di energia in frenata. Il Colleoni dispone di batterie, che il modello non rappresenta, per semplicità di modellazione.
+Il tipo di trazione divide i treni in due gruppi, trattati in modo diverso sia nei consumi sia nei costi. I dieci tipi elettrici prendono energia dalla linea di contatto e in frenata ne restituiscono una parte, che altri treni possono riusare. I treni alimentati a gasolio non hanno un consumo energetico in kW ma solamente in litri di carburante utilizzato e data l'alimentazione non c'è alcun tipo di recupero di energia in frenata. Il Colleoni dispone di batterie, che il modello non rappresenta, per semplicità di modellazione.
 
 Le masse a vuoto dei treni sono state stimate in base a varie voci presenti pubblicamente sui relativi treni.\\
 La massa a vuoto del Caravaggio non è pubblicata, ed è ricavata dal carico per asse di 18,5 tonnellate dichiarato per le motrici, esteso a tutti gli assi del convoglio per ottenere la massa a pieno carico, da cui è sottratto il peso dei viaggiatori seduti. È un limite superiore, perché le casse rimorchiate hanno verosimilmente un carico per asse inferiore.\\
@@ -137,7 +141,7 @@ I TSR e i TAF hanno la loro massa a vuoto pubblica e dunque i due valori non son
 Per l'ETR 245 non è stato trovato un dato proprio, ed è adottata la massa dell'ETR 425, convoglio della stessa famiglia con lo stesso numero di casse e la stessa lunghezza.
 
 \subsubsection{Recupero dell'energia in frenata}
-In frenata i motori di un treno a trazione elettrica possono funzionare da generatori e trasformare in energia elettrica una parte dell'energia di moto del treno. Nel modello tutti e otto i tipi elettrici recuperano, con lo stesso rendimento: della potenza frenante alle ruote, l'80\% torna disponibile come energia elettrica. Il modello non distingue quindi fra un treno recente e uno più anziano, come il TAF. Questa semplificazione è stata fatta perchè le percentuali di recupero non sono pubbliche. Combinato con il rendimento di trazione, anch'esso di 0,80, il valore corrisponde a un recupero del 64\% dell'energia spesa per accelerare, in linea con il 60--70\% indicato in letteratura per i treni moderni~\cite{andersson2006energy}. Il modo in cui l'energia recuperata è riusata dagli altri treni, e la quantità che ne risulta, sono descritti nella sezione sui costi.\\
+In frenata i motori di un treno a trazione elettrica possono funzionare da generatori e trasformare in energia elettrica una parte dell'energia di moto del treno. Nel modello tutti e dieci i tipi elettrici recuperano, con lo stesso rendimento: della potenza frenante alle ruote, l'80\% torna disponibile come energia elettrica. Il modello non distingue quindi fra un treno recente e uno più anziano, come il TAF. Questa semplificazione è stata fatta perchè le percentuali di recupero non sono pubbliche. Combinato con il rendimento di trazione, anch'esso di 0,80, il valore corrisponde a un recupero del 64\% dell'energia spesa per accelerare, in linea con il 60--70\% indicato in letteratura per i treni moderni~\cite{andersson2006energy}. Il modo in cui l'energia recuperata è riusata dagli altri treni, e la quantità che ne risulta, sono descritti nella sezione sui costi.\\
 
 I due tipi diesel non recuperano energia. La loro trasmissione è elettrica, e nella realtà una parte dell'energia di frenata può alimentare i servizi di bordo; il Colleoni dispone inoltre di batterie. Il modello non rappresenta né l'una né l'altra possibilità, e i treni diesel non partecipano allo scambio di energia sulla linea di contatto. È uno dei motivi per cui il loro consumo, senza correzione, risultava sovrastimato.
 
@@ -152,7 +156,7 @@ Il \textit{Donizetti}, ETR 204, è un elettrotreno a un piano a media capacità,
 
 I \textit{Coradia Meridian} sono elettrotreni articolati a un piano, presenti in due tipi distinti: l'ETR 245, allestimento nato per il collegamento con l'aeroporto di Malpensa e oggi impiegato sulle linee suburbane, e l'ETR 425, in servizio sulle regionali. La versione a sei casse, ETR 526, non ha un tipo proprio ed è rappresentata dall'ETR 425.
 
-Il \textit{FLIRT TSI}, ETR 524, è un elettrotreno a due tensioni di alimentazione, in servizio sulle relazioni fra la Lombardia e il Canton Ticino; nel modello circola sulla sola linea RE80.
+I \textit{FLIRT} di TILO, serie RABe 524, sono elettrotreni articolati a un piano e a due tensioni di alimentazione, in servizio sulle relazioni fra la Lombardia e il Canton Ticino. Nel modello sono tre tipi: il FLIRT TSI a sei casse, che circola sulla linea RE80, e i FLIRT a sei e a quattro casse, che circolano sulle linee S10, S30, S40 e S50. In esercizio circolano spesso in doppia composizione, in particolare sulla RE80 nelle ore di punta, dove due convogli a sei casse formano un treno di dodici, nel modello però per semplicità di modellazione non è stato considerata questa modalità, come per anche le altre tipologie di treno.
 
 L'\textit{ATR 125} è un'automotrice diesel-elettrica articolata, formata da due unità accoppiate, ciascuna con due casse e un modulo motore centrale. È in servizio sulle linee non elettrificate, ed è il tipo su cui è stato tarato il consumo di gasolio.
 
@@ -177,7 +181,7 @@ La \cref{tab:rotabile-flotta} riporta il numero di convogli di cui l'operatore d
 		Colleoni & 30 & \\
 		ATR 125 & 20 & sulle stesse linee circolano altre automotrici diesel\\
 		ETR 245 & 14 &  \\
-		FLIRT TSI (TILO) & 9 & Utilizzati solamente per il servizio transfrontaliero\\
+		FLIRT (TILO) & 53 & 23 a quattro casse, 17 a sei casse e 13 TSI a sei casse~\cite{tilo_datifatti}; usati solo per il servizio transfrontaliero \\
 		\bottomrule
 	\end{tabularx}
 \end{table}
@@ -199,10 +203,13 @@ L'assegnamento dei treni da parte dell'operatore non avviene per linea ma in bas
 		S7, S31, R3, R9, R18, RE3 & ATR 125 \\
 		R8, R35, R36, R37 & Colleoni \\
 		RE80 & FLIRT TSI (TILO) \\
+		S10, S30, S40, S50 & 57\% FLIRT a 6 casse, 43\% FLIRT a 4 casse \\
 		Altre linee regionali e RegioExpress & 60\% Caravaggio a 5 casse, 30\% TSR, 10\% ETR 425 \\
 		\bottomrule
 	\end{tabularx}
 \end{table}
+
+Sulle quattro linee TILO le quote seguono la consistenza della flotta, 30 convogli a sei casse contro 23 a quattro, e i due tipi non sono distribuiti a rotazione. Un treno mantiene la stessa lunghezza per tutta la giornata, e il tipo a sei casse è assegnato ai treni con più partenze nelle ore di punta, dalle 6:30 alle 9:30 e dalle 16:30 alle 19:30. Nel giorno feriale le cinque linee TILO impiegano 34 treni dei 53 disponibili: 15 a sei casse, 12 a quattro casse e 7 TSI.
 
 Le quote riflettono ciò che si osserva in esercizio: sulle linee regionali circolano soprattutto i Caravaggio, e il resto è coperto da TSR e Coradia Meridian; sulle suburbane prevalgono i TSR, mentre i TAF coprono le necessità residue. Sono state fissate in modo che i treni di ogni tipo richiesti dall'orario di un giorno feriale restino entro la consistenza della flotta; il confronto è nell'analisi dei risultati. Tipi, parametri e ripartizioni possono essere modificati dall'applicazione prima di ogni simulazione.
 
@@ -225,6 +232,7 @@ La \cref{tab:dati-treni} indica, per ogni tipo, la fonte di ciascun dato tecnico
 		ETR 425 & lunghezza, posti, massa, potenza, velocità~\cite{wiki_coradia} & accelerazione \\
 		ETR 245 & lunghezza, posti, velocità~\cite{trenord_flotta} & accelerazione, massa a vuoto \\
 		FLIRT TSI (TILO) & lunghezza, masse, potenza, posti, velocità~\cite{trainswiss_rabe524}; alimentazione~\cite{railwaygazette_tilo} & accelerazione \\
+		FLIRT a 6 e a 4 casse (TILO) & lunghezza, massa, potenza, posti, velocità~\cite{trainswiss_rabde524} & accelerazione; massa a vuoto \\
 		ATR 125 & tutti i dati~\cite{stadler_gtw}; posti e velocità anche in~\cite{trenord_flotta} & accelerazione \\
 		Colleoni & massa e potenza~\cite{railvolution_atr803}; lunghezza, posti, velocità~\cite{wiki_atr803}; miglioramento dell'accelerazione~\cite{trenord_flotta} & accelerazione \\
 		\bottomrule
@@ -232,7 +240,7 @@ La \cref{tab:dati-treni} indica, per ogni tipo, la fonte di ciascun dato tecnico
 \end{table}
 
 \subsubsection{Differenze dal materiale reale}
-Il modello si discosta dal materiale reale in alcuni punti, che vanno tenuti presenti nel leggere i risultati. La composizione dei TSR è fissata a quattro casse, mentre in esercizio varia. La doppia composizione, in cui due convogli viaggiano accoppiati come un solo treno, non è rappresentata per nessun tipo: ogni treno del modello è un convoglio singolo. I posti dei Caravaggio sono quelli della versione di serie, 466 e 598, mentre l'allestimento dell'operatore ne ha 443 e 573. I posti del Colleoni comprendono 17 strapuntini. Mancano del tutto i convogli formati da locomotiva e carrozze e le automotrici diesel più anziane, le cui corse sono attribuite agli altri tipi. Infine ogni tipo ha un solo insieme di prestazioni: il modello non distingue fra un treno a pieno carico e uno vuoto nel moto, ma soltanto nel calcolo dei consumi.
+Il modello si discosta dal materiale reale in alcuni punti, che vanno tenuti presenti nel leggere i risultati. La composizione dei TSR è fissata a quattro casse, mentre in esercizio varia. La doppia composizione, in cui due convogli viaggiano accoppiati come un solo treno, non è rappresentata per nessun tipo: ogni treno del modello è un convoglio singolo. Vale per i TSR delle linee suburbane come per i FLIRT delle linee TILO, e ha due conseguenze: la lunghezza e la capienza dei treni reali possono essere doppie di quelle simulate, e i treni contati dal modello sono meno dei convogli effettivamente impiegati. I posti dei Caravaggio sono quelli della versione di serie, 466 e 598, mentre l'allestimento dell'operatore ne ha 443 e 573. I posti del Colleoni comprendono 17 strapuntini. Mancano del tutto i convogli formati da locomotiva e carrozze e le automotrici diesel più anziane, le cui corse sono attribuite agli altri tipi. Infine ogni tipo ha un solo insieme di prestazioni: il modello non distingue fra un treno a pieno carico e uno vuoto nel moto, ma soltanto nel calcolo dei consumi.
 
 \subsection{Regole di comportamento}
 Il treno segue le regole definite da railsim, descritte nella sezione precedente.
