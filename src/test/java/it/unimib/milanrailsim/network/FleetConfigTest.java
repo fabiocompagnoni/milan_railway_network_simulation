@@ -18,10 +18,10 @@ class FleetConfigTest {
 	}
 
 	@Test
-	void defaultsCarryTenTypesWithEstimatedDeceleration() {
+	void defaultsCarryTwelveTypesWithEstimatedDeceleration() {
 		FleetConfig fleet = FleetConfig.defaults();
 
-		assertEquals(10, fleet.types().size());
+		assertEquals(12, fleet.types().size());
 		assertTrue(fleet.types().stream().allMatch(type -> type.isEstimated("deceleration")));
 		assertFalse(fleet.type("caravaggio_521").isEstimated("acceleration"));
 		assertEquals(FleetConfig.Traction.DIESEL, fleet.type("atr125").traction());
@@ -31,7 +31,7 @@ class FleetConfigTest {
 	void withReplacesOrAppends() {
 		FleetConfig fleet = FleetConfig.defaults().with(custom("tsr")).with(custom("nuovo"));
 
-		assertEquals(11, fleet.types().size());
+		assertEquals(13, fleet.types().size());
 		assertEquals("Test", fleet.type("tsr").name());
 	}
 

@@ -16105,7 +16105,7 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">S30</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">238494230 238494238 238494240 288770668 288770670 358977203 358977208 614577035 614577036 722049623 722049624 1056621075 1056621076 1163482407 1163482408 1236623410 1236623411 1469203716 1469203717 1469203718 1469203719 1469203730 1469203731</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">block_S05407_S05405</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">block_S05406_S05405</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
@@ -16118,7 +16118,7 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">S30</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">238494230 238494238 238494240 288770668 288770670 358977203 358977208 614577035 614577036 722049623 722049624 1056621075 1056621076 1163482407 1163482408 1236623410 1236623411 1469203716 1469203717 1469203718 1469203719 1469203730 1469203731</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">block_S05407_S05405</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">block_S05406_S05405</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
@@ -16130,7 +16130,7 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">S30</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">172117763 172117764 172117765 172117766 238494231 238494236 238494237 447725086 447725087 617576292 1056467729 1056467730 1056471944 1056471945 1056471946 1056471947 1056474040 1096665400 1278639612 1278639613 1278639614 1278639615 1278639616 1278639617 1278639618 1278639619 1278639620 1278639621 1278639622 1278639623 1395062720 1395062721</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">block_S05407_S05405</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">block_S05407_S05406</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
@@ -16142,7 +16142,7 @@
 				<attribute name="gtfsRoutes" class="java.lang.String">S30</attribute>
 				<attribute name="osmExtractDate" class="java.lang.String">2026-08-05</attribute>
 				<attribute name="osmWayIds" class="java.lang.String">172117763 172117764 172117765 172117766 238494231 238494236 238494237 447725086 447725087 617576292 1056467729 1056467730 1056471944 1056471945 1056471946 1056471947 1056474040 1096665400 1278639612 1278639613 1278639614 1278639615 1278639616 1278639617 1278639618 1278639619 1278639620 1278639621 1278639622 1278639623 1395062720 1395062721</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">block_S05407_S05405</attribute>
+				<attribute name="railsimResourceId" class="java.lang.String">block_S05407_S05406</attribute>
 				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
 				<attribute name="tracksTotal" class="java.lang.Integer">1</attribute>
 			</attributes>
@@ -17049,7 +17049,7 @@
 		<link id="stop_S01030" from="S01030" to="S01030" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">7</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">10</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
@@ -17456,7 +17456,7 @@
 		<link id="stop_S01118" from="S01118" to="S01118" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">4</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
@@ -17526,7 +17526,7 @@
 		<link id="stop_S01144" from="S01144" to="S01144" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
@@ -17540,7 +17540,7 @@
 		<link id="stop_S01146" from="S01146" to="S01146" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
@@ -17573,7 +17573,7 @@
 		<link id="stop_S01205" from="S01205" to="S01205" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">6</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">9</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
@@ -17622,7 +17622,7 @@
 		<link id="stop_S01307" from="S01307" to="S01307" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">4</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">5</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
@@ -19671,7 +19671,7 @@
 		<link id="stop_S05201" from="S05201" to="S05201" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
@@ -19685,7 +19685,7 @@
 		<link id="stop_S05209" from="S05209" to="S05209" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">10</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
@@ -19699,7 +19699,7 @@
 		<link id="stop_S05213" from="S05213" to="S05213" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">5</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
@@ -19789,7 +19789,7 @@
 		<link id="stop_S05404" from="S05404" to="S05404" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">3</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
@@ -19802,8 +19802,7 @@
 		<link id="stop_S05406" from="S05406" to="S05406" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimResourceId" class="java.lang.String">block_S05407_S05405</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">1</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>
@@ -19865,7 +19864,7 @@
 		<link id="stop_S13143" from="S13143" to="S13143" length="200.0" freespeed="13.9" capacity="3600.0" permlanes="1.0" oneway="1" modes="rail" >
 			<attributes>
 				<attribute name="dataStatus" class="java.lang.String">provisional</attribute>
-				<attribute name="railsimTrainCapacity" class="java.lang.Integer">2</attribute>
+				<attribute name="railsimTrainCapacity" class="java.lang.Integer">4</attribute>
 				<attribute name="stationLink" class="java.lang.Boolean">true</attribute>
 			</attributes>
 		</link>

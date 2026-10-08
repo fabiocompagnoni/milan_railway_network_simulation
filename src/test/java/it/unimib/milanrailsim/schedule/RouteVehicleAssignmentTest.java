@@ -60,11 +60,36 @@ class RouteVehicleAssignmentTest {
 	}
 
 	@Test
-	void tiloLinesAreExcluded() {
-		assertTrue(assignment.isExcluded("S10"));
+	void onlySpecialServicesAreExcluded() {
 		assertTrue(assignment.isExcluded("Trenord GP"));
+		assertFalse(assignment.isExcluded("S10"));
 		assertFalse(assignment.isExcluded("RE80"));
-		assertThrows(IllegalArgumentException.class, () -> assignment.vehicleTypeId("S10", 0));
+		assertThrows(IllegalArgumentException.class, () -> assignment.vehicleTypeId("Trenord GP", 0));
+	}
+
+	@Test
+	void tiloLinesRankTheirTrainsByPeakLoad() {
+		assertTrue(assignment.ranksByPeakLoad("S10"));
+		assertTrue(assignment.ranksByPeakLoad("S50"));
+		assertFalse(assignment.ranksByPeakLoad("RE80"));
+		assertFalse(assignment.ranksByPeakLoad("S1"));
+	}
+
+	@Test
+	void theBusiestTiloTrainsAreSixCarSets() {
+		assertEquals(List.of("tilo_flirt_6", "tilo_flirt_6", "tilo_flirt_6", "tilo_flirt_6",
+			"tilo_flirt_4", "tilo_flirt_4", "tilo_flirt_4"), assignment.vehicleTypeIdsByRank("S10", 7));
+		assertEquals(List.of("tilo_flirt_6"), assignment.vehicleTypeIdsByRank("S30", 1));
+		assertEquals(List.of(), assignment.vehicleTypeIdsByRank("S40", 0));
+	}
+
+	@Test
+	void sharesAreKeptWhenRankingByPeakLoad() {
+		List<String> ranked = assignment.vehicleTypeIdsByRank("S50", 100);
+		assertEquals(57, ranked.stream().filter("tilo_flirt_6"::equals).count());
+		assertEquals(43, ranked.stream().filter("tilo_flirt_4"::equals).count());
+		assertEquals("tilo_flirt_6", ranked.getFirst());
+		assertEquals("tilo_flirt_4", ranked.getLast());
 	}
 
 	@Test
