@@ -2,7 +2,7 @@
 Il contesto in cui si inserisce il progetto \textit{Milan RailSim} è quello della simulazione della rete ferroviaria lombarda, in particolare la rete suburbana e il passante milanese. \\
 L'obiettivo del progetto è la simulazione del traffico ferroviario, del comportamento dei treni e della gestione delle stazioni, al fine di analizzare l'efficienza del sistema e identificare eventuali criticità.\\
 L'obiettivo principale è quello di analizare le reti suburbane e cercare di analizzare se sia possibile avere un comportamente più simile ad una metropolitana piuttosto che ad un sistema ferroviario, dunque simulare se fosse possibile aumentare il numero di corse e ridurre l'attesa, senza modificare l'infrastruttura già esistente.\\
-Dato che sulla stessa infrastruttura, circolano treni regionali locali di Trenord ma anche treni regionali e ad alta velocità di altre società, non è possibile simulare solamente il comportamento dei suburbani, in quanto non sarebbe corretto, dunque è stata simulata l'intera rete.\\
+Dato che sulla stessa infrastruttura circolano, insieme ai suburbani, anche i treni regionali e treni di altre società, non è possibile simulare solamente il comportamento dei suburbani, in quanto non sarebbe corretto: è stata quindi simulata l'intera rete regionale di Trenord. I treni delle altre società, come quelli a lunga percorrenza e ad alta velocità, usano in parte gli stessi binari ma non sono rappresentati nel modello.\\
 Il punto più delicato della rete è il Passante ferroviario, una galleria a due binari che attraversa la città e nella quale confluiscono sei linee suburbane. Nell'orario in vigore vi transitano 12 treni all'ora per verso, con intervalli irregolari che vanno da 2 a oltre 9 minuti.\\
 Un altro problema che è stato necessario modellare è la presenza di binari unici, dunque tratti di binario utilizzate in entrambi i versi, dunque per mantenere realistico il modello è stato necessario modellare anche questo comportamento.\\
 
@@ -14,7 +14,7 @@ La domanda da cui parte il lavoro è la seguente: di quanto si può aumentare la
 
 L'obiettivo non è trovare l'orario migliore.
 L'obiettivo è comprendere come il sistema reale si comporta e come potrebbe comportarsi in scenari alternativi.
-Gli obiettivi da raggiungere sono tre:
+Gli obiettivi da raggiungere sono quattro:
 \begin{itemize}
 	\item costruire un modello di base utilizzando la rete reale e gli orari ufficiali del servizio, cercando di modellare un sistema realistico
 	\item implementazione di uno scenario in cui la rete suburbana ha un aumento delle corse mentre il resto della rete rimane invariato;
