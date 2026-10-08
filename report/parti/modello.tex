@@ -1,5 +1,4 @@
-Questa sezione descrive il modello in termini astratti, prima dei dati e delle regole di dettaglio trattati nelle sezioni successive. Il sistema simulato è il servizio ferroviario regionale e suburbano della Lombardia in una giornata; il modello ne considera una parte, cioè la circolazione dei treni di Trenord sull'infrastruttura, e ne esclude i passeggeri, i treni merci, quelli a lunga percorrenza e i guasti. \\
-Il modello è un sistema multi-agente situato su un grafo: gli agenti sono i treni, l'ambiente è la rete con i suoi binari, e i treni interagiscono soltanto attraverso l'occupazione dei binari.
+Il modello è un sistema multi-agente situato su un grafo: gli agenti sono i treni, l'ambiente è la rete con i suoi binari, e i treni interagiscono soltanto attraverso l'occupazione dei binari. Le sottosezioni che seguono ne descrivono gli elementi.
 
 \subsection{Ambiente}
 L'ambiente è un grafo orientato. I nodi sono i punti in cui un binario inizia, finisce o si dirama; i link sono tratti di binario percorribili in un solo verso. Ogni link ha una lunghezza, una velocità massima e una capienza, cioè il numero di treni che può contenere insieme. I link sono raggruppati in risorse, come descritto nella sezione precedente: una risorsa è l'insieme dei link che vengono occupati insieme, ed è l'unità con cui il modello rappresenta una sezione di blocco, un binario unico percorso nei due sensi, un binario di stazione o l'insieme dei deviatoi all'ingresso di una stazione. In ogni istante una risorsa è libera, in uso oppure esaurita, quando ha raggiunto la propria capienza.
@@ -13,9 +12,11 @@ La \cref{fig:modello-grafo} mostra questi elementi su un tratto di rete di esemp
 	\label{fig:modello-grafo}
 \end{figure}
 
-La \cref{fig:modello-cadorna} mostra un caso reale, il nodo formato dalle stazioni di Milano Cadorna, Milano Domodossola e Milano Bovisa, come è descritto nel modello. Cadorna è una stazione di testa con dieci binari, ciascuno una risorsa a sé, riuniti in cinque gruppi secondo le linee che li usano. I binari non sono collegati tutti allo stesso modo: quelli da 1 a 5 raggiungono soltanto il fascio di binari del ramo di Saronno, il 6 e il 7 soltanto quello del ramo di Asso, e i binari da 8 a 10 entrambi. I deviatoi che collegano i binari a ciascun fascio formano una gola, lunga 650 metri e percorsa a 30 chilometri all'ora, che nel modello è una sola risorsa: un treno che la impegna blocca gli altri treni dello stesso fascio. Oltre la gola ogni fascio ha un binario per verso, e a Domodossola i quattro binari sono passanti, uno per fascio e per verso.
+La \cref{fig:modello-cadorna} mostra come il modello descrive un caso reale: il nodo formato dalle stazioni di Milano Cadorna, Milano Domodossola e Milano Bovisa.
 
-A Bovisa i due fasci provenienti da Cadorna incontrano le linee del Passante. Gli otto binari sono riuniti in quattro gruppi di due, uno per verso: i binari 1 e 2 ricevono i treni del Passante e quelli di Porta Garibaldi diretti al ramo di Saronno, il 3 e il 4 i treni di Cadorna dello stesso ramo, il 5 e il 6 i treni di Cadorna del ramo di Asso, il 7 e l'8 i treni del Passante dello stesso ramo. I binari 5 e 6 possono fare da riserva per il ramo di Saronno, e sono per questo collegati a entrambi i fasci e a entrambe le uscite. I deviatoi a sud e a nord della stazione sono due gole, ciascuna una sola risorsa comune a tutti i gruppi: è qui che i treni di Cadorna e quelli del Passante, pur avendo binari distinti, si contendono il passaggio.
+Cadorna è una stazione di testa con dieci binari. Nel modello ogni binario è una risorsa a sé, e i dieci binari sono riuniti in cinque gruppi, secondo le linee che li usano. Da Cadorna partono due fasci di binari, uno verso Saronno e uno verso Asso, e non tutti i binari li raggiungono entrambi: i binari da 1 a 5 portano solo al fascio di Saronno, il 6 e il 7 solo a quello di Asso, quelli da 8 a 10 a tutti e due. Fra i binari e ciascun fascio ci sono i deviatoi, che formano una gola lunga 650 metri, percorsa a 30 chilometri all'ora. Nel modello la gola è una sola risorsa: un treno che la percorre blocca gli altri treni dello stesso fascio. Oltre la gola ogni fascio ha un binario per verso. A Domodossola i binari sono quindi quattro, tutti passanti: uno per fascio e per verso.
+
+A Bovisa i due fasci provenienti da Cadorna incontrano le linee del Passante. A sud e a nord della stazione i deviatoi formano due gole. Nel modello ciascuna gola è una sola risorsa, comune a tutti i gruppi: i treni di Cadorna e quelli del Passante hanno binari distinti, ma è qui che si contendono il passaggio. I gruppi di binari di \hyperlink{sta:S01066}{Cadorna} e di \hyperlink{sta:S01642}{Bovisa}, con le linee che li usano, sono riportati nell'appendice~\ref{app:linee}.
 
 \begin{figure}[H]
 	\centering
@@ -24,7 +25,7 @@ A Bovisa i due fasci provenienti da Cadorna incontrano le linee del Passante. Gl
 	\label{fig:modello-cadorna}
 \end{figure}
 
-La rete è descritta a due scale, riassunte nella \cref{tab:modello-reti}. Le linee fra una stazione e l'altra sono mesoscopiche: un link rappresenta tutti i binari della tratta e la sua capienza ne esprime il numero. Le stazioni principali, i bivi e le tratte a binario unico sono microscopiche: ogni link è un singolo binario con capienza 1. Il modello è quindi ibrido, ma la differenza fra le due scale riguarda solo l'ambiente: il treno è in entrambe un individuo, con posizione e velocità proprie.
+La rete è descritta a due scale, riassunte nella \cref{tab:modello-reti}. Le linee fra una stazione e l'altra sono mesoscopiche: un link rappresenta tutti i binari della tratta e la sua capienza ne esprime il numero. Le stazioni principali, quelle di diramazione e quelle delle linee a binario unico sono microscopiche: ogni link è un singolo binario con capienza 1. Il modello è quindi ibrido, ma la differenza fra le due scale riguarda solo l'ambiente: il treno è in entrambe un individuo, con posizione e velocità proprie.
 
 \begin{table}[H]
 	\centering
@@ -32,18 +33,20 @@ La rete è descritta a due scale, riassunte nella \cref{tab:modello-reti}. Le li
 	\label{tab:modello-reti}
 	\begin{tabularx}{\textwidth}{Xrrr}
 		\toprule
-		Rete & Nodi & Link & Risorse \\
+		Rete & Nodi & Link & Stazioni in dettaglio \\
 		\midrule
-		Mesoscopica: una stazione, un nodo & 459 & 1195 & 309 \\
-		Di dettaglio: stazioni principali binario per binario & 6008 & 11452 & 962 \\
+		Mesoscopica: una stazione, un nodo & 459 & 1195 & -- \\
+		Di dettaglio: stazioni principali binario per binario & 6008 & 11452 & 180 \\
 		\bottomrule
 	\end{tabularx}
 \end{table}
 
-L'ambiente non è uno sfondo passivo. Fornisce a ogni treno la sola informazione che gli serve, cioè se il tratto che ha davanti è disponibile; riceve le richieste di occupazione; decide chi ottiene una risorsa contesa; aggiorna lo stato delle risorse. Secondo la classificazione usuale degli ambienti, quello del modello è inaccessibile, perché un treno conosce lo stato delle sole risorse sul proprio percorso e non quello della rete; deterministico, perché nessuna grandezza è estratta a caso e lo stesso scenario produce sempre lo stesso esito; sequenziale, perché una risorsa occupata ora condiziona ciò che accade dopo; dinamico, perché lo stato delle risorse cambia per effetto degli altri treni. Il determinismo è una proprietà del simulatore e non del sistema reale, ed è discusso fra i limiti.
+I criteri con cui una stazione è descritta in dettaglio sono nella \cref{sec:dettagli-rete}; l'elenco delle stazioni, linea per linea, è nell'appendice~\ref{app:linee}.
+
+L'ambiente non è uno sfondo passivo: concede le risorse ai treni e ne regola i conflitti, come descritto nella \cref{sec:modello-interazione}. Secondo la classificazione degli ambienti di Russell e Norvig~\cite{russell_norvig}, quello del modello è inaccessibile, perché un treno conosce lo stato delle sole risorse sul proprio percorso e non quello della rete; deterministico, perché nessuna grandezza è estratta a caso e lo stesso scenario produce sempre lo stesso esito; non episodico, perché una risorsa occupata ora condiziona ciò che accade dopo; dinamico, perché lo stato delle risorse cambia per effetto degli altri treni; discreto negli stati delle risorse, che sono libere, in uso o esaurite, e continuo nella posizione dei treni. Il determinismo è una proprietà del simulatore e non del sistema reale, ed è discusso fra i limiti.
 
 \subsection{Agenti}
-Gli agenti sono i treni. In una giornata feriale il modello ne contiene 343, che effettuano 2349 corse su 57 linee. Ogni treno è descritto da tre gruppi di grandezze, riportati nella \cref{tab:modello-agente}.
+Gli agenti nel modello sono rappresentati dai treni. In una giornata feriale il modello ne contiene 343, che effettuano 2349 corse su 57 linee. Ogni treno è descritto da tre gruppi di grandezze, riportati nella \cref{tab:modello-agente}.
 
 \begin{table}[H]
 	\centering
@@ -62,7 +65,8 @@ Gli agenti sono i treni. In una giornata feriale il modello ne contiene 343, che
 
 Gli agenti sono eterogenei: i tipi di treno sono dieci, descritti nella \cref{sec:materiale-rotabile}, con prestazioni e lunghezze diverse, e ogni treno ha un piano proprio. Il piano però non è scelto dall'agente. A differenza delle persone simulate da MATSim, un treno non valuta e non modifica il proprio piano, e la simulazione consiste di una sola esecuzione, senza il ciclo di ripianificazione. L'unica scelta che avviene durante la corsa è la deviazione su un altro binario della stessa stazione, quando quello previsto è occupato.
 
-Rispetto alle proprietà con cui si definisce di norma un agente, il treno è situato, perché ha una posizione nell'ambiente e ciò che può fare dipende dallo stato delle risorse che ha davanti, ed è reattivo, perché accelera, rallenta, si ferma e riparte in risposta a quello stato. È autonomo solo in parte: regola da sé il proprio moto, ma non decide percorso, fermate e orari. Non è proattivo, perché non ha scopi oltre l'esecuzione dell'orario, e non è sociale in senso stretto, perché non comunica con gli altri treni. Si tratta dunque di un agente reattivo situato, il cui comportamento complessivo è ottenuto attraverso l'ambiente più che attraverso la deliberazione. \\
+Rispetto alle proprietà con cui si definisce di norma un agente, il treno è situato, perché ha una posizione nell'ambiente e ciò che può fare dipende dallo stato delle risorse che ha davanti, ed è reattivo, perché accelera, rallenta, si ferma e riparte in risposta a quello stato. È autonomo solo in parte: regola da sé il proprio moto, ma non decide percorso, fermate e orari. Non è proattivo, perché non ha scopi oltre l'esecuzione dell'orario, e non è sociale in senso stretto, perché non comunica con gli altri treni. Si tratta dunque di un agente reattivo e non deliberativo, il cui comportamento complessivo è ottenuto attraverso l'ambiente più che attraverso il ragionamento. \\
+Nelle classificazioni basate sull'architettura interna, il treno è un agente isteretico nei termini di Genesereth~\cite{genesereth1987logical}, che corrisponde all'agente a riflesso con stato interno di Russell e Norvig~\cite{russell_norvig}: possiede uno stato interno, cioè posizione, velocità e tratto autorizzato, lo aggiorna a ogni percezione dell'ambiente e sceglie l'azione in base a entrambi. Non è un agente tropistico, perché la sua azione non dipende dalla sola percezione del momento, e non è un agente a livello di conoscenza, perché non ragiona su una rappresentazione del mondo e non costruisce piani. \\
 Va precisato che in MATSim l'agente è formalmente il conducente del veicolo; identificare l'agente con il treno è una scelta di descrizione, che non cambia il comportamento simulato.
 
 \subsection{Materiale rotabile}
@@ -96,7 +100,7 @@ La \cref{tab:rotabile-moto} riporta i parametri che il motore di simulazione usa
 	\end{tabularx}
 \end{table}
 
-Lunghezza, posti e velocità massima vengono dalle schede pubblicate dall'operatore e dai costruttori. L'accelerazione è pubblicata soltanto per i Caravaggio; per gli altri tipi è stimata, con valori più bassi per il TAF, il più anziano degli elettrotreni, e per i due treni diesel. Quella del Colleoni è ricavata dall'ATR 125 applicando il miglioramento del 20\% dichiarato dall'operatore rispetto alla flotta diesel precedente. La decelerazione è la stessa per tutti i tipi, \SI{0,5}{\metre\per\second\squared}, il valore predefinito di railsim: è una decelerazione di servizio prudente, e incide direttamente sulla distanza che separa due treni che si seguono.
+Lunghezza, posti e velocità massima vengono dalle schede pubblicate dall'operatore e dai costruttori. L'accelerazione per i Caravaggio proviene da dati pubblici mentre per gli altri tipi è stata stimata, con valori più bassi per il TAF, il più anziano degli elettrotreni, e per i due treni diesel. Quella del Colleoni è ricavata dall'ATR 125 applicando il miglioramento del 20\% dichiarato dall'operatore rispetto alla flotta diesel precedente. La decelerazione è la stessa per tutti i tipi, \SI{0,5}{\metre\per\second\squared}, il valore predefinito di railsim: è una decelerazione di servizio prudente, e incide direttamente sulla distanza che separa due treni che si seguono.
 
 \subsubsection{Parametri per i consumi}
 La \cref{tab:rotabile-energia} riporta i parametri usati dal modello energetico. La massa in servizio è la massa a vuoto più quella dei viaggiatori, calcolata sui posti a sedere a 75 chilogrammi per persona e sulla quota di posti occupati nella fascia oraria della corsa; nella tabella è indicata quella a posti tutti occupati, che è il valore massimo usato dal modello. I servizi ausiliari, cioè climatizzazione, illuminazione e impianti di bordo, sono stimati in 30 kW per cassa. La potenza installata è riportata per completezza: il modello non la usa, perché il moto è determinato dall'accelerazione.
@@ -125,46 +129,20 @@ La \cref{tab:rotabile-energia} riporta i parametri usati dal modello energetico.
 	\end{tabularx}
 \end{table}
 
-Il tipo di trazione divide i treni in due gruppi, trattati in modo diverso sia nei consumi sia nei costi. Gli otto tipi elettrici prendono energia dalla linea di contatto e in frenata ne restituiscono una parte, che altri treni possono riusare. I due tipi diesel consumano gasolio e nel modello non recuperano energia in frenata; il Colleoni dispone di batterie, che il modello non rappresenta.
+Il tipo di trazione divide i treni in due gruppi, trattati in modo diverso sia nei consumi sia nei costi. Gli otto tipi elettrici prendono energia dalla linea di contatto e in frenata ne restituiscono una parte, che altri treni possono riusare. I treni alimentati a gasolio non hanno un consumo energetico in kW ma solamente in litri di carburante utilizzato e data l'alimentazione non c'è alcun tipo di recupero di energia in frenata. Il Colleoni dispone di batterie, che il modello non rappresenta, per semplicità di modellazione.
 
-Tre masse sono stimate. La massa a vuoto dei Caravaggio non è pubblicata, ed è ricavata dal carico per asse di 18,5 tonnellate dichiarato per le motrici, esteso a tutti gli assi del convoglio per ottenere la massa a pieno carico, da cui è sottratto il peso dei viaggiatori seduti. È un limite superiore, perché le casse rimorchiate hanno verosimilmente un carico per asse inferiore: la stima dà 2,4 tonnellate per metro di lunghezza, contro 2,1 del TSR e 2,0 del TAF, i due treni a due piani con dato pubblicato. Un consumo calcolato con queste masse è quindi sovrastimato, non sottostimato. Per l'ETR 245 non è stato trovato un dato proprio, ed è adottata la massa dell'ETR 425, convoglio della stessa famiglia con lo stesso numero di casse e la stessa lunghezza.
+Le masse a vuoto dei treni sono state stimate in base a varie voci presenti pubblicamente sui relativi treni.\\
+La massa a vuoto del Caravaggio non è pubblicata, ed è ricavata dal carico per asse di 18,5 tonnellate dichiarato per le motrici, esteso a tutti gli assi del convoglio per ottenere la massa a pieno carico, da cui è sottratto il peso dei viaggiatori seduti. È un limite superiore, perché le casse rimorchiate hanno verosimilmente un carico per asse inferiore.\\
+I TSR e i TAF hanno la loro massa a vuoto pubblica e dunque i due valori non sono stimati ma presi dalle schede tecniche dei treni.
+Per l'ETR 245 non è stato trovato un dato proprio, ed è adottata la massa dell'ETR 425, convoglio della stessa famiglia con lo stesso numero di casse e la stessa lunghezza.
 
 \subsubsection{Recupero dell'energia in frenata}
-In frenata i motori di un treno a trazione elettrica possono funzionare da generatori e trasformare in energia elettrica una parte dell'energia di moto del treno. La \cref{tab:rotabile-recupero} indica quali tipi, nel modello, recuperano energia in frenata e la restituiscono alla linea di contatto.
-
-\begin{table}[H]
-	\centering
-	\caption{Recupero dell'energia in frenata nel modello, per tipo di treno.}
-	\label{tab:rotabile-recupero}
-	\small
-	\begin{tabularx}{\textwidth}{lccX}
-		\toprule
-		Tipo & Recupero & Rendimento & Destinazione dell'energia recuperata \\
-		\midrule
-		TSR & sì & 0,80 & ausiliari del treno, poi linea di contatto \\
-		TAF & sì & 0,80 & ausiliari del treno, poi linea di contatto \\
-		Caravaggio ETR 421 & sì & 0,80 & ausiliari del treno, poi linea di contatto \\
-		Caravaggio ETR 521 & sì & 0,80 & ausiliari del treno, poi linea di contatto \\
-		Donizetti ETR 204 & sì & 0,80 & ausiliari del treno, poi linea di contatto \\
-		ETR 245 Coradia Meridian & sì & 0,80 & ausiliari del treno, poi linea di contatto \\
-		ETR 425 Coradia Meridian & sì & 0,80 & ausiliari del treno, poi linea di contatto \\
-		FLIRT TSI (TILO) ETR 524 & sì & 0,80 & ausiliari del treno, poi linea di contatto \\
-		ATR 125 Stadler GTW & no & -- & l'energia di frenata è dissipata \\
-		Colleoni ATR 803 & no & -- & l'energia di frenata è dissipata \\
-		\bottomrule
-	\end{tabularx}
-\end{table}
-
-Nel modello tutti e otto i tipi elettrici recuperano, con lo stesso rendimento: della potenza frenante alle ruote, l'80\% torna disponibile come energia elettrica. Il modello non distingue quindi fra un treno recente e uno più anziano, come il TAF: è una semplificazione, adottata perché il rendimento di recupero dei singoli tipi non è pubblicato. Combinato con il rendimento di trazione, anch'esso di 0,80, il valore corrisponde a un recupero del 64\% dell'energia spesa per accelerare, in linea con il 60--70\% indicato in letteratura per i treni moderni.
-
-L'energia recuperata non è però tutta riutilizzata. Sulle linee a 3 kV in corrente continua, che sono quelle della rete modellata, le sottostazioni non riprendono energia dalla linea di contatto: la corrente restituita da un treno in frenata è utile soltanto se nelle vicinanze un altro treno sta assorbendo potenza in quello stesso momento. Il modello segue quest'ordine: l'energia rigenerata alimenta anzitutto i servizi ausiliari del treno che frena; la parte rimanente è ceduta ai treni elettrici in trazione che si trovano entro 10 chilometri, a partire dal più vicino; ciò che nessuno assorbe è dissipato a bordo. Restituire energia alla rete significa quindi, nel modello come nella realtà di queste linee, cederla ad altri treni e non al gestore dell'energia: per questo l'energia recuperata non è contata come ricavo nei costi, ma soltanto come minore prelievo dalle sottostazioni.
+In frenata i motori di un treno a trazione elettrica possono funzionare da generatori e trasformare in energia elettrica una parte dell'energia di moto del treno. Nel modello tutti e otto i tipi elettrici recuperano, con lo stesso rendimento: della potenza frenante alle ruote, l'80\% torna disponibile come energia elettrica. Il modello non distingue quindi fra un treno recente e uno più anziano, come il TAF. Questa semplificazione è stata fatta perchè le percentuali di recupero non sono pubbliche. Combinato con il rendimento di trazione, anch'esso di 0,80, il valore corrisponde a un recupero del 64\% dell'energia spesa per accelerare, in linea con il 60--70\% indicato in letteratura per i treni moderni~\cite{andersson2006energy}. Il modo in cui l'energia recuperata è riusata dagli altri treni, e la quantità che ne risulta, sono descritti nella sezione sui costi.\\
 
 I due tipi diesel non recuperano energia. La loro trasmissione è elettrica, e nella realtà una parte dell'energia di frenata può alimentare i servizi di bordo; il Colleoni dispone inoltre di batterie. Il modello non rappresenta né l'una né l'altra possibilità, e i treni diesel non partecipano allo scambio di energia sulla linea di contatto. È uno dei motivi per cui il loro consumo, senza correzione, risultava sovrastimato.
 
-Nel giorno feriale reale i treni elettrici rigenerano in frenata 450 MWh. Di questi 307 sono riusati da altri treni e 97 sono dissipati; la parte restante alimenta i servizi ausiliari dei treni che frenano. Senza alcun recupero l'energia da prelevare dalle sottostazioni sarebbe di 1969 MWh anziché 1616: il recupero riduce il prelievo del 18\%. La quota riusata dipende dalla densità del traffico: è alta dove i treni sono vicini fra loro, e quasi nulla sulle linee isolate.
-
-\subsubsection{I dieci tipi}
-Il \textit{TSR}, Treno Servizio Regionale, è un elettrotreno a due piani a composizione variabile, da due a sei casse tutte motrici. Il modello ne rappresenta la composizione a quattro casse; in esercizio la più frequente è di otto, ottenuta accoppiando due convogli, e la capienza e la lunghezza reali possono quindi essere doppie di quelle del modello. È il treno più diffuso sulle linee suburbane.
+\subsubsection{Descrizione delle tipologie di treno}
+Il \textit{TSR}, Treno Servizio Regionale, è un elettrotreno a due piani a composizione variabile, da due a sei casse tutte motrici. Il modello ne rappresenta la composizione a quattro casse; in esercizio circola spesso in doppia composizione, cioè con due convogli accoppiati, e la capienza e la lunghezza reali possono quindi essere doppie di quelle del modello. È il treno più diffuso sulle linee suburbane.
 
 Il \textit{TAF}, Treno ad Alta Frequentazione, è un elettrotreno a due piani a composizione bloccata di quattro casse, due motrici di estremità e due rimorchiate. È il più anziano fra i treni del modello, e le sue masse sono le meglio documentate, perché riportate nelle norme di circolazione del gestore della rete; da queste viene anche il peso di 75 chilogrammi per viaggiatore usato per tutti i tipi.
 
@@ -181,7 +159,7 @@ L'\textit{ATR 125} è un'automotrice diesel-elettrica articolata, formata da due
 Il \textit{Colleoni}, ATR 803, è un treno diesel-elettrico di tre casse con un modulo motore centrale e batterie, anch'esso di recente costruzione, in servizio sulle linee non elettrificate; nel modello circola sulle linee R8, R35, R36 e R37.
 
 \subsubsection{Consistenza della flotta e assegnazione alle linee}
-La \cref{tab:rotabile-flotta} riporta il numero di convogli di cui l'operatore dispone per ogni tipo. Per i treni di nuova costruzione il dato viene dai comunicati dell'operatore; per gli altri è meno certo, e in parte deriva da rilievi dell'autore. Al 31 dicembre 2024 la flotta contava in tutto 390 treni elettrici e 66 diesel, oltre ai convogli formati da locomotiva e carrozze, che il modello non rappresenta.
+La \cref{tab:rotabile-flotta} riporta il numero di convogli di cui l'operatore dispone per ogni tipo. Per i treni di nuova costruzione il numero di treno arriva direttamente da loro comunicati stampa mentre per i treni già in uso, le informazioni provengono da comunicati passati e pagine di FNM. Al 31 dicembre 2024 la flotta contava in tutto 390 treni elettrici e 66 diesel, oltre ai convogli formati da locomotiva e carrozze, che il modello non rappresenta, dato che non sono più in circolazione o vengono utilizzati solo per sostituizioni di guasti su altri treni.
 
 \begin{table}[H]
 	\centering
@@ -192,19 +170,18 @@ La \cref{tab:rotabile-flotta} riporta il numero di convogli di cui l'operatore d
 		Tipo & Convogli & Nota \\
 		\midrule
 		Caravaggio (ETR 421 e 521) & 136 & 123 a fine 2025, più 13 in consegna nel 2026 \\
-		TSR & circa 104 & consegnati fra il 2007 e il 2018; dato da verificare \\
+		TSR & 104 & consegnati fra il 2007 e il 2018\\
 		Donizetti & 61 & \\
-		ETR 425 ed ETR 526 & 54 & rilievo dell'autore \\
-		TAF & 34 & rilievo dell'autore; l'operatore ne indica 25 rinnovati \\
+		ETR 425 ed ETR 526 & 54 & \\
+		TAF & 34 & quasi tutti revampizzati\\
 		Colleoni & 30 & \\
-		ATR 125 & 20 & sulle stesse linee circolano altre automotrici diesel, non nel modello \\
-		ETR 245 & 14 & rilievo dell'autore \\
-		FLIRT TSI (TILO) & 9 & quelli acquistati dal gruppo dell'operatore \\
+		ATR 125 & 20 & sulle stesse linee circolano altre automotrici diesel\\
+		ETR 245 & 14 &  \\
+		FLIRT TSI (TILO) & 9 & Utilizzati solamente per il servizio transfrontaliero\\
 		\bottomrule
 	\end{tabularx}
 \end{table}
-
-L'operatore non assegna i treni per linea ma per impianto di manutenzione: le linee fanno capo a un impianto, e il treno di una corsa dipende dal turno, con una composizione che varia da un giorno all'altro. Il modello approssima questa situazione con una ripartizione per linea, riportata nella \cref{tab:rotabile-quote}: ogni linea ha un tipo unico oppure una composizione in percentuale, e i treni della linea sono distribuiti fra i tipi secondo quelle quote. Il tipo è attribuito al treno, cioè all'intero giro di corse che effettua nella giornata, e non alla singola corsa: le quote non cambiano quindi il numero dei treni, ma soltanto la loro ripartizione.
+L'assegnamento dei treni da parte dell'operatore non avviene per linea ma in base al deposito di afferenza della linea. Il treno di una corsa dipende dal turno, e la composizione dei treni varia da un giorno all'altro. Il modello approssima questa situazione con una ripartizione per linea, riportata nella \cref{tab:rotabile-quote}: ogni linea ha un tipo unico oppure una composizione in percentuale, e i treni della linea sono distribuiti fra i tipi secondo quelle quote. Il tipo è attribuito al treno, cioè all'intera sequenza di corse che effettua nella giornata, e non alla singola corsa: le quote non cambiano quindi il numero dei treni, ma soltanto la loro ripartizione.
 
 \begin{table}[H]
 	\centering
@@ -229,18 +206,57 @@ L'operatore non assegna i treni per linea ma per impianto di manutenzione: le li
 
 Le quote riflettono ciò che si osserva in esercizio: sulle linee regionali circolano soprattutto i Caravaggio, e il resto è coperto da TSR e Coradia Meridian; sulle suburbane prevalgono i TSR, mentre i TAF coprono le necessità residue. Sono state fissate in modo che i treni di ogni tipo richiesti dall'orario di un giorno feriale restino entro la consistenza della flotta; il confronto è nell'analisi dei risultati. Tipi, parametri e ripartizioni possono essere modificati dall'applicazione prima di ogni simulazione.
 
+\subsubsection{Fonti dei dati}
+La \cref{tab:dati-treni} indica, per ogni tipo, la fonte di ciascun dato tecnico e i valori stimati; la decelerazione è stimata per tutti i tipi.
+
+\begin{table}[H]
+	\centering
+	\caption{Provenienza dei dati tecnici dei treni.}
+	\label{tab:dati-treni}
+	\small
+	\begin{tabularx}{\textwidth}{l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.24\textwidth}}
+		\toprule
+		Tipo & Dato e fonte & Valori stimati \\
+		\midrule
+		TSR & posti e velocità~\cite{trenord_flotta}; masse e potenza delle casse~\cite{wiki_tsr,scalaenne_tsr}; lunghezze delle casse~\cite{scalaenne_tsr} & accelerazione \\
+		TAF & masse, posti, carico, velocità~\cite{rfi2005taf}; lunghezze~\cite{scalaenne_taf}; potenza~\cite{wiki_taf} & accelerazione \\
+		Caravaggio & lunghezza, posti, potenza, accelerazione~\cite{wiki_caravaggio}; composizione e allestimento dell'operatore~\cite{fantini2021caravaggio}; carico per asse~\cite{scalaenne_caravaggio} & massa a vuoto \\
+		Donizetti & composizione, lunghezza, posti~\cite{fantini2021caravaggio}; massa e potenza~\cite{wiki_pop}; velocità e motori~\cite{trenitalia2017pop} & accelerazione \\
+		ETR 425 & lunghezza, posti, massa, potenza, velocità~\cite{wiki_coradia} & accelerazione \\
+		ETR 245 & lunghezza, posti, velocità~\cite{trenord_flotta} & accelerazione, massa a vuoto \\
+		FLIRT TSI (TILO) & lunghezza, masse, potenza, posti, velocità~\cite{trainswiss_rabe524}; alimentazione~\cite{railwaygazette_tilo} & accelerazione \\
+		ATR 125 & tutti i dati~\cite{stadler_gtw}; posti e velocità anche in~\cite{trenord_flotta} & accelerazione \\
+		Colleoni & massa e potenza~\cite{railvolution_atr803}; lunghezza, posti, velocità~\cite{wiki_atr803}; miglioramento dell'accelerazione~\cite{trenord_flotta} & accelerazione \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
 \subsubsection{Differenze dal materiale reale}
-Il modello si discosta dal materiale reale in alcuni punti, che vanno tenuti presenti nel leggere i risultati. La composizione dei TSR è fissata a quattro casse, mentre in esercizio varia. I posti dei Caravaggio sono quelli della versione di serie, 466 e 598, mentre l'allestimento dell'operatore ne ha 443 e 573. I posti del Colleoni comprendono 17 strapuntini. Mancano del tutto i convogli formati da locomotiva e carrozze e le automotrici diesel più anziane, le cui corse sono attribuite agli altri tipi. Infine ogni tipo ha un solo insieme di prestazioni: il modello non distingue fra un treno a pieno carico e uno vuoto nel moto, ma soltanto nel calcolo dei consumi.
+Il modello si discosta dal materiale reale in alcuni punti, che vanno tenuti presenti nel leggere i risultati. La composizione dei TSR è fissata a quattro casse, mentre in esercizio varia. La doppia composizione, in cui due convogli viaggiano accoppiati come un solo treno, non è rappresentata per nessun tipo: ogni treno del modello è un convoglio singolo. I posti dei Caravaggio sono quelli della versione di serie, 466 e 598, mentre l'allestimento dell'operatore ne ha 443 e 573. I posti del Colleoni comprendono 17 strapuntini. Mancano del tutto i convogli formati da locomotiva e carrozze e le automotrici diesel più anziane, le cui corse sono attribuite agli altri tipi. Infine ogni tipo ha un solo insieme di prestazioni: il modello non distingue fra un treno a pieno carico e uno vuoto nel moto, ma soltanto nel calcolo dei consumi.
 
 \subsection{Regole di comportamento}
-Il comportamento di un treno segue poche regole locali, quelle di railsim descritte nella sezione precedente. A ogni aggiornamento il treno chiede il tratto di percorso che gli serve per arrestarsi alla velocità corrente; se lo ottiene accelera fino alla velocità consentita, altrimenti rallenta, si ferma prima del tratto occupato e ripete la richiesta dopo dieci secondi. Alle fermate attende l'orario di partenza, e non parte mai in anticipo. Le risorse sono concesse nell'ordine in cui vengono chieste, senza priorità fra i treni.
+Il treno segue le regole definite da railsim, descritte nella sezione precedente.
+\begin{itemize}
+	\item A ogni aggiornamento il treno chiede il tratto di percorso che gli serve per arrestarsi alla velocità corrente.
+	\item Se lo ottiene, accelera fino alla velocità consentita.
+	\item Se non lo ottiene, rallenta, si ferma prima del tratto occupato e ripete la richiesta dopo dieci secondi.
+	\item Alle fermate attende l'orario di partenza e non parte mai in anticipo.
+	\item Le risorse sono concesse nell'ordine in cui vengono chieste, senza priorità fra i treni.
+\end{itemize}
 
-A queste regole il progetto ne aggiunge altre, perché quelle di base non bastano a far circolare l'orario reale sulla rete lombarda. Riguardano l'uso dei binari nelle stazioni, la precedenza e il consenso all'ingresso nelle tratte a binario unico, la prevenzione degli stalli, il ricovero dei treni fermi fra una corsa e l'altra e il loro ritiro a fine servizio. Sono descritte, ciascuna con il caso che l'ha resa necessaria, nelle \cref{sec:orari,sec:dettagli-rete}.
+Queste regole non bastano a far circolare i treni rispettando gli orari, dunque ne sono state aggiunge altre, descritte nelle \cref{sec:orari,sec:dettagli-rete}:
+\begin{itemize}
+	\item l'uso dei binari nelle stazioni;
+	\item il consenso all'ingresso nelle tratte a binario unico;
+	\item la prevenzione degli stalli;
+	\item il ricovero dei treni fra una corsa e l'altra e il loro ritiro a fine servizio.
+\end{itemize}
 
 \subsection{Interazione e coordinamento}
+\label{sec:modello-interazione}
 I treni non si scambiano messaggi. Un treno modifica l'ambiente occupando e liberando risorse, e gli altri percepiscono la modifica quando chiedono le stesse risorse: l'interazione è indiretta e fondata sullo spazio. Il contesto di un agente è il tratto del proprio percorso compreso nello spazio di frenata, che cresce con la velocità. Un treno non sa quale altro treno occupa una risorsa, né per quanto tempo.
 
-Nello schema con cui Ferber classifica le interazioni secondo scopi, risorse e capacità degli agenti, quella fra i treni è un'ostruzione: gli scopi sono compatibili, perché ogni treno deve soltanto eseguire il proprio orario, e le capacità sono sufficienti, ma le risorse non bastano per tutti nello stesso momento. Nessun treno ha interesse a ostacolarne un altro; si ostacolano perché usano gli stessi binari.
+Nello schema con cui Ferber classifica le interazioni secondo scopi, risorse e capacità degli agenti~\cite{ferber1999multiagent}, quella fra i treni è un'ostruzione: gli scopi sono compatibili, perché ogni treno deve soltanto eseguire il proprio orario, e le capacità sono sufficienti, ma le risorse non bastano per tutti nello stesso momento. Nessun treno ha interesse a ostacolarne un altro; si ostacolano perché usano gli stessi binari.
 
 Il coordinamento non è però interamente locale. Tre componenti vedono lo stato di tutta la rete: il gestore delle risorse, che ne tiene lo stato; la disposizione dei treni, che concede o nega i tratti richiesti e sceglie le deviazioni; la prevenzione degli stalli, che prima di concedere l'ingresso in una tratta a binario unico considera i treni diretti verso la stessa tratta. Nel modello questi componenti fanno parte dell'ambiente, a cui spetta regolare gli effetti delle azioni e i conflitti, e corrispondono nella realtà al segnalamento e alla regolazione della circolazione. Il sistema non va quindi presentato come del tutto decentrato.
 
