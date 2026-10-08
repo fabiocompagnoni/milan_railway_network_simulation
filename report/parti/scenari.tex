@@ -1,24 +1,24 @@
-Una simulazione è definita da tre scelte: il giorno di servizio, la finestra oraria e lo scenario. Dal giorno dipendono le corse, lette dall'orario pubblico; la finestra può essere l'intera giornata o una sua parte; lo scenario stabilisce se e come l'orario viene modificato. Gli scenari sono tre. Il primo è l'orario reale, che fa da riferimento. Gli altri due aggiungono corse, e rispondono alle due forme della domanda di ricerca: che cosa accade aumentando la frequenza nell'area urbana di Milano, e che cosa accade aumentandola su linee scelte in qualunque parte della rete.
+Una simulazione è definita dal giorno di servizio, dalla finestra oraria e dallo scenario. Gli scenari sono tre: l'orario reale, che fa da riferimento, e due scenari che aggiungono corse, uno nell'area urbana di Milano e uno su linee scelte in tutta la rete.
 
-I due scenari che aggiungono corse hanno in comune tre principi. Le corse pubblicate non vengono mai spostate: una corsa aggiunta è una copia di una corsa reale, collocata in un vuoto dell'orario. I treni sono assegnati alle corse aggiunte con la stessa regola dei giri treno, per cui una corsa in più richiede un treno in più solo se nessuno è disponibile al capolinea. Infine le scelte che definiscono uno scenario sono dati con la loro motivazione, conservati in un file del progetto, e non sono scritte nel codice.
+I due scenari che aggiungono corse hanno in comune tre principi. Le corse pubblicate non vengono mai spostate: una corsa aggiunta è una copia di una corsa reale, collocata in un vuoto dell'orario. I treni sono assegnati alle corse aggiunte con la stessa regola usata per l'orario reale, per cui una corsa in più richiede un treno in più solo se nessuno è disponibile al capolinea. Infine le scelte che definiscono uno scenario sono dati con la loro motivazione, conservati in un file del progetto, e non sono scritte nel codice.
 
 \subsection{Orario reale}
-Lo scenario di base esegue l'orario del giorno scelto senza modifiche. È il modello di partenza richiesto dal progetto, e ogni altro scenario è confrontato con la simulazione reale dello stesso giorno e della stessa finestra. Il modello di base non è stato ottenuto al primo tentativo: le sezioni precedenti descrivono le correzioni che lo hanno portato a far circolare tutte le corse di una giornata feriale senza che alcun treno resti bloccato.
+Lo scenario di base simula l'orario pubblicato per il giorno scelto, senza aggiungere né modificare corse. Ha due funzioni:
+\begin{itemize}
+	\item è il caso di riferimento: ogni altro scenario è confrontato con la simulazione dell'orario reale dello stesso giorno e della stessa finestra oraria, a parità di rete, treni, regole e parametri di costo;
+	\item è il caso su cui il modello è validato, confrontandone i risultati con i dati pubblicati dall'operatore (\cref{sec:validazione}).
+\end{itemize}
+Le regole descritte nelle \cref{sec:orari,sec:dettagli-rete} sono state messe a punto su questo scenario, fino a far circolare tutte le corse di una giornata senza che alcun treno resti bloccato.
 
 \subsection{Passante ad alta frequenza}
-Il primo scenario riguarda le linee suburbane nell'area di Milano. Il punto di partenza è che un treno non è una metropolitana: ha soste più lunghe, accelera e frena più lentamente e ha una capienza diversa, e sulla stessa infrastruttura circolano i regionali. Lo scenario non impone quindi cadenze da metropolitana, ma riduce l'attesa massima dove l'orario lascia vuoti lunghi.
+Lo scenario tratta i comuni più vicini a Milano, ormai parte della stessa area urbana, come se fossero serviti da una metropolitana: Saronno, Monza, Sesto San Giovanni e la fascia sud della città devono avere un treno da e per Milano ogni 15 oppure ogni 10 minuti nelle ore di punta. Non si impongono le cadenze di una metropolitana, perché un treno ha soste più lunghe, accelera e frena più lentamente e condivide i binari con i regionali: si riduce l'attesa massima dove l'orario reale lascia intervalli lunghi. Il parametro dello scenario è questa attesa massima, di 15 oppure di 10 minuti, due valori che dividono i 30 minuti della cadenza delle linee reali.
 
-Il parametro è l'attesa massima nelle ore di punta, di 15 oppure di 10 minuti, due valori che dividono i 30 minuti della cadenza delle linee reali. L'attesa non è misurata su una linea ma su un flusso: tutti i treni, di qualunque linea, che fermano in due stazioni date nell'ordine di marcia. A un viaggiatore fra Milano Bovisa e il centro non importa di quale linea sia il treno, e una corsa aggiunta a ridosso di un regionale non servirebbe. Fra due treni consecutivi del flusso separati da un vuoto $g$, con obiettivo $T$, si aggiungono
-\begin{equation}
-	n = \left\lceil \frac{g}{T} \right\rceil - 1
-\end{equation}
-corse equidistanti, ridotte finché l'intervallo risultante non scende sotto 300 secondi. Un vuoto di 30 minuti riceve così una corsa con l'obiettivo di 15 minuti e due con quello di 10; un vuoto di 10 minuti o meno non ne riceve. I vuoti oltre 60 minuti sono pause del servizio e non vengono riempiti.
-
-L'obiettivo scelto vale nelle ore di punta dei giorni feriali, dalle 6:30 alle 9:30 e dalle 16:30 alle 19:30. Nelle altre ore del giorno, il sabato e nei festivi l'obiettivo è di un gradino più largo: chi sceglie 10 minuti ottiene 15, e chi sceglie 15 non ottiene corse aggiunte. La sera tardi e di notte non si aggiunge nulla. Le fasce sono provvisorie, perché definite senza conteggi dei viaggiatori.
-
-Le corse che attraversano il Passante rispettano inoltre un intervallo minimo di 180 secondi fra due treni nello stesso verso, misurato alla stazione di Milano Repubblica. Una corsa che non lo rispetta viene spostata di minuti interi, e se non trova posto è abbandonata; le corse abbandonate sono registrate fra i dati della simulazione. Anche il valore di 180 secondi è provvisorio.
-
-Le relazioni su cui si aggiungono corse sono quattro, riportate nella \cref{tab:scenari-relazioni}. Il criterio con cui sono state scelte è potenziare dove non ci sono passaggi a livello, perché con queste cadenze le sbarre resterebbero abbassate per gran parte del tempo; i passaggi a livello non sono rappresentati nella simulazione, e proprio per questo le linee che ne hanno molti sono state escluse a priori.
+\subsubsection{Relazioni potenziate}
+Le corse sono aggiunte su quattro relazioni, riportate nella \cref{tab:scenari-relazioni} e scelte con due criteri:
+\begin{itemize}
+	\item il tratto non ha passaggi a livello, perché con queste cadenze le sbarre resterebbero abbassate per gran parte del tempo; i passaggi a livello non sono rappresentati nella simulazione, e le linee che ne hanno molti sono state escluse a priori;
+	\item le stazioni capolinea scelte hanno binari sufficienti per ospitare le nuove corse.
+\end{itemize}
 
 \begin{table}[H]
 	\centering
@@ -36,8 +36,86 @@ Le relazioni su cui si aggiungono corse sono quattro, riportate nella \cref{tab:
 	\end{tabularx}
 \end{table}
 
-Le corse aggiunte non percorrono l'intera linea: sono copie di una corsa reale limitate al tratto urbano indicato nella tabella. Fa eccezione la S9, copiata sull'intero percorso. La cadenza di ogni linea misurata al capolinea resta quindi quella dell'orario reale, 30 minuti, tranne che per la S9. Le linee S5 e S6, che pure attraversano il tunnel, non ricevono corse.
+Ogni corsa aggiunta è la copia di una corsa reale, limitata al tratto urbano della relazione: parte e termina nelle stazioni indicate nella \cref{tab:scenari-tratti}, e non prosegue sul resto della linea. In questo modo il servizio aumenta dove serve, e le tratte esterne, condivise con le linee che restano invariate, non ricevono treni in più. Fuori dal tratto urbano la cadenza di ogni linea resta quella dell'orario reale, 30 minuti. Fa eccezione la S9, le cui corse sono copiate sull'intero percorso. Le linee S5 e S6, che attraversano il tunnel, non ricevono corse.
 
+\begin{table}[H]
+	\centering
+	\caption{Corse aggiunte nello scenario del Passante: stazioni di partenza e di arrivo e numero di corse, per obiettivo e tipo di giorno. Il sabato e la domenica le linee S2 e S12 non circolano.}
+	\label{tab:scenari-tratti}
+	\begin{tabularx}{\textwidth}{lXrrrr}
+		\toprule
+		Linea & Tratto delle corse aggiunte & Feriale & Feriale & Sabato & Domenica \\
+		 & & 15 min & 10 min & 10 min & 10 min \\
+		\midrule
+		S1 & Saronno -- Milano Rogoredo & 0 & 12 & 38 & 30 \\
+		S2 & Cormano-Cusano Milanino -- Milano Rogoredo & 0 & 24 & -- & -- \\
+		S12 & Milano Bovisa -- Milano Rogoredo & 0 & 6 & -- & -- \\
+		S13 & Milano Bovisa -- Milano Rogoredo & 0 & 5 & 18 & 14 \\
+		S4 & Milano Cadorna -- Cormano-Cusano Milanino & 23 & 58 & 57 & 45 \\
+		S8 & Milano Porta Garibaldi -- Monza & 0 & 2 & 0 & 0 \\
+		S9 & Saronno -- Albairate (intero percorso) & 24 & 82 & 56 & 44 \\
+		\midrule
+		Totale & & 47 & 189 & 169 & 133 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+Sulla relazione Monza--Garibaldi le corse aggiunte sono poche, perché l'obiettivo è già quasi raggiunto dall'orario reale. Nella punta del mattino le linee S7, S8, S9, S11 e R14 offrono insieme 29 treni che fermano a Monza e a Sesto San Giovanni in direzione di Milano: l'intervallo medio è di 6 minuti e quello massimo di 14.
+
+\subsubsection{Regola delle corse aggiunte}
+Su ogni relazione le corse sono aggiunte con questa regola:
+\begin{itemize}
+	\item l'attesa è misurata su un flusso e non su una linea: si considerano tutti i treni, di qualunque linea, che fermano nelle due stazioni della relazione nell'ordine di marcia;
+	\item fra due treni consecutivi del flusso separati da un intervallo $g$, con obiettivo $T$, si aggiungono $n = \lceil g/T \rceil - 1$ corse equidistanti; un intervallo di 30 minuti riceve una corsa con l'obiettivo di 15 minuti e due con quello di 10;
+	\item il numero è ridotto finché l'intervallo risultante non è di almeno 300 secondi;
+	\item un intervallo superiore a 60 minuti è una pausa del servizio e non viene riempito.
+\end{itemize}
+
+\subsubsection{Fasce orarie e tipo di giorno}
+Lo scenario ha l'obiettivo di aumentare il servizio limitando l'aumento dei costi. Le corse sono quindi aggiunte dove la domanda è più concentrata, cioè nelle ore di punta dei giorni feriali, in cui prevale il traffico pendolare. L'attesa massima impostata si applica nelle fasce 6:30--9:30 e 16:30--19:30 dei giorni feriali. Nelle altre ore del giorno, il sabato e nei festivi si applica il valore immediatamente superiore: 15 minuti se l'obiettivo è 10, nessuna corsa aggiunta se l'obiettivo è 15. Nelle ore serali e notturne non sono aggiunte corse. \\
+La scelta delle fasce è un'ipotesi di progetto, perché il modello non rappresenta i viaggiatori e non sono disponibili conteggi della domanda. Un aumento delle corse esteso all'intera giornata o al fine settimana può essere simulato con lo scenario di potenziamento per linea, in cui linee, tratte e cadenze sono impostate singolarmente.\\
+
+Lo scenario aggiunge corse soltanto alle linee che circolano nel giorno simulato, e nel fine settimana parte quindi da una rete servita da meno linee (\cref{tab:orari-giorni}). La \cref{tab:scenari-giorni} ne riporta l'effetto. Con l'obiettivo di 15 minuti il sabato e la domenica non viene aggiunta alcuna corsa, e lo scenario coincide con l'orario reale. Con quello di 10 minuti le corse aggiunte recuperano il servizio perso sui tratti urbani, dove S4 e S9 sostituiscono S2 e S19, e solo in parte nel Passante. Sui tratti esterni, serviti nei feriali anche da S2 e S12, le corse restano quelle dell'orario reale del sabato.
+
+\begin{table}[H]
+	\centering
+	\caption{Scenario del Passante per tipo di giorno: corse aggiunte e corse giornaliere in alcune stazioni delle linee S2, S12 e S19.}
+	\label{tab:scenari-giorni}
+	\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}Xrrr}
+		\toprule
+		 & Feriale & Sabato & Domenica \\
+		\midrule
+		Corse aggiunte, obiettivo 15 minuti & 47 & 0 & 0 \\
+		Corse aggiunte, obiettivo 10 minuti & 189 & 169 & 133 \\
+		\midrule
+		Passante (Porta Garibaldi), orario reale & 406 & 288 & 288 \\
+		Passante (Porta Garibaldi), obiettivo 15 minuti & 406 & 288 & 288 \\
+		Passante (Porta Garibaldi), obiettivo 10 minuti & 453 & 344 & 332 \\
+		\addlinespace
+		Milano Romolo, orario reale & 176 & 110 & 103 \\
+		Milano Romolo, obiettivo 15 minuti & 200 & 110 & 103 \\
+		Milano Romolo, obiettivo 10 minuti & 258 & 166 & 147 \\
+		\addlinespace
+		Milano Affori, orario reale & 189 & 122 & 104 \\
+		Milano Affori, obiettivo 15 minuti & 212 & 122 & 104 \\
+		Milano Affori, obiettivo 10 minuti & 271 & 179 & 149 \\
+		\addlinespace
+		Melegnano, orario reale & 134 & 74 & 74 \\
+		Melegnano, obiettivo 15 minuti & 134 & 74 & 74 \\
+		Melegnano, obiettivo 10 minuti & 134 & 74 & 74 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\subsubsection{Vincoli}
+Le corse aggiunte rispettano due vincoli:
+\begin{itemize}
+	\item nel tunnel del Passante l'intervallo minimo fra due treni nello stesso verso è di 180 secondi, misurato alla stazione di Milano Repubblica; una corsa che non lo rispetta è spostata di minuti interi e, se non trova posto, è abbandonata e registrata fra i dati della simulazione;
+	\item nei capolinea dichiarati la corsa aggiunta parte appena il treno arrivato ha invertito la marcia, sempre entro l'attesa massima, e non a metà dell'intervallo; in quel verso le corse aggiunte non sono quindi equidistanti.
+\end{itemize}
+Il secondo vincolo è nato dalla prima simulazione dello scenario, in cui 56 treni non arrivavano a destinazione perché i binari di Saronno erano saturi: una corsa collocata a metà dell'intervallo non tiene conto di quando arriva il treno che deve effettuarla, e il treno restava al capolinea anche più di mezz'ora occupando un binario.
+
+\subsubsection{Attesa risultante}
 La \cref{tab:scenari-attese} riporta l'attesa che ne risulta sui quattro tratti, misurata sull'orario generato per la punta del mattino di un giorno feriale. Con l'obiettivo di 15 minuti nel Passante non cambia nulla, perché lì l'attesa massima dell'orario reale è già di 15 minuti: le corse aggiunte riguardano la S9 e i tratti di Cormano e di Monza. Con l'obiettivo di 10 minuti i treni fra Bovisa e Lancetti passano, nelle tre ore, da 23 a 35.
 
 \begin{table}[H]
@@ -59,12 +137,28 @@ La \cref{tab:scenari-attese} riporta l'attesa che ne risulta sui quattro tratti,
 	\end{tabularx}
 \end{table}
 
-Altre relazioni sono state valutate e scartate, e il motivo è conservato insieme ai dati dello scenario. La S7 è a trazione diesel e non ha le prestazioni per queste cadenze. La S3 percorre fra Cadorna e Saronno una tratta su cui circolano già i regionali, con un treno ogni tre o quattro minuti verso Milano. Le linee S5 e S6 sono già molto cariche e la S5 ha un percorso troppo lungo. Fra Garibaldi e Rho Fiera i regionali passano già ogni cinque o dieci minuti. La S19 percorre la cintura sud insieme alla S9, e potenziate entrambe si sovrapporrebbero.
-
-Un'ultima regola è nata dalla prima simulazione dello scenario, in cui 56 treni non arrivavano a destinazione perché i binari di Saronno erano saturi. Una corsa aggiunta collocata a metà del vuoto ignora quando arriva il treno che dovrebbe effettuarla, e il treno resta al capolinea anche per più di mezz'ora occupando un binario. Nei capolinea dichiarati la corsa aggiunta parte invece appena il treno arrivato ha invertito la marcia, sempre entro l'attesa massima. Il prezzo è la regolarità: in quel verso le corse aggiunte non sono più equidistanti.
+\subsubsection{Relazioni scartate}
+Altre relazioni sono state valutate e scartate; il motivo è conservato insieme ai dati dello scenario:
+\begin{itemize}
+	\item S7: è a trazione diesel e non ha le prestazioni per queste cadenze;
+	\item S3: fra Cadorna e Saronno percorre una tratta su cui circolano già i regionali, con un treno ogni tre o quattro minuti verso Milano;
+	\item S5 e S6: sono già molto cariche, e la S5 ha un percorso troppo lungo;
+	\item Garibaldi--Rho Fiera: i regionali passano già ogni cinque o dieci minuti;
+	\item S19: percorre la cintura sud insieme alla S9, e potenziate entrambe si sovrapporrebbero.
+\end{itemize}
 
 \subsection{Potenziamento per linea}
-Il secondo scenario lascia la scelta a chi lancia la simulazione. L'applicazione elenca i percorsi regolari della rete, dove un percorso è una linea con la sua coppia di capolinea ed è regolare se ha almeno otto corse nel giorno e quattro per verso. Per ognuno si può chiedere un'attesa massima fra 3 e 30 minuti, e la tabella mostra prima del lancio la lunghezza del percorso, la quota a binario unico, l'attesa massima dell'orario reale, le corse che verrebbero aggiunte e l'attesa risultante.
+Il secondo scenario aumenta le corse sulle linee scelte da chi lancia la simulazione, su tutta la rete e per l'intera giornata. Serve a valutare un aumento generalizzato del servizio e a cercare il carico oltre il quale la rete non lo sostiene.
+
+L'unità su cui si interviene è il percorso, cioè una linea con la sua coppia di capolinea. Sono potenziabili i percorsi regolari, quelli con almeno otto corse nel giorno e almeno quattro per verso: restano escluse le corse isolate di inizio e fine servizio. Per ogni percorso scelto si imposta un'attesa massima fra 3 e 30 minuti, e le corse sono aggiunte in questo modo:
+\begin{itemize}
+	\item per ciascun verso si considerano le sole corse della linea che percorrono l'intero percorso, ordinate per orario di partenza dal capolinea;
+	\item fra due corse consecutive separate da un intervallo $g$ si aggiungono $n = \lceil g/T \rceil - 1$ corse equidistanti, dove $T$ è l'attesa massima impostata;
+	\item ogni corsa aggiunta è una copia della corsa che apre l'intervallo, con le stesse fermate e gli stessi tempi di percorrenza, spostata all'orario di partenza calcolato e arrotondata al minuto;
+	\item un intervallo superiore a 60 minuti è considerato una pausa del servizio e non viene riempito;
+	\item le corse dell'orario reale non sono modificate.
+\end{itemize}
+Prima del lancio l'applicazione mostra, per ogni percorso, la lunghezza, la quota a binario unico, l'attesa massima dell'orario reale, le corse che verrebbero aggiunte e l'attesa risultante. Treni, binari e ricoveri delle corse aggiunte sono assegnati con le stesse regole dell'orario reale, descritte nella \cref{sec:orari}.
 
 La regola è la stessa del primo scenario, con quattro differenze, riassunte nella \cref{tab:scenari-confronto}. L'intervallo è misurato sulle corse della sola linea, alla partenza dal capolinea. L'obiettivo vale per tutte le ore di servizio. Non c'è una distanza minima fra due treni, perché lo scenario deve poter scendere sotto i cinque minuti. E nessuna corsa viene rifiutata: una corsa che passa nel tunnel del Passante a meno di 180 secondi da un altro treno è inserita e segnalata. La differenza è voluta. Nel primo scenario l'orario aggiunto è costruito per essere eseguibile; nel secondo è la simulazione a dover misurare se la rete lo regge, e lo scenario serve anche a cercare il punto in cui non lo regge più.
 
