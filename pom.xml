@@ -278,6 +278,9 @@
                                         <argument>${dist.icon}</argument>
                                         <argument>--java-options</argument>
                                         <argument>-Dmilanrailsim.data=$APPDIR/share</argument>
+                                        <!-- jpackage's defaults minus strip-native-commands: the application starts the engine with the java command of the packaged runtime -->
+                                        <argument>--jlink-options</argument>
+                                        <argument>--strip-debug --no-man-pages --no-header-files</argument>
                                         <argument>--dest</argument>
                                         <argument>${project.build.directory}/dist</argument>
                                         <argument>--resource-dir</argument>
