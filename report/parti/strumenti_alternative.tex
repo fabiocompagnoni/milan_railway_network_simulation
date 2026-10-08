@@ -1,5 +1,4 @@
 \subsection{Scelta dello strumento}
-% BOZZA: testo di partenza, da rivedere e riscrivere.
 Per rispondere alla domanda di ricerca serviva uno strumento in grado di simulare un'intera rete regionale, con centinaia di treni al giorno, e al tempo stesso di rappresentare con precisione i punti in cui la capacità è limitata: i nodi, le stazioni principali e le tratte a binario unico. 
 Doveva inoltre permettere di modificare le regole con cui i treni si contendono i binari, perché sono queste regole a determinare come i ritardi si propagano.\\
 
@@ -8,18 +7,16 @@ Esiste anche un simulatore a codice aperto, Flatland, anch'esso microscopico, ch
 All'estremo opposto si trova MATSim usato senza estensioni, che simula il trasporto pubblico a orario ma in cui i veicoli seguono l'orario senza interagire fra loro, e quindi non rappresenta l'esercizio ferroviario~\cite{kaddoura2024railsim}.\\
 
 L'idea iniziale del progetto era lo sviluppo di un simulatore da zero, ma l'idea è stata abbandonata perchè il settore ferroviario comprende molti aspetti legati fra loro, dal moto dei treni all'occupazione dei binari, dalle stazioni agli incroci, e una implementazione scritta da zero non avrebbe raggiunto, nei tempi disponibili, un risultato realistico.\\
-% BOZZA: frase su Mesa, da rivedere e riscrivere.
 Fra le alternative, c'era anche Mesa~\cite{terhoeven2025mesa}, una libreria Python a codice aperto per la modellazione ad agenti. Mesa fornisce gli elementi generali di un modello ad agenti, ma nessun componente ferroviario: rete, moto dei treni, occupazione dei binari e gestione dell'orario sarebbero stati da scrivere per intero, con le stesse difficoltà dello sviluppo da zero, ma con i vincoli di utilizzare gli elementi della libreria.\\
 
 In seguito ad un analisi di implementazioni in Railsim e la lettura della documentazione, è stato deciso di utilizzare Railsim. \\
 Essendo scritto in Java ed open source, può essere esteso con implementazioni specifiche di alcuni comportamenti. Consente di descrivere la stessa rete a livello mesoscopico, microscopico o misto, e quindi di simulare una rete regionale riservando il dettaglio ai punti in cui serve. \\
-Infine è sviluppato dalle Ferrovie Federali Svizzere (SBB CHF), il che ne garantisce la serietà del progetto e le sue potenzialità.\\
+Infine è sviluppato dalle Ferrovie Federali Svizzere (SBB CFF FFS), il che ne garantisce la serietà del progetto e le sue potenzialità.\\
 
 Lo strumento ha anche due limiti, noti fin dall'inizio. È recente e poco documentato, tanto che per conoscerne il comportamento è stato necessario leggerne il sorgente. Inoltre non costruisce la rete e non stabilisce il livello di dettaglio, che restano a carico di chi lo usa.\\
 Nel progetto la rete è stata generata prima a livello mesoscopico, e poi i nodi e i punti più delicati sono stati in seguito descritti a livello microscopico, come illustrato nelle sezioni successive.
 
 \subsection{MATSim}
-% BOZZA: testo di partenza, da rivedere e riscrivere.
 MATSim (\textit{Multi-Agent Transport Simulation}) è un ambiente di simulazione ad agenti per i sistemi di trasporto, scritto in Java e distribuito con licenza libera~\cite{horni2016matsim}. Il progetto nasce alla fine degli anni Novanta dal lavoro di Kai Nagel, allora al Politecnico federale di Zurigo, a cui si è unito Kay W. Axhausen. È pensato per scenari di grande scala, con milioni di agenti, e per questo ogni suo modello è ridotto all'essenziale.
 
 In MATSim ogni persona della popolazione studiata è un agente, e ogni agente possiede un \textit{piano}: la sequenza delle attività di una giornata e degli spostamenti che le collegano, ognuno con orario, mezzo e percorso. L'unità di analisi è la giornata singola. La domanda di trasporto non è quindi assegnata come flusso fra zone, ma emerge dalla somma dei piani dei singoli agenti.
@@ -38,7 +35,6 @@ Il modello a code è nato per il traffico stradale. Applicato ai treni, non rapp
 
 \subsection{Railsim}
 Come anticipato nell'introduzione, per l'implementazione del modello, il lavoro si è basato sull'utilizzo di \textit{railsim}~\cite{kaddoura2024railsim}, un'estensione ferroviaria della piattaforma di simulazione ad agenti MATSim.\\
-% BOZZA da qui in poi: testo di partenza, da rivedere e riscrivere.
 
 \subsubsection{Obiettivi}
 Gli scopi dichiarati di railsim sono tre: verificare se un orario è eseguibile su una data infrastruttura, individuare conflitti e colli di bottiglia, e fare da base per lo studio delle perturbazioni e delle strategie di gestione della circolazione~\cite{kaddoura2024railsim}. 
